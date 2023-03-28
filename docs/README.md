@@ -202,6 +202,56 @@ Int doSomeMath(Int n) {
    return result;
 }
 
+List mergeSort(List n) {
+    if (n.length() == 1) {
+        return n;
+    }
+    
+    # get a list of items from List n from index 0 to index n.length() // 2 (exclusively)
+    List leftHalf = List();
+    int l = 0;
+    while (l < (n.length() // 2)) {
+        leftHalf.add(n[l]);
+        l += 1;
+    }
+    
+    # get a list of items from List n from index n.length() // 2 (inclusively) to the last element
+    List rightHalf = List();
+    int r = n.length() // 2;
+    while (r < n.length()) {
+        rightHalf.add(n[r]);
+        r += 1;
+    }
+    
+    List sortedLeftHalf = mergeSort(leftHalf);
+    List sortedRightHalf = mergeSort(rightHalf);
+    
+    int i = 0;
+    int j = 0;
+    List sortedList = List();
+    
+    while (i < sortedLeftHalf.length() && j < sortedRightHalf.length()) {
+        if (i == sortedLeftHalf.length() && j < sortedRightHalf.length()) {
+            sortedList.add(sortedRightHalf[j]);
+            j += 1;
+        }
+        elseif (i < sortedLeftHalf.length() && j == sortedRightHalf.length()) {
+            sortedList.add(sortedLeftHalf[i]);
+            i += 1;
+        }
+        elseif (sortedLeftHalf[i] < sortedRightHalf[j]) {
+            sortedList.add(sortedLeftHalf[i]);
+            i += 1;
+        }
+        else {
+            sortedList.add(sortedRightHalf[j]);
+            j += 1;
+        }
+    }
+    
+    return sortedList;
+}
+
 Int main() {
 	Point a = Point(1.01, 2.20);
 	Point b = Point(3.03, 7.70);
