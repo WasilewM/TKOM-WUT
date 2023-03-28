@@ -27,7 +27,9 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
 1. Operatory logiczne:
    1. `&&` - operator logiczny `i`
    1. `||` - operator logiczny `lub`
-1. Istnieć będzie możliwość definiowania funkcji. Ponadto, będzie możliwość definiowania funkcji rekurencyjnych.
+   1. `==` - operator logiczny równości
+   1. `!=` - operator logiczny nierówności
+1. Istnieć będzie możliwość definiowania funkcji.
 
 ## Definicje wbudowanych typów obiektowych
 @TODO: change DISPLAY_TYPE  
@@ -163,54 +165,21 @@ public class Scene {
 
 ### Przykład kodu
 ```
-List findMeassureCenter(List n) {
-    if (n.length() == 1) {
-        return n;
-    }
+int doSomeMath(int n) {
+   # condition bellow could be simplified by it has been written this way on purpose,
+   # to show how logical operators will work
+   if (n < 0 || n == 0 || n == 1) {
+      return -1;         
+   }
     
-    # get a list of items from List n from index 0 to index n.length() // 2 (exclusively)
-    List leftHalf = List();
-    int l = 0;
-    while (l < (n.length() // 2)) {
-        leftHalf.add(n[l]);
-        l += 1;
-    }
-    
-    # get a list of items from List n from index n.length() // 2 (inclusively) to the last element
-    List rightHalf = List();
-    int r = n.length() // 2;
-    while (r < n.length()) {
-        rightHalf.add(n[r]);
-        r += 1;
-    }
-    
-    List sortedLeftHalf = mergeSort(leftHalf);
-    List sortedRightHalf = mergeSort(rightHalf);
-    
-    int i = 0;
-    int j = 0;
-    List sortedList = List();
-    
-    while (i < sortedLeftHalf.length() && j < sortedRightHalf.length()) {
-        if (i == sortedLeftHalf.length() && j < sortedRightHalf.length()) {
-            sortedList.add(sortedRightHalf[j]);
-            j += 1;
-        }
-        elseif (i < sortedLeftHalf.length() && j == sortedRightHalf.length()) {
-            sortedList.add(sortedLeftHalf[i]);
-            i += 1;
-        }
-        elseif (sortedLeftHalf[i] < sortedRightHalf[j]) {
-            sortedList.add(sortedLeftHalf[i]);
-            i += 1;
-        }
-        else {
-            sortedList.add(sortedRightHalf[j]);
-            j += 1;
-        }
-    }
-    
-    return sortedList;
+   int i = 2;
+   int result = 0;
+   while (i < n) {
+      result = result - i * (i + n - i);
+      i = i + 3;
+   }
+   
+   return result;
 }
 
 int main() {
