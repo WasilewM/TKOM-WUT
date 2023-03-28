@@ -181,7 +181,37 @@ public class Scene {
 
 ## Gramatyka
 ### EBNF
-@TODO
+```
+comparisonOper    = equalOper
+                     | notEqualOper
+                     | lessThenOper
+                     | lessOrEqOper
+                     | greaterThenOper
+                     | greaterOrEqOper
+identifier        = letter { digit | literalSign }
+digit             = "0"
+                     | notZeroDigit
+notZeroDigit      = "1".."9"
+literalSign       = "_"
+                     | letter
+
+equalOper         = "="
+notEqualOper      = "!="
+lessThenOper      = "<"
+lessOrEqOper      = "<="
+greaterThenOper   = ">"
+greaterOrEqOper   = ">="
+additionOper      = "+"
+                     | "-"
+multiplicOper     = "*"
+                     | "/"
+                     | "//"
+assignmentOper    = "="
+comment           = "#"
+notZeroDigit      = "1".."9"
+letter            = "a".."z"
+                     | "A".."Z"
+```
 
 ### Przykład kodu
 ```
