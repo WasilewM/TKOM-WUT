@@ -54,7 +54,7 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
    1. nazwy wszystkich metod zapisanych poniżej w definicji typów wbudowanych `Point`, `Section`, `Figure` oraz `Scene`
 
 ## Definicje wbudowanych typów obiektowych
-@TODO: change DISPLAY_TYPE  
+Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.  
 ### Point
 ```
 public class Point {
@@ -190,21 +190,28 @@ functionType         = "void"
                         | dataType
 parameters           = { parameter }
 parameter            = dataType, identifier
-codeBlock            = "{", { ifBlock | whileBlock | functionCall }, "}"
+codeBlock            = "{", { ifBlock | whileBlock | functionCall | assignmentExp | ";" }, "}"
 ifBlock              = "if", "(", condition, ")", "{", codeBlock, "}", {elseIfBlock}, [elseBlock]
 elseIfBlock          = "elseif", "(", condition, ")", "{", codeBlock, "}"
 elseBlock            = "else", "(", condition, ")", "{", codeBlock, "}"
 whileBlock           = "while", "(", condition, ")", "{", codeBlock, "}"
 condition            = conditionAndExp, { orOper, conditionAndExp }
 conditionAndExp      = conditionComparExp, { andOper, conditionComparExp }
-conditionComparExp   = singleCondition, { comparisonOper | logicalOper, singleCondition}
+conditionComparExp   = [notOper], singleCondition, [ comparisonOper, singleCondition ]
 singleCondition      = identifier
                         |  condtition
+assignmentExp        = dataType, identifier, assignmentOper, assignedValue, ";"
+assignedValue        = assignableValue
+                        | expression
+expression           = multiplicativeExp, { additiveOper, multiplicativeExp }
+multiplicativeExp    = parenthesesExp, { mulitplicativeOper, parenthesesExp }
+perethesesExp        = "(", assignableValue, ")"
+assignableValue      = literal
+                        | integer
+                        | double
+                        | functionCall
 
-functionCall         = @TODO
-codeBlock            = @TODO
-
-
+functionCall         = identifier, parameters, ";"
 dataType             = "Int"
                         | "Double"
                         | "String"
@@ -212,31 +219,23 @@ dataType             = "Int"
                         | "Section"
                         | "Scene"
                         | "Bool"
-
-
-
-comparisonOper       = equalOper
-                        | notEqualOper
-                        | lessThenOper
-                        | lessOrEqOper
-                        | greaterThenOper
-                        | greaterOrEqOper
 logicalOper          = andOper
                         | orOper
                         | notOper
 identifier           = letter { digit | literalSign }
-digit                = "0"
+
+double               = integer, [".", integer]
+integer              = "0"
                         | notZeroDigit
-notZeroDigit         = "1".."9"
 literalSign          = "_"
                         | letter
 
-equalOper            = "=="
-notEqualOper         = "!="
-lessThenOper         = "<"
-lessOrEqOper         = "<="
-greaterThenOper      = ">"
-greaterOrEqOper      = ">="
+comparisonOper       = "=="
+                        | "!="
+                        | "<"
+                        | "<="
+                        | ">"
+                        | ">="
 andOper              = "&&"
 orOper               = "||"
 notOper              = "!"
