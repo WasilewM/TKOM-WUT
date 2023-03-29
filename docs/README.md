@@ -184,35 +184,72 @@ public class Scene {
 ## Gramatyka
 ### EBNF
 ```
-comparisonOper    = equalOper
-                     | notEqualOper
-                     | lessThenOper
-                     | lessOrEqOper
-                     | greaterThenOper
-                     | greaterOrEqOper
-identifier        = letter { digit | literalSign }
-digit             = "0"
-                     | notZeroDigit
-notZeroDigit      = "1".."9"
-literalSign       = "_"
-                     | letter
+program              = { functionDef }, { functionCall }
+functionDef          = functionType, identifier, "(", { parameters }, ")", codeBlock
+functionType         = "void"
+                        | dataType
+parameters           = { parameter }
+parameter            = dataType, identifier
+codeBlock            = "{", { ifBlock | whileBlock | functionCall }, "}"
+ifBlock              = "if", "(", condition, ")", "{", codeBlock, "}", {elseIfBlock}, [elseBlock]
+elseIfBlock          = "elseif", "(", condition, ")", "{", codeBlock, "}"
+elseBlock            = "else", "(", condition, ")", "{", codeBlock, "}"
+whileBlock           = "while", "(", condition, ")", "{", codeBlock, "}"
+condition            = conditionAndExp, { orOper, conditionAndExp }
+conditionAndExp      = conditionComparExp, { andOper, conditionComparExp }
+conditionComparExp   = singleCondition, { comparisonOper | logicalOper, singleCondition}
+singleCondition      = identifier
+                        |  condtition
 
-equalOper         = "="
-notEqualOper      = "!="
-lessThenOper      = "<"
-lessOrEqOper      = "<="
-greaterThenOper   = ">"
-greaterOrEqOper   = ">="
-additionOper      = "+"
-                     | "-"
-multiplicOper     = "*"
-                     | "/"
-                     | "//"
-assignmentOper    = "="
-comment           = "#"
-notZeroDigit      = "1".."9"
-letter            = "a".."z"
-                     | "A".."Z"
+functionCall         = @TODO
+codeBlock            = @TODO
+
+
+dataType             = "Int"
+                        | "Double"
+                        | "String"
+                        | "Point"
+                        | "Section"
+                        | "Scene"
+                        | "Bool"
+
+
+
+comparisonOper       = equalOper
+                        | notEqualOper
+                        | lessThenOper
+                        | lessOrEqOper
+                        | greaterThenOper
+                        | greaterOrEqOper
+logicalOper          = andOper
+                        | orOper
+                        | notOper
+identifier           = letter { digit | literalSign }
+digit                = "0"
+                        | notZeroDigit
+notZeroDigit         = "1".."9"
+literalSign          = "_"
+                        | letter
+
+equalOper            = "=="
+notEqualOper         = "!="
+lessThenOper         = "<"
+lessOrEqOper         = "<="
+greaterThenOper      = ">"
+greaterOrEqOper      = ">="
+andOper              = "&&"
+orOper               = "||"
+notOper              = "!"
+additivOper          = "+"
+                        | "-"
+multiplicativOper    = "*"
+                        | "/"
+                        | "//"
+assignmentOper       = "="
+comment              = "#"
+notZeroDigit         = "1".."9"
+letter               = "a".."z"
+                        | "A".."Z"
 ```
 
 ### Przykład kodu
