@@ -190,8 +190,8 @@ functionType         = "void"
                         | dataType
 parameters           = { parameter }
 parameter            = dataType, identifier
-codeBlock            = "{", { ifBlock | whileBlock | functionCall | assignmentExp | ";" }, "}"
-ifBlock              = "if", "(", condition, ")", "{", codeBlock, "}", {elseIfBlock}, [elseBlock]
+codeBlock            = "{", { ifBlock | whileBlock | functionCall | assignmentExp | returnExp | ";" }, "}"
+ifBlock              = "if", "(", condition, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
 elseIfBlock          = "elseif", "(", condition, ")", "{", codeBlock, "}"
 elseBlock            = "else", "(", condition, ")", "{", codeBlock, "}"
 whileBlock           = "while", "(", condition, ")", "{", codeBlock, "}"
@@ -206,12 +206,22 @@ assignedValue        = assignableValue
 expression           = multiplicativeExp, { additiveOper, multiplicativeExp }
 multiplicativeExp    = parenthesesExp, { mulitplicativeOper, parenthesesExp }
 perethesesExp        = "(", assignableValue, ")"
+returnExp            = "return", assignableValue, ";"
+
+
 assignableValue      = literal
                         | integer
                         | double
                         | functionCall
-
 functionCall         = identifier, parameters, ";"
+identifier           = letter { digit | literalSign }
+double               = integer, [".", integer]
+integer              = "0"
+                        | notZeroDigit
+literalSign          = "_"
+                        | letter
+
+
 dataType             = "Int"
                         | "Double"
                         | "String"
@@ -222,14 +232,6 @@ dataType             = "Int"
 logicalOper          = andOper
                         | orOper
                         | notOper
-identifier           = letter { digit | literalSign }
-
-double               = integer, [".", integer]
-integer              = "0"
-                        | notZeroDigit
-literalSign          = "_"
-                        | letter
-
 comparisonOper       = "=="
                         | "!="
                         | "<"
