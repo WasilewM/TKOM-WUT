@@ -52,6 +52,12 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
    1. Operator przypisania: `=`
    1. `,`
    1. nazwy wszystkich metod zapisanych poniżej w definicji typów wbudowanych `Point`, `Section`, `Figure` oraz `Scene`
+1. Domyślne ograniczenia parametrów wypisanych poniżej zapisane będą w pliku konfiguracyjnym i będzie możliwość ich modyfikacji.
+   1. `IntMax` - maksymalny zakres zmiennych typu `Int`
+   1. `IntMin` - minimalny zakres zmiennych typu `Int`
+   1. `DoubleMax` - maksymalny zakres zmiennych typu `Double`
+   1. `DoubleMin` - minimalny zakres zmiennych typu `Double`
+   1. `RecursionMaxDepth` - maksymalna liczba poziomów rekursji
 
 ## Definicje wbudowanych typów obiektowych
 Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.  
@@ -215,9 +221,12 @@ assignableValue      = literal
                         | functionCall
 functionCall         = identifier, parameters, ";"
 identifier           = letter { digit | literalSign }
-double               = integer, [".", integer]
-integer              = "0"
-                        | notZeroDigit
+double               = integer, [ ".", number ]
+integer              = [ "-" ], zeroDigit | { number }
+number               = zeroDigit
+                        | notZeroDigit, { digit }
+digit                = zeroDigit | notZeroDigit
+literal              = literalSign, { literalSign }
 literalSign          = "_"
                         | letter
 
@@ -248,6 +257,7 @@ multiplicativOper    = "*"
                         | "//"
 assignmentOper       = "="
 comment              = "#"
+zeroDigit            = "0"
 notZeroDigit         = "1".."9"
 letter               = "a".."z"
                         | "A".."Z"
