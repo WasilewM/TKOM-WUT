@@ -25,8 +25,10 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
    1. `/`
    1. `//` - dzielenie całkowitoliczbowe
 1. Operatory logiczne:
-   1. `&&` - operator logiczny `i`
-   1. `||` - operator logiczny `lub`
+   1. `&&` - operator logiczny koniunkcji
+   1. `||` - operator logiczny alternatywy
+   1. `!` - operator logiczny negacji
+1. Operatory porównania:
    1. `==` - operator logiczny równości
    1. `!=` - operator logiczny nierówności
    1. `<`
@@ -301,6 +303,18 @@ Int main() {
 	s2.add(l);
 	s3.add(m);
 }
+```
+
+## Obsługa błędów
+Poniżej przedstawiony jest błędy kod:  
+```
+Int main() {
+	Point a = Point("x", "y");  # konstruktor klasy Point wymaga dwóch wartości Double 
+}
+```
+W rezultacie powyższy błędny kod powinien wygenerować następujący błąd:
+```
+Error in <line: 2, col: 21>: Double value expected
 ```
 
 ## Wyświetlanie
