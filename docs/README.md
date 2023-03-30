@@ -6,61 +6,62 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
 
 ## Założenia
 1. Projekt zostanie zrealizowany w języku Java.
-1. Projektowany język będzie typowany silnie i statycznie.  
-1. Za plik napisany w projektowanym języku uznawane będą pliki z rozszerzeniem `.surface`.
+1. Projektowany język będzie typowany silnie i statycznie.
+1. Za plik napisany w projektowanym języku uznawane będą pliki z rozszerzeniem `.surface` lub strumień danych. Analiza programu kończona jest w wyniku otrzymania znaku końca tekstu `ETX`.
 1. W języku dostępne będą następujące typy danych:
-   1. Numeryczne: `Int`, `Double`  
-   1. Tekstowy: `String`  
-   1. Wbudowane typy obiektowe: `Point`, `Section`, `Figure`, `Scene` (opis tych typów przedstawiony jest niżej)  
-   1. Kolekcja - lista: List. Do kolejnych elementów listy można odwoływać się poprzez indeksy: `someList[i]`. Ponadto. type `List` posiada wbudowane funkcje `add` do dodania elementu na koniec listy oraz `pop` do usunięcia ostatniego elementu z listy. 
-   1. Typ boole'owski: Bool
-1. Komentarze oznacza się znakami `#`. Komentarze obowiązują do końca linii.  
-1. Pętla realizowana będzie przez instrukcję `while`
+    1. Numeryczne: `Int`, `Double`
+    1. Tekstowy: `String`
+    1. Wbudowane typy obiektowe: `Point`, `Section`, `Figure`, `Scene` (opisy tych typów przedstawiony jest niżej)
+    1. Kolekcja - lista: `List`. Do kolejnych elementów listy można odwoływać się poprzez indeksy: `someList[i]`. Ponadto. type `List` posiada wbudowane funkcje `add` do dodania elementu na koniec listy oraz `pop` do usunięcia ostatniego elementu z listy. Opis tego typu również znajduje się poniżej.
+    1. Typ boole'owski: `Bool`
+1. Komentarze oznacza się znakami `#`. Komentarze obowiązują do końca linii.
+1. Pętla realizowana będzie przez instrukcję `while`.
 1. Sprawdzenie warunków logicznych będzie można zapisać w bloku `if`, `elseif`, `else`.
-1. Znak końca linii może być reprezentowany przez `\r`, `\n`, `\r\n` lub `\n\r`. Przyjmowana będzie konwencja rozpoznana na końcu pierwszej linii pliku. Zastosowanie dwóch lub więcej różnych konwencji w jednym pliku będzie powodowało generowanie komunikatów o błędach.
+1. Znak końca linii może być reprezentowany przez `\r`, `\n`, `\r\n` lub `\n\r`. Przyjmowana będzie konwencja rozpoznana na końcu pierwszej linii pliku lub źródła. Zastosowanie dwóch lub więcej różnych konwencji w jednym pliku będzie powodowało generowanie komunikatów o błędach.
 1. Dostępne operatory arytmetyczne:
-   1. `+`
-   1. `-`
-   1. `*`
-   1. `/`
-   1. `//` - dzielenie całkowitoliczbowe
+    1. `+`
+    1. `-`
+    1. `*`
+    1. `/`
+    1. `//` - dzielenie całkowitoliczbowe
 1. Operatory logiczne:
-   1. `&&` - operator logiczny koniunkcji
-   1. `||` - operator logiczny alternatywy
-   1. `!` - operator logiczny negacji
+    1. `&&` - operator logiczny koniunkcji
+    1. `||` - operator logiczny alternatywy
+    1. `!` - operator logiczny negacji
 1. Operatory porównania:
-   1. `==` - operator logiczny równości
-   1. `!=` - operator logiczny nierówności
-   1. `<`
-   1. `>`
-   1. `<=`
-   1. `>=`
-1. Istnieć będzie możliwość definiowania funkcji. Nazwa funkcji musi być reprezentowalna przez następujące wyrażenie regularne `[a-zA-Z][-a-zA-Z0-9]*`.
-1. Istnieć będzie możliwość definiowania zmiennych. Nazwa zmiennej musi być reprezentowalna przez następujące wyrażenie regularne `[a-zA-Z][-a-zA-Z0-9]*`.
+    1. `==` - operator logiczny równości
+    1. `!=` - operator logiczny nierówności
+    1. `<`
+    1. `>`
+    1. `<=`
+    1. `>=`
+1. Operator przypisania: `=`.
+1. Istnieć będzie możliwość definiowania funkcji. Nazwa funkcji musi być reprezentowalna przez następujące wyrażenie regularne `[a-zA-Z][-a-zA-Z0-9]*`. Parametry do funkcji będą przekazywane poprzez referencję.
+1. Istnieć będzie możliwość definiowania zmiennych. Nazwa zmiennej musi być reprezentowalna przez następujące wyrażenie regularne `[a-zA-Z][-a-zA-Z0-9]*`. Zmienne będą widoczne tylko w zakresie funkcji, w której zostały zdefiniowane.
 1. Słowa kluczowe języka i znaki specjalne:
-   1. Typy danych: `Int`, `Double`, `String`, `Point`, `Section`, `Figure`, `Scene`, `Bool`, `List`
-   1. Instrukcje sterujące: `if`, `elseif`, `else`, `while`
-   1. Dostępne operatory arytmetyczne
-   1. Dostępne operatory logiczne
-   1. Znak rozpoczęcia komentarza
-   1. `main`
-   1. `return`
-   1. `void` - słowo kluczowe oznaczające brak zwracania danych z funkcji. W przypadku deklaracji funkcji `void` a następnie próbie zwrócenia jakichś danych z wykorzystaniem słowa kluczowego `return` wygenerowany zostanie błąd.
-   1. Znaki otwierające i zamykające nawiasy: `(`, `)`, `[`, `]`, `{`, `}`
-   1. Znak końca instrukcji `;`
-   1. Operator odwołania do właściwości i metod obiekty: `.`
-   1. Operator przypisania: `=`
-   1. `,`
-   1. nazwy wszystkich metod zapisanych poniżej w definicji typów wbudowanych `Point`, `Section`, `Figure` oraz `Scene`
+    1. Typy danych: `Int`, `Double`, `String`, `Point`, `Section`, `Figure`, `Scene`, `Bool`, `List`
+    1. Instrukcje sterujące: `if`, `elseif`, `else`, `while`
+    1. Dostępne operatory arytmetyczne
+    1. Dostępne operatory logiczne
+    1. Znak rozpoczęcia komentarza
+    1. `main`
+    1. `return`
+    1. `void` - słowo kluczowe oznaczające brak zwracania danych z funkcji. W przypadku deklaracji funkcji `void` a następnie próbie zwrócenia jakichś danych z wykorzystaniem słowa kluczowego `return` wygenerowany zostanie błąd.
+    1. Znaki otwierające i zamykające nawiasy: `(`, `)`, `[`, `]`, `{`, `}`
+    1. Znak końca instrukcji `;`
+    1. Operator odwołania do właściwości i metod obiekty: `.`
+    1. Operator przypisania: `=`
+    1. `,`
+    1. nazwy wszystkich metod zapisanych poniżej w definicji typów wbudowanych `Point`, `Section`, `Figure` oraz `Scene`
 1. Domyślne ograniczenia parametrów wypisanych poniżej zapisane będą w pliku konfiguracyjnym i będzie możliwość ich modyfikacji.
-   1. `IntMax` - maksymalny zakres zmiennych typu `Int`
-   1. `IntMin` - minimalny zakres zmiennych typu `Int`
-   1. `DoubleMax` - maksymalny zakres zmiennych typu `Double`
-   1. `DoubleMin` - minimalny zakres zmiennych typu `Double`
-   1. `RecursionMaxDepth` - maksymalna liczba poziomów rekursji
+    1. `IntMax` - maksymalny zakres zmiennych typu `Int`
+    1. `IntMin` - minimalny zakres zmiennych typu `Int`
+    1. `DoubleMax` - maksymalny zakres zmiennych typu `Double`
+    1. `DoubleMin` - minimalny zakres zmiennych typu `Double`
+    1. `RecursionMaxDepth` - maksymalna liczba poziomów rekursji
 
 ## Definicje wbudowanych typów obiektowych
-Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.  
+Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.
 ### Point
 ```
 public class Point {
@@ -143,21 +144,50 @@ public class Section {
 }
 ```
 
+### List
+Obiekt typu klasy `List` może przyjmować wszystkie typy obiektowe zdefiniowane w języku z wyłączeniem `List`, tj.: `Int`, `Double`, `String`, `Point`, `Section`, `Figure`, `Scene`, `Bool`. Zagnieżdżanie list nie będzie dozwolone.
+```
+public class List {
+	public ArrayList<Object> list = new ArrayList<>();
+	
+	public List() {
+	}
+	
+	public void add(Object o) {
+        list.add(o);
+	}
+	
+	public void pop() {
+	    list.remove(list.size() - 1);
+	}
+}
+```
+
 ### Figure
+Figura będzie krzywą łamaną, tj. nie będzie konieczności przekazania do niej takich odcinków, aby stworzyła figurę zamkniętą. Takie podejście wydaje się logiczne z racji na możliwość dodawania kolejnych odcinków do figury. Należy jednak pamiętać o tym, że kolejny dodawany odcinek powinien się łączyć z ostatnio dodanym odcinkiem.
 ```
 public class Figure {
-    public ArrayList<Section> sections = new ArrayList<>();
+    public List sections = List();
 	
-	public ArrayList<Section> getSections() {
+	public List getSections() {
 		return sections;
 	}
 	
 	public void add(Section newSection) {
-		sections.add(newSection);
+	    if ((newSection.left == sections[section.length() - 1].left)
+            || (newSection.right == sections[section.length() - 1]).left)
+            || (newSection.left == sections[section.length() - 1]).right)
+            || (newSection.right == sections[section.length() - 1]).right)) {
+		    
+		    sections.add(newSection);
+	    }
+	    else {
+            throw new IllegalArgumentException("Sections must join together to form figure. Dangling section cannot be added.");
+	    }
 	}
 		
-	public void remove(Section newSection) {
-		sections.remove(newSection);
+	public void pop() {
+		sections.pop();
 	}
 
 	public DISPLAY_TYPE display() {
@@ -168,9 +198,9 @@ public class Figure {
 ### Scene
 ```
 public class Scene {
-    public ArrayList<Figure> figures = new ArrayList<>();
+    public List figures = List();
 	
-	public ArrayList<Figure> getFigures() {
+	public List getFigures() {
 		return figures;
 	}
 	
@@ -178,8 +208,8 @@ public class Scene {
 		figures.add(newFigure);
 	}
 		
-	public void remove(Figure newFigure) {
-		figures.remove(newFigure);
+	public void pop() {
+		figures.pop();
 	}
 
 	public DISPLAY_TYPE display() {
@@ -194,18 +224,19 @@ program              = { functionDef }, { functionCall }
 functionDef          = functionType, identifier, "(", { parameters }, ")", codeBlock
 functionType         = "void"
                         | dataType
-parameters           = { parameter }
+parameters           = paremeter, ",", { parameter }
 parameter            = dataType, identifier
-codeBlock            = "{", { ifBlock | whileBlock | functionCall | assignmentExp | returnExp | ";" }, "}"
+codeBlock            = "{", { ifBlock | whileBlock | functionCall | assignmentExp | returnExp }, "}"
 ifBlock              = "if", "(", condition, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
 elseIfBlock          = "elseif", "(", condition, ")", "{", codeBlock, "}"
 elseBlock            = "else", "(", condition, ")", "{", codeBlock, "}"
 whileBlock           = "while", "(", condition, ")", "{", codeBlock, "}"
 condition            = conditionAndExp, { orOper, conditionAndExp }
 conditionAndExp      = conditionComparExp, { andOper, conditionComparExp }
-conditionComparExp   = [notOper], singleCondition, [ comparisonOper, singleCondition ]
-singleCondition      = identifier
-                        |  condtition
+conditionComparExp   = singleCondition, [ comparisonOper, singleCondition ]
+singleCondition      = [notOper}, positiveSingleCondition
+positiveSingleCondition     = identifier
+                                |  condtition
 assignmentExp        = dataType, identifier, assignmentOper, assignedValue, ";"
 assignedValue        = assignableValue
                         | expression
@@ -219,13 +250,13 @@ assignableValue      = literal
                         | integer
                         | double
                         | functionCall
-functionCall         = identifier, parameters, ";"
+functionCall         = identifier, "(", parameters, ")", ";"
 identifier           = letter { digit | literalSign }
-double               = integer, [ ".", number ]
-integer              = [ "-" ], zeroDigit | { number }
-number               = zeroDigit
+double               = integer, [ ".", integer ]
+integer              = zeroDigit
                         | notZeroDigit, { digit }
 digit                = zeroDigit | notZeroDigit
+string               = "\"", literal, "\""
 literal              = literalSign, { literalSign }
 literalSign          = "_"
                         | letter
@@ -238,6 +269,7 @@ dataType             = "Int"
                         | "Section"
                         | "Scene"
                         | "Bool"
+                        | "List"
 logicalOper          = andOper
                         | orOper
                         | notOper
@@ -354,7 +386,7 @@ Int main() {
 ```
 
 ## Obsługa błędów
-Poniżej przedstawiony jest błędy kod:  
+Poniżej przedstawiony jest błędy kod:
 ```
 Int main() {
 	Point a = Point("x", "y");  # konstruktor klasy Point wymaga dwóch wartości Double 
