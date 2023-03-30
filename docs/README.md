@@ -230,26 +230,30 @@ codeBlock            = "{", { ifBlock | whileBlock | functionCall | assignmentEx
 ifBlock              = "if", "(", condition, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
 elseIfBlock          = "elseif", "(", condition, ")", "{", codeBlock, "}"
 elseBlock            = "else", "(", condition, ")", "{", codeBlock, "}"
-whileBlock           = "while", "(", condition, ")", "{", codeBlock, "}"
-condition            = conditionAndExp, { orOper, conditionAndExp }
-conditionAndExp      = conditionComparExp, { andOper, conditionComparExp }
-conditionComparExp   = singleCondition, [ comparisonOper, singleCondition ]
-singleCondition      = [notOper}, positiveSingleCondition
-positiveSingleCondition     = identifier
-                                |  condtition
+whileBlock           = "while", "(", condition, ")", "{", codeBlock, "}"                                
 assignmentExp        = dataType, identifier, assignmentOper, assignedValue, ";"
-assignedValue        = assignableValue
-                        | expression
-expression           = multiplicativeExp, { additiveOper, multiplicativeExp }
-multiplicativeExp    = parenthesesExp, { mulitplicativeOper, parenthesesExp }
-perethesesExp        = "(", assignableValue, ")"
 returnExp            = "return", assignableValue, ";"
 
 
+expression           = conjunctionExp, { alternativeOper, conjuctionExp }
+conjucntionExp       = parenthesesExp, { conjunctionOper, parenthesesExp }
+parethesesExp        = "(", assignableValue, ")"
+assignedValue        = assignableValue
+                        | expression
+                        | condition
+condition            = assignableValue, comparisonOper, assignableValue
+
+
+alternativeOper      = orOper
+                        | additiveOper
+conjunctionOper      = andOper
+                        | multiplicativeOper
 assignableValue      = literal
                         | integer
                         | double
                         | functionCall
+
+
 functionCall         = identifier, "(", parameters, ")", ";"
 identifier           = letter { digit | literalSign }
 double               = integer, [ ".", integer ]
