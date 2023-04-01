@@ -13,7 +13,7 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
     1. Tekstowy: `String`
     1. Wbudowane typy obiektowe: `Point`, `Section`, `Figure`, `Scene` (opisy tych typów przedstawiony jest niżej)
     1. Kolekcja - lista: `List`. Do kolejnych elementów listy można odwoływać się poprzez indeksy: `someList[i]`. Ponadto. type `List` posiada wbudowane funkcje `add` do dodania elementu na koniec listy oraz `pop` do usunięcia ostatniego elementu z listy. Opis tego typu również znajduje się poniżej.
-    1. Typ boole'owski: `Bool`
+    1. Typ boole'owski: `Bool` o wartościach `True` i `False`.
 1. Komentarze oznacza się znakami `#`. Komentarze obowiązują do końca linii.
 1. Pętla realizowana będzie przez instrukcję `while`.
 1. Sprawdzenie warunków logicznych będzie można zapisać w bloku `if`, `elseif`, `else`.
@@ -59,6 +59,16 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
     1. `DoubleMax` - maksymalny zakres zmiennych typu `Double`
     1. `DoubleMin` - minimalny zakres zmiennych typu `Double`
     1. `RecursionMaxDepth` - maksymalna liczba poziomów rekursji
+
+### Plik konfiguracyjny
+Konfiguracja parametrów zapisana będzie w pliku `config.yaml`. Zawartość pliku będzie następująca:
+```
+IntMin: 2147483646
+IntMax: -2147483647
+DoubleMin: 21474836460000000000
+DoubleMax: -21474836470000000000
+RecursionMaxDepth: 1000
+```
 
 ## Definicje wbudowanych typów obiektowych
 Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.
@@ -226,12 +236,13 @@ functionType            = "void"
                            | dataType
 parameters              = paremeter, ",", { parameter }
 parameter               = dataType, identifier
-codeBlock               = "{", { ifBlock | whileBlock | functionCall | assignmentExp | returnExp }, "}"
+codeBlock               = "{", { ifBlock | whileBlock | functionCall | assignmentExp | reassignmentExp | returnExp }, "}"
 ifBlock                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
 elseIfBlock             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseBlock               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
 whileBlock              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"                                
 assignmentExp           = dataType, identifier, assignmentOper, assignedValue, ";"
+reassignmentExp         = identifier, assignmentOper, assignedValue, ";"
 returnExp               = "return", assignableValue, ";"
 
 
@@ -243,7 +254,7 @@ multiplicativeExp       = factor, { multiplicativeOper, factor }
 factor                  = parenthesesExp
                            | assignableValue
 parenthesesExp          = "(", alternativeExp, ")"
-assignableValue         = [ notOper ], positiveAssignableValue
+assignableValue         = [ notOper | minusOper ], positiveAssignableValue
 positiveAssignableValue = identifier
                            | functionCall
                            | alternativeExp
@@ -258,9 +269,10 @@ assignableValue         = literal
                            | double
                            | bool
                            | functionCall
+                           | identifier
 
 
-functionCall            = identifier, "(", parameters, ")", ";"
+functionCall            = identifier, "(", [ parameters ], ")", ";"
 identifier              = letter { digit | literalSign }
 double                  = integer, [ ".", integer ]
 integer                 = zeroDigit
@@ -294,6 +306,7 @@ comparisonOper          = "=="
 andOper                 = "&&"
 orOper                  = "||"
 notOper                 = "!"
+minusOper               = "-"
 additivOper             = "+"
                            | "-"
 multiplicativOper       = "*"
@@ -327,15 +340,15 @@ ifBlock: "if", "(", alternativeExp, "), "{", codeBlock, "}":
 |       |   |               |-- positiveAssignableValue: i
 |       |   |                   positiveAssignableValue: identifier
 |       |   |-- additiveExp: s1.length()
-|       |   |   additiveExp: multiplicativeExp
-|       |   |   |-- multiplicativeExp: s1.length()
-|       |   |       multiplicativeExp: factor
-|       |   |       |-- factor: s1.length()
-|       |   |           factor: assignableValue
-|       |   |           |-- assignableValue: s1.length()
-|       |   |               assignableValue: positiveAssignableValue
-|       |   |               |-- positiveAssignableValue: s1.length()
-|       |   |                   positiveAssignableValue: functionCall
+|       |       additiveExp: multiplicativeExp
+|       |       |-- multiplicativeExp: s1.length()
+|       |           multiplicativeExp: factor
+|       |           |-- factor: s1.length()
+|       |               factor: assignableValue
+|       |               |-- assignableValue: s1.length()
+|       |                   assignableValue: positiveAssignableValue
+|       |                   |-- positiveAssignableValue: s1.length()
+|       |                       positiveAssignableValue: functionCall
 |       |-- comparisonExp: (((a+b) * d // g + e - f) >= c || !checkSomeBool())
 |           comparisonExp: additiveExp, comparisonOper, additiveExp
 |           |-- additiveExp: (((a+b) * d // g + e - f) >= c || !checkSomeBool())
