@@ -235,7 +235,7 @@ assignmentExp        = dataType, identifier, assignmentOper, assignedValue, ";"
 returnExp            = "return", assignableValue, ";"
 
 
-condition				= conjunctiveCondition, { orOper, conjuctionveCondition }		# alternativeCondition
+condition				= conjunctiveCondition, { orOper, conjunctiveCondition }		# alternativeCondition
 conjunctiveCondition    = comparisonCondition, { andOper, comparisonCondition }
 comparisonCondition		= expression, [ comparisonOper, expression ]
 expression				= multiplicativeExp, { additiveOper, multiplicativeExp }		# additiveExpression
@@ -302,6 +302,136 @@ zeroDigit            = "0"
 notZeroDigit         = "1".."9"
 letter               = "a".."z"
                         | "A".."Z"
+```
+### Analiza przykładowego bloku instrukcji if
+```
+ifBlock: if (i == s1.length() && ((a+b) * d // g + e - f >= c || !checkSomeBool()) { return True; }
+ifBlock: "if", "(", condition, "), "{", codeBlock, "}":
+|-- condition: i == s1.length() && ((a+b) * d // g + e - f >= c || !checkSomeBool())
+|   condition: conjunctiveCondition
+|   |-- conjunctiveCondition: i == s1.length() && ((a+b) * d // g + e - f >= c || !checkSomeBool())
+|       conjunctiveCondition: comparisonCondition, andOper, comparisonCondition
+|       |-- comparisonCondition: i == s1.length()
+|       |   comparisonCondition: expression, comparisonOper, expression
+|       |   |-- expression: i
+|       |   |   expression: multiplicativeExp
+|       |   |   |-- multiplicativeExp: i
+|       |   |       multiplicativeExp: factor
+|       |   |       |-- factor: i
+|       |   |           factor: assignableValue
+|       |   |           |-- assignableValue: i
+|       |   |               assignableValue: positiveAssignableValue
+|       |   |               |-- positiveAssignableValue: i
+|       |   |                   positiveAssignableValue: identifier
+|       |   |-- expression: s1.length()
+|       |   |   expression: multiplicativeExp
+|       |   |   |-- multiplicativeExp: s1.length()
+|       |   |       multiplicativeExp: factor
+|       |   |       |-- factor: s1.length()
+|       |   |           factor: assignableValue
+|       |   |           |-- assignableValue: s1.length()
+|       |   |               assignableValue: positiveAssignableValue
+|       |   |               |-- positiveAssignableValue: s1.length()
+|       |   |                   positiveAssignableValue: functionCall
+|       |-- comparisonCondition: ((a+b) * d // g + e - f >= c || !checkSomeBool())
+|           comparisonCondition: expression, comparisonOper, expression
+|           |-- expression: ((a+b) * d // g + e - f >= c || !checkSomeBool())
+|               expression: multiplicativeExp
+|               |-- multiplicativeExp: ((a+b) * d // g + e - f >= c || !checkSomeBool())
+|                   multiplicativeExp: factor
+|                   |-- factor: ((a+b) * d // g + e - f >= c || !checkSomeBool())
+|                       factor: parenthesesExp
+|                       |-- parenthesesExp: "(", condition, ")"
+|                           parenthesesExp: ((a+b) * d // g + e - f >= c || !checkSomeBool())
+|                           |-- condition: (a+b) * d // g + e - f >= c || !checkSomeBool()
+|                               condition: conjunctiveCondition, orOper, conjunctiveCondition
+|                               |-- conjunctiveCondition: (a+b) * d // g + e - f >= c
+|                               |   conjunctiveCondition: multiplicativeExp
+|                               |   |-- comparisonCondition: (a+b) * d // g + e - f >= c
+|                               |       comparisonCondition: expression, comparisonOper, expression
+|                               |       |-- expression: (a+b) * d // g + e - f
+|                               |       |   expression: multiplicativeExp, additiveOper, multiplicativeExp, additiveOper, multiplicativeExp
+|                               |       |   |-- multiplicativeExp: (a+b) * d // g
+|                               |       |   |   multiplicativeExp: factor, multiplicativeOper, factor, multiplicativeOper, factor
+|                               |       |   |   |-- factor: (a+b)
+|                               |       |   |   |   factor: parenthesesExp
+|                               |       |   |   |   |-- parenthesesExp: (a+b)
+|                               |       |   |   |       parenthesesExp: "(", condition, ")"
+|                               |       |   |   |       |-- condition: a+b
+|                               |       |   |   |           condition: conjunctiveCondition
+|                               |       |   |   |           |-- conjunctiveCondition: a+b
+|                               |       |   |   |               conjunctiveCondition: comparisonCondition
+|                               |       |   |   |               |-- comparisonCondition: a+b
+|                               |       |   |   |                   comparisonCondition: expression
+|                               |       |   |   |                   |-- expression: a+b
+|                               |       |   |   |                       expression: multiplicativeExp, additiveOper, multiplicativeExp
+|                               |       |   |   |                       |-- multiplicativeExp: a
+|                               |       |   |   |                           multiplicativeExp: factor
+|                               |       |   |   |                           |-- factor: a
+|                               |       |   |   |                               factor: assignableValue
+|                               |       |   |   |                               |-- assignableValue: a
+|                               |       |   |   |                                   assignableValue: positiveAssignableValue
+|                               |       |   |   |                                   |-- positiveAssignableValue: a
+|                               |       |   |   |                                       positiveAssignableValue: identifier
+|                               |       |   |   |                       |-- multiplicativeExp: b
+|                               |       |   |   |                           multiplicativeExp: factor
+|                               |       |   |   |                           |-- factor: b
+|                               |       |   |   |                               factor: assignableValue
+|                               |       |   |   |                               |-- assignableValue: b
+|                               |       |   |   |                                   assignableValue: positiveAssignableValue
+|                               |       |   |   |                                   |-- positiveAssignableValue: b
+|                               |       |   |   |                                       positiveAssignableValue: identifier
+|                               |       |   |   |-- factor: d
+|                               |       |   |   |   factor: assignableValue
+|                               |       |   |   |   |-- assignableValue: d
+|                               |       |   |   |       assignableValue: positiveAssignableValue
+|                               |       |   |   |       |-- positiveAssignableValue: d
+|                               |       |   |   |           positiveAssignableValue: identifier
+|                               |       |   |   |-- factor: g
+|                               |       |   |   |   factor: assignableValue
+|                               |       |   |   |   |-- assignableValue: g
+|                               |       |   |   |       assignableValue: positiveAssignableValue
+|                               |       |   |   |       |-- positiveAssignableValue: g
+|                               |       |   |   |           positiveAssignableValue: identifier
+|                               |       |   |-- multiplicativeExp: e
+|                               |       |   |   multiplicativeExp: factor
+|                               |       |   |   |-- factor: e
+|                               |       |   |       factor: assignableValue
+|                               |       |   |       |-- assignableValue: e
+|                               |       |   |           assignableValue: positiveAssignableValue
+|                               |       |   |           |-- positiveAssignableValue: e
+|                               |       |   |               positiveAssignableValue: identifier
+|                               |       |   |-- multiplicativeExp: f
+|                               |       |   |   multiplicativeExp: factor
+|                               |       |   |   |-- factor: f
+|                               |       |   |       factor: assignableValue
+|                               |       |   |       |-- assignableValue: f
+|                               |       |   |           assignableValue: positiveAssignableValue
+|                               |       |   |           |-- positiveAssignableValue: f
+|                               |       |   |               positiveAssignableValue: identifier
+|                               |       |-- expression: c
+|                               |           expression: multiplicativeExp
+|                               |           |-- multiplicativeExp: c
+|                               |               multiplicativeExp: factor
+|                               |               |-- factor: c
+|                               |                   factor: assignableValue
+|                               |                   |-- assignableValue: c
+|                               |                       assignableValue: positiveAssignableValue
+|                               |                       |-- positiveAssignableValue: c
+|                               |                           positiveAssignableValue: identifier
+|                               |-- conjunctiveCondition: !checkSomeBool()
+|                                   conjunctiveCondition: comparisonCondition
+|                                   |-- comparisonCondition: !checkSomeBool()
+|                                       comparisonCondition: expression
+|                                       |-- expression: !checkSomeBool()
+|                                           expression: factor
+|                                           |-- factor: !checkSomeBool()
+|                                               factor: assignableValue
+|                                               |-- assignableValue: !checkSomeBool()
+|                                                   assignableValue: notOper, positiveAssignableValue
+|                                                   |-- positiveAssignableValue: checkSomeBool()
+|                                                       positiveAssignableValue: functionCall
+|-- codeBlock: return True;
 ```
 
 ### Przykład kodu
