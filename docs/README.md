@@ -220,88 +220,88 @@ public class Scene {
 ## Gramatyka
 ### EBNF
 ```
-program              = { functionDef }, { functionCall }
-functionDef          = functionType, identifier, "(", { parameters }, ")", codeBlock
-functionType         = "void"
-                        | dataType
-parameters           = paremeter, ",", { parameter }
-parameter            = dataType, identifier
-codeBlock            = "{", { ifBlock | whileBlock | functionCall | assignmentExp | returnExp }, "}"
-ifBlock              = "if", "(", condition, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
-elseIfBlock          = "elseif", "(", condition, ")", "{", codeBlock, "}"
-elseBlock            = "else", "(", condition, ")", "{", codeBlock, "}"
-whileBlock           = "while", "(", condition, ")", "{", codeBlock, "}"                                
-assignmentExp        = dataType, identifier, assignmentOper, assignedValue, ";"
-returnExp            = "return", assignableValue, ";"
+program                 = { functionDef }, { functionCall }
+functionDef             = functionType, identifier, "(", { parameters }, ")", codeBlock
+functionType            = "void"
+                           | dataType
+parameters              = paremeter, ",", { parameter }
+parameter               = dataType, identifier
+codeBlock               = "{", { ifBlock | whileBlock | functionCall | assignmentExp | returnExp }, "}"
+ifBlock                 = "if", "(", condition, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
+elseIfBlock             = "elseif", "(", condition, ")", "{", codeBlock, "}"
+elseBlock               = "else", "(", condition, ")", "{", codeBlock, "}"
+whileBlock              = "while", "(", condition, ")", "{", codeBlock, "}"                                
+assignmentExp           = dataType, identifier, assignmentOper, assignedValue, ";"
+returnExp               = "return", assignableValue, ";"
 
 
-condition				= conjunctiveCondition, { orOper, conjunctiveCondition }		# alternativeCondition
+condition               = conjunctiveCondition, { orOper, conjunctiveCondition }		# alternativeCondition
 conjunctiveCondition    = comparisonCondition, { andOper, comparisonCondition }
-comparisonCondition		= expression, [ comparisonOper, expression ]
-expression				= multiplicativeExp, { additiveOper, multiplicativeExp }		# additiveExpression
-multiplicativeExp		= factor, { multiplicativeOper, factor }
-factor					= parenthesesExp
-							| assignableValue
-parenthesesExp			= "(", condition, ")"
-assignableValue			= [ notOper ], positiveAssignableValue
-positiveAssignableValue	= identifier
-							| functionCall
-							| condition
+comparisonCondition     = expression, [ comparisonOper, expression ]
+expression              = multiplicativeExp, { additiveOper, multiplicativeExp }		# additiveExpression
+multiplicativeExp       = factor, { multiplicativeOper, factor }
+factor                  = parenthesesExp
+                           | assignableValue
+parenthesesExp          = "(", condition, ")"
+assignableValue         = [ notOper ], positiveAssignableValue
+positiveAssignableValue = identifier
+                           | functionCall
+                           | condition
 
 
-alternativeOper      = orOper
-                        | additiveOper
-conjunctionOper      = andOper
-                        | multiplicativeOper
-assignableValue      = literal
-                        | integer
-                        | double
-                        | functionCall
+alternativeOper         = orOper
+                           | additiveOper
+conjunctionOper         = andOper
+                           | multiplicativeOper
+assignableValue         = literal
+                           | integer
+                           | double
+                           | functionCall
 
 
-functionCall         = identifier, "(", parameters, ")", ";"
-identifier           = letter { digit | literalSign }
-double               = integer, [ ".", integer ]
-integer              = zeroDigit
-                        | notZeroDigit, { digit }
-digit                = zeroDigit | notZeroDigit
-string               = "\"", literal, "\""
-literal              = literalSign, { literalSign }
-literalSign          = "_"
-                        | letter
+functionCall            = identifier, "(", parameters, ")", ";"
+identifier              = letter { digit | literalSign }
+double                  = integer, [ ".", integer ]
+integer                 = zeroDigit
+                           | notZeroDigit, { digit }
+digit                   = zeroDigit | notZeroDigit
+string                  = "\"", literal, "\""
+literal                 = literalSign, { literalSign }
+literalSign             = "_"
+                           | letter
 
 
-dataType             = "Int"
-                        | "Double"
-                        | "String"
-                        | "Point"
-                        | "Section"
-                        | "Scene"
-                        | "Bool"
-                        | "List"
-logicalOper          = andOper
-                        | orOper
-                        | notOper
-comparisonOper       = "=="
-                        | "!="
-                        | "<"
-                        | "<="
-                        | ">"
-                        | ">="
-andOper              = "&&"
-orOper               = "||"
-notOper              = "!"
-additivOper          = "+"
-                        | "-"
-multiplicativOper    = "*"
-                        | "/"
-                        | "//"
-assignmentOper       = "="
-comment              = "#"
-zeroDigit            = "0"
-notZeroDigit         = "1".."9"
-letter               = "a".."z"
-                        | "A".."Z"
+dataType                = "Int"
+                           | "Double"
+                           | "String"
+                           | "Point"
+                           | "Section"
+                           | "Scene"
+                           | "Bool"
+                           | "List"
+logicalOper             = andOper
+                           | orOper
+                           | notOper
+comparisonOper          = "=="
+                           | "!="
+                           | "<"
+                           | "<="
+                           | ">"
+                           | ">="
+andOper                 = "&&"
+orOper                  = "||"
+notOper                 = "!"
+additivOper             = "+"
+                           | "-"
+multiplicativOper       = "*"
+                           | "/"
+                           | "//"
+assignmentOper          = "="
+comment                 = "#"
+zeroDigit               = "0"
+notZeroDigit            = "1".."9"
+letter                  = "a".."z"
+                           | "A".."Z"
 ```
 ### Analiza przykładowego bloku instrukcji if
 ```
