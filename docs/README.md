@@ -235,13 +235,18 @@ assignmentExp        = dataType, identifier, assignmentOper, assignedValue, ";"
 returnExp            = "return", assignableValue, ";"
 
 
-expression           = conjunctionExp, { alternativeOper, conjuctionExp }
-conjucntionExp       = parenthesesExp, { conjunctionOper, parenthesesExp }
-parethesesExp        = "(", assignableValue, ")"
-assignedValue        = assignableValue
-                        | expression
-                        | condition
-condition            = assignableValue, comparisonOper, assignableValue
+condition				= conjunctiveCondition, { orOper, conjuctionveCondition }		# alternativeCondition
+conjunctiveCondition    = comparisonCondition, { andOper, comparisonCondition }
+comparisonCondition		= expression, [ comparisonOper, expression ]
+expression				= multiplicativeExp, { additiveOper, multiplicativeExp }		# additiveExpression
+multiplicativeExp		= factor, { multiplicativeOper, factor }
+factor					= parenthesesExp
+							| assignableValue
+parenthesesExp			= "(", condition, ")"
+assignableValue			= [ notOper ], positiveAssignableValue
+positiveAssignableValue	= identifier
+							| functionCall
+							| condition
 
 
 alternativeOper      = orOper
