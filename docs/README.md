@@ -242,7 +242,7 @@ functionType            = "void"
                            | dataType
 parameters              = paremeter, ",", { parameter }
 parameter               = dataType, identifier
-codeBlock               = "{", { ifBlock | whileBlock | functionCall | assignmentExp | reassignmentExp | returnExp }, "}"
+codeBlock               = "{", { ifBlock | whileBlock | functionCall | objectMethodCall | assignmentExp | reassignmentExp | returnExp }, "}"
 ifBlock                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
 elseIfBlock             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseBlock               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
@@ -263,6 +263,7 @@ parenthesesExp          = "(", alternativeExp, ")"
 assignableValue         = [ notOper | minusOper ], positiveAssignableValue
 positiveAssignableValue = identifier
                            | functionCall
+                           | objectMethodCall
                            | alternativeExp
 
 
@@ -275,10 +276,12 @@ assignableValue         = literal
                            | double
                            | bool
                            | functionCall
+                           | objectMethodCall
                            | identifier
 
 
 functionCall            = identifier, "(", [ parameters ], ")", ";"
+objectMethodCall        = identifier, ".", identifier, "(", [ parameters ], ")", ";"
 identifier              = letter { digit | literalSign }
 double                  = integer, [ ".", integer ]
 integer                 = zeroDigit
