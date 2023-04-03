@@ -53,7 +53,7 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
     1. Operator przypisania: `=`
     1. `,`
     1. nazwy wszystkich metod zapisanych poniżej w definicji typów wbudowanych `Point`, `Section`, `Figure` oraz `Scene`
-1. Domyślne ograniczenia parametrów wypisanych poniżej zapisane będą w pliku konfiguracyjnym i będzie możliwość ich modyfikacji.
+1. Domyślne ograniczenia parametrów wypisanych poniżej zapisane będą w pliku konfiguracyjnym (patrz sekcja [Plik konfiguracyjny](#Plik konfiguracyjny)) i będzie możliwość ich modyfikacji.
     1. `IntMax` - maksymalny zakres zmiennych typu `Int`
     1. `IntMin` - minimalny zakres zmiennych typu `Int`
     1. `DoubleMax` - maksymalny zakres zmiennych typu `Double`
@@ -581,3 +581,8 @@ W rezultacie powyższy błędny kod powinien wygenerować następujący błąd:
 ```
 Error in <line: 2, col: 21>: Double value expected
 ```
+
+## Testowanie
+Lekser oraz parser zostaną napisane w metodologii TDD. Biblioteką do testów będzie `JUnit5`.  
+W przypadku leksera testy jednostkowe polegać będą na poprawnym preparsowaniu każdego tokena. Przygotowane zostaną zarówno testy pozytywne, jak i negatywne (tj. z niepoprawnymi tokenami).  
+Ponadto, przygotowane zostaną również testy akceptacyjne, które będą polegały na analizie przykładowego kodu w projektowanym języku. Przykład pozytywnego testu akceptacyjnego znajduje się w akapicie [Przykład kodu](#Przykład kodu).
