@@ -265,23 +265,21 @@ positiveAssignableValue = identifier
                            | functionCall
                            | objectMethodCall
                            | alternativeExp
+                           | literal
+                           | integer
+                           | double
+                           | bool
 
 
 alternativeOper         = orOper
                            | additiveOper
 conjunctionOper         = andOper
                            | multiplicativeOper
-assignableValue         = literal
-                           | integer
-                           | double
-                           | bool
-                           | functionCall
-                           | objectMethodCall
-                           | identifier
-
-
+                           
 functionCall            = identifier, "(", [ parameters ], ")", ";"
 objectMethodCall        = identifier, ".", identifier, "(", [ parameters ], ")", ";"
+
+
 identifier              = letter { digit | literalSign }
 double                  = integer, [ ".", integer ]
 integer                 = zeroDigit
@@ -291,6 +289,15 @@ string                  = "\"", literal, "\""
 literal                 = literalSign, { literalSign }
 literalSign             = "_"
                            | letter
+logicalOper             = andOper
+                           | orOper
+                           | notOper
+comparisonOper          = equalOper
+                           | notEqualOper
+                           | lessThanOper
+                           | lessThanOrEqualOper
+                           | greaterThanOper
+                           | greaterThanOrEqualOper
 
 
 dataType                = "Int"
@@ -303,15 +310,12 @@ dataType                = "Int"
                            | "List"
 bool                    = "True"
                            | False   
-logicalOper             = andOper
-                           | orOper
-                           | notOper
-comparisonOper          = "=="
-                           | "!="
-                           | "<"
-                           | "<="
-                           | ">"
-                           | ">="
+equalOper               = "=="
+notEqualOper            = "!="
+lessThanOper            = "<"
+lessThanOrEqualOper     = "<="
+greaterThanOper         = ">"
+greaterThanOrEqualOper  = ">="
 andOper                 = "&&"
 orOper                  = "||"
 notOper                 = "!"
@@ -328,6 +332,67 @@ notZeroDigit            = "1".."9"
 letter                  = "a".."z"
                            | "A".."Z"
 ```
+
+### Tokeny
+Gramatyka z sekcji wyżej przekłada się na następujące tokeny:
+
+| Nazwa produkcji EBNF    | Nazwa tokenu                 |
+|-------------------------|------------------------------|
+| program                 | T_PROGRAM                    |
+| functionDef             | T_FUNCTION_DEF               |
+| functionType            | T_FUNCTION_TYPE              |
+| parameters              | T_PARAMETERS                 |
+| parameter               | T_PARAMETER                  |
+| codeBlock               | T_CODE_BLOCK                 |
+| ifBlock                 | T_IF_BLOCK                   |
+| elseIfBlock             | T_ELSE_IF_BLOCK              |
+| elseBlock               | T_ELSE_BLOCK                 |
+| whileBlock              | T_WHILE_BLOCK                |
+| assignmentExp           | T_ASSIGNMENT_EXP             |
+| reassignmentExp         | T_REASSIGNMENT_EXP           |
+| returnExp               | T_RETURN_EXP                 |
+| alternativeExp          | T_ALTERNATIVE_EXP            |
+| conjunctiveExp          | T_CONJUNCTIVE_EXP            |
+| comparisonExp           | T_COMPARISON_EXP             |
+| additiveExp             | T_ADDITIVE_EXP               |
+| multiplicativeExp       | T_MULTIPLICATIVE_EXP         |
+| factor                  | T_FACTOR                     |
+| parenthesesExp          | T_PARENTHESES_EXP            |
+| assignableValue         | T_ASSIGNABLE_VALUE           |
+| positiveAssignableValue | T_POSITIVE_ASSIGNABLE_VALUE  |
+| alternativeOper         | T_ALTERNATIVE_OPER           |
+| conjunctionOper         | T_CONJUNCTION_OPER           |
+| functionCall            | T_FUNCTION_CALL              |
+| objectMethodCall        | T_OBJECT_METHOD_CALL         |
+| identifier              | T_IDENTIFIER                 |
+| double                  | T_DOUBLE                     |
+| integer                 | T_INTEGER                    |
+| digit                   | T_DIGIT                      |
+| string                  | T_STRING                     |
+| literal                 | T_LITERAL                    |
+| literalSign             | T_LITERAL_SIGN               |
+| dataType                | T_DATA_TYPE                  |
+| bool                    | T_BOOL                       |
+| logicalOper             | T_LOGICAL_OPER               |
+| comparisonOper          | T_COMPARISON_OPER            |
+| equalOper               | T_EQUAL_OPER                 |
+| notEqualOper            | T_NOT_EQUAL_OPER             |
+| lessThanOper            | T_LESS_THAN_OPER             |
+| lessThanOrEqualOper     | T_LESS_THAN_OR_EQUAL_OPER    |
+| greaterThanOper         | T_GREATER_THAN_OPER          |
+| greaterThanOrEqualOper  | T_GREATER_THAN_OR_EQUAL_OPER |
+| andOper                 | T_AND_OPER                   |
+| orOper                  | T_OR_OPER                    |
+| notOper                 | T_NOT_OPER                   |
+| minusOper               | T_MINUS_OPER                 |
+| additiveOper            | T_ADDITIVE_OPER              |
+| multiplicativeOper      | T_MULTIPLICATIVE_OPER        |
+| assignmentOper          | T_ASSIGNMENT_OPER            |
+| comment                 | T_COMMENT                    |
+| zeroDigit               | T_ZERO_DIGIT                 |
+| notZeroDigit            | T_NOT_ZERO_DIGIT             |
+| letter                  | T_LETTER                     |
+
 ### Analiza przykładowego bloku instrukcji if
 ```
 ifBlock: if (i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool()) { return True; }
