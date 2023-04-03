@@ -585,4 +585,4 @@ Error in <line: 2, col: 21>: Double value expected
 ## Testowanie
 Lekser oraz parser zostaną napisane w metodologii TDD. Biblioteką do testów będzie `JUnit5`.  
 W przypadku leksera testy jednostkowe polegać będą na poprawnym preparsowaniu każdego tokena. Przygotowane zostaną zarówno testy pozytywne, jak i negatywne (tj. z niepoprawnymi tokenami).  
-Ponadto, przygotowane zostaną również testy akceptacyjne, które będą polegały na analizie przykładowego kodu w projektowanym języku. Przykład pozytywnego testu akceptacyjnego znajduje się w akapicie [Przykład kodu](#Przykład kodu).
+Ponadto, przygotowane zostaną również testy akceptacyjne, które będą polegały na analizie przykładowego kodu w projektowanym języku. Przykład pozytywnego testu akceptacyjnego znajduje się w sekcji [Przykład kodu](#Przykład kodu).
