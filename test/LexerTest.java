@@ -52,6 +52,49 @@ public class LexerTest {
     }
 
     @Test
+    void lexDoubleGreaterThanOne() {
+        InputStream inputStream = new ByteArrayInputStream("92.456".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals(92.456, token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+    @Test
+    void lexDoubleCloseToOne() {
+        InputStream inputStream = new ByteArrayInputStream("1.0012".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals(1.0012, token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexDoubleOfValueBetweenZeroAndOne() {
+        InputStream inputStream = new ByteArrayInputStream("0.00054".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals(0.00054, token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexDoubleAfterWhitespaces() {
+        InputStream inputStream = new ByteArrayInputStream("   \n 103.72\n".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals(103.72, token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
     void lexUnknownCharacter() {
         InputStream inputStream = new ByteArrayInputStream("a".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);

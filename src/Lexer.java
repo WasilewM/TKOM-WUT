@@ -47,11 +47,27 @@ public class Lexer {
         int value = currentChar - '0';
         nextChar();
         while (Character.isDigit(currentChar)) {
-            value = value * 10 + currentChar - '0';
+            value = value * 10 + (currentChar - '0');
             nextChar();
         }
 
-        token = new Token(value, position);
+        if (currentChar.equals('.')) {
+            nextChar();
+
+            int decimalValue = 0;
+            int digitsAfterDecimalPoint = 0;
+            while (Character.isDigit(currentChar)) {
+                decimalValue = decimalValue * 10 + (currentChar - '0');
+                digitsAfterDecimalPoint++;
+                nextChar();
+            }
+
+            double doubleValue = value + (decimalValue / Math.pow(10, digitsAfterDecimalPoint));
+            token = new Token(doubleValue, position);
+        }
+        else {
+            token = new Token(value, position);
+        }
         return true;
     }
 
