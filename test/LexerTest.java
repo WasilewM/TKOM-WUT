@@ -48,7 +48,7 @@ public class LexerTest {
         Token token = lex.lexToken();
         assertEquals(10, token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
+        assertEquals(9, token.getPosition().getColumnNumber());
     }
 
     @Test
@@ -84,14 +84,25 @@ public class LexerTest {
     }
 
     @Test
-    void lexDoubleAfterWhitespaces() {
+    void lexDoubleAfterWhitespacesAndNewline() {
         InputStream inputStream = new ByteArrayInputStream("   \n 103.72\n".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
         assertEquals(103.72, token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
+        assertEquals(2, token.getPosition().getLineNumber());
+        assertEquals(2, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexDoubleAfterMultipleWhitespacesAndNewlines() {
+        InputStream inputStream = new ByteArrayInputStream("   \n \n\n    103.72\n".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals(103.72, token.getValue());
+        assertEquals(4, token.getPosition().getLineNumber());
+        assertEquals(5, token.getPosition().getColumnNumber());
     }
 
     @Test

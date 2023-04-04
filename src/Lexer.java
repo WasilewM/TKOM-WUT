@@ -5,14 +5,14 @@ public class Lexer {
     private final BufferedInputStream inputStream;
     private Character currentChar;
     private String newlineConvention;
-    private Position position;
+    private Position carriagePosition;
     private Token token;
 
     public Lexer(BufferedInputStream inputStream) {
         this.inputStream = inputStream;
         currentChar = null;
         newlineConvention = null;
-        position = new Position(1, 1);
+        carriagePosition = new Position(1, 1);
     }
 
     public BufferedInputStream getInputStream() {
@@ -30,6 +30,15 @@ public class Lexer {
     public Token lexToken() {
         nextChar();
         while (Character.isWhitespace(currentChar)) {
+            if (currentChar.equals('\n')) {
+                carriagePosition.fitLine();
+                carriagePosition.returnCarriage();
+            }
+
+            if (currentChar.equals(' ')) {
+                carriagePosition.moveCarriage();
+            }
+
             nextChar();
         }
         if (tryBuildNumber()) {
@@ -46,13 +55,16 @@ public class Lexer {
 
         int value = currentChar - '0';
         nextChar();
+        Position tokenPosition = new Position(carriagePosition);
         while (Character.isDigit(currentChar)) {
             value = value * 10 + (currentChar - '0');
             nextChar();
+            carriagePosition.moveCarriage();
         }
 
         if (currentChar.equals('.')) {
             nextChar();
+            carriagePosition.moveCarriage();
 
             int decimalValue = 0;
             int digitsAfterDecimalPoint = 0;
@@ -60,13 +72,14 @@ public class Lexer {
                 decimalValue = decimalValue * 10 + (currentChar - '0');
                 digitsAfterDecimalPoint++;
                 nextChar();
+                carriagePosition.moveCarriage();
             }
 
             double doubleValue = value + (decimalValue / Math.pow(10, digitsAfterDecimalPoint));
-            token = new Token(doubleValue, position);
+            token = new Token(doubleValue, tokenPosition);
         }
         else {
-            token = new Token(value, position);
+            token = new Token(value, tokenPosition);
         }
         return true;
     }

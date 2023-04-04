@@ -7,11 +7,29 @@ public class Position {
         this.columnNumber = columnNumber;
     }
 
+    public Position(Position otherPosition) {
+        this.lineNumber = otherPosition.getLineNumber();
+        this.columnNumber = otherPosition.getColumnNumber();
+    }
+
+
     public int getLineNumber() {
         return lineNumber;
     }
 
     public int getColumnNumber() {
         return columnNumber;
+    }
+
+    public void fitLine() {
+        lineNumber++;
+    }
+
+    public void moveCarriage() {
+        columnNumber++;
+    }
+
+    public void returnCarriage() {
+        columnNumber = 1;
     }
 }
