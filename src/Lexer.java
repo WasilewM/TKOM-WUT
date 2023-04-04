@@ -41,7 +41,8 @@ public class Lexer {
 
             nextChar();
         }
-        if (tryBuildNumber()) {
+        if (tryBuildNumber()
+            || tryBuildIdentifier()) {
             return token;
         }
 
@@ -81,6 +82,26 @@ public class Lexer {
         else {
             token = new Token(value, tokenPosition);
         }
+        return true;
+    }
+
+    private boolean tryBuildIdentifier() {
+        if (!Character.isLetter(currentChar) && !currentChar.equals('_')) {
+            return false;
+        }
+
+        StringBuilder identifier = new StringBuilder();
+        identifier.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+        carriagePosition.moveCarriage();
+
+        while (Character.isLetter(currentChar) || currentChar.equals('_')) {
+            identifier.append(currentChar);
+            nextChar();
+            carriagePosition.moveCarriage();
+        }
+        token = new Token(identifier.toString(), tokenPosition);
         return true;
     }
 
