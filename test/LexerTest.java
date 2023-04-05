@@ -128,13 +128,35 @@ public class LexerTest {
     }
 
     @Test
-    void lexIdentifierAfterWhitespacesAndNewline() {
+    void lexIdentifierAfterWhitespacesAndNewlines() {
         InputStream inputStream = new ByteArrayInputStream("\n\n\n   \n\n\n hello_There_Identifier\n".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
         assertEquals("hello_There_Identifier", token.getValue());
         assertEquals(7, token.getPosition().getLineNumber());
+        assertEquals(2, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexComment() {
+        InputStream inputStream = new ByteArrayInputStream("#hello there from comment".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals("#hello there from comment", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexCommentAfterWhitespacesAndNewlines() {
+        InputStream inputStream = new ByteArrayInputStream("\n \n  \n\n #hello there from comment".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals("#hello there from comment", token.getValue());
+        assertEquals(5, token.getPosition().getLineNumber());
         assertEquals(2, token.getPosition().getColumnNumber());
     }
 

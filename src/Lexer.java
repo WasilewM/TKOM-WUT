@@ -4,8 +4,8 @@ import java.io.IOException;
 public class Lexer {
     private final BufferedInputStream inputStream;
     private Character currentChar;
-    private String newlineConvention;
-    private Position carriagePosition;
+    private final String newlineConvention;
+    private final Position carriagePosition;
     private Token token;
 
     public Lexer(BufferedInputStream inputStream) {
@@ -42,7 +42,8 @@ public class Lexer {
             nextChar();
         }
         if (tryBuildNumber()
-            || tryBuildIdentifier()) {
+            || tryBuildIdentifier()
+            || tryBuildComment()) {
             return token;
         }
 
@@ -105,6 +106,29 @@ public class Lexer {
         return true;
     }
 
+    private boolean tryBuildComment() {
+        if (!currentChar.equals('#')) {
+            return false;
+        }
+        StringBuilder comment = new StringBuilder();
+        comment.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        while (!currentChar.equals('\n') && !currentChar.equals((char) (-1))) {
+            comment.append(currentChar);
+            nextChar();
+            carriagePosition.moveCarriage();
+        }
+
+        if (currentChar.equals('\n')) {
+            carriagePosition.fitLine();
+            carriagePosition.returnCarriage();
+        }
+
+        token = new CommentToken(comment.toString(), tokenPosition);
+        return true;
+    }
     private void nextChar() {
         try {
             currentChar = (char) inputStream.read();
