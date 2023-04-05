@@ -77,10 +77,10 @@ public class Lexer {
             }
 
             double doubleValue = value + (decimalValue / Math.pow(10, digitsAfterDecimalPoint));
-            token = new Token(doubleValue, tokenPosition);
+            token = new DoubleToken(doubleValue, tokenPosition);
         }
         else {
-            token = new Token(value, tokenPosition);
+            token = new IntegerToken(value, tokenPosition);
         }
         return true;
     }
@@ -101,7 +101,7 @@ public class Lexer {
             nextChar();
             carriagePosition.moveCarriage();
         }
-        token = new Token(identifier.toString(), tokenPosition);
+        token = new StringToken(identifier.toString(), tokenPosition);
         return true;
     }
 
