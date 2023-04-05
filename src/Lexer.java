@@ -43,7 +43,8 @@ public class Lexer {
         }
         if (tryBuildNumber()
             || tryBuildIdentifier()
-            || tryBuildComment()) {
+            || tryBuildComment()
+            || tryBuildArithmeticOperator()) {
             return token;
         }
 
@@ -129,6 +130,66 @@ public class Lexer {
         token = new CommentToken(comment.toString(), tokenPosition);
         return true;
     }
+
+
+    private boolean tryBuildArithmeticOperator() {
+        return tryBuildAdditionOperator()
+                || tryBuildSubtractionOperator()
+                || tryBuildMultiplicationOperator()
+                || tryBuildDivisionOrDiscreteDivisionOperator();
+    }
+
+    private boolean tryBuildAdditionOperator() {
+        if (!currentChar.equals('+')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        token = new AdditionOperatorToken(currentChar.toString(), tokenPosition);
+        return true;
+    }
+
+    private boolean tryBuildSubtractionOperator() {
+        if (!currentChar.equals('-')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        token = new SubtractionOperatorToken(currentChar.toString(), tokenPosition);
+        return true;
+    }
+
+    private boolean tryBuildMultiplicationOperator() {
+        if (!currentChar.equals('*')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        token = new MultiplicationOperatorToken(currentChar.toString(), tokenPosition);
+        return true;
+    }
+
+    private boolean tryBuildDivisionOrDiscreteDivisionOperator() {
+        if (!currentChar.equals('/')) {
+            return false;
+        }
+
+        StringBuilder operator = new StringBuilder();
+        operator.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        if (currentChar.equals('/')) {
+            operator.append(currentChar);
+            nextChar();
+            token = new DiscreteDivisionOperatorToken(operator.toString(), tokenPosition);
+        } else {
+            token = new DivisionOperatorToken(operator.toString(), tokenPosition);
+        }
+
+        return true;
+    }
+
     private void nextChar() {
         try {
             currentChar = (char) inputStream.read();

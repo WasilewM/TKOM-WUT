@@ -161,6 +161,61 @@ public class LexerTest {
     }
 
     @Test
+    void lexAdditionOperator() {
+        InputStream inputStream = new ByteArrayInputStream("+".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals("+", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexSubtractionOperator() {
+        InputStream inputStream = new ByteArrayInputStream("-".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals("-", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexMultiplicationOperator() {
+        InputStream inputStream = new ByteArrayInputStream("*".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals("*", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexDivisionOperator() {
+        InputStream inputStream = new ByteArrayInputStream("/".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals("/", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexDiscreteDivisionOperator() {
+        InputStream inputStream = new ByteArrayInputStream("//".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+        assertEquals("//", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
     void lexUnknownCharacter() {
         InputStream inputStream = new ByteArrayInputStream("!".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
