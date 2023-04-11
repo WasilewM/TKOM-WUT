@@ -12,7 +12,7 @@ public class Lexer {
         this.inputStream = inputStream;
         currentChar = null;
         newlineConvention = null;
-        carriagePosition = new Position(1, 1);
+        carriagePosition = new Position(1, 0);
     }
 
     public BufferedInputStream getInputStream() {
@@ -28,17 +28,11 @@ public class Lexer {
     }
 
     public Token lexToken() {
-        nextChar();
+        if (currentChar == null) {
+            nextChar();
+        }
+
         while (Character.isWhitespace(currentChar)) {
-            if (currentChar.equals('\n')) {
-                carriagePosition.fitLine();
-                carriagePosition.returnCarriage();
-            }
-
-            if (currentChar.equals(' ')) {
-                carriagePosition.moveCarriage();
-            }
-
             nextChar();
         }
         if (tryBuildNumber()
@@ -59,17 +53,15 @@ public class Lexer {
         }
 
         int value = currentChar - '0';
-        nextChar();
         Position tokenPosition = new Position(carriagePosition);
+        nextChar();
         while (Character.isDigit(currentChar)) {
             value = value * 10 + (currentChar - '0');
             nextChar();
-            carriagePosition.moveCarriage();
         }
 
         if (currentChar.equals('.')) {
             nextChar();
-            carriagePosition.moveCarriage();
 
             int decimalValue = 0;
             int digitsAfterDecimalPoint = 0;
@@ -77,7 +69,6 @@ public class Lexer {
                 decimalValue = decimalValue * 10 + (currentChar - '0');
                 digitsAfterDecimalPoint++;
                 nextChar();
-                carriagePosition.moveCarriage();
             }
 
             double doubleValue = value + (decimalValue / Math.pow(10, digitsAfterDecimalPoint));
@@ -98,12 +89,10 @@ public class Lexer {
         identifier.append(currentChar);
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
-        carriagePosition.moveCarriage();
 
         while (Character.isLetter(currentChar) || currentChar.equals('_')) {
             identifier.append(currentChar);
             nextChar();
-            carriagePosition.moveCarriage();
         }
         token = new StringToken(identifier.toString(), tokenPosition);
         return true;
@@ -121,7 +110,6 @@ public class Lexer {
         while (!currentChar.equals('\n') && !currentChar.equals((char) (-1))) {
             comment.append(currentChar);
             nextChar();
-            carriagePosition.moveCarriage();
         }
 
         if (currentChar.equals('\n')) {
@@ -237,8 +225,18 @@ public class Lexer {
     private void nextChar() {
         try {
             currentChar = (char) inputStream.read();
+            updateCarriagePosition();
         } catch (IOException e) {
             // @TODO
+        }
+    }
+
+    private void updateCarriagePosition() {
+        if (currentChar.equals('\n')) {
+            carriagePosition.fitLine();
+            carriagePosition.returnCarriage();
+        } else {
+            carriagePosition.moveCarriage();
         }
     }
 }

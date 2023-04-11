@@ -30,6 +30,6 @@ public class Position {
     }
 
     public void returnCarriage() {
-        columnNumber = 1;
+        columnNumber = 0;
     }
 }
