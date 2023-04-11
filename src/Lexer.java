@@ -44,7 +44,9 @@ public class Lexer {
         if (tryBuildNumber()
             || tryBuildIdentifier()
             || tryBuildComment()
-            || tryBuildArithmeticOperator()) {
+            || tryBuildArithmeticOperator()
+            || tryBuildAssignmentOrEqualOperator()
+            || tryBuildNotEqualOperator() ) {
             return token;
         }
 
@@ -188,6 +190,48 @@ public class Lexer {
         }
 
         return true;
+    }
+
+    private boolean tryBuildAssignmentOrEqualOperator() {
+        if (!currentChar.equals('=')) {
+            return false;
+        }
+
+        StringBuilder operator = new StringBuilder();
+        operator.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        if (currentChar.equals('=')) {
+            operator.append(currentChar);
+            nextChar();
+            token = new EqualOperatorToken(operator.toString(), tokenPosition);
+        }
+        else {
+            token = new AssignmentOperatorToken(operator.toString(), tokenPosition);
+        }
+
+        return true;
+    }
+
+    private boolean tryBuildNotEqualOperator() {
+        if (!currentChar.equals('!')) {
+            return false;
+        }
+
+        StringBuilder operator = new StringBuilder();
+        operator.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        if (currentChar.equals('=')) {
+            operator.append(currentChar);
+            nextChar();
+            token = new NotEqualOperatorToken(operator.toString(), tokenPosition);
+            return true;
+        }
+
+        return false;
     }
 
     private void nextChar() {
