@@ -318,12 +318,16 @@ public class LexerTest {
     }
 
     @Test
-    void lexTokenWhenNotEqualOperatorIsMalformed() {
+    void lexTokenWhenNotEqualOperatorIsMalformedButNegationOperatorIsValid() {
         InputStream inputStream = new ByteArrayInputStream("!-".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
 
-        assertNull(lex.lexToken());
+        assertEquals(NegationOperatorToken.class, token.getClass());
+        assertEquals("!", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
     }
 
     @Test
@@ -374,6 +378,63 @@ public class LexerTest {
 
         assertEquals(GreaterThanOrEqualOperatorToken.class, token.getClass());
         assertEquals(">=", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexAndOperator() {
+        InputStream inputStream = new ByteArrayInputStream("&&".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(AndOperatorToken.class, token.getClass());
+        assertEquals("&&", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexTokenWhenAndOperatorIsMalformed() {
+        InputStream inputStream = new ByteArrayInputStream("&-".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+
+        assertNull(lex.lexToken());
+    }
+
+    @Test
+    void lexOrOperator() {
+        InputStream inputStream = new ByteArrayInputStream("||".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(OrOperatorToken.class, token.getClass());
+        assertEquals("||", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexTokenWhenOrOperatorIsMalformed() {
+        InputStream inputStream = new ByteArrayInputStream("|-".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+
+        assertNull(lex.lexToken());
+    }
+
+    @Test
+    void lexNegationOperator() {
+        InputStream inputStream = new ByteArrayInputStream("!".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(NegationOperatorToken.class, token.getClass());
+        assertEquals("!", token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }

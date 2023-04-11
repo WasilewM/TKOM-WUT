@@ -40,7 +40,9 @@ public class Lexer {
             || tryBuildComment()
             || tryBuildArithmeticOperator()
             || tryBuildAssignmentOrEqualOperator()
-            || tryBuildComparisonOperator() ) {
+            || tryBuildNotEqualOrNegationOperator()
+            || tryBuildComparisonOperator()
+            || tryBuildLogicalOperator()) {
             return token;
         }
 
@@ -203,12 +205,11 @@ public class Lexer {
     }
 
     private boolean tryBuildComparisonOperator() {
-        return tryBuildNotEqualOperator()
-                || tryBuildLessThanOrLessOrEqualOperator()
+        return tryBuildLessThanOrLessOrEqualOperator()
                 || tryBuildGreaterThanOrLessOrEqualOperator();
     }
 
-    private boolean tryBuildNotEqualOperator() {
+    private boolean tryBuildNotEqualOrNegationOperator() {
         if (!currentChar.equals('!')) {
             return false;
         }
@@ -222,10 +223,12 @@ public class Lexer {
             operator.append(currentChar);
             nextChar();
             token = new NotEqualOperatorToken(operator.toString(), tokenPosition);
-            return true;
+        }
+        else {
+            token = new NegationOperatorToken(operator.toString(), tokenPosition);
         }
 
-        return false;
+        return true;
     }
 
     private boolean tryBuildLessThanOrLessOrEqualOperator() {
@@ -272,6 +275,51 @@ public class Lexer {
         }
 
         return true;
+    }
+
+    private boolean tryBuildLogicalOperator() {
+        return tryBuildAndOperator()
+                || tryBuildOrOperator();
+    }
+
+    private boolean tryBuildAndOperator() {
+        if (!currentChar.equals('&')) {
+            return false;
+        }
+
+        StringBuilder operator = new StringBuilder();
+        operator.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        if (currentChar.equals('&')) {
+            operator.append(currentChar);
+            nextChar();
+            token = new AndOperatorToken(operator.toString(), tokenPosition);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean tryBuildOrOperator() {
+        if (!currentChar.equals('|')) {
+            return false;
+        }
+
+        StringBuilder operator = new StringBuilder();
+        operator.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        if (currentChar.equals('|')) {
+            operator.append(currentChar);
+            nextChar();
+            token = new OrOperatorToken(operator.toString(), tokenPosition);
+            return true;
+        }
+
+        return false;
     }
 
     private void nextChar() {
