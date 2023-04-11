@@ -40,7 +40,7 @@ public class Lexer {
             || tryBuildComment()
             || tryBuildArithmeticOperator()
             || tryBuildAssignmentOrEqualOperator()
-            || tryBuildNotEqualOperator() ) {
+            || tryBuildComparisonOperator() ) {
             return token;
         }
 
@@ -202,6 +202,12 @@ public class Lexer {
         return true;
     }
 
+    private boolean tryBuildComparisonOperator() {
+        return tryBuildNotEqualOperator()
+                || tryBuildLessThanOrLessOrEqualOperator()
+                || tryBuildGreaterThanOrLessOrEqualOperator();
+    }
+
     private boolean tryBuildNotEqualOperator() {
         if (!currentChar.equals('!')) {
             return false;
@@ -220,6 +226,52 @@ public class Lexer {
         }
 
         return false;
+    }
+
+    private boolean tryBuildLessThanOrLessOrEqualOperator() {
+        if (!currentChar.equals('<')) {
+            return false;
+        }
+
+        StringBuilder operator = new StringBuilder();
+        operator.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        if (currentChar.equals('=')) {
+            operator.append(currentChar);
+            nextChar();
+            token = new LessOrEqualOperatorToken(operator.toString(), tokenPosition);
+            return true;
+        }
+        else {
+            token = new LessThanOperatorToken(operator.toString(), tokenPosition);
+        }
+
+        return true;
+    }
+
+    private boolean tryBuildGreaterThanOrLessOrEqualOperator() {
+        if (!currentChar.equals('>')) {
+            return false;
+        }
+
+        StringBuilder operator = new StringBuilder();
+        operator.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        if (currentChar.equals('=')) {
+            operator.append(currentChar);
+            nextChar();
+            token = new GreaterThanOrEqualOperatorToken(operator.toString(), tokenPosition);
+            return true;
+        }
+        else {
+            token = new GreaterThanOperatorToken(operator.toString(), tokenPosition);
+        }
+
+        return true;
     }
 
     private void nextChar() {

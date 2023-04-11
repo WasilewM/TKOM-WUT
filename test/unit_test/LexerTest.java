@@ -318,12 +318,64 @@ public class LexerTest {
     }
 
     @Test
-    void lexTokenWhenNotEqualOperIsMalformed() {
-        InputStream inputStream = new ByteArrayInputStream("!a".getBytes());
+    void lexTokenWhenNotEqualOperatorIsMalformed() {
+        InputStream inputStream = new ByteArrayInputStream("!-".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         Lexer lex = new Lexer(bufferedInputStream);
 
         assertNull(lex.lexToken());
+    }
+
+    @Test
+    void lexLessThanOperator() {
+        InputStream inputStream = new ByteArrayInputStream("<".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(LessThanOperatorToken.class, token.getClass());
+        assertEquals("<", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexLessOrEqualThanOperator() {
+        InputStream inputStream = new ByteArrayInputStream("<=".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(LessOrEqualOperatorToken.class, token.getClass());
+        assertEquals("<=", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexGreaterThanOperator() {
+        InputStream inputStream = new ByteArrayInputStream(">".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(GreaterThanOperatorToken.class, token.getClass());
+        assertEquals(">", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexGreaterOrEqualThanOperator() {
+        InputStream inputStream = new ByteArrayInputStream(">=".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(GreaterThanOrEqualOperatorToken.class, token.getClass());
+        assertEquals(">=", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
     }
 
     @Test
