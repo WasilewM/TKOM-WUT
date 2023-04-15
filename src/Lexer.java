@@ -46,6 +46,7 @@ public class Lexer {
         }
         if (tryBuildNumber()
             || tryBuildIdentifierOrKeyword()
+            || tryBuildString()
             || tryBuildComment()
             || tryBuildArithmeticOperator()
             || tryBuildAssignmentOrEqualOperator()
@@ -110,10 +111,35 @@ public class Lexer {
             token = new StringToken(null, tokenPosition, this.keywordTokens.get(identifier.toString()));
         }
         else {
-            token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.STRING);
+            token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.IDENTIFIER);
         }
 
         return true;
+    }
+
+    private boolean tryBuildString() {
+        if (!currentChar.equals('\"')) {
+            return false;
+        }
+
+        StringBuilder string = new StringBuilder();
+        Position tokenPosition = new Position(carriagePosition);
+        Character previousChar = currentChar;
+        nextChar();
+
+        while (!(!previousChar.equals('\\') && currentChar.equals('\"')) && !currentChar.equals((char) (-1))) {
+            string.append(currentChar);
+            previousChar = currentChar;
+            nextChar();
+        }
+
+        if (!previousChar.equals('\\') && currentChar.equals('\"')) {
+            token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING);
+            return true;
+        }
+
+        // @TODO
+        return false;
     }
 
     private boolean tryBuildComment() {
@@ -297,6 +323,7 @@ public class Lexer {
             return true;
         }
 
+        // @TODO
         return false;
     }
 
@@ -314,6 +341,7 @@ public class Lexer {
             return true;
         }
 
+        // @TODO
         return false;
     }
 

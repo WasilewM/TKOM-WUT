@@ -20,5 +20,6 @@ enum TokenTypeEnum {
     OR_OPERATOR,
     INT_KEYWORD,
     DOUBLE_KEYWORD,
-    STRING_KEYWORD
+    STRING_KEYWORD,
+    IDENTIFIER
 }
