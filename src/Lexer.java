@@ -1,5 +1,6 @@
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Lexer {
     private final BufferedInputStream inputStream;
@@ -7,12 +8,20 @@ public class Lexer {
     private final String newlineConvention;
     private final Position carriagePosition;
     private Token token;
+    private final HashMap<String, TokenTypeEnum> keywordTokens = new HashMap<>();
 
     public Lexer(BufferedInputStream inputStream) {
         this.inputStream = inputStream;
         currentChar = null;
         newlineConvention = null;
         carriagePosition = new Position(1, 0);
+        initKeywordTokens();
+    }
+
+    private void initKeywordTokens() {
+        keywordTokens.put("Int", TokenTypeEnum.INT_KEYWORD);
+        keywordTokens.put("Double", TokenTypeEnum.DOUBLE_KEYWORD);
+        keywordTokens.put("String", TokenTypeEnum.STRING_KEYWORD);
     }
 
     public BufferedInputStream getInputStream() {
@@ -36,7 +45,7 @@ public class Lexer {
             nextChar();
         }
         if (tryBuildNumber()
-            || tryBuildIdentifier()
+            || tryBuildIdentifierOrKeyword()
             || tryBuildComment()
             || tryBuildArithmeticOperator()
             || tryBuildAssignmentOrEqualOperator()
@@ -82,7 +91,7 @@ public class Lexer {
         return true;
     }
 
-    private boolean tryBuildIdentifier() {
+    private boolean tryBuildIdentifierOrKeyword() {
         if (!Character.isLetter(currentChar) && !currentChar.equals('_')) {
             return false;
         }
@@ -96,7 +105,14 @@ public class Lexer {
             identifier.append(currentChar);
             nextChar();
         }
-        token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.STRING);
+
+        if (this.keywordTokens.containsKey(identifier.toString())) {
+            token = new StringToken(null, tokenPosition, this.keywordTokens.get(identifier.toString()));
+        }
+        else {
+            token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.STRING);
+        }
+
         return true;
     }
 

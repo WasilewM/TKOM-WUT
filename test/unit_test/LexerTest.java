@@ -471,6 +471,48 @@ public class LexerTest {
     }
 
     @Test
+    void lexIntKeyword() {
+        InputStream inputStream = new ByteArrayInputStream("Int".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.INT_KEYWORD, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexDoubleKeyword() {
+        InputStream inputStream = new ByteArrayInputStream("Double".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.DOUBLE_KEYWORD, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexStringKeyword() {
+        InputStream inputStream = new ByteArrayInputStream("String".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.STRING_KEYWORD, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
     void lexUnknownCharacter() {
         InputStream inputStream = new ByteArrayInputStream("]".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
