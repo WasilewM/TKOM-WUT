@@ -22,6 +22,21 @@ public class Lexer {
         keywordTokens.put("Int", TokenTypeEnum.INT_KEYWORD);
         keywordTokens.put("Double", TokenTypeEnum.DOUBLE_KEYWORD);
         keywordTokens.put("String", TokenTypeEnum.STRING_KEYWORD);
+        keywordTokens.put("Point", TokenTypeEnum.POINT_KEYWORD);
+        keywordTokens.put("Section", TokenTypeEnum.SECTION_KEYWORD);
+        keywordTokens.put("Figure", TokenTypeEnum.FIGURE_KEYWORD);
+        keywordTokens.put("Scene", TokenTypeEnum.SCENE_KEYWORD);
+        keywordTokens.put("Bool", TokenTypeEnum.BOOL_KEYWORD);
+        keywordTokens.put("True", TokenTypeEnum.BOOL_TRUE_VALUE);
+        keywordTokens.put("False", TokenTypeEnum.BOOL_FALSE_VALUE);
+        keywordTokens.put("List", TokenTypeEnum.LIST_KEYWORD);
+        keywordTokens.put("while", TokenTypeEnum.WHILE_KEYWORD);
+        keywordTokens.put("if", TokenTypeEnum.IF_KEYWORD);
+        keywordTokens.put("elseif", TokenTypeEnum.ELSE_IF_KEYWORD);
+        keywordTokens.put("else", TokenTypeEnum.ELSE_KEYWORD);
+        keywordTokens.put("main", TokenTypeEnum.MAIN_KEYWORD);
+        keywordTokens.put("return", TokenTypeEnum.RETURN_KEYWORD);
+        keywordTokens.put("void", TokenTypeEnum.VOID_KEYWORD);
     }
 
     public BufferedInputStream getInputStream() {
