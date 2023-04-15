@@ -15,8 +15,9 @@ public class LexerAcceptanceTest {
         Lexer lex = new Lexer(bufferedInputStream);
 
         Token firstToken = lex.lexToken();
-        assertEquals(NotEqualOperatorToken.class, firstToken.getClass());
-        assertEquals("!=", firstToken.getValue());
+        assertEquals(StringToken.class, firstToken.getClass());
+        assertEquals(firstToken.getTokenType(), TokenTypeEnum.NOT_EQUAL_OPERATOR);
+        assertNull(firstToken.getValue());
         assertEquals(1, firstToken.getPosition().getLineNumber());
         assertEquals(1, firstToken.getPosition().getColumnNumber());
 

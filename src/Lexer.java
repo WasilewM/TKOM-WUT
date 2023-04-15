@@ -96,7 +96,7 @@ public class Lexer {
             identifier.append(currentChar);
             nextChar();
         }
-        token = new StringToken(identifier.toString(), tokenPosition);
+        token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.STRING);
         return true;
     }
 
@@ -119,7 +119,7 @@ public class Lexer {
             carriagePosition.returnCarriage();
         }
 
-        token = new CommentToken(comment.toString(), tokenPosition);
+        token = new StringToken(comment.toString(), tokenPosition, TokenTypeEnum.COMMENT);
         return true;
     }
 
@@ -137,7 +137,7 @@ public class Lexer {
         }
 
         Position tokenPosition = new Position(carriagePosition);
-        token = new AdditionOperatorToken(currentChar.toString(), tokenPosition);
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.ADDITION_OPERATOR);
         return true;
     }
 
@@ -147,7 +147,7 @@ public class Lexer {
         }
 
         Position tokenPosition = new Position(carriagePosition);
-        token = new SubtractionOperatorToken(currentChar.toString(), tokenPosition);
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.SUBTRACTION_OPERATOR);
         return true;
     }
 
@@ -157,7 +157,7 @@ public class Lexer {
         }
 
         Position tokenPosition = new Position(carriagePosition);
-        token = new MultiplicationOperatorToken(currentChar.toString(), tokenPosition);
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.MULTIPLICATION_OPERATOR);
         return true;
     }
 
@@ -166,17 +166,14 @@ public class Lexer {
             return false;
         }
 
-        StringBuilder operator = new StringBuilder();
-        operator.append(currentChar);
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
         if (currentChar.equals('/')) {
-            operator.append(currentChar);
             nextChar();
-            token = new DiscreteDivisionOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.DISCRETE_DIVISION_OPERATOR);
         } else {
-            token = new DivisionOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.DIVISION_OPERATOR);
         }
 
         return true;
@@ -187,18 +184,15 @@ public class Lexer {
             return false;
         }
 
-        StringBuilder operator = new StringBuilder();
-        operator.append(currentChar);
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
         if (currentChar.equals('=')) {
-            operator.append(currentChar);
             nextChar();
-            token = new EqualOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.EQUAL_OPERATOR);
         }
         else {
-            token = new AssignmentOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.ASSIGNMENT_OPERATOR);
         }
 
         return true;
@@ -214,18 +208,15 @@ public class Lexer {
             return false;
         }
 
-        StringBuilder operator = new StringBuilder();
-        operator.append(currentChar);
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
         if (currentChar.equals('=')) {
-            operator.append(currentChar);
             nextChar();
-            token = new NotEqualOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.NOT_EQUAL_OPERATOR);
         }
         else {
-            token = new NegationOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.NEGATION_OPERATOR);
         }
 
         return true;
@@ -236,19 +227,16 @@ public class Lexer {
             return false;
         }
 
-        StringBuilder operator = new StringBuilder();
-        operator.append(currentChar);
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
         if (currentChar.equals('=')) {
-            operator.append(currentChar);
             nextChar();
-            token = new LessOrEqualOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.LESS_OR_EQUAL_OPERATOR);
             return true;
         }
         else {
-            token = new LessThanOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.LESS_THAN_OPERATOR);
         }
 
         return true;
@@ -259,19 +247,16 @@ public class Lexer {
             return false;
         }
 
-        StringBuilder operator = new StringBuilder();
-        operator.append(currentChar);
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
         if (currentChar.equals('=')) {
-            operator.append(currentChar);
             nextChar();
-            token = new GreaterThanOrEqualOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR);
             return true;
         }
         else {
-            token = new GreaterThanOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.GREATER_THAN_OPERATOR);
         }
 
         return true;
@@ -287,15 +272,12 @@ public class Lexer {
             return false;
         }
 
-        StringBuilder operator = new StringBuilder();
-        operator.append(currentChar);
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
         if (currentChar.equals('&')) {
-            operator.append(currentChar);
             nextChar();
-            token = new AndOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.AND_OPERATOR);
             return true;
         }
 
@@ -307,15 +289,12 @@ public class Lexer {
             return false;
         }
 
-        StringBuilder operator = new StringBuilder();
-        operator.append(currentChar);
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
         if (currentChar.equals('|')) {
-            operator.append(currentChar);
             nextChar();
-            token = new OrOperatorToken(operator.toString(), tokenPosition);
+            token = new StringToken(null, tokenPosition, TokenTypeEnum.OR_OPERATOR);
             return true;
         }
 
