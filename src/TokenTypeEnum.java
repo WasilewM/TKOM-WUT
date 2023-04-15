@@ -36,6 +36,7 @@ enum TokenTypeEnum {
     ELSE_KEYWORD,
     MAIN_KEYWORD,
     RETURN_KEYWORD,
-    VOID_KEYWORD
+    VOID_KEYWORD,
+    SEMICOLON
 
 }

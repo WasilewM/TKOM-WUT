@@ -67,7 +67,8 @@ public class Lexer {
             || tryBuildAssignmentOrEqualOperator()
             || tryBuildNotEqualOrNegationOperator()
             || tryBuildComparisonOperator()
-            || tryBuildLogicalOperator()) {
+            || tryBuildLogicalOperator()
+            || tryBuildSemicolon()) {
             return token;
         }
 
@@ -194,6 +195,7 @@ public class Lexer {
         }
 
         Position tokenPosition = new Position(carriagePosition);
+        nextChar();
         token = new StringToken(null, tokenPosition, TokenTypeEnum.ADDITION_OPERATOR);
         return true;
     }
@@ -204,6 +206,7 @@ public class Lexer {
         }
 
         Position tokenPosition = new Position(carriagePosition);
+        nextChar();
         token = new StringToken(null, tokenPosition, TokenTypeEnum.SUBTRACTION_OPERATOR);
         return true;
     }
@@ -214,6 +217,7 @@ public class Lexer {
         }
 
         Position tokenPosition = new Position(carriagePosition);
+        nextChar();
         token = new StringToken(null, tokenPosition, TokenTypeEnum.MULTIPLICATION_OPERATOR);
         return true;
     }
@@ -358,6 +362,17 @@ public class Lexer {
 
         // @TODO
         return false;
+    }
+
+    private boolean tryBuildSemicolon() {
+        if (!currentChar.equals(';')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.SEMICOLON);
+        return true;
     }
 
     private void nextChar() {
