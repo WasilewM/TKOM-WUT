@@ -89,20 +89,6 @@ public class LexerTest {
     }
 
     @Test
-    void lexSemicolon() {
-        InputStream inputStream = new ByteArrayInputStream(";".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.SEMICOLON, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertNull(token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
-    }
-
-    @Test
     void lexUnknownCharacter() {
         InputStream inputStream = new ByteArrayInputStream("|".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);

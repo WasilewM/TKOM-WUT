@@ -68,7 +68,7 @@ public class Lexer {
             || tryBuildNotEqualOrNegationOperator()
             || tryBuildComparisonOperator()
             || tryBuildLogicalOperator()
-            || tryBuildSemicolon()) {
+            || tryBuildLanguageReservedSign()) {
             return token;
         }
 
@@ -364,6 +364,17 @@ public class Lexer {
         return false;
     }
 
+    private boolean tryBuildLanguageReservedSign() {
+        return tryBuildSemicolon()
+                || tryBuildComma()
+                || tryBuildLeftBracket()
+                || tryBuildRightBracket()
+                || tryBuildLeftSquareBracket()
+                || tryBuildRightSquareBracket()
+                || tryBuildLeftCurlyBracket()
+                || tryBuildRightCurlyBracket();
+    }
+
     private boolean tryBuildSemicolon() {
         if (!currentChar.equals(';')) {
             return false;
@@ -375,6 +386,83 @@ public class Lexer {
         return true;
     }
 
+    private boolean tryBuildComma() {
+        if (!currentChar.equals(',')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.COMMA);
+        return true;
+    }
+
+    private boolean tryBuildLeftBracket() {
+        if (!currentChar.equals('(')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.LEFT_BRACKET);
+        return true;
+    }
+
+    private boolean tryBuildRightBracket() {
+        if (!currentChar.equals(')')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.RIGHT_BRACKET);
+        return true;
+    }
+
+    private boolean tryBuildLeftSquareBracket() {
+        if (!currentChar.equals('[')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.LEFT_SQUARE_BRACKET);
+        return true;
+    }
+
+    private boolean tryBuildRightSquareBracket() {
+        if (!currentChar.equals(']')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.RIGHT_SQUARE_BRACKET);
+        return true;
+    }
+
+    private boolean tryBuildLeftCurlyBracket() {
+        if (!currentChar.equals('{')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.LEFT_CURLY_BRACKET);
+        return true;
+    }
+
+    private boolean tryBuildRightCurlyBracket() {
+        if (!currentChar.equals('}')) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+        token = new StringToken(null, tokenPosition, TokenTypeEnum.RIGHT_CURLY_BRACKET);
+        return true;
+    }
+    
     private void nextChar() {
         try {
             currentChar = (char) inputStream.read();
