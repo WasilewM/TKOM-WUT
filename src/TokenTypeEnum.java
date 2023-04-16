@@ -45,5 +45,6 @@ enum TokenTypeEnum {
     RIGHT_SQUARE_BRACKET,
     LEFT_CURLY_BRACKET,
     RIGHT_CURLY_BRACKET,
-    ERROR
+    ERROR,
+    DOT
 }

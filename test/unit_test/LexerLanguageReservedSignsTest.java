@@ -119,4 +119,18 @@ public class LexerLanguageReservedSignsTest {
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }
+
+    @Test
+    void lexDot() {
+        InputStream inputStream = new ByteArrayInputStream(".".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.DOT, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
 }

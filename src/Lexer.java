@@ -52,6 +52,7 @@ public class Lexer {
         singleSignsReservedByLanguage.put(']', TokenTypeEnum.RIGHT_SQUARE_BRACKET);
         singleSignsReservedByLanguage.put('{', TokenTypeEnum.LEFT_CURLY_BRACKET);
         singleSignsReservedByLanguage.put('}', TokenTypeEnum.RIGHT_CURLY_BRACKET);
+        singleSignsReservedByLanguage.put('.', TokenTypeEnum.DOT);
 
         // Arithmetic Operators
         singleSignsReservedByLanguage.put('+', TokenTypeEnum.ADDITION_OPERATOR);
