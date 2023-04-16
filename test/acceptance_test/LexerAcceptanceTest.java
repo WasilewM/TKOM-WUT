@@ -127,4 +127,46 @@ public class LexerAcceptanceTest {
         assertEquals(1, thirdValueToken.getPosition().getLineNumber());
         assertEquals(10, thirdValueToken.getPosition().getColumnNumber());
     }
+
+    @Test
+    void lexErrorTokenWhenOrOperatorIsMalformedAndIsFollowedByValidMultiplicationOperator() {
+        InputStream inputStream = new ByteArrayInputStream("|*".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token errorToken = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.ERROR, errorToken.getTokenType());
+        assertEquals(StringToken.class, errorToken.getClass());
+        assertNull(errorToken.getValue());
+        assertEquals(1, errorToken.getPosition().getLineNumber());
+        assertEquals(1, errorToken.getPosition().getColumnNumber());
+
+        Token token = lex.lexToken();
+        assertEquals(TokenTypeEnum.MULTIPLICATION_OPERATOR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(2, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexErrorTokenWhenAndAndOperatorIsMalformedAndIsFollowedByValidSubtractionOperator() {
+        InputStream inputStream = new ByteArrayInputStream("&-".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token errorToken = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.ERROR, errorToken.getTokenType());
+        assertEquals(StringToken.class, errorToken.getClass());
+        assertNull(errorToken.getValue());
+        assertEquals(1, errorToken.getPosition().getLineNumber());
+        assertEquals(1, errorToken.getPosition().getColumnNumber());
+
+        Token token = lex.lexToken();
+        assertEquals(TokenTypeEnum.SUBTRACTION_OPERATOR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(2, token.getPosition().getColumnNumber());
+    }
 }
