@@ -95,9 +95,9 @@ public class LexerTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.ERROR, token.getTokenType());
+        assertEquals(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
-        assertNull(token.getValue());
+        assertEquals("|", token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }

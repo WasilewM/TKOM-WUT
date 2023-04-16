@@ -135,9 +135,9 @@ public class LexerAcceptanceTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token errorToken = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.ERROR, errorToken.getTokenType());
+        assertEquals(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, errorToken.getTokenType());
         assertEquals(StringToken.class, errorToken.getClass());
-        assertNull(errorToken.getValue());
+        assertEquals("|", errorToken.getValue());
         assertEquals(1, errorToken.getPosition().getLineNumber());
         assertEquals(1, errorToken.getPosition().getColumnNumber());
 
@@ -156,9 +156,9 @@ public class LexerAcceptanceTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token errorToken = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.ERROR, errorToken.getTokenType());
+        assertEquals(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, errorToken.getTokenType());
         assertEquals(StringToken.class, errorToken.getClass());
-        assertNull(errorToken.getValue());
+        assertEquals("&", errorToken.getValue());
         assertEquals(1, errorToken.getPosition().getLineNumber());
         assertEquals(1, errorToken.getPosition().getColumnNumber());
 

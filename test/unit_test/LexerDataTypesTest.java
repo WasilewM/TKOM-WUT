@@ -138,8 +138,13 @@ public class LexerDataTypesTest {
         InputStream inputStream = new ByteArrayInputStream("\"a".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         Lexer lex = new Lexer(bufferedInputStream);
+        Token errorToken = lex.lexToken();
 
-        assertNull(lex.lexToken());
+        assertEquals(TokenTypeEnum.UNCLOSED_QUOTES_ERROR, errorToken.getTokenType());
+        assertEquals(StringToken.class, errorToken.getClass());
+        assertEquals("a", errorToken.getValue());
+        assertEquals(1, errorToken.getPosition().getLineNumber());
+        assertEquals(1, errorToken.getPosition().getColumnNumber());
     }
 
     @Test

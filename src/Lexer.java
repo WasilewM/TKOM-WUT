@@ -9,8 +9,9 @@ public class Lexer {
     private final Position carriagePosition;
     private Token token;
     private final HashMap<String, TokenTypeEnum> keywordTokens = new HashMap<>();
-    private final HashMap<Character, TokenTypeEnum> singleSignsReservedByLanguage = new HashMap<>();
-    private final HashMap<Character, DoubledSignTokenType> doubledSignsReservedByLanguage = new HashMap<>();
+    private final HashMap<Character, TokenTypeEnum> onlySingleSignTokens = new HashMap<>();
+    private final HashMap<Character, DoubledSignTokenType> singleOrDoubledSignTokens = new HashMap<>();
+    private final HashMap<Character, DoubledSignTokenType> onlyDoubledSingTokens = new HashMap<>();
 
     public Lexer(BufferedInputStream inputStream) {
         this.inputStream = inputStream;
@@ -18,8 +19,9 @@ public class Lexer {
         newlineConvention = null;
         carriagePosition = new Position(1, 0);
         initKeywordTokens();
-        initSingleSignsReservedByLanguage();
-        initDoubledSignsReservedByLanguage();
+        initOnlySingleSignTokens();
+        initSingleOrDoubledSignTokens();
+        initOnlyDoubledSignTokens();
     }
 
     private void initKeywordTokens() {
@@ -43,28 +45,31 @@ public class Lexer {
         keywordTokens.put("void", TokenTypeEnum.VOID_KEYWORD);
     }
 
-    private void initSingleSignsReservedByLanguage() {
-        singleSignsReservedByLanguage.put(';', TokenTypeEnum.SEMICOLON);
-        singleSignsReservedByLanguage.put(',', TokenTypeEnum.COMMA);
-        singleSignsReservedByLanguage.put('(', TokenTypeEnum.LEFT_BRACKET);
-        singleSignsReservedByLanguage.put(')', TokenTypeEnum.RIGHT_BRACKET);
-        singleSignsReservedByLanguage.put('[', TokenTypeEnum.LEFT_SQUARE_BRACKET);
-        singleSignsReservedByLanguage.put(']', TokenTypeEnum.RIGHT_SQUARE_BRACKET);
-        singleSignsReservedByLanguage.put('{', TokenTypeEnum.LEFT_CURLY_BRACKET);
-        singleSignsReservedByLanguage.put('}', TokenTypeEnum.RIGHT_CURLY_BRACKET);
-        singleSignsReservedByLanguage.put('.', TokenTypeEnum.DOT);
+    private void initOnlySingleSignTokens() {
+        onlySingleSignTokens.put(';', TokenTypeEnum.SEMICOLON);
+        onlySingleSignTokens.put(',', TokenTypeEnum.COMMA);
+        onlySingleSignTokens.put('(', TokenTypeEnum.LEFT_BRACKET);
+        onlySingleSignTokens.put(')', TokenTypeEnum.RIGHT_BRACKET);
+        onlySingleSignTokens.put('[', TokenTypeEnum.LEFT_SQUARE_BRACKET);
+        onlySingleSignTokens.put(']', TokenTypeEnum.RIGHT_SQUARE_BRACKET);
+        onlySingleSignTokens.put('{', TokenTypeEnum.LEFT_CURLY_BRACKET);
+        onlySingleSignTokens.put('}', TokenTypeEnum.RIGHT_CURLY_BRACKET);
+        onlySingleSignTokens.put('.', TokenTypeEnum.DOT);
 
         // Arithmetic Operators
-        singleSignsReservedByLanguage.put('+', TokenTypeEnum.ADDITION_OPERATOR);
-        singleSignsReservedByLanguage.put('-', TokenTypeEnum.SUBTRACTION_OPERATOR);
-        singleSignsReservedByLanguage.put('*', TokenTypeEnum.MULTIPLICATION_OPERATOR);
+        onlySingleSignTokens.put('+', TokenTypeEnum.ADDITION_OPERATOR);
+        onlySingleSignTokens.put('-', TokenTypeEnum.SUBTRACTION_OPERATOR);
+        onlySingleSignTokens.put('*', TokenTypeEnum.MULTIPLICATION_OPERATOR);
     }
 
-    private void initDoubledSignsReservedByLanguage() {
-        doubledSignsReservedByLanguage.put('=', new DoubledSignTokenType(TokenTypeEnum.ASSIGNMENT_OPERATOR, TokenTypeEnum.EQUAL_OPERATOR));
-        doubledSignsReservedByLanguage.put('/', new DoubledSignTokenType(TokenTypeEnum.DIVISION_OPERATOR, TokenTypeEnum.DISCRETE_DIVISION_OPERATOR));
-        doubledSignsReservedByLanguage.put('&', new DoubledSignTokenType(TokenTypeEnum.ERROR, TokenTypeEnum.AND_OPERATOR));
-        doubledSignsReservedByLanguage.put('|', new DoubledSignTokenType(TokenTypeEnum.ERROR, TokenTypeEnum.OR_OPERATOR));
+    private void initSingleOrDoubledSignTokens() {
+        singleOrDoubledSignTokens.put('=', new DoubledSignTokenType(TokenTypeEnum.ASSIGNMENT_OPERATOR, TokenTypeEnum.EQUAL_OPERATOR));
+        singleOrDoubledSignTokens.put('/', new DoubledSignTokenType(TokenTypeEnum.DIVISION_OPERATOR, TokenTypeEnum.DISCRETE_DIVISION_OPERATOR));
+    }
+
+    private void initOnlyDoubledSignTokens() {
+        onlyDoubledSingTokens.put('&', new DoubledSignTokenType(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, TokenTypeEnum.AND_OPERATOR));
+        onlyDoubledSingTokens.put('|', new DoubledSignTokenType(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, TokenTypeEnum.OR_OPERATOR));
     }
 
     public BufferedInputStream getInputStream() {
@@ -93,8 +98,9 @@ public class Lexer {
             || tryBuildComment()
             || tryBuildNotEqualOrNegationOperator()
             || tryBuildComparisonOperator()
-            || tryBuildSingleSignReservedByLanguage()
-            || tryBuildDoubledSignReservedByLanguage() ) {
+            || tryBuildOnlySingleSignTokens()
+            || tryBuildOnlyDoubledSignTokens()
+            || tryBuildSingleOrDoubledSignTokens()) {
             return token;
         }
 
@@ -177,11 +183,13 @@ public class Lexer {
 
         if (!previousChar.equals('\\') && currentChar.equals('\"')) {
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING);
-            return true;
+
+        }
+        else {
+            token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.UNCLOSED_QUOTES_ERROR);
         }
 
-        // @TODO
-        return false;
+        return true;
     }
 
     private boolean tryBuildComment() {
@@ -271,8 +279,8 @@ public class Lexer {
         return true;
     }
 
-    private boolean tryBuildSingleSignReservedByLanguage() {
-        for (HashMap.Entry<Character, TokenTypeEnum> s : singleSignsReservedByLanguage.entrySet()) {
+    private boolean tryBuildOnlySingleSignTokens() {
+        for (HashMap.Entry<Character, TokenTypeEnum> s : onlySingleSignTokens.entrySet()) {
             if (tryBuildSingleSign(s.getKey(), s.getValue())) {
                 return true;
             }
@@ -292,8 +300,8 @@ public class Lexer {
         return true;
     }
 
-    private boolean tryBuildDoubledSignReservedByLanguage() {
-        for (HashMap.Entry<Character, DoubledSignTokenType> s : doubledSignsReservedByLanguage.entrySet()) {
+    private boolean tryBuildSingleOrDoubledSignTokens() {
+        for (HashMap.Entry<Character, DoubledSignTokenType> s : singleOrDoubledSignTokens.entrySet()) {
             if (tryBuildSingleOrDoubledSign(s.getKey(), s.getValue().getTokenTypeWhenSingleSign(), s.getValue().getTokenTypeWhenDoubledSign())) {
                 return true;
             }
@@ -316,6 +324,37 @@ public class Lexer {
         }
         else {
             token = new StringToken(null, tokenPosition, tokenTypeForSingleSign);
+        }
+
+        return true;
+    }
+
+    private boolean tryBuildOnlyDoubledSignTokens() {
+        for (HashMap.Entry<Character, DoubledSignTokenType> s : onlyDoubledSingTokens.entrySet()) {
+            if (tryOnlyDoubledSign(s.getKey(), s.getValue().getTokenTypeWhenSingleSign(), s.getValue().getTokenTypeWhenDoubledSign())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean tryOnlyDoubledSign(Character sign, TokenTypeEnum tokenTypeForSingleSign, TokenTypeEnum tokenTypeForDoubledSign) {
+        if (!currentChar.equals(sign)) {
+            return false;
+        }
+
+        StringBuilder foundSign = new StringBuilder();
+        foundSign.append(currentChar);
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        if (currentChar.equals(sign)) {
+            nextChar();
+            token = new StringToken(null, tokenPosition, tokenTypeForDoubledSign);
+        }
+        else {
+            token = new StringToken(foundSign.toString(), tokenPosition, tokenTypeForSingleSign);
         }
 
         return true;
