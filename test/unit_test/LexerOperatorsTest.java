@@ -233,12 +233,17 @@ public class LexerOperatorsTest {
     }
 
     @Test
-    void lexTokenWhenAndOperatorIsMalformed() {
+    void lexTokenWhenAndAndOperatorIsMalformedButSubtractionOperatorIsValid() {
         InputStream inputStream = new ByteArrayInputStream("&-".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
 
-        assertNull(lex.lexToken());
+        assertEquals(TokenTypeEnum.SUBTRACTION_OPERATOR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(2, token.getPosition().getColumnNumber());
     }
 
     @Test
@@ -256,12 +261,17 @@ public class LexerOperatorsTest {
     }
 
     @Test
-    void lexTokenWhenOrOperatorIsMalformed() {
-        InputStream inputStream = new ByteArrayInputStream("|-".getBytes());
+    void lexTokenWhenOrOperatorIsMalformedButMultiplicationOperatorIsValid() {
+        InputStream inputStream = new ByteArrayInputStream("|*".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
 
-        assertNull(lex.lexToken());
+        assertEquals(TokenTypeEnum.MULTIPLICATION_OPERATOR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(2, token.getPosition().getColumnNumber());
     }
 
     @Test

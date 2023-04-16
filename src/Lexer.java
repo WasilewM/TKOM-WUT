@@ -9,6 +9,7 @@ public class Lexer {
     private final Position carriagePosition;
     private Token token;
     private final HashMap<String, TokenTypeEnum> keywordTokens = new HashMap<>();
+    private final HashMap<Character, TokenTypeEnum> singleSignsReservedByLanguage = new HashMap<>();
 
     public Lexer(BufferedInputStream inputStream) {
         this.inputStream = inputStream;
@@ -16,6 +17,7 @@ public class Lexer {
         newlineConvention = null;
         carriagePosition = new Position(1, 0);
         initKeywordTokens();
+        initSingleSignsReservedByLanguage();
     }
 
     private void initKeywordTokens() {
@@ -37,6 +39,22 @@ public class Lexer {
         keywordTokens.put("main", TokenTypeEnum.MAIN_KEYWORD);
         keywordTokens.put("return", TokenTypeEnum.RETURN_KEYWORD);
         keywordTokens.put("void", TokenTypeEnum.VOID_KEYWORD);
+    }
+
+    private void initSingleSignsReservedByLanguage() {
+        singleSignsReservedByLanguage.put(';', TokenTypeEnum.SEMICOLON);
+        singleSignsReservedByLanguage.put(',', TokenTypeEnum.COMMA);
+        singleSignsReservedByLanguage.put('(', TokenTypeEnum.LEFT_BRACKET);
+        singleSignsReservedByLanguage.put(')', TokenTypeEnum.RIGHT_BRACKET);
+        singleSignsReservedByLanguage.put('[', TokenTypeEnum.LEFT_SQUARE_BRACKET);
+        singleSignsReservedByLanguage.put(']', TokenTypeEnum.RIGHT_SQUARE_BRACKET);
+        singleSignsReservedByLanguage.put('{', TokenTypeEnum.LEFT_CURLY_BRACKET);
+        singleSignsReservedByLanguage.put('}', TokenTypeEnum.RIGHT_CURLY_BRACKET);
+
+        // Arithmetic Operators
+        singleSignsReservedByLanguage.put('+', TokenTypeEnum.ADDITION_OPERATOR);
+        singleSignsReservedByLanguage.put('-', TokenTypeEnum.SUBTRACTION_OPERATOR);
+        singleSignsReservedByLanguage.put('*', TokenTypeEnum.MULTIPLICATION_OPERATOR);
     }
 
     public BufferedInputStream getInputStream() {
@@ -68,7 +86,7 @@ public class Lexer {
             || tryBuildNotEqualOrNegationOperator()
             || tryBuildComparisonOperator()
             || tryBuildLogicalOperator()
-            || tryBuildLanguageReservedSign()) {
+            || tryBuildSingleSignReservedByLanguage()) {
             return token;
         }
 
@@ -181,45 +199,8 @@ public class Lexer {
         return true;
     }
 
-
     private boolean tryBuildArithmeticOperator() {
-        return tryBuildAdditionOperator()
-                || tryBuildSubtractionOperator()
-                || tryBuildMultiplicationOperator()
-                || tryBuildDivisionOrDiscreteDivisionOperator();
-    }
-
-    private boolean tryBuildAdditionOperator() {
-        if (!currentChar.equals('+')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.ADDITION_OPERATOR);
-        return true;
-    }
-
-    private boolean tryBuildSubtractionOperator() {
-        if (!currentChar.equals('-')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.SUBTRACTION_OPERATOR);
-        return true;
-    }
-
-    private boolean tryBuildMultiplicationOperator() {
-        if (!currentChar.equals('*')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.MULTIPLICATION_OPERATOR);
-        return true;
+        return tryBuildDivisionOrDiscreteDivisionOperator();
     }
 
     private boolean tryBuildDivisionOrDiscreteDivisionOperator() {
@@ -364,102 +345,24 @@ public class Lexer {
         return false;
     }
 
-    private boolean tryBuildLanguageReservedSign() {
-        return tryBuildSemicolon()
-                || tryBuildComma()
-                || tryBuildLeftBracket()
-                || tryBuildRightBracket()
-                || tryBuildLeftSquareBracket()
-                || tryBuildRightSquareBracket()
-                || tryBuildLeftCurlyBracket()
-                || tryBuildRightCurlyBracket();
+    private boolean tryBuildSingleSignReservedByLanguage() {
+        for (HashMap.Entry<Character, TokenTypeEnum> s : singleSignsReservedByLanguage.entrySet()) {
+            if (tryBuildSingleSign(s.getKey(), s.getValue())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    private boolean tryBuildSemicolon() {
-        if (!currentChar.equals(';')) {
+    private boolean tryBuildSingleSign(Character sign, TokenTypeEnum tokenType) {
+        if (!currentChar.equals(sign)) {
             return false;
         }
 
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.SEMICOLON);
-        return true;
-    }
-
-    private boolean tryBuildComma() {
-        if (!currentChar.equals(',')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.COMMA);
-        return true;
-    }
-
-    private boolean tryBuildLeftBracket() {
-        if (!currentChar.equals('(')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.LEFT_BRACKET);
-        return true;
-    }
-
-    private boolean tryBuildRightBracket() {
-        if (!currentChar.equals(')')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.RIGHT_BRACKET);
-        return true;
-    }
-
-    private boolean tryBuildLeftSquareBracket() {
-        if (!currentChar.equals('[')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.LEFT_SQUARE_BRACKET);
-        return true;
-    }
-
-    private boolean tryBuildRightSquareBracket() {
-        if (!currentChar.equals(']')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.RIGHT_SQUARE_BRACKET);
-        return true;
-    }
-
-    private boolean tryBuildLeftCurlyBracket() {
-        if (!currentChar.equals('{')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.LEFT_CURLY_BRACKET);
-        return true;
-    }
-
-    private boolean tryBuildRightCurlyBracket() {
-        if (!currentChar.equals('}')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-        token = new StringToken(null, tokenPosition, TokenTypeEnum.RIGHT_CURLY_BRACKET);
+        token = new StringToken(null, tokenPosition, tokenType);
         return true;
     }
     
