@@ -1,5 +1,6 @@
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Lexer {
@@ -12,6 +13,7 @@ public class Lexer {
     private final HashMap<Character, TokenTypeEnum> onlySingleSignTokens = new HashMap<>();
     private final HashMap<Character, DoubledSignTokenType> singleOrDoubledSignTokens = new HashMap<>();
     private final HashMap<Character, DoubledSignTokenType> onlyDoubledSingTokens = new HashMap<>();
+    private final ArrayList<OneOrTwoSignsTokenType> oneOrTwoSingsTokens = new ArrayList<>();
 
     public Lexer(BufferedInputStream inputStream) {
         this.inputStream = inputStream;
@@ -22,6 +24,7 @@ public class Lexer {
         initOnlySingleSignTokens();
         initSingleOrDoubledSignTokens();
         initOnlyDoubledSignTokens();
+        initOneOrTwoSignsTokens();
     }
 
     private void initKeywordTokens() {
@@ -72,6 +75,12 @@ public class Lexer {
         onlyDoubledSingTokens.put('|', new DoubledSignTokenType(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, TokenTypeEnum.OR_OPERATOR));
     }
 
+    private void initOneOrTwoSignsTokens() {
+        oneOrTwoSingsTokens.add(new OneOrTwoSignsTokenType('<', TokenTypeEnum.LESS_THAN_OPERATOR, '=', TokenTypeEnum.LESS_OR_EQUAL_OPERATOR));
+        oneOrTwoSingsTokens.add(new OneOrTwoSignsTokenType('>', TokenTypeEnum.GREATER_THAN_OPERATOR, '=', TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR));
+        oneOrTwoSingsTokens.add(new OneOrTwoSignsTokenType('!', TokenTypeEnum.NEGATION_OPERATOR, '=', TokenTypeEnum.NOT_EQUAL_OPERATOR));
+    }
+
     public BufferedInputStream getInputStream() {
         return inputStream;
     }
@@ -96,11 +105,10 @@ public class Lexer {
             || tryBuildIdentifierOrKeyword()
             || tryBuildString()
             || tryBuildComment()
-            || tryBuildNotEqualOrNegationOperator()
-            || tryBuildComparisonOperator()
-            || tryBuildOnlySingleSignTokens()
-            || tryBuildOnlyDoubledSignTokens()
-            || tryBuildSingleOrDoubledSignTokens()) {
+            || tryBuildOnlySingleSignToken()
+            || tryBuildOnlyDoubledSignToken()
+            || tryBuildSingleOrDoubledSignToken()
+            || tryBuildOneOrTwoSignsToken()) {
             return token;
         }
 
@@ -206,80 +214,11 @@ public class Lexer {
             nextChar();
         }
 
-        if (currentChar.equals('\n')) {
-            carriagePosition.fitLine();
-            carriagePosition.returnCarriage();
-        }
-
         token = new StringToken(comment.toString(), tokenPosition, TokenTypeEnum.COMMENT);
         return true;
     }
 
-    private boolean tryBuildComparisonOperator() {
-        return tryBuildLessThanOrLessOrEqualOperator()
-                || tryBuildGreaterThanOrLessOrEqualOperator();
-    }
-
-    private boolean tryBuildNotEqualOrNegationOperator() {
-        if (!currentChar.equals('!')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-
-        if (currentChar.equals('=')) {
-            nextChar();
-            token = new StringToken(null, tokenPosition, TokenTypeEnum.NOT_EQUAL_OPERATOR);
-        }
-        else {
-            token = new StringToken(null, tokenPosition, TokenTypeEnum.NEGATION_OPERATOR);
-        }
-
-        return true;
-    }
-
-    private boolean tryBuildLessThanOrLessOrEqualOperator() {
-        if (!currentChar.equals('<')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-
-        if (currentChar.equals('=')) {
-            nextChar();
-            token = new StringToken(null, tokenPosition, TokenTypeEnum.LESS_OR_EQUAL_OPERATOR);
-            return true;
-        }
-        else {
-            token = new StringToken(null, tokenPosition, TokenTypeEnum.LESS_THAN_OPERATOR);
-        }
-
-        return true;
-    }
-
-    private boolean tryBuildGreaterThanOrLessOrEqualOperator() {
-        if (!currentChar.equals('>')) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-
-        if (currentChar.equals('=')) {
-            nextChar();
-            token = new StringToken(null, tokenPosition, TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR);
-            return true;
-        }
-        else {
-            token = new StringToken(null, tokenPosition, TokenTypeEnum.GREATER_THAN_OPERATOR);
-        }
-
-        return true;
-    }
-
-    private boolean tryBuildOnlySingleSignTokens() {
+    private boolean tryBuildOnlySingleSignToken() {
         for (HashMap.Entry<Character, TokenTypeEnum> s : onlySingleSignTokens.entrySet()) {
             if (tryBuildSingleSign(s.getKey(), s.getValue())) {
                 return true;
@@ -300,9 +239,9 @@ public class Lexer {
         return true;
     }
 
-    private boolean tryBuildSingleOrDoubledSignTokens() {
+    private boolean tryBuildSingleOrDoubledSignToken() {
         for (HashMap.Entry<Character, DoubledSignTokenType> s : singleOrDoubledSignTokens.entrySet()) {
-            if (tryBuildSingleOrDoubledSign(s.getKey(), s.getValue().getTokenTypeWhenSingleSign(), s.getValue().getTokenTypeWhenDoubledSign())) {
+            if (tryBuildOneOrTwoSign(s.getKey(), s.getValue().getTokenTypeWhenSingleSign(), s.getKey(), s.getValue().getTokenTypeWhenDoubledSign())) {
                 return true;
             }
         }
@@ -310,26 +249,7 @@ public class Lexer {
         return false;
     }
 
-    private boolean tryBuildSingleOrDoubledSign(Character sign, TokenTypeEnum tokenTypeForSingleSign, TokenTypeEnum tokenTypeForDoubledSign) {
-        if (!currentChar.equals(sign)) {
-            return false;
-        }
-
-        Position tokenPosition = new Position(carriagePosition);
-        nextChar();
-
-        if (currentChar.equals(sign)) {
-            nextChar();
-            token = new StringToken(null, tokenPosition, tokenTypeForDoubledSign);
-        }
-        else {
-            token = new StringToken(null, tokenPosition, tokenTypeForSingleSign);
-        }
-
-        return true;
-    }
-
-    private boolean tryBuildOnlyDoubledSignTokens() {
+    private boolean tryBuildOnlyDoubledSignToken() {
         for (HashMap.Entry<Character, DoubledSignTokenType> s : onlyDoubledSingTokens.entrySet()) {
             if (tryOnlyDoubledSign(s.getKey(), s.getValue().getTokenTypeWhenSingleSign(), s.getValue().getTokenTypeWhenDoubledSign())) {
                 return true;
@@ -355,6 +275,35 @@ public class Lexer {
         }
         else {
             token = new StringToken(foundSign.toString(), tokenPosition, tokenTypeForSingleSign);
+        }
+
+        return true;
+    }
+
+    private boolean tryBuildOneOrTwoSignsToken() {
+        for (OneOrTwoSignsTokenType o : oneOrTwoSingsTokens) {
+            if (tryBuildOneOrTwoSign(o.getFirstSign(), o.getTokenTypeWhenOneSign(), o.getSecondSign(), o.getTokenTypeWhenTwoSigns())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean tryBuildOneOrTwoSign(Character firstSign, TokenTypeEnum tokenTypeWhenOneSign, Character secondSign, TokenTypeEnum tokenTypeWhenTwoSigns) {
+        if (!currentChar.equals(firstSign)) {
+            return false;
+        }
+
+        Position tokenPosition = new Position(carriagePosition);
+        nextChar();
+
+        if (currentChar.equals(secondSign)) {
+            nextChar();
+            token = new StringToken(null, tokenPosition, tokenTypeWhenTwoSigns);
+        }
+        else {
+            token = new StringToken(null, tokenPosition, tokenTypeWhenOneSign);
         }
 
         return true;
