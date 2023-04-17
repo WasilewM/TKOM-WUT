@@ -15,7 +15,7 @@ public class LexerInvalidConstructionsTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token errorToken = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, errorToken.getTokenType());
+        assertEquals(TokenTypeEnum.UNKNOWN_CHAR_ERROR, errorToken.getTokenType());
         assertEquals(StringToken.class, errorToken.getClass());
         assertEquals("|", errorToken.getValue());
         assertEquals(1, errorToken.getPosition().getLineNumber());
@@ -36,7 +36,7 @@ public class LexerInvalidConstructionsTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token errorToken = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, errorToken.getTokenType());
+        assertEquals(TokenTypeEnum.UNKNOWN_CHAR_ERROR, errorToken.getTokenType());
         assertEquals(StringToken.class, errorToken.getClass());
         assertEquals("&", errorToken.getValue());
         assertEquals(1, errorToken.getPosition().getLineNumber());

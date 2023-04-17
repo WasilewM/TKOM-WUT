@@ -36,8 +36,8 @@ public class Lexer {
         keywordTokens.put("Figure", TokenTypeEnum.FIGURE_KEYWORD);
         keywordTokens.put("Scene", TokenTypeEnum.SCENE_KEYWORD);
         keywordTokens.put("Bool", TokenTypeEnum.BOOL_KEYWORD);
-        keywordTokens.put("True", TokenTypeEnum.BOOL_TRUE_VALUE);
-        keywordTokens.put("False", TokenTypeEnum.BOOL_FALSE_VALUE);
+        keywordTokens.put("True", TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD);
+        keywordTokens.put("False", TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD);
         keywordTokens.put("List", TokenTypeEnum.LIST_KEYWORD);
         keywordTokens.put("while", TokenTypeEnum.WHILE_KEYWORD);
         keywordTokens.put("if", TokenTypeEnum.IF_KEYWORD);
@@ -71,8 +71,8 @@ public class Lexer {
     }
 
     private void initOnlyDoubledSignTokens() {
-        onlyDoubledSingTokens.put('&', new DoubledSignTokenType(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, TokenTypeEnum.AND_OPERATOR));
-        onlyDoubledSingTokens.put('|', new DoubledSignTokenType(TokenTypeEnum.UNRECOGNISED_CHAR_ERROR, TokenTypeEnum.OR_OPERATOR));
+        onlyDoubledSingTokens.put('&', new DoubledSignTokenType(TokenTypeEnum.UNKNOWN_CHAR_ERROR, TokenTypeEnum.AND_OPERATOR));
+        onlyDoubledSingTokens.put('|', new DoubledSignTokenType(TokenTypeEnum.UNKNOWN_CHAR_ERROR, TokenTypeEnum.OR_OPERATOR));
     }
 
     private void initOneOrTwoSignsTokens() {
@@ -190,7 +190,7 @@ public class Lexer {
         }
 
         if (!previousChar.equals('\\') && currentChar.equals('\"')) {
-            token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING);
+            token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING_VALUE);
 
         }
         else {

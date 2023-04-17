@@ -74,25 +74,26 @@ W projekcie tokeny są reprezentowane przez `TokenTypeEnum`.
 
 #### Słowa kluczowe oraz odpowiadające im tokeny
 
-| Słowo kluczowe, operator lub znak | Nazwa tokenu     |
-|-----------------------------------|------------------|
-| Int                               | INT_KEYWORD      |
-| Double                            | DOUBLE_KEYWORD   |
-| String                            | STRING           |
-| Point                             | POINT_KEYWORD    |
-| Section                           | SECTION_KEYWORD  |
-| Figure                            | FIGURE_KEYWORD   |
-| List                              | LIST_KEYWORD     |
-| Bool                              | BOOL_KEYWORD     |
-| True                              | BOOL_TRUE_VALUE  |
-| False                             | BOOL_FALSE_VALUE |
-| while                             | WHILE_KEYWORD    |
-| if                                | IF_KEYWORD       |
-| elseif                            | ELSE_IF_KEYWORD  |
-| else                              | ELSE_KEYWORD     |
-| main                              | MAIN_KEYWORD     |
-| return                            | RETURN_KEYWORD   |
-| void                              | VOID_KEYWORD     |
+| Słowo kluczowe | Nazwa tokenu             |
+|----------------|--------------------------|
+| Int            | INT_KEYWORD              |
+| Double         | DOUBLE_KEYWORD           |
+| String         | STRING                   |
+| Point          | POINT_KEYWORD            |
+| Section        | SECTION_KEYWORD          |
+| Figure         | FIGURE_KEYWORD           |
+| Scene          | SCENE_KEYWORD            |
+| List           | LIST_KEYWORD             |
+| Bool           | BOOL_KEYWORD             |
+| True           | BOOL_TRUE_VALUE_KEYWORD  |
+| False          | BOOL_FALSE_VALUE_KEYWORD |
+| while          | WHILE_KEYWORD            |
+| if             | IF_KEYWORD               |
+| elseif         | ELSE_IF_KEYWORD          |
+| else           | ELSE_KEYWORD             |
+| main           | MAIN_KEYWORD             |
+| return         | RETURN_KEYWORD           |
+| void           | VOID_KEYWORD             |
 
 #### Operatory oraz odpowiadające im tokeny
 Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlatego nie został w niej umieszczony.
@@ -105,7 +106,7 @@ Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlateg
 | `/`      | DIVISION_OPERATOR          |
 | `//`     | DISCRETE_DIVISION_OPERATOR |
 | `&&`     | AND_OPERATOR               |
-|          | SUBTRACTION_OPERATOR       |
+|          | OR_OPERATOR                |
 | `!`      | NEGATION_OPERATOR          |
 | `==`     | EQUAL_OPERATOR             |
 | `!=`     | NOT_EQUAL_OPERATOR         |
@@ -128,6 +129,22 @@ Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlateg
 | `;`            | SEMICOLON            |
 | `.`            | DOT                  |
 | `,`            | COMMA                |
+
+
+#### Inne tokeny będące częścią projektowanego języka
+| Element języka                 | Nazwa tokenu |
+|--------------------------------|--------------|
+| Wartość zmiennej typu `String` | STRING_VALUE |
+| Wartość zmiennej typu `Int`    | INT_VALE     |
+| Wartość zmiennej typu `Double` | DOUBLE_VALE  |
+| Nazwa zmiennej lub funkcji     | IDENTIFIER   |
+
+
+#### Tokeny błędów rozpoznanych przez lekser
+| Błąd                                                     | Nazwa tokenu          |
+|----------------------------------------------------------|-----------------------|
+| Nieznany znak                                            | UNKNOWN_CHAR_ERROR    |
+| Niedomknięty cudzysłów w wartości zmiennej typu `String` | UNCLOSED_QUOTES_ERROR |
 
 ## Definicje wbudowanych typów obiektowych
 Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.  

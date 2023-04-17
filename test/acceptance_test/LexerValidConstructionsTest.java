@@ -58,7 +58,7 @@ public class LexerValidConstructionsTest {
 
         Token valueToken = lex.lexToken();
         assertEquals(IntegerToken.class, valueToken.getClass());
-        assertEquals(valueToken.getTokenType(), TokenTypeEnum.INTEGER);
+        assertEquals(valueToken.getTokenType(), TokenTypeEnum.INT_VALUE);
         assertEquals(4, valueToken.getValue());
         assertEquals(1, valueToken.getPosition().getLineNumber());
         assertEquals(9, valueToken.getPosition().getColumnNumber());
@@ -72,7 +72,7 @@ public class LexerValidConstructionsTest {
 
         Token secondValueToken = lex.lexToken();
         assertEquals(IntegerToken.class, secondValueToken.getClass());
-        assertEquals(secondValueToken.getTokenType(), TokenTypeEnum.INTEGER);
+        assertEquals(secondValueToken.getTokenType(), TokenTypeEnum.INT_VALUE);
         assertEquals(9, secondValueToken.getValue());
         assertEquals(1, secondValueToken.getPosition().getLineNumber());
         assertEquals(13, secondValueToken.getPosition().getColumnNumber());
@@ -94,7 +94,7 @@ public class LexerValidConstructionsTest {
 
         Token valueToken = lex.lexToken();
         assertEquals(IntegerToken.class, valueToken.getClass());
-        assertEquals(valueToken.getTokenType(), TokenTypeEnum.INTEGER);
+        assertEquals(valueToken.getTokenType(), TokenTypeEnum.INT_VALUE);
         assertEquals(4, valueToken.getValue());
         assertEquals(1, valueToken.getPosition().getLineNumber());
         assertEquals(1, valueToken.getPosition().getColumnNumber());
@@ -108,7 +108,7 @@ public class LexerValidConstructionsTest {
 
         Token secondValueToken = lex.lexToken();
         assertEquals(IntegerToken.class, secondValueToken.getClass());
-        assertEquals(secondValueToken.getTokenType(), TokenTypeEnum.INTEGER);
+        assertEquals(secondValueToken.getTokenType(), TokenTypeEnum.INT_VALUE);
         assertEquals(3, secondValueToken.getValue());
         assertEquals(1, secondValueToken.getPosition().getLineNumber());
         assertEquals(5, secondValueToken.getPosition().getColumnNumber());
@@ -122,7 +122,7 @@ public class LexerValidConstructionsTest {
 
         Token thirdValueToken = lex.lexToken();
         assertEquals(IntegerToken.class, thirdValueToken.getClass());
-        assertEquals(thirdValueToken.getTokenType(), TokenTypeEnum.INTEGER);
+        assertEquals(thirdValueToken.getTokenType(), TokenTypeEnum.INT_VALUE);
         assertEquals(81, thirdValueToken.getValue());
         assertEquals(1, thirdValueToken.getPosition().getLineNumber());
         assertEquals(10, thirdValueToken.getPosition().getColumnNumber());
@@ -196,7 +196,7 @@ public class LexerValidConstructionsTest {
 
         token = lex.lexToken();
         assertEquals(DoubleToken.class, token.getClass());
-        assertEquals(token.getTokenType(), TokenTypeEnum.DOUBLE);
+        assertEquals(token.getTokenType(), TokenTypeEnum.DOUBLE_VALUE);
         assertEquals(4.01, token.getValue());
         assertEquals(2, token.getPosition().getLineNumber());
         assertEquals(12, token.getPosition().getColumnNumber());
@@ -210,7 +210,7 @@ public class LexerValidConstructionsTest {
 
         token = lex.lexToken();
         assertEquals(DoubleToken.class, token.getClass());
-        assertEquals(token.getTokenType(), TokenTypeEnum.DOUBLE);
+        assertEquals(token.getTokenType(), TokenTypeEnum.DOUBLE_VALUE);
         assertEquals(2.67, token.getValue());
         assertEquals(2, token.getPosition().getLineNumber());
         assertEquals(19, token.getPosition().getColumnNumber());
@@ -231,7 +231,7 @@ public class LexerValidConstructionsTest {
 
         token = lex.lexToken();
         assertEquals(IntegerToken.class, token.getClass());
-        assertEquals(token.getTokenType(), TokenTypeEnum.INTEGER);
+        assertEquals(token.getTokenType(), TokenTypeEnum.INT_VALUE);
         assertEquals(0, token.getValue());
         assertEquals(3, token.getPosition().getLineNumber());
         assertEquals(8, token.getPosition().getColumnNumber());
@@ -385,7 +385,7 @@ public class LexerValidConstructionsTest {
 
         token = lex.lexToken();
         assertEquals(StringToken.class, token.getClass());
-        assertEquals(token.getTokenType(), TokenTypeEnum.BOOL_TRUE_VALUE);
+        assertEquals(token.getTokenType(), TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD);
         assertNull(token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(45, token.getPosition().getColumnNumber());

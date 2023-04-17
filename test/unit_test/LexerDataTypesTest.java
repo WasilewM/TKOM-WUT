@@ -15,7 +15,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.INTEGER, token.getTokenType());
+        assertEquals(TokenTypeEnum.INT_VALUE, token.getTokenType());
         assertEquals(IntegerToken.class, token.getClass());
         assertEquals(1, token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
@@ -29,7 +29,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.INTEGER, token.getTokenType());
+        assertEquals(TokenTypeEnum.INT_VALUE, token.getTokenType());
         assertEquals(IntegerToken.class, token.getClass());
         assertEquals(1023, token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
@@ -43,7 +43,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.INTEGER, token.getTokenType());
+        assertEquals(TokenTypeEnum.INT_VALUE, token.getTokenType());
         assertEquals(IntegerToken.class, token.getClass());
         assertEquals(10, token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
@@ -57,7 +57,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.DOUBLE, token.getTokenType());
+        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
         assertEquals(DoubleToken.class, token.getClass());
         assertEquals(92.456, token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
@@ -70,7 +70,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.DOUBLE, token.getTokenType());
+        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
         assertEquals(DoubleToken.class, token.getClass());
         assertEquals(1.0012, token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
@@ -84,7 +84,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.DOUBLE, token.getTokenType());
+        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
         assertEquals(DoubleToken.class, token.getClass());
         assertEquals(0.00054, token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
@@ -98,7 +98,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.DOUBLE, token.getTokenType());
+        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
         assertEquals(DoubleToken.class, token.getClass());
         assertEquals(103.72, token.getValue());
         assertEquals(2, token.getPosition().getLineNumber());
@@ -112,7 +112,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.DOUBLE, token.getTokenType());
+        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
         assertEquals(DoubleToken.class, token.getClass());
         assertEquals(103.72, token.getValue());
         assertEquals(4, token.getPosition().getLineNumber());
@@ -126,7 +126,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.STRING, token.getTokenType());
+        assertEquals(TokenTypeEnum.STRING_VALUE, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
         assertEquals("a", token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
@@ -154,7 +154,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.BOOL_TRUE_VALUE, token.getTokenType());
+        assertEquals(TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
         assertNull(token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
@@ -168,7 +168,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
         Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.BOOL_FALSE_VALUE, token.getTokenType());
+        assertEquals(TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
         assertNull(token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());

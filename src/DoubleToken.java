@@ -1,5 +1,5 @@
 public class DoubleToken extends Token {
     public DoubleToken(Double value, Position position) {
-        super(value, position, TokenTypeEnum.DOUBLE);
+        super(value, position, TokenTypeEnum.DOUBLE_VALUE);
     }
 }
