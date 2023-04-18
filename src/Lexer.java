@@ -367,9 +367,7 @@ public class Lexer {
         try {
             currentChar = (char) inputStream.read();
             updateCarriagePosition();
-        } catch (IOException e) {
-            // @TODO
-        }
+        } catch (IOException ignored) { }
     }
 
     private void updateCarriagePosition() {
