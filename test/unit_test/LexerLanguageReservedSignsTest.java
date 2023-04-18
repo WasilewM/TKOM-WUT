@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class LexerLanguageReservedSignsTest {
     @ParameterizedTest
     @MethodSource("generateReservedSignsTokensData")
-    void lexIntValue(SingleTokenTestParams testScenarioParams) {
+    void lexSign(SingleTokenTestParams testScenarioParams) {
         performTest(testScenarioParams);
     }
 

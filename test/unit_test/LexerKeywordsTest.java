@@ -14,7 +14,7 @@ public class LexerKeywordsTest {
 
     @ParameterizedTest
     @MethodSource("generateKeywordTokensData")
-    void lexIntValue(SingleTokenTestParams testScenarioParams) {
+    void lexKeyword(SingleTokenTestParams testScenarioParams) {
         performTest(testScenarioParams);
     }
 
