@@ -7,6 +7,7 @@ public class Lexer {
     private final BufferedInputStream inputStream;
     private Character currentChar = null;
     private int stringMaxLength = 1000;
+    private int identifierMaxLength = 1000;
     private int maxInt = Integer.MAX_VALUE;
     private double maxDouble = Double.MAX_VALUE;
     private final Position carriagePosition;
@@ -83,6 +84,10 @@ public class Lexer {
 
     public void setStringMaxLength(int stringMaxLength) {
         this.stringMaxLength = stringMaxLength;
+    }
+
+    public void setIdentifierMaxLength(int identifierMaxLength) {
+        this.identifierMaxLength = identifierMaxLength;
     }
 
     public void setMaxInt(int maxInt) {
@@ -188,12 +193,18 @@ public class Lexer {
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
-        while (Character.isLetter(currentChar) || Character.isDigit(currentChar) || currentChar.equals('_')) {
+        while ((Character.isLetter(currentChar)
+                || Character.isDigit(currentChar)
+                || currentChar.equals('_'))
+                && identifier.length() < identifierMaxLength) {
             identifier.append(currentChar);
             nextChar();
         }
 
-        if (this.keywordTokens.containsKey(identifier.toString())) {
+        if (identifier.length() == identifierMaxLength && !currentChar.equals((char) (-1))) {
+            token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.IDENTIFIER_EXCEEDED_MAXIMUM_LENGTH_ERROR);
+        }
+        else if (this.keywordTokens.containsKey(identifier.toString())) {
             token = new StringToken(null, tokenPosition, this.keywordTokens.get(identifier.toString()));
         }
         else {

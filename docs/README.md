@@ -140,13 +140,14 @@ Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlateg
 
 
 #### Tokeny błędów rozpoznanych przez lekser
-| Błąd                                                     | Nazwa tokenu                         |
-|----------------------------------------------------------|--------------------------------------|
-| Nieznany znak                                            | UNKNOWN_CHAR_ERROR                   |
-| Niedomknięty cudzysłów w wartości zmiennej typu `String` | UNCLOSED_QUOTES_ERROR                |
-| Długość zmiennej `String` przekracza ustaloną granicę    | STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR |
-| Zmienna typu `Int` przekroczyła ustalony zakres          | INT_EXCEEDED_RANGE_ERROR             |
-| Zmienna typu `Double` przekroczyła ustalony zakres       | DOUBLE_EXCEEDED_RANGE_ERROR          |
+| Błąd                                                     | Nazwa tokenu                             |
+|----------------------------------------------------------|------------------------------------------|
+| Nieznany znak                                            | UNKNOWN_CHAR_ERROR                       |
+| Niedomknięty cudzysłów w wartości zmiennej typu `String` | UNCLOSED_QUOTES_ERROR                    |
+| Długość zmiennej `String` przekracza ustaloną granicę    | STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR     |
+| Długość identyfikatora przekracza ustaloną granicę       | IDENTIFIER_EXCEEDED_MAXIMUM_LENGTH_ERROR |
+| Zmienna typu `Int` przekroczyła ustalony zakres          | INT_EXCEEDED_RANGE_ERROR                 |
+| Zmienna typu `Double` przekroczyła ustalony zakres       | DOUBLE_EXCEEDED_RANGE_ERROR              |
 
 ## Definicje wbudowanych typów obiektowych
 Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.  

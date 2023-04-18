@@ -88,6 +88,22 @@ public class LexerTest {
     }
 
     @Test
+    void lexIdentifierLongerThanAllowedLength() {
+        InputStream inputStream = new ByteArrayInputStream("thisIsSomeVeryLongIdentifier_12345678".getBytes());
+        int identifierMaxLength = 14;
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        lex.setIdentifierMaxLength(identifierMaxLength);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.IDENTIFIER_EXCEEDED_MAXIMUM_LENGTH_ERROR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("thisIsSomeVery", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
     void lexComment() {
         InputStream inputStream = new ByteArrayInputStream("#hello there from comment".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
