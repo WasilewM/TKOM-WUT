@@ -33,6 +33,34 @@ public class LexerTest {
     }
 
     @Test
+    void lexSingleLetterAndSingleDigitIdentifier() {
+        InputStream inputStream = new ByteArrayInputStream("a4".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("a4", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexMultipleLettersAndDigitsIdentifier() {
+        InputStream inputStream = new ByteArrayInputStream("a4b6_c7".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("a4b6_c7", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
     void lexIdentifierWithUnderscores() {
         InputStream inputStream = new ByteArrayInputStream("hello_There_Identifier".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);

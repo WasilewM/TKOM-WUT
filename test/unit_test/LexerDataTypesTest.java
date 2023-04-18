@@ -1,177 +1,83 @@
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class LexerDataTypesTest {
-    @Test
-    void lexSingleDigitInteger() {
-        InputStream inputStream = new ByteArrayInputStream("1".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.INT_VALUE, token.getTokenType());
-        assertEquals(IntegerToken.class, token.getClass());
-        assertEquals(1, token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
+    @ParameterizedTest
+    @MethodSource("generateIntTokensData")
+    void lexIntValue(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
     }
 
-    @Test
-    void lexMultipleDigitsInteger() {
-        InputStream inputStream = new ByteArrayInputStream("1023".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.INT_VALUE, token.getTokenType());
-        assertEquals(IntegerToken.class, token.getClass());
-        assertEquals(1023, token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
+    @ParameterizedTest
+    @MethodSource("generateDoubleTokensData")
+    void lexDoubleValue(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
     }
 
-    @Test
-    void lexIntegerAfterWhitespaces() {
-        InputStream inputStream = new ByteArrayInputStream("        10".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.INT_VALUE, token.getTokenType());
-        assertEquals(IntegerToken.class, token.getClass());
-        assertEquals(10, token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(9, token.getPosition().getColumnNumber());
+    @ParameterizedTest
+    @MethodSource("generateStringTokensData")
+    void lexStringValue(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
     }
 
-    @Test
-    void lexDoubleGreaterThanOne() {
-        InputStream inputStream = new ByteArrayInputStream("92.456".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
-        assertEquals(DoubleToken.class, token.getClass());
-        assertEquals(92.456, token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
-    }
-    @Test
-    void lexDoubleCloseToOne() {
-        InputStream inputStream = new ByteArrayInputStream("1.0012".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
-        assertEquals(DoubleToken.class, token.getClass());
-        assertEquals(1.0012, token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
+    @ParameterizedTest
+    @MethodSource("generateBoolTokensData")
+    void lexBoolValue(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
     }
 
-    @Test
-    void lexDoubleOfValueBetweenZeroAndOne() {
-        InputStream inputStream = new ByteArrayInputStream("0.00054".getBytes());
+    private static void performTest(SingleTokenTestParams testScenarioParams) {
+        InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
 
-        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
-        assertEquals(DoubleToken.class, token.getClass());
-        assertEquals(0.00054, token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
+        Token token = lex.lexToken();
+        assertEquals(testScenarioParams.token().getTokenType(), token.getTokenType());
+        assertEquals(testScenarioParams.token().getValue(), token.getValue());
+        assertEquals(testScenarioParams.token().getLineNumber(), token.getPosition().getLineNumber());
+        assertEquals(testScenarioParams.token().getColumnNumber(), token.getPosition().getColumnNumber());
     }
 
-    @Test
-    void lexDoubleAfterWhitespacesAndNewline() {
-        InputStream inputStream = new ByteArrayInputStream("   \n 103.72\n".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
-        assertEquals(DoubleToken.class, token.getClass());
-        assertEquals(103.72, token.getValue());
-        assertEquals(2, token.getPosition().getLineNumber());
-        assertEquals(2, token.getPosition().getColumnNumber());
+    static Stream<Arguments> generateIntTokensData() {
+        return Stream.of(
+          Arguments.of(new SingleTokenTestParams("0", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 0, 1, 1))),
+          Arguments.of(new SingleTokenTestParams("1", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 1, 1, 1))),
+          Arguments.of(new SingleTokenTestParams("7", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 7, 1, 1))),
+          Arguments.of(new SingleTokenTestParams("1023", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 1023, 1, 1))),
+          Arguments.of(new SingleTokenTestParams("        10", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 10, 1, 9)))
+        );
     }
 
-    @Test
-    void lexDoubleAfterMultipleWhitespacesAndNewlines() {
-        InputStream inputStream = new ByteArrayInputStream("   \n \n\n    103.72\n".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
-        assertEquals(DoubleToken.class, token.getClass());
-        assertEquals(103.72, token.getValue());
-        assertEquals(4, token.getPosition().getLineNumber());
-        assertEquals(5, token.getPosition().getColumnNumber());
+    static Stream<Arguments> generateDoubleTokensData() {
+        return Stream.of(
+                Arguments.of(new SingleTokenTestParams("92.456", new SingleTokenDescription(TokenTypeEnum.DOUBLE_VALUE, 92.456, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("1.0012", new SingleTokenDescription(TokenTypeEnum.DOUBLE_VALUE, 1.0012, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("0.00054", new SingleTokenDescription(TokenTypeEnum.DOUBLE_VALUE, 0.00054, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("   \n 103.72\n", new SingleTokenDescription(TokenTypeEnum.DOUBLE_VALUE, 103.72, 2, 2))),
+                Arguments.of(new SingleTokenTestParams("   \n \n\n    103.72\n", new SingleTokenDescription(TokenTypeEnum.DOUBLE_VALUE, 103.72, 4, 5)))
+        );
     }
 
-    @Test
-    void lexSingleLetterString() {
-        InputStream inputStream = new ByteArrayInputStream("\"a\"".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.STRING_VALUE, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertEquals("a", token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
+    static Stream<Arguments> generateStringTokensData() {
+        return Stream.of(
+                Arguments.of(new SingleTokenTestParams("\"a\"", new SingleTokenDescription(TokenTypeEnum.STRING_VALUE, "a", 1, 1))),
+                Arguments.of(new SingleTokenTestParams("\"a", new SingleTokenDescription(TokenTypeEnum.UNCLOSED_QUOTES_ERROR, "a", 1, 1))),
+                Arguments.of(new SingleTokenTestParams("\"a\n\n\n\n   b\n\nc\"", new SingleTokenDescription(TokenTypeEnum.STRING_VALUE, "a\n\n\n\n   b\n\nc", 1, 1)))
+        );
     }
 
-    @Test
-    void lexSingleLetterStringWithUnclosedQuotes() {
-        InputStream inputStream = new ByteArrayInputStream("\"a".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token errorToken = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.UNCLOSED_QUOTES_ERROR, errorToken.getTokenType());
-        assertEquals(StringToken.class, errorToken.getClass());
-        assertEquals("a", errorToken.getValue());
-        assertEquals(1, errorToken.getPosition().getLineNumber());
-        assertEquals(1, errorToken.getPosition().getColumnNumber());
-    }
-
-    @Test
-    void lexBoolTrueValue() {
-        InputStream inputStream = new ByteArrayInputStream("True".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertNull(token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
-    }
-
-    @Test
-    void lexBoolFalseValue() {
-        InputStream inputStream = new ByteArrayInputStream("False".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token token = lex.lexToken();
-
-        assertEquals(TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertNull(token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
+    static Stream<Arguments> generateBoolTokensData() {
+        return Stream.of(
+                Arguments.of(new SingleTokenTestParams("True", new SingleTokenDescription(TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD, null, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("False", new SingleTokenDescription(TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD, null, 1, 1)))
+        );
     }
 }
