@@ -158,7 +158,7 @@ public class Lexer {
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
-        while (Character.isLetter(currentChar) || currentChar.equals('_')) {
+        while (Character.isLetter(currentChar) || Character.isDigit(currentChar) || currentChar.equals('_')) {
             identifier.append(currentChar);
             nextChar();
         }
