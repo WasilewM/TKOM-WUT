@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -79,5 +80,20 @@ public class LexerDataTypesTest {
                 Arguments.of(new SingleTokenTestParams("True", new SingleTokenDescription(TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD, null, 1, 1))),
                 Arguments.of(new SingleTokenTestParams("False", new SingleTokenDescription(TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD, null, 1, 1)))
         );
+    }
+
+    @Test
+    void lexIdentifierLongerThanAllowedLength() {
+        InputStream inputStream = new ByteArrayInputStream("\"thisIsSomeLongLongString\"".getBytes());
+        int maxStringLength = 10;
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream, maxStringLength);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("thisIsSome", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
     }
 }

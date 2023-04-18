@@ -7,6 +7,7 @@ public class Lexer {
     private final BufferedInputStream inputStream;
     private Character currentChar;
     private final String newlineConvention;
+    private final int maxStringLength;
     private final Position carriagePosition;
     private Token token;
     private final HashMap<String, TokenTypeEnum> keywordTokens = new HashMap<>();
@@ -19,6 +20,20 @@ public class Lexer {
         this.inputStream = inputStream;
         currentChar = null;
         newlineConvention = null;
+        this.maxStringLength = Integer.MAX_VALUE;
+        carriagePosition = new Position(1, 0);
+        initKeywordTokens();
+        initOnlySingleSignTokens();
+        initSingleOrDoubledSignTokens();
+        initOnlyDoubledSignTokens();
+        initOneOrTwoSignsTokens();
+    }
+
+    public Lexer(BufferedInputStream inputStream, int maxStringLength) {
+        this.inputStream = inputStream;
+        currentChar = null;
+        newlineConvention = null;
+        this.maxStringLength = maxStringLength;
         carriagePosition = new Position(1, 0);
         initKeywordTokens();
         initOnlySingleSignTokens();
@@ -149,7 +164,7 @@ public class Lexer {
     }
 
     private boolean tryBuildIdentifierOrKeyword() {
-        if (!Character.isLetter(currentChar) && !currentChar.equals('_')) {
+        if (hasStringEnded(Character.isLetter(currentChar), !currentChar.equals('_'))) {
             return false;
         }
 
@@ -183,13 +198,18 @@ public class Lexer {
         Character previousChar = currentChar;
         nextChar();
 
-        while (!(!previousChar.equals('\\') && currentChar.equals('\"')) && !currentChar.equals((char) (-1))) {
+        while (!hasStringEnded(previousChar.equals('\\'), currentChar.equals('\"'))
+                && !currentChar.equals((char) (-1))
+                && string.length() < maxStringLength) {
             string.append(currentChar);
             previousChar = currentChar;
             nextChar();
         }
 
-        if (!previousChar.equals('\\') && currentChar.equals('\"')) {
+        if (string.length() == maxStringLength && !currentChar.equals((char) (-1))) {
+            token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR);
+        }
+        else if (hasStringEnded(previousChar.equals('\\'), currentChar.equals('\"'))) {
             nextChar();
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING_VALUE);
         }
@@ -198,6 +218,10 @@ public class Lexer {
         }
 
         return true;
+    }
+
+    private boolean hasStringEnded(boolean previousChar, boolean currentChar) {
+        return !previousChar && currentChar;
     }
 
     private boolean tryBuildComment() {
