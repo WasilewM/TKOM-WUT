@@ -184,7 +184,7 @@ public class Lexer {
     }
 
     private boolean tryBuildIdentifierOrKeyword() {
-        if (hasStringEnded(Character.isLetter(currentChar), !currentChar.equals('_'))) {
+        if (!Character.isLetter(currentChar) && !currentChar.equals('_')) {
             return false;
         }
 
@@ -201,7 +201,7 @@ public class Lexer {
             nextChar();
         }
 
-        if (identifier.length() == identifierMaxLength && !currentChar.equals((char) (-1))) {
+        if (identifier.length() == identifierMaxLength && isCurrentCharNotEqualETX()) {
             token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.IDENTIFIER_EXCEEDED_MAXIMUM_LENGTH_ERROR);
         }
         else if (this.keywordTokens.containsKey(identifier.toString())) {
@@ -224,18 +224,18 @@ public class Lexer {
         Character previousChar = currentChar;
         nextChar();
 
-        while (!hasStringEnded(previousChar.equals('\\'), currentChar.equals('\"'))
-                && !currentChar.equals((char) (-1))
+        while (!hasStringEndedCorrectly(previousChar)
+                && isCurrentCharNotEqualETX()
                 && string.length() < stringMaxLength) {
             string.append(currentChar);
             previousChar = currentChar;
             nextChar();
         }
 
-        if (string.length() == stringMaxLength && !currentChar.equals((char) (-1))) {
+        if (string.length() == stringMaxLength && isCurrentCharNotEqualETX()) {
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR);
         }
-        else if (hasStringEnded(previousChar.equals('\\'), currentChar.equals('\"'))) {
+        else if (hasStringEndedCorrectly(previousChar)) {
             nextChar();
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING_VALUE);
         }
@@ -246,8 +246,8 @@ public class Lexer {
         return true;
     }
 
-    private boolean hasStringEnded(boolean previousChar, boolean currentChar) {
-        return !previousChar && currentChar;
+    private boolean hasStringEndedCorrectly(Character previousChar) {
+        return !previousChar.equals('\\') && currentChar.equals('\"');
     }
 
     private boolean tryBuildComment() {
@@ -259,13 +259,17 @@ public class Lexer {
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
 
-        while (!currentChar.equals('\n') && !currentChar.equals((char) (-1))) {
+        while (!currentChar.equals('\n') && isCurrentCharNotEqualETX()) {
             comment.append(currentChar);
             nextChar();
         }
 
         token = new StringToken(comment.toString(), tokenPosition, TokenTypeEnum.COMMENT);
         return true;
+    }
+
+    private boolean isCurrentCharNotEqualETX() {
+        return !currentChar.equals((char) (-1));
     }
 
     private boolean tryBuildOnlySingleSignToken() {
