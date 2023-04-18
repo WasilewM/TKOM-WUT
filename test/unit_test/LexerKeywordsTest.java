@@ -24,30 +24,30 @@ public class LexerKeywordsTest {
         Lexer lex = new Lexer(bufferedInputStream);
 
         Token token = lex.lexToken();
-        assertEquals(testScenarioParams.token().tokenType(), token.getTokenType());
+        assertEquals(testScenarioParams.token().getTokenType(), token.getTokenType());
         assertNull(token.getValue());
-        assertEquals(testScenarioParams.token().lineNumber(), token.getPosition().getLineNumber());
-        assertEquals(testScenarioParams.token().columnNumber(), token.getPosition().getColumnNumber());
+        assertEquals(testScenarioParams.token().getLineNumber(), token.getPosition().getLineNumber());
+        assertEquals(testScenarioParams.token().getColumnNumber(), token.getPosition().getColumnNumber());
     }
 
     static Stream<Arguments> generateKeywordTokensData() {
         return Stream.of(
-                Arguments.of(new SingleTokenTestParams("Int", new SingleTokenDescription(TokenTypeEnum.INT_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("Double", new SingleTokenDescription(TokenTypeEnum.DOUBLE_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("String", new SingleTokenDescription(TokenTypeEnum.STRING_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("Point", new SingleTokenDescription(TokenTypeEnum.POINT_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("Section", new SingleTokenDescription(TokenTypeEnum.SECTION_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("Figure", new SingleTokenDescription(TokenTypeEnum.FIGURE_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("Scene", new SingleTokenDescription(TokenTypeEnum.SCENE_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("Bool", new SingleTokenDescription(TokenTypeEnum.BOOL_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("List", new SingleTokenDescription(TokenTypeEnum.LIST_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("while", new SingleTokenDescription(TokenTypeEnum.WHILE_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("if", new SingleTokenDescription(TokenTypeEnum.IF_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("elseif", new SingleTokenDescription(TokenTypeEnum.ELSE_IF_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("else", new SingleTokenDescription(TokenTypeEnum.ELSE_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("main", new SingleTokenDescription(TokenTypeEnum.MAIN_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("return", new SingleTokenDescription(TokenTypeEnum.RETURN_KEYWORD, null, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("void", new SingleTokenDescription(TokenTypeEnum.VOID_KEYWORD, null, 1, 1)))
+                Arguments.of(new SingleTokenTestParams("Int", new SingleTokenDescription(TokenTypeEnum.INT_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("Double", new SingleTokenDescription(TokenTypeEnum.DOUBLE_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("String", new SingleTokenDescription(TokenTypeEnum.STRING_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("Point", new SingleTokenDescription(TokenTypeEnum.POINT_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("Section", new SingleTokenDescription(TokenTypeEnum.SECTION_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("Figure", new SingleTokenDescription(TokenTypeEnum.FIGURE_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("Scene", new SingleTokenDescription(TokenTypeEnum.SCENE_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("Bool", new SingleTokenDescription(TokenTypeEnum.BOOL_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("List", new SingleTokenDescription(TokenTypeEnum.LIST_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("while", new SingleTokenDescription(TokenTypeEnum.WHILE_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("if", new SingleTokenDescription(TokenTypeEnum.IF_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("elseif", new SingleTokenDescription(TokenTypeEnum.ELSE_IF_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("else", new SingleTokenDescription(TokenTypeEnum.ELSE_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("main", new SingleTokenDescription(TokenTypeEnum.MAIN_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("return", new SingleTokenDescription(TokenTypeEnum.RETURN_KEYWORD, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("void", new SingleTokenDescription(TokenTypeEnum.VOID_KEYWORD, 1, 1)))
         );
     }
 }

@@ -40,10 +40,10 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedInputStream);
 
         Token token = lex.lexToken();
-        assertEquals(testScenarioParams.token().tokenType(), token.getTokenType());
-        assertEquals(testScenarioParams.token().value(), token.getValue());
-        assertEquals(testScenarioParams.token().lineNumber(), token.getPosition().getLineNumber());
-        assertEquals(testScenarioParams.token().columnNumber(), token.getPosition().getColumnNumber());
+        assertEquals(testScenarioParams.token().getTokenType(), token.getTokenType());
+        assertEquals(testScenarioParams.token().getValue(), token.getValue());
+        assertEquals(testScenarioParams.token().getLineNumber(), token.getPosition().getLineNumber());
+        assertEquals(testScenarioParams.token().getColumnNumber(), token.getPosition().getColumnNumber());
     }
 
     static Stream<Arguments> generateIntTokensData() {
