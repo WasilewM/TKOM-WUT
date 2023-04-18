@@ -190,8 +190,8 @@ public class Lexer {
         }
 
         if (!previousChar.equals('\\') && currentChar.equals('\"')) {
+            nextChar();
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING_VALUE);
-
         }
         else {
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.UNCLOSED_QUOTES_ERROR);

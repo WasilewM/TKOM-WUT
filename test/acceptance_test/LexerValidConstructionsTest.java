@@ -86,6 +86,118 @@ public class LexerValidConstructionsTest {
     }
 
     @Test
+    void lexDoubleVariableAssignmentTokens() {
+        InputStream inputStream = new ByteArrayInputStream("Double d = (4.04 / 29.012);".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+
+        Token token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.DOUBLE_KEYWORD);
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.IDENTIFIER);
+        assertEquals("d", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(8, token.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.ASSIGNMENT_OPERATOR);
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(10, token.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.LEFT_BRACKET);
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(12, token.getPosition().getColumnNumber());
+
+        Token valueToken = lex.lexToken();
+        assertEquals(DoubleToken.class, valueToken.getClass());
+        assertEquals(valueToken.getTokenType(), TokenTypeEnum.DOUBLE_VALUE);
+        assertEquals(4.04, valueToken.getValue());
+        assertEquals(1, valueToken.getPosition().getLineNumber());
+        assertEquals(13, valueToken.getPosition().getColumnNumber());
+
+        Token subtractionOperatorToken = lex.lexToken();
+        assertEquals(StringToken.class, subtractionOperatorToken.getClass());
+        assertEquals(subtractionOperatorToken.getTokenType(), TokenTypeEnum.DIVISION_OPERATOR);
+        assertNull(subtractionOperatorToken.getValue());
+        assertEquals(1, subtractionOperatorToken.getPosition().getLineNumber());
+        assertEquals(18, subtractionOperatorToken.getPosition().getColumnNumber());
+
+        Token secondValueToken = lex.lexToken();
+        assertEquals(DoubleToken.class, secondValueToken.getClass());
+        assertEquals(secondValueToken.getTokenType(), TokenTypeEnum.DOUBLE_VALUE);
+        assertEquals(29.012, secondValueToken.getValue());
+        assertEquals(1, secondValueToken.getPosition().getLineNumber());
+        assertEquals(20, secondValueToken.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.RIGHT_BRACKET);
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(26, token.getPosition().getColumnNumber());
+
+        Token semicolonToken = lex.lexToken();
+        assertEquals(StringToken.class, semicolonToken.getClass());
+        assertEquals(semicolonToken.getTokenType(), TokenTypeEnum.SEMICOLON);
+        assertNull(semicolonToken.getValue());
+        assertEquals(1, semicolonToken.getPosition().getLineNumber());
+        assertEquals(27, semicolonToken.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexStringVariableAssignmentTokens() {
+        InputStream inputStream = new ByteArrayInputStream("String my_text = \"4 - 9 abcd\";".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+
+        Token token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.STRING_KEYWORD);
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.IDENTIFIER);
+        assertEquals("my_text", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(8, token.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.ASSIGNMENT_OPERATOR);
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(16, token.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.STRING_VALUE);
+        assertEquals("4 - 9 abcd", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(18, token.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals(token.getTokenType(), TokenTypeEnum.SEMICOLON);
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(30, token.getPosition().getColumnNumber());
+    }
+
+    @Test
     void lexTwoIntsAdditionAndComparisonWithThirdInt() {
         InputStream inputStream = new ByteArrayInputStream("4 + 3 >= 81".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
