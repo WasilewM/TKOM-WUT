@@ -63,10 +63,9 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
 ### Plik konfiguracyjny
 Konfiguracja parametrów zapisana będzie w pliku `config.yaml`. Zawartość pliku będzie następująca:
 ```
-IntMin: 2147483646
-IntMax: -2147483647
-DoubleMin: 21474836460000000000
-DoubleMax: -21474836470000000000
+IntMax: 2147483646
+DoubleMax: 21474836460000000000
+StringMaxLength: 1000
 RecursionMaxDepth: 1000
 ```
 ### Tokeny
@@ -141,10 +140,13 @@ Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlateg
 
 
 #### Tokeny błędów rozpoznanych przez lekser
-| Błąd                                                     | Nazwa tokenu          |
-|----------------------------------------------------------|-----------------------|
-| Nieznany znak                                            | UNKNOWN_CHAR_ERROR    |
-| Niedomknięty cudzysłów w wartości zmiennej typu `String` | UNCLOSED_QUOTES_ERROR |
+| Błąd                                                     | Nazwa tokenu                         |
+|----------------------------------------------------------|--------------------------------------|
+| Nieznany znak                                            | UNKNOWN_CHAR_ERROR                   |
+| Niedomknięty cudzysłów w wartości zmiennej typu `String` | UNCLOSED_QUOTES_ERROR                |
+| Długość zmiennej `String` przekracza ustaloną granicę    | STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR |
+| Zmienna typu `Int` przekroczyła ustalony zakres          | INT_EXCEEDED_RANGE_ERROR             |
+| Zmienna typu `Double` przekroczyła ustalony zakres       | DOUBLE_EXCEEDED_RANGE_ERROR          |
 
 ## Definicje wbudowanych typów obiektowych
 Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.  

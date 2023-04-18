@@ -5,9 +5,10 @@ import java.util.HashMap;
 
 public class Lexer {
     private final BufferedInputStream inputStream;
-    private Character currentChar;
-    private final String newlineConvention;
-    private final int maxStringLength;
+    private Character currentChar = null;
+    private int stringMaxLength = 1000;
+    private int maxInt = Integer.MAX_VALUE;
+    private double maxDouble = Double.MAX_VALUE;
     private final Position carriagePosition;
     private Token token;
     private final HashMap<String, TokenTypeEnum> keywordTokens = new HashMap<>();
@@ -18,22 +19,6 @@ public class Lexer {
 
     public Lexer(BufferedInputStream inputStream) {
         this.inputStream = inputStream;
-        currentChar = null;
-        newlineConvention = null;
-        this.maxStringLength = Integer.MAX_VALUE;
-        carriagePosition = new Position(1, 0);
-        initKeywordTokens();
-        initOnlySingleSignTokens();
-        initSingleOrDoubledSignTokens();
-        initOnlyDoubledSignTokens();
-        initOneOrTwoSignsTokens();
-    }
-
-    public Lexer(BufferedInputStream inputStream, int maxStringLength) {
-        this.inputStream = inputStream;
-        currentChar = null;
-        newlineConvention = null;
-        this.maxStringLength = maxStringLength;
         carriagePosition = new Position(1, 0);
         initKeywordTokens();
         initOnlySingleSignTokens();
@@ -96,16 +81,24 @@ public class Lexer {
         oneOrTwoSingsTokens.add(new OneOrTwoSignsTokenType('!', TokenTypeEnum.NEGATION_OPERATOR, '=', TokenTypeEnum.NOT_EQUAL_OPERATOR));
     }
 
+    public void setStringMaxLength(int stringMaxLength) {
+        this.stringMaxLength = stringMaxLength;
+    }
+
+    public void setMaxInt(int maxInt) {
+        this.maxInt = maxInt;
+    }
+
+    public void setMaxDouble(double maxDouble) {
+        this.maxDouble = maxDouble;
+    }
+
     public BufferedInputStream getInputStream() {
         return inputStream;
     }
 
     public Character getCurrentChar() {
         return currentChar;
-    }
-
-    public String getNewlineConvention() {
-        return newlineConvention;
     }
 
     public Token lexToken() {
@@ -139,7 +132,18 @@ public class Lexer {
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
         while (Character.isDigit(currentChar)) {
-            value = value * 10 + (currentChar - '0');
+            try {
+                value = Math.multiplyExact(value, 10);
+                value = Math.addExact(value, currentChar - '0');
+
+                if (value > maxInt) {
+                    throw new ArithmeticException(Integer.toString(value));
+                }
+            }
+            catch (ArithmeticException e) {
+                token = new StringToken(Integer.toString(value), tokenPosition, TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR);
+                return true;
+            }
             nextChar();
         }
 
@@ -149,9 +153,20 @@ public class Lexer {
             int decimalValue = 0;
             int digitsAfterDecimalPoint = 0;
             while (Character.isDigit(currentChar)) {
-                decimalValue = decimalValue * 10 + (currentChar - '0');
-                digitsAfterDecimalPoint++;
-                nextChar();
+                try {
+                    decimalValue = Math.multiplyExact(decimalValue, 10);
+                    decimalValue = Math.addExact(decimalValue, currentChar - '0');
+                    digitsAfterDecimalPoint++;
+
+                    if (value > maxDouble) {
+                        throw new ArithmeticException(Double.toString(value));
+                    }
+                    nextChar();
+                }
+                catch (ArithmeticException e) {
+                    token = new StringToken(Double.toString(value), tokenPosition, TokenTypeEnum.DOUBLE_EXCEEDED_RANGE_ERROR);
+                    return true;
+                }
             }
 
             double doubleValue = value + (decimalValue / Math.pow(10, digitsAfterDecimalPoint));
@@ -200,13 +215,13 @@ public class Lexer {
 
         while (!hasStringEnded(previousChar.equals('\\'), currentChar.equals('\"'))
                 && !currentChar.equals((char) (-1))
-                && string.length() < maxStringLength) {
+                && string.length() < stringMaxLength) {
             string.append(currentChar);
             previousChar = currentChar;
             nextChar();
         }
 
-        if (string.length() == maxStringLength && !currentChar.equals((char) (-1))) {
+        if (string.length() == stringMaxLength && !currentChar.equals((char) (-1))) {
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR);
         }
         else if (hasStringEnded(previousChar.equals('\\'), currentChar.equals('\"'))) {

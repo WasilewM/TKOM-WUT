@@ -15,7 +15,6 @@ public class LexerTest {
 
         assertEquals(bufferedInputStream, lex.getInputStream());
         assertNull(lex.getCurrentChar());
-        assertNull(lex.getNewlineConvention());
     }
 
     @Test

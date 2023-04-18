@@ -83,16 +83,63 @@ public class LexerDataTypesTest {
     }
 
     @Test
-    void lexIdentifierLongerThanAllowedLength() {
+    void lexStringLongerThanAllowedLength() {
         InputStream inputStream = new ByteArrayInputStream("\"thisIsSomeLongLongString\"".getBytes());
-        int maxStringLength = 10;
+        int stringMaxLength = 10;
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream, maxStringLength);
+        Lexer lex = new Lexer(bufferedInputStream);
+        lex.setStringMaxLength(stringMaxLength);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
         assertEquals("thisIsSome", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexIntGreaterMaxInt() {
+        InputStream inputStream = new ByteArrayInputStream("2147483649".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("2147483640", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexIntGreaterThanAllowed() {
+        InputStream inputStream = new ByteArrayInputStream("11".getBytes());
+        int maxInt = 10;
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        lex.setMaxInt(maxInt);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("11", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexDoubleGreaterThanAllowed() {
+        InputStream inputStream = new ByteArrayInputStream("11.0".getBytes());
+        double maxDouble = 10.0;
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        lex.setMaxDouble(maxDouble);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.DOUBLE_EXCEEDED_RANGE_ERROR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("11.0", token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }
