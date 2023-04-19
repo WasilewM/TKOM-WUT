@@ -1,10 +1,10 @@
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Lexer {
-    private final BufferedInputStream inputStream;
+    private final BufferedReader bufferedReader;
     private Character currentChar = null;
     private int stringMaxLength = 1000;
     private int identifierMaxLength = 1000;
@@ -18,8 +18,8 @@ public class Lexer {
     private final HashMap<Character, DoubledSignTokenType> onlyDoubledSingTokens = new HashMap<>();
     private final ArrayList<OneOrTwoSignsTokenType> oneOrTwoSingsTokens = new ArrayList<>();
 
-    public Lexer(BufferedInputStream inputStream) {
-        this.inputStream = inputStream;
+    public Lexer(BufferedReader bufferedReader) {
+        this.bufferedReader = bufferedReader;
         carriagePosition = new Position(1, 0);
         initKeywordTokens();
         initOnlySingleSignTokens();
@@ -95,14 +95,6 @@ public class Lexer {
 
     public void setMaxDouble(double maxDouble) {
         this.maxDouble = maxDouble;
-    }
-
-    public BufferedInputStream getInputStream() {
-        return inputStream;
-    }
-
-    public Character getCurrentChar() {
-        return currentChar;
     }
 
     public Token lexToken() {
@@ -231,7 +223,15 @@ public class Lexer {
         while (!hasStringEndedCorrectly(previousChar)
                 && isCurrentCharNotEqualETX()
                 && string.length() < stringMaxLength) {
-            string.append(currentChar);
+
+            if (currentChar.equals('\\')) {
+                if (previousChar.equals('\\')) {
+                    string.append(currentChar);
+                }
+            }
+            else {
+                string.append(currentChar);
+            }
             previousChar = currentChar;
             nextChar();
         }
@@ -372,7 +372,7 @@ public class Lexer {
     
     private void nextChar() {
         try {
-            currentChar = (char) inputStream.read();
+            currentChar = (char) bufferedReader.read();
             updateCarriagePosition();
         } catch (IOException ignored) { }
     }

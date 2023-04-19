@@ -1,8 +1,6 @@
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -11,8 +9,9 @@ public class LexerInvalidConstructionsTest {
     @Test
     void lexErrorTokenWhenOrOperatorIsMalformedAndIsFollowedByValidMultiplicationOperator() {
         InputStream inputStream = new ByteArrayInputStream("|*".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token errorToken = lex.lexToken();
 
         assertEquals(TokenTypeEnum.UNKNOWN_CHAR_ERROR, errorToken.getTokenType());
@@ -32,8 +31,9 @@ public class LexerInvalidConstructionsTest {
     @Test
     void lexErrorTokenWhenAndAndOperatorIsMalformedAndIsFollowedByValidSubtractionOperator() {
         InputStream inputStream = new ByteArrayInputStream("&-".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token errorToken = lex.lexToken();
 
         assertEquals(TokenTypeEnum.UNKNOWN_CHAR_ERROR, errorToken.getTokenType());

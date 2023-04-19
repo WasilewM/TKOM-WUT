@@ -3,9 +3,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,8 +35,9 @@ public class LexerDataTypesTest {
 
     private static void performTest(SingleTokenTestParams testScenarioParams) {
         InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
 
         Token token = lex.lexToken();
         assertEquals(testScenarioParams.token().getTokenType(), token.getTokenType());
@@ -85,9 +84,10 @@ public class LexerDataTypesTest {
     @Test
     void lexStringLongerThanAllowedLength() {
         InputStream inputStream = new ByteArrayInputStream("\"thisIsSomeLongLongString\"".getBytes());
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         int stringMaxLength = 10;
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
         lex.setStringMaxLength(stringMaxLength);
         Token token = lex.lexToken();
 
@@ -99,10 +99,56 @@ public class LexerDataTypesTest {
     }
 
     @Test
+    void lexStringWithEscaping() {
+        InputStream inputStream = new ByteArrayInputStream("\"t\\\"_S2\"".getBytes());
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.STRING_VALUE, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("t\"_S2", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexStringWhenEscapingStartsAtTheEndOfThFile() {
+        InputStream inputStream = new ByteArrayInputStream("\"t\\\"".getBytes());
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.UNCLOSED_QUOTES_ERROR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("t\"", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexLongStringWithEscaping() {
+        InputStream inputStream = new ByteArrayInputStream("\"thisIsSome\\\"String\\\\WithEscaping\"".getBytes());
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.STRING_VALUE, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("thisIsSome\"String\\WithEscaping", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
     void lexIntGreaterMaxInt() {
         InputStream inputStream = new ByteArrayInputStream("2147483649".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
@@ -115,8 +161,9 @@ public class LexerDataTypesTest {
     @Test
     void lexIntGreaterMaxIntFollowedByValidInt() {
         InputStream inputStream = new ByteArrayInputStream("21474836491213".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
@@ -136,9 +183,10 @@ public class LexerDataTypesTest {
     @Test
     void lexIntGreaterThanAllowed() {
         InputStream inputStream = new ByteArrayInputStream("11".getBytes());
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         int maxInt = 10;
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
         lex.setMaxInt(maxInt);
         Token token = lex.lexToken();
 
@@ -152,9 +200,10 @@ public class LexerDataTypesTest {
     @Test
     void lexDoubleGreaterThanAllowed() {
         InputStream inputStream = new ByteArrayInputStream("10.1".getBytes());
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         double maxDouble = 10.0;
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
         lex.setMaxDouble(maxDouble);
         Token token = lex.lexToken();
 

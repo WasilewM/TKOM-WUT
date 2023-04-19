@@ -1,27 +1,16 @@
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LexerTest {
     @Test
-    void lexerInit() {
-        InputStream inputStream = new ByteArrayInputStream("".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-
-        assertEquals(bufferedInputStream, lex.getInputStream());
-        assertNull(lex.getCurrentChar());
-    }
-
-    @Test
     void lexSingleLetterIdentifier() {
         InputStream inputStream = new ByteArrayInputStream("a".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
@@ -34,8 +23,9 @@ public class LexerTest {
     @Test
     void lexSingleLetterAndSingleDigitIdentifier() {
         InputStream inputStream = new ByteArrayInputStream("a4".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
@@ -48,8 +38,9 @@ public class LexerTest {
     @Test
     void lexMultipleLettersAndDigitsIdentifier() {
         InputStream inputStream = new ByteArrayInputStream("a4b6_c7".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
@@ -62,8 +53,9 @@ public class LexerTest {
     @Test
     void lexIdentifierWithUnderscores() {
         InputStream inputStream = new ByteArrayInputStream("hello_There_Identifier".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
@@ -76,8 +68,9 @@ public class LexerTest {
     @Test
     void lexIdentifierAfterWhitespacesAndNewlines() {
         InputStream inputStream = new ByteArrayInputStream("\n\n\n   \n\n\n hello_There_Identifier\n".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
@@ -91,8 +84,9 @@ public class LexerTest {
     void lexIdentifierLongerThanAllowedLength() {
         InputStream inputStream = new ByteArrayInputStream("thisIsSomeVeryLongIdentifier_12345678".getBytes());
         int identifierMaxLength = 14;
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         lex.setIdentifierMaxLength(identifierMaxLength);
         Token token = lex.lexToken();
 
@@ -106,8 +100,9 @@ public class LexerTest {
     @Test
     void lexIdentifierStartingWithKeyword() {
         InputStream inputStream = new ByteArrayInputStream("Integer".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
@@ -120,8 +115,9 @@ public class LexerTest {
     @Test
     void lexMainIdentifier() {
         InputStream inputStream = new ByteArrayInputStream("main".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
@@ -135,8 +131,9 @@ public class LexerTest {
     @Test
     void lexComment() {
         InputStream inputStream = new ByteArrayInputStream("#hello there from comment".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.COMMENT, token.getTokenType());
@@ -149,8 +146,9 @@ public class LexerTest {
     @Test
     void lexCommentAfterWhitespacesAndNewlines() {
         InputStream inputStream = new ByteArrayInputStream("\n \n  \n\n #hello there from comment".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.COMMENT, token.getTokenType());
@@ -163,8 +161,9 @@ public class LexerTest {
     @Test
     void lexErrorWhenInvalidCharacter() {
         InputStream inputStream = new ByteArrayInputStream("|".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.UNKNOWN_CHAR_ERROR, token.getTokenType());

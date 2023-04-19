@@ -3,9 +3,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,8 +18,9 @@ public class LexerOperatorsTest {
 
     private static void performTest(SingleTokenTestParams testScenarioParams) {
         InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
 
         Token token = lex.lexToken();
         assertEquals(testScenarioParams.token().getTokenType(), token.getTokenType());
@@ -54,8 +53,9 @@ public class LexerOperatorsTest {
     @Test
     void lexDivisionOperatorWhenDivisionFollowedByOtherChar() {
         InputStream inputStream = new ByteArrayInputStream("/a".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.DIVISION_OPERATOR, token.getTokenType());
@@ -68,8 +68,9 @@ public class LexerOperatorsTest {
     @Test
     void lexTokenWhenNotEqualOperatorIsMalformedButNegationOperatorIsValid() {
         InputStream inputStream = new ByteArrayInputStream("!-".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.NEGATION_OPERATOR, token.getTokenType());
