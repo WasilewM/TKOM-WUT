@@ -4,7 +4,7 @@ import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LexerInvalidConstructionsTest {
+public class LexerMalformedOperatorsTest {
     @Test
     void lexErrorTokenWhenOrOperatorIsMalformedAndIsFollowedByValidMultiplicationOperator() {
         InputStream inputStream = new ByteArrayInputStream("|*".getBytes());

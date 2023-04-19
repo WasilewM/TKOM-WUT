@@ -28,6 +28,12 @@ public class LexerDataTypesTest {
     }
 
     @ParameterizedTest
+    @MethodSource("generateStringWithEscapingTokensData")
+    void lexStringWithEscaping(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
+    }
+
+    @ParameterizedTest
     @MethodSource("generateBoolTokensData")
     void lexBoolValue(SingleTokenTestParams testScenarioParams) {
         performTest(testScenarioParams);
@@ -74,6 +80,13 @@ public class LexerDataTypesTest {
         );
     }
 
+    static Stream<Arguments> generateStringWithEscapingTokensData() {
+        return Stream.of(
+                Arguments.of(new SingleTokenTestParams("\"t\\\"_S2\"", new SingleTokenDescription(TokenTypeEnum.STRING_VALUE, "t\"_S2", 1, 1))),
+                Arguments.of(new SingleTokenTestParams("\"t\\\"", new SingleTokenDescription(TokenTypeEnum.UNCLOSED_QUOTES_ERROR, "t\"", 1, 1)))
+        );
+    }
+
     static Stream<Arguments> generateBoolTokensData() {
         return Stream.of(
                 Arguments.of(new SingleTokenTestParams("True", new SingleTokenDescription(TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD, null, 1, 1))),
@@ -94,36 +107,6 @@ public class LexerDataTypesTest {
         assertEquals(TokenTypeEnum.STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
         assertEquals("thisIsSome", token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
-    }
-
-    @Test
-    void lexStringWithEscaping() {
-        InputStream inputStream = new ByteArrayInputStream("\"t\\\"_S2\"".getBytes());
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        Lexer lex = new Lexer(bufferedReader);
-        StringToken token = (StringToken) lex.lexToken();
-
-        assertEquals(TokenTypeEnum.STRING_VALUE, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertEquals("t\"_S2", token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
-    }
-
-    @Test
-    void lexStringWhenEscapingStartsAtTheEndOfThFile() {
-        InputStream inputStream = new ByteArrayInputStream("\"t\\\"".getBytes());
-        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        Lexer lex = new Lexer(bufferedReader);
-        StringToken token = (StringToken) lex.lexToken();
-
-        assertEquals(TokenTypeEnum.UNCLOSED_QUOTES_ERROR, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertEquals("t\"", token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }
