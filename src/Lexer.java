@@ -278,13 +278,11 @@ public class Lexer {
     }
 
     private boolean tryBuildOnlySingleSignToken() {
-        for (HashMap.Entry<Character, TokenTypeEnum> s : onlySingleSignTokens.entrySet()) {
-            if (tryBuildSingleSign(s.getKey(), s.getValue())) {
-                return true;
-            }
+        if (!onlySingleSignTokens.containsKey(currentChar)) {
+            return false;
         }
 
-        return false;
+        return tryBuildSingleSign(currentChar, onlySingleSignTokens.get(currentChar));
     }
 
     private boolean tryBuildSingleSign(Character sign, TokenTypeEnum tokenType) {
@@ -299,23 +297,28 @@ public class Lexer {
     }
 
     private boolean tryBuildSingleOrDoubledSignToken() {
-        for (HashMap.Entry<Character, DoubledSignTokenType> s : singleOrDoubledSignTokens.entrySet()) {
-            if (tryBuildOneOrTwoSign(s.getKey(), s.getValue().getTokenTypeWhenSingleSign(), s.getKey(), s.getValue().getTokenTypeWhenDoubledSign())) {
-                return true;
-            }
+        if (!singleOrDoubledSignTokens.containsKey(currentChar)) {
+            return false;
         }
 
-        return false;
+        return tryBuildOneOrTwoSign(
+                currentChar,
+                singleOrDoubledSignTokens.get(currentChar).getTokenTypeWhenSingleSign(),
+                currentChar,
+                singleOrDoubledSignTokens.get(currentChar).getTokenTypeWhenDoubledSign()
+        );
     }
 
     private boolean tryBuildOnlyDoubledSignToken() {
-        for (HashMap.Entry<Character, DoubledSignTokenType> s : onlyDoubledSingTokens.entrySet()) {
-            if (tryOnlyDoubledSign(s.getKey(), s.getValue().getTokenTypeWhenSingleSign(), s.getValue().getTokenTypeWhenDoubledSign())) {
-                return true;
-            }
+        if (!onlyDoubledSingTokens.containsKey(currentChar)) {
+            return false;
         }
 
-        return false;
+        return tryOnlyDoubledSign(
+                currentChar,
+                onlyDoubledSingTokens.get(currentChar).getTokenTypeWhenSingleSign(),
+                onlyDoubledSingTokens.get(currentChar).getTokenTypeWhenDoubledSign()
+        );
     }
 
     private boolean tryOnlyDoubledSign(Character sign, TokenTypeEnum tokenTypeForSingleSign, TokenTypeEnum tokenTypeForDoubledSign) {
