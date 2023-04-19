@@ -7,7 +7,6 @@ import java.io.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class LexerOperatorsTest {
     @ParameterizedTest
@@ -24,7 +23,6 @@ public class LexerOperatorsTest {
 
         Token token = lex.lexToken();
         assertEquals(testScenarioParams.token().getTokenType(), token.getTokenType());
-        assertNull(token.getValue());
         assertEquals(testScenarioParams.token().getLineNumber(), token.getPosition().getLineNumber());
         assertEquals(testScenarioParams.token().getColumnNumber(), token.getPosition().getColumnNumber());
     }
@@ -59,8 +57,7 @@ public class LexerOperatorsTest {
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.DIVISION_OPERATOR, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertNull(token.getValue());
+        assertEquals(Token.class, token.getClass());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }
@@ -74,16 +71,14 @@ public class LexerOperatorsTest {
         Token token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.NEGATION_OPERATOR, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertNull(token.getValue());
+        assertEquals(Token.class, token.getClass());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
 
         token = lex.lexToken();
 
         assertEquals(TokenTypeEnum.SUBTRACTION_OPERATOR, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertNull(token.getValue());
+        assertEquals(Token.class, token.getClass());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(2, token.getPosition().getColumnNumber());
     }

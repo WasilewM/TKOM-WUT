@@ -1,5 +1,12 @@
 public class DoubleToken extends Token {
+    private final Double value;
     public DoubleToken(Double value, Position position) {
-        super(value, position, TokenTypeEnum.DOUBLE_VALUE);
+        super(position, TokenTypeEnum.DOUBLE_VALUE);
+        this.value = value;
+    }
+
+    @Override
+    public Double getValue() {
+        return value;
     }
 }

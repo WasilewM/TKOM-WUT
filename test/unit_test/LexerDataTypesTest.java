@@ -89,7 +89,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedReader);
         int stringMaxLength = 10;
         lex.setStringMaxLength(stringMaxLength);
-        Token token = lex.lexToken();
+        StringToken token = (StringToken) lex.lexToken();
 
         assertEquals(TokenTypeEnum.STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
@@ -104,7 +104,7 @@ public class LexerDataTypesTest {
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Lexer lex = new Lexer(bufferedReader);
-        Token token = lex.lexToken();
+        StringToken token = (StringToken) lex.lexToken();
 
         assertEquals(TokenTypeEnum.STRING_VALUE, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
@@ -119,7 +119,7 @@ public class LexerDataTypesTest {
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Lexer lex = new Lexer(bufferedReader);
-        Token token = lex.lexToken();
+        StringToken token = (StringToken) lex.lexToken();
 
         assertEquals(TokenTypeEnum.UNCLOSED_QUOTES_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
@@ -134,7 +134,7 @@ public class LexerDataTypesTest {
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Lexer lex = new Lexer(bufferedReader);
-        Token token = lex.lexToken();
+        StringToken token = (StringToken) lex.lexToken();
 
         assertEquals(TokenTypeEnum.STRING_VALUE, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
@@ -149,7 +149,7 @@ public class LexerDataTypesTest {
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Lexer lex = new Lexer(bufferedReader);
-        Token token = lex.lexToken();
+        StringToken token = (StringToken) lex.lexToken();
 
         assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
@@ -164,20 +164,20 @@ public class LexerDataTypesTest {
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Lexer lex = new Lexer(bufferedReader);
-        Token token = lex.lexToken();
+        StringToken stringToken = (StringToken) lex.lexToken();
 
-        assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertEquals("214748364", token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(1, token.getPosition().getColumnNumber());
+        assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, stringToken.getTokenType());
+        assertEquals(StringToken.class, stringToken.getClass());
+        assertEquals("214748364", stringToken.getValue());
+        assertEquals(1, stringToken.getPosition().getLineNumber());
+        assertEquals(1, stringToken.getPosition().getColumnNumber());
 
-        token = lex.lexToken();
-        assertEquals(TokenTypeEnum.INT_VALUE, token.getTokenType());
-        assertEquals(IntegerToken.class, token.getClass());
-        assertEquals(91213, token.getValue());
-        assertEquals(1, token.getPosition().getLineNumber());
-        assertEquals(10, token.getPosition().getColumnNumber());
+        IntegerToken intToken = (IntegerToken) lex.lexToken();
+        assertEquals(TokenTypeEnum.INT_VALUE, intToken.getTokenType());
+        assertEquals(IntegerToken.class, intToken.getClass());
+        assertEquals(91213, intToken.getValue());
+        assertEquals(1, intToken.getPosition().getLineNumber());
+        assertEquals(10, intToken.getPosition().getColumnNumber());
     }
 
     @Test
@@ -188,7 +188,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedReader);
         int maxInt = 10;
         lex.setMaxInt(maxInt);
-        Token token = lex.lexToken();
+        StringToken token = (StringToken) lex.lexToken();
 
         assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
@@ -205,7 +205,7 @@ public class LexerDataTypesTest {
         Lexer lex = new Lexer(bufferedReader);
         double maxDouble = 10.0;
         lex.setMaxDouble(maxDouble);
-        Token token = lex.lexToken();
+        StringToken token = (StringToken) lex.lexToken();
 
         assertEquals(TokenTypeEnum.DOUBLE_EXCEEDED_RANGE_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());

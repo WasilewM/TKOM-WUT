@@ -201,7 +201,7 @@ public class Lexer {
             token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.IDENTIFIER_EXCEEDED_MAXIMUM_LENGTH_ERROR);
         }
         else if (this.keywordTokens.containsKey(identifier.toString())) {
-            token = new StringToken(null, tokenPosition, this.keywordTokens.get(identifier.toString()));
+            token = new Token(tokenPosition, this.keywordTokens.get(identifier.toString()));
         }
         else {
             token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.IDENTIFIER);
@@ -291,7 +291,7 @@ public class Lexer {
 
         Position tokenPosition = new Position(carriagePosition);
         nextChar();
-        token = new StringToken(null, tokenPosition, tokenType);
+        token = new Token(tokenPosition, tokenType);
         return true;
     }
 
@@ -332,7 +332,7 @@ public class Lexer {
 
         if (currentChar.equals(sign)) {
             nextChar();
-            token = new StringToken(null, tokenPosition, tokenTypeForDoubledSign);
+            token = new Token(tokenPosition, tokenTypeForDoubledSign);
         }
         else {
             token = new StringToken(foundSign.toString(), tokenPosition, tokenTypeForSingleSign);
@@ -361,10 +361,10 @@ public class Lexer {
 
         if (currentChar.equals(secondSign)) {
             nextChar();
-            token = new StringToken(null, tokenPosition, tokenTypeWhenTwoSigns);
+            token = new Token(tokenPosition, tokenTypeWhenTwoSigns);
         }
         else {
-            token = new StringToken(null, tokenPosition, tokenTypeWhenOneSign);
+            token = new Token(tokenPosition, tokenTypeWhenOneSign);
         }
 
         return true;
