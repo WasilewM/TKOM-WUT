@@ -44,7 +44,6 @@ public class Lexer {
         keywordTokens.put("if", TokenTypeEnum.IF_KEYWORD);
         keywordTokens.put("elseif", TokenTypeEnum.ELSE_IF_KEYWORD);
         keywordTokens.put("else", TokenTypeEnum.ELSE_KEYWORD);
-        keywordTokens.put("main", TokenTypeEnum.MAIN_KEYWORD);
         keywordTokens.put("return", TokenTypeEnum.RETURN_KEYWORD);
         keywordTokens.put("void", TokenTypeEnum.VOID_KEYWORD);
     }

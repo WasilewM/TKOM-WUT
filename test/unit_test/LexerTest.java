@@ -118,6 +118,21 @@ public class LexerTest {
     }
 
     @Test
+    void lexMainIdentifier() {
+        InputStream inputStream = new ByteArrayInputStream("main".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.IDENTIFIER, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("main", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+
+    @Test
     void lexComment() {
         InputStream inputStream = new ByteArrayInputStream("#hello there from comment".getBytes());
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);

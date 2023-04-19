@@ -90,7 +90,6 @@ W projekcie tokeny są reprezentowane przez `TokenTypeEnum`.
 | if             | IF_KEYWORD               |
 | elseif         | ELSE_IF_KEYWORD          |
 | else           | ELSE_KEYWORD             |
-| main           | MAIN_KEYWORD             |
 | return         | RETURN_KEYWORD           |
 | void           | VOID_KEYWORD             |
 

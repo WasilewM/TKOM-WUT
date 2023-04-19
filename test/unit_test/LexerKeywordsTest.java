@@ -45,7 +45,6 @@ public class LexerKeywordsTest {
                 Arguments.of(new SingleTokenTestParams("if", new SingleTokenDescription(TokenTypeEnum.IF_KEYWORD, 1, 1))),
                 Arguments.of(new SingleTokenTestParams("elseif", new SingleTokenDescription(TokenTypeEnum.ELSE_IF_KEYWORD, 1, 1))),
                 Arguments.of(new SingleTokenTestParams("else", new SingleTokenDescription(TokenTypeEnum.ELSE_KEYWORD, 1, 1))),
-                Arguments.of(new SingleTokenTestParams("main", new SingleTokenDescription(TokenTypeEnum.MAIN_KEYWORD, 1, 1))),
                 Arguments.of(new SingleTokenTestParams("return", new SingleTokenDescription(TokenTypeEnum.RETURN_KEYWORD, 1, 1))),
                 Arguments.of(new SingleTokenTestParams("void", new SingleTokenDescription(TokenTypeEnum.VOID_KEYWORD, 1, 1)))
         );
