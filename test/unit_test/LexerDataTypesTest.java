@@ -107,9 +107,30 @@ public class LexerDataTypesTest {
 
         assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
-        assertEquals("2147483640", token.getValue());
+        assertEquals("214748364", token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexIntGreaterMaxIntFollowedByValidInt() {
+        InputStream inputStream = new ByteArrayInputStream("21474836491213".getBytes());
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        Lexer lex = new Lexer(bufferedInputStream);
+        Token token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("214748364", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+        assertEquals(TokenTypeEnum.INT_VALUE, token.getTokenType());
+        assertEquals(IntegerToken.class, token.getClass());
+        assertEquals(91213, token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(10, token.getPosition().getColumnNumber());
     }
 
     @Test
@@ -123,14 +144,14 @@ public class LexerDataTypesTest {
 
         assertEquals(TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
-        assertEquals("11", token.getValue());
+        assertEquals("1", token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }
 
     @Test
     void lexDoubleGreaterThanAllowed() {
-        InputStream inputStream = new ByteArrayInputStream("11.0".getBytes());
+        InputStream inputStream = new ByteArrayInputStream("10.1".getBytes());
         double maxDouble = 10.0;
         BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
         Lexer lex = new Lexer(bufferedInputStream);
@@ -139,7 +160,7 @@ public class LexerDataTypesTest {
 
         assertEquals(TokenTypeEnum.DOUBLE_EXCEEDED_RANGE_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
-        assertEquals("11.0", token.getValue());
+        assertEquals("10.0", token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }

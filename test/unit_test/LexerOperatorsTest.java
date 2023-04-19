@@ -77,5 +77,13 @@ public class LexerOperatorsTest {
         assertNull(token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
+
+        token = lex.lexToken();
+
+        assertEquals(TokenTypeEnum.SUBTRACTION_OPERATOR, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertNull(token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(2, token.getPosition().getColumnNumber());
     }
 }

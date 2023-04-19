@@ -138,10 +138,13 @@ public class Lexer {
         nextChar();
         while (Character.isDigit(currentChar)) {
             try {
-                value = Math.multiplyExact(value, 10);
-                value = Math.addExact(value, currentChar - '0');
-
-                if (value > maxInt) {
+                int currentDigit = currentChar - '0';
+                if (Math.multiplyExact(value, 10) <= maxInt
+                    && Math.addExact(Math.multiplyExact(value, 10), currentDigit) <= maxInt) {
+                    value = Math.multiplyExact(value, 10);
+                    value = Math.addExact(value, currentDigit);
+                }
+                else {
                     throw new ArithmeticException(Integer.toString(value));
                 }
             }
@@ -159,19 +162,21 @@ public class Lexer {
             int digitsAfterDecimalPoint = 0;
             while (Character.isDigit(currentChar)) {
                 try {
-                    decimalValue = Math.multiplyExact(decimalValue, 10);
-                    decimalValue = Math.addExact(decimalValue, currentChar - '0');
-                    digitsAfterDecimalPoint++;
-
-                    if (value > maxDouble) {
-                        throw new ArithmeticException(Double.toString(value));
+                    int currentDigit = currentChar - '0';
+                    if (value + ((decimalValue * 10 + currentDigit) / Math.pow(10, digitsAfterDecimalPoint + 1)) <= maxDouble) {
+                        decimalValue = Math.multiplyExact(decimalValue, 10);
+                        decimalValue = Math.addExact(decimalValue, currentDigit);
+                        digitsAfterDecimalPoint++;
                     }
-                    nextChar();
+                    else {
+                        throw new ArithmeticException(Integer.toString(value));
+                    }
                 }
                 catch (ArithmeticException e) {
                     token = new StringToken(Double.toString(value), tokenPosition, TokenTypeEnum.DOUBLE_EXCEEDED_RANGE_ERROR);
                     return true;
                 }
+                nextChar();
             }
 
             double doubleValue = value + (decimalValue / Math.pow(10, digitsAfterDecimalPoint));
