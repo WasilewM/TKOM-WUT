@@ -1,19 +1,17 @@
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class LexerInvalidConstructionsTest {
+public class LexerMalformedOperatorsTest {
     @Test
     void lexErrorTokenWhenOrOperatorIsMalformedAndIsFollowedByValidMultiplicationOperator() {
         InputStream inputStream = new ByteArrayInputStream("|*".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token errorToken = lex.lexToken();
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
+        StringToken errorToken = (StringToken) lex.lexToken();
 
         assertEquals(TokenTypeEnum.UNKNOWN_CHAR_ERROR, errorToken.getTokenType());
         assertEquals(StringToken.class, errorToken.getClass());
@@ -23,8 +21,7 @@ public class LexerInvalidConstructionsTest {
 
         Token token = lex.lexToken();
         assertEquals(TokenTypeEnum.MULTIPLICATION_OPERATOR, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertNull(token.getValue());
+        assertEquals(Token.class, token.getClass());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(2, token.getPosition().getColumnNumber());
     }
@@ -32,9 +29,10 @@ public class LexerInvalidConstructionsTest {
     @Test
     void lexErrorTokenWhenAndAndOperatorIsMalformedAndIsFollowedByValidSubtractionOperator() {
         InputStream inputStream = new ByteArrayInputStream("&-".getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
-        Token errorToken = lex.lexToken();
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
+        StringToken errorToken = (StringToken) lex.lexToken();
 
         assertEquals(TokenTypeEnum.UNKNOWN_CHAR_ERROR, errorToken.getTokenType());
         assertEquals(StringToken.class, errorToken.getClass());
@@ -44,8 +42,7 @@ public class LexerInvalidConstructionsTest {
 
         Token token = lex.lexToken();
         assertEquals(TokenTypeEnum.SUBTRACTION_OPERATOR, token.getTokenType());
-        assertEquals(StringToken.class, token.getClass());
-        assertNull(token.getValue());
+        assertEquals(Token.class, token.getClass());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(2, token.getPosition().getColumnNumber());
     }

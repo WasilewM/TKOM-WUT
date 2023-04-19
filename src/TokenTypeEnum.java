@@ -15,7 +15,6 @@ enum TokenTypeEnum {
     IF_KEYWORD,
     ELSE_IF_KEYWORD,
     ELSE_KEYWORD,
-    MAIN_KEYWORD,
     RETURN_KEYWORD,
     VOID_KEYWORD,
 

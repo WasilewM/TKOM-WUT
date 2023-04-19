@@ -1,12 +1,12 @@
-public class OneOrTwoSignsTokenType {
+public class ComplexSignTokenType {
     private final Character firstSign;
     private final Character secondSign;
-    private final TokenTypeEnum oneSingTokenType;
+    private final TokenTypeEnum oneSignTokenType;
     private final TokenTypeEnum twoSingsTokenType;
 
-    public OneOrTwoSignsTokenType(Character firstSign, TokenTypeEnum oneSingTokenType, Character secondSign, TokenTypeEnum twoSingsTokenType) {
+    public ComplexSignTokenType(Character firstSign, TokenTypeEnum oneSingTokenType, Character secondSign, TokenTypeEnum twoSingsTokenType) {
         this.firstSign = firstSign;
-        this.oneSingTokenType = oneSingTokenType;
+        this.oneSignTokenType = oneSingTokenType;
         this.secondSign = secondSign;
         this.twoSingsTokenType = twoSingsTokenType;
     }
@@ -20,7 +20,7 @@ public class OneOrTwoSignsTokenType {
     }
 
     public TokenTypeEnum getTokenTypeWhenOneSign() {
-        return oneSingTokenType;
+        return oneSignTokenType;
     }
 
     public TokenTypeEnum getTokenTypeWhenTwoSigns() {

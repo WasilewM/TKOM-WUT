@@ -2,9 +2,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
@@ -20,8 +18,9 @@ public class LexerStatementsTest {
 
     private static void performTest(MultipleTokensTestParams testScenarioParams) {
         InputStream inputStream = new ByteArrayInputStream(testScenarioParams.getInputString().getBytes());
-        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-        Lexer lex = new Lexer(bufferedInputStream);
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
 
         for (SingleTokenDescription tokenDesc : testScenarioParams.getTokens()) {
             Token token = lex.lexToken();
@@ -40,7 +39,7 @@ public class LexerStatementsTest {
                 return 0;
                 }""",
                         Arrays.asList(new SingleTokenDescription(TokenTypeEnum.INT_KEYWORD, 1, 1),
-                                new SingleTokenDescription(TokenTypeEnum.MAIN_KEYWORD, 1, 5),
+                                new SingleTokenDescription(TokenTypeEnum.IDENTIFIER, "main", 1, 5),
                                 new SingleTokenDescription(TokenTypeEnum.LEFT_BRACKET, 1, 9),
                                 new SingleTokenDescription(TokenTypeEnum.RIGHT_BRACKET, 1, 10),
                                 new SingleTokenDescription(TokenTypeEnum.LEFT_CURLY_BRACKET, 1, 12),
