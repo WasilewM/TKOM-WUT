@@ -13,19 +13,28 @@ public class Lexer {
     private final Position carriagePosition;
     private Token token;
     private final HashMap<String, TokenTypeEnum> keywordTokens = new HashMap<>();
-    private final HashMap<Character, TokenTypeEnum> onlySingleSignTokens = new HashMap<>();
+    // `singleSignTokens` is a map of tokens that cannot be duplicated
+    // and those signs are valid tokens only when they occur as a single sign.
+    private final HashMap<Character, TokenTypeEnum> singleSignTokens = new HashMap<>();
+    // `singleOrDoubledSignTokens` is a map of tokens that can be duplicated
+    // but those signs are valid tokens when they occur as a single or doubled sign.
     private final HashMap<Character, DoubledSignTokenType> singleOrDoubledSignTokens = new HashMap<>();
-    private final HashMap<Character, DoubledSignTokenType> onlyDoubledSingTokens = new HashMap<>();
-    private final ArrayList<OneOrTwoSignsTokenType> oneOrTwoSingsTokens = new ArrayList<>();
+    // `doubledSignTokens` is a map of tokens that have be duplicated
+    // in order to be valid tokens.
+    // They are valid only when they occur as a doubled sign.
+    private final HashMap<Character, DoubledSignTokenType> doubledSignTokens = new HashMap<>();
+    // `complexSignTokens` represent valid tokens that can be composed of one or two signs.
+    // When they are composed od two signs, those signs are different
+    private final ArrayList<ComplexSignTokenType> complexSignTokens = new ArrayList<>();
 
     public Lexer(BufferedReader bufferedReader) {
         this.bufferedReader = bufferedReader;
         carriagePosition = new Position(1, 0);
         initKeywordTokens();
-        initOnlySingleSignTokens();
+        initSingleSignTokens();
         initSingleOrDoubledSignTokens();
-        initOnlyDoubledSignTokens();
-        initOneOrTwoSignsTokens();
+        initDoubledSignTokens();
+        initComplexSignTokens();
     }
 
     private void initKeywordTokens() {
@@ -48,21 +57,21 @@ public class Lexer {
         keywordTokens.put("void", TokenTypeEnum.VOID_KEYWORD);
     }
 
-    private void initOnlySingleSignTokens() {
-        onlySingleSignTokens.put(';', TokenTypeEnum.SEMICOLON);
-        onlySingleSignTokens.put(',', TokenTypeEnum.COMMA);
-        onlySingleSignTokens.put('(', TokenTypeEnum.LEFT_BRACKET);
-        onlySingleSignTokens.put(')', TokenTypeEnum.RIGHT_BRACKET);
-        onlySingleSignTokens.put('[', TokenTypeEnum.LEFT_SQUARE_BRACKET);
-        onlySingleSignTokens.put(']', TokenTypeEnum.RIGHT_SQUARE_BRACKET);
-        onlySingleSignTokens.put('{', TokenTypeEnum.LEFT_CURLY_BRACKET);
-        onlySingleSignTokens.put('}', TokenTypeEnum.RIGHT_CURLY_BRACKET);
-        onlySingleSignTokens.put('.', TokenTypeEnum.DOT);
+    private void initSingleSignTokens() {
+        singleSignTokens.put(';', TokenTypeEnum.SEMICOLON);
+        singleSignTokens.put(',', TokenTypeEnum.COMMA);
+        singleSignTokens.put('(', TokenTypeEnum.LEFT_BRACKET);
+        singleSignTokens.put(')', TokenTypeEnum.RIGHT_BRACKET);
+        singleSignTokens.put('[', TokenTypeEnum.LEFT_SQUARE_BRACKET);
+        singleSignTokens.put(']', TokenTypeEnum.RIGHT_SQUARE_BRACKET);
+        singleSignTokens.put('{', TokenTypeEnum.LEFT_CURLY_BRACKET);
+        singleSignTokens.put('}', TokenTypeEnum.RIGHT_CURLY_BRACKET);
+        singleSignTokens.put('.', TokenTypeEnum.DOT);
 
         // Arithmetic Operators
-        onlySingleSignTokens.put('+', TokenTypeEnum.ADDITION_OPERATOR);
-        onlySingleSignTokens.put('-', TokenTypeEnum.SUBTRACTION_OPERATOR);
-        onlySingleSignTokens.put('*', TokenTypeEnum.MULTIPLICATION_OPERATOR);
+        singleSignTokens.put('+', TokenTypeEnum.ADDITION_OPERATOR);
+        singleSignTokens.put('-', TokenTypeEnum.SUBTRACTION_OPERATOR);
+        singleSignTokens.put('*', TokenTypeEnum.MULTIPLICATION_OPERATOR);
     }
 
     private void initSingleOrDoubledSignTokens() {
@@ -70,15 +79,15 @@ public class Lexer {
         singleOrDoubledSignTokens.put('/', new DoubledSignTokenType(TokenTypeEnum.DIVISION_OPERATOR, TokenTypeEnum.DISCRETE_DIVISION_OPERATOR));
     }
 
-    private void initOnlyDoubledSignTokens() {
-        onlyDoubledSingTokens.put('&', new DoubledSignTokenType(TokenTypeEnum.UNKNOWN_CHAR_ERROR, TokenTypeEnum.AND_OPERATOR));
-        onlyDoubledSingTokens.put('|', new DoubledSignTokenType(TokenTypeEnum.UNKNOWN_CHAR_ERROR, TokenTypeEnum.OR_OPERATOR));
+    private void initDoubledSignTokens() {
+        doubledSignTokens.put('&', new DoubledSignTokenType(TokenTypeEnum.UNKNOWN_CHAR_ERROR, TokenTypeEnum.AND_OPERATOR));
+        doubledSignTokens.put('|', new DoubledSignTokenType(TokenTypeEnum.UNKNOWN_CHAR_ERROR, TokenTypeEnum.OR_OPERATOR));
     }
 
-    private void initOneOrTwoSignsTokens() {
-        oneOrTwoSingsTokens.add(new OneOrTwoSignsTokenType('<', TokenTypeEnum.LESS_THAN_OPERATOR, '=', TokenTypeEnum.LESS_OR_EQUAL_OPERATOR));
-        oneOrTwoSingsTokens.add(new OneOrTwoSignsTokenType('>', TokenTypeEnum.GREATER_THAN_OPERATOR, '=', TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR));
-        oneOrTwoSingsTokens.add(new OneOrTwoSignsTokenType('!', TokenTypeEnum.NEGATION_OPERATOR, '=', TokenTypeEnum.NOT_EQUAL_OPERATOR));
+    private void initComplexSignTokens() {
+        complexSignTokens.add(new ComplexSignTokenType('<', TokenTypeEnum.LESS_THAN_OPERATOR, '=', TokenTypeEnum.LESS_OR_EQUAL_OPERATOR));
+        complexSignTokens.add(new ComplexSignTokenType('>', TokenTypeEnum.GREATER_THAN_OPERATOR, '=', TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR));
+        complexSignTokens.add(new ComplexSignTokenType('!', TokenTypeEnum.NEGATION_OPERATOR, '=', TokenTypeEnum.NOT_EQUAL_OPERATOR));
     }
 
     public void setStringMaxLength(int stringMaxLength) {
@@ -277,11 +286,11 @@ public class Lexer {
     }
 
     private boolean tryBuildOnlySingleSignToken() {
-        if (!onlySingleSignTokens.containsKey(currentChar)) {
+        if (!singleSignTokens.containsKey(currentChar)) {
             return false;
         }
 
-        return tryBuildSingleSign(currentChar, onlySingleSignTokens.get(currentChar));
+        return tryBuildSingleSign(currentChar, singleSignTokens.get(currentChar));
     }
 
     private boolean tryBuildSingleSign(Character sign, TokenTypeEnum tokenType) {
@@ -309,14 +318,14 @@ public class Lexer {
     }
 
     private boolean tryBuildOnlyDoubledSignToken() {
-        if (!onlyDoubledSingTokens.containsKey(currentChar)) {
+        if (!doubledSignTokens.containsKey(currentChar)) {
             return false;
         }
 
         return tryOnlyDoubledSign(
                 currentChar,
-                onlyDoubledSingTokens.get(currentChar).getTokenTypeWhenSingleSign(),
-                onlyDoubledSingTokens.get(currentChar).getTokenTypeWhenDoubledSign()
+                doubledSignTokens.get(currentChar).getTokenTypeWhenSingleSign(),
+                doubledSignTokens.get(currentChar).getTokenTypeWhenDoubledSign()
         );
     }
 
@@ -342,7 +351,7 @@ public class Lexer {
     }
 
     private boolean tryBuildOneOrTwoSignsToken() {
-        for (OneOrTwoSignsTokenType o : oneOrTwoSingsTokens) {
+        for (ComplexSignTokenType o : complexSignTokens) {
             if (tryBuildOneOrTwoSign(o.getFirstSign(), o.getTokenTypeWhenOneSign(), o.getSecondSign(), o.getTokenTypeWhenTwoSigns())) {
                 return true;
             }
