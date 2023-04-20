@@ -125,6 +125,21 @@ public class LexerDataTypesTest {
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }
+    @Test
+    void lexLongStringWithNewline() {
+        InputStream inputStream = new ByteArrayInputStream("\"thisIsSome\\\n\"".getBytes());
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
+        StringToken token = (StringToken) lex.lexToken();
+
+        assertEquals(TokenTypeEnum.STRING_VALUE, token.getTokenType());
+        assertEquals(StringToken.class, token.getClass());
+        assertEquals("thisIsSome\n", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
 
     @Test
     void lexIntGreaterMaxInt() {
@@ -193,6 +208,21 @@ public class LexerDataTypesTest {
         assertEquals(TokenTypeEnum.DOUBLE_EXCEEDED_RANGE_ERROR, token.getTokenType());
         assertEquals(StringToken.class, token.getClass());
         assertEquals("10.0", token.getValue());
+        assertEquals(1, token.getPosition().getLineNumber());
+        assertEquals(1, token.getPosition().getColumnNumber());
+    }
+
+    @Test
+    void lexDoubleMalformed() {
+        InputStream inputStream = new ByteArrayInputStream("10.".getBytes());
+        InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+        Lexer lex = new Lexer(bufferedReader);
+        DoubleToken token = (DoubleToken) lex.lexToken();
+
+        assertEquals(TokenTypeEnum.DOUBLE_VALUE, token.getTokenType());
+        assertEquals(DoubleToken.class, token.getClass());
+        assertEquals(10.0, token.getValue());
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }
