@@ -63,12 +63,90 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
 ### Plik konfiguracyjny
 Konfiguracja parametrów zapisana będzie w pliku `config.yaml`. Zawartość pliku będzie następująca:
 ```
-IntMin: 2147483646
-IntMax: -2147483647
-DoubleMin: 21474836460000000000
-DoubleMax: -21474836470000000000
+IntMax: 2147483646
+DoubleMax: 21474836460000000000
+StringMaxLength: 1000
 RecursionMaxDepth: 1000
 ```
+### Tokeny
+W projekcie tokeny są reprezentowane przez `TokenTypeEnum`.
+
+#### Słowa kluczowe oraz odpowiadające im tokeny
+
+| Słowo kluczowe | Nazwa tokenu             |
+|----------------|--------------------------|
+| Int            | INT_KEYWORD              |
+| Double         | DOUBLE_KEYWORD           |
+| String         | STRING                   |
+| Point          | POINT_KEYWORD            |
+| Section        | SECTION_KEYWORD          |
+| Figure         | FIGURE_KEYWORD           |
+| Scene          | SCENE_KEYWORD            |
+| List           | LIST_KEYWORD             |
+| Bool           | BOOL_KEYWORD             |
+| True           | BOOL_TRUE_VALUE_KEYWORD  |
+| False          | BOOL_FALSE_VALUE_KEYWORD |
+| while          | WHILE_KEYWORD            |
+| if             | IF_KEYWORD               |
+| elseif         | ELSE_IF_KEYWORD          |
+| else           | ELSE_KEYWORD             |
+| return         | RETURN_KEYWORD           |
+| void           | VOID_KEYWORD             |
+
+#### Operatory oraz odpowiadające im tokeny
+Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlatego nie został w niej umieszczony.
+
+| Operator | Nazwa tokenu               |
+|----------|----------------------------|
+| `+`      | ADDITION_OPERATOR          |
+| `-`      | SUBTRACTION_OPERATOR       |
+| `*`      | MULTIPLICATION_OPERATOR    |
+| `/`      | DIVISION_OPERATOR          |
+| `//`     | DISCRETE_DIVISION_OPERATOR |
+| `&&`     | AND_OPERATOR               |
+|          | OR_OPERATOR                |
+| `!`      | NEGATION_OPERATOR          |
+| `==`     | EQUAL_OPERATOR             |
+| `!=`     | NOT_EQUAL_OPERATOR         |
+| `<`      | LESS_THAN_OPERATOR         |
+| `>`      | GREATER_THAN_OPERATOR      |
+| `<=`     | LESS_OR_EQUAL_OPERATOR     |
+| `>=`     | GREATER_OR_EQUAL_OPERATOR  |
+| `=`      | ASSIGNMENT_OPERATOR        |
+
+#### Znaki specjalne oraz odpowiadające im tokeny
+| Znak specjalny | Nazwa tokenu         |
+|----------------|----------------------|
+| `#`            | COMMENT              |
+| `(`            | LEFT_BRACKET         |
+| `)`            | RIGHT_BRACKET        |
+| `[`            | LEFT_SQUARE_BRACKET  |
+| `]`            | RIGHT_SQUARE_BRACKET |
+| `{`            | LEFT_CURLY_BRACKET   |
+| `}`            | RIGHT_CURLY_BRACKET  |
+| `;`            | SEMICOLON            |
+| `.`            | DOT                  |
+| `,`            | COMMA                |
+
+
+#### Inne tokeny będące częścią projektowanego języka
+| Element języka                 | Nazwa tokenu |
+|--------------------------------|--------------|
+| Wartość zmiennej typu `String` | STRING_VALUE |
+| Wartość zmiennej typu `Int`    | INT_VALE     |
+| Wartość zmiennej typu `Double` | DOUBLE_VALE  |
+| Nazwa zmiennej lub funkcji     | IDENTIFIER   |
+
+
+#### Tokeny błędów rozpoznanych przez lekser
+| Błąd                                                     | Nazwa tokenu                             |
+|----------------------------------------------------------|------------------------------------------|
+| Nieznany znak                                            | UNKNOWN_CHAR_ERROR                       |
+| Niedomknięty cudzysłów w wartości zmiennej typu `String` | UNCLOSED_QUOTES_ERROR                    |
+| Długość zmiennej `String` przekracza ustaloną granicę    | STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR     |
+| Długość identyfikatora przekracza ustaloną granicę       | IDENTIFIER_EXCEEDED_MAXIMUM_LENGTH_ERROR |
+| Zmienna typu `Int` przekroczyła ustalony zakres          | INT_EXCEEDED_RANGE_ERROR                 |
+| Zmienna typu `Double` przekroczyła ustalony zakres       | DOUBLE_EXCEEDED_RANGE_ERROR              |
 
 ## Definicje wbudowanych typów obiektowych
 Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.  
@@ -332,66 +410,6 @@ notZeroDigit            = "1".."9"
 letter                  = "a".."z"
                            | "A".."Z"
 ```
-
-### Tokeny
-Gramatyka z sekcji wyżej przekłada się na następujące tokeny:
-
-| Nazwa produkcji EBNF    | Nazwa tokenu                 |
-|-------------------------|------------------------------|
-| program                 | T_PROGRAM                    |
-| functionDef             | T_FUNCTION_DEF               |
-| functionType            | T_FUNCTION_TYPE              |
-| parameters              | T_PARAMETERS                 |
-| parameter               | T_PARAMETER                  |
-| codeBlock               | T_CODE_BLOCK                 |
-| ifBlock                 | T_IF_BLOCK                   |
-| elseIfBlock             | T_ELSE_IF_BLOCK              |
-| elseBlock               | T_ELSE_BLOCK                 |
-| whileBlock              | T_WHILE_BLOCK                |
-| assignmentExp           | T_ASSIGNMENT_EXP             |
-| reassignmentExp         | T_REASSIGNMENT_EXP           |
-| returnExp               | T_RETURN_EXP                 |
-| alternativeExp          | T_ALTERNATIVE_EXP            |
-| conjunctiveExp          | T_CONJUNCTIVE_EXP            |
-| comparisonExp           | T_COMPARISON_EXP             |
-| additiveExp             | T_ADDITIVE_EXP               |
-| multiplicativeExp       | T_MULTIPLICATIVE_EXP         |
-| factor                  | T_FACTOR                     |
-| parenthesesExp          | T_PARENTHESES_EXP            |
-| assignableValue         | T_ASSIGNABLE_VALUE           |
-| positiveAssignableValue | T_POSITIVE_ASSIGNABLE_VALUE  |
-| alternativeOper         | T_ALTERNATIVE_OPER           |
-| conjunctionOper         | T_CONJUNCTION_OPER           |
-| functionCall            | T_FUNCTION_CALL              |
-| objectMethodCall        | T_OBJECT_METHOD_CALL         |
-| identifier              | T_IDENTIFIER                 |
-| double                  | T_DOUBLE                     |
-| integer                 | T_INTEGER                    |
-| digit                   | T_DIGIT                      |
-| string                  | T_STRING                     |
-| literal                 | T_LITERAL                    |
-| literalSign             | T_LITERAL_SIGN               |
-| dataType                | T_DATA_TYPE                  |
-| bool                    | T_BOOL                       |
-| logicalOper             | T_LOGICAL_OPER               |
-| comparisonOper          | T_COMPARISON_OPER            |
-| equalOper               | T_EQUAL_OPER                 |
-| notEqualOper            | T_NOT_EQUAL_OPER             |
-| lessThanOper            | T_LESS_THAN_OPER             |
-| lessThanOrEqualOper     | T_LESS_THAN_OR_EQUAL_OPER    |
-| greaterThanOper         | T_GREATER_THAN_OPER          |
-| greaterThanOrEqualOper  | T_GREATER_THAN_OR_EQUAL_OPER |
-| andOper                 | T_AND_OPER                   |
-| orOper                  | T_OR_OPER                    |
-| notOper                 | T_NOT_OPER                   |
-| minusOper               | T_MINUS_OPER                 |
-| additiveOper            | T_ADDITIVE_OPER              |
-| multiplicativeOper      | T_MULTIPLICATIVE_OPER        |
-| assignmentOper          | T_ASSIGNMENT_OPER            |
-| comment                 | T_COMMENT                    |
-| zeroDigit               | T_ZERO_DIGIT                 |
-| notZeroDigit            | T_NOT_ZERO_DIGIT             |
-| letter                  | T_LETTER                     |
 
 ### Analiza przykładowego bloku instrukcji if
 ```
