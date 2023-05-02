@@ -22,12 +22,12 @@ public class LexerStatementsTest {
     }
 
     private static void performTest(MultipleTokensTestParams testScenarioParams) {
-        InputStream inputStream = new ByteArrayInputStream(testScenarioParams.getInputString().getBytes());
+        InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Lexer lex = new Lexer(bufferedReader);
 
-        for (SingleTokenDescription tokenDesc : testScenarioParams.getTokens()) {
+        for (SingleTokenDescription tokenDesc : testScenarioParams.tokens()) {
             Token token = lex.lexToken();
             assertEquals(tokenDesc.getTokenType(), token.getTokenType());
             assertEquals(tokenDesc.getValue(), token.getValue());
