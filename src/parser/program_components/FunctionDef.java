@@ -1,4 +1,8 @@
+package parser.program_components;
+
 import lexer.TokenTypeEnum;
+import parser.IVisitable;
+import parser.IVisitor;
 
 import java.util.ArrayList;
 

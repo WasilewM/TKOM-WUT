@@ -1,5 +1,6 @@
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
+import parser.Parser;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

@@ -1,6 +1,12 @@
+package parser;
+
 import lexer.ILexer;
 import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
+import parser.program_components.Program;
+import parser.program_components.Parameter;
+import parser.program_components.FunctionDef;
+import parser.program_components.BlockStatement;
 
 import java.util.ArrayList;
 import java.util.HashMap;

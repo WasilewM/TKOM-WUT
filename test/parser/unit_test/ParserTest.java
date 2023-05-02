@@ -3,6 +3,10 @@ import lexer.tokens.StringToken;
 import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
 import org.junit.jupiter.api.Test;
+import parser.Parser;
+import parser.program_components.Program;
+import parser.program_components.FunctionDef;
+import parser.program_components.BlockStatement;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,8 +48,8 @@ public class ParserTest {
         );
         Parser parser = new Parser(new MockedLexer(tokens));
         Program program = parser.parse();
-        HashMap<String, FunctionDef> expectedFunctions = new HashMap<String, FunctionDef>();
-        expectedFunctions.put("main", new FunctionDef("main", TokenTypeEnum.INT_KEYWORD, new ArrayList<Parameter>(), new BlockStatement(new ArrayList<IStatement>())));
+        HashMap<String, FunctionDef> expectedFunctions = new HashMap<>();
+        expectedFunctions.put("main", new FunctionDef("main", TokenTypeEnum.INT_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
 
         assertEquals(expectedFunctions, program.functions());
     }
