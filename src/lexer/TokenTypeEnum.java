@@ -1,4 +1,6 @@
-enum TokenTypeEnum {
+package lexer;
+
+public enum TokenTypeEnum {
     // keywords
     INT_KEYWORD,
     DOUBLE_KEYWORD,

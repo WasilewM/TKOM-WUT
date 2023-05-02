@@ -1,3 +1,7 @@
+package lexer.tokens;
+
+import lexer.TokenTypeEnum;
+
 public class ComplexSignTokenType {
     private final Character firstSign;
     private final Character secondSign;

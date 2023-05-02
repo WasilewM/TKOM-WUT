@@ -1,3 +1,7 @@
+package utils;
+
+import lexer.TokenTypeEnum;
+
 public class SingleTokenDescription {
     private final TokenTypeEnum tokenType;
     private final Object value;

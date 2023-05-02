@@ -69,7 +69,7 @@ StringMaxLength: 1000
 RecursionMaxDepth: 1000
 ```
 ### Tokeny
-W projekcie tokeny są reprezentowane przez `TokenTypeEnum`.
+W projekcie tokeny są reprezentowane przez `lexer.TokenTypeEnum`.
 
 #### Słowa kluczowe oraz odpowiadające im tokeny
 

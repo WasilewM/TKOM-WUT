@@ -1,3 +1,7 @@
+package lexer.tokens;
+
+import lexer.TokenTypeEnum;
+
 public class DoubledSignTokenType {
     private final TokenTypeEnum singleSingTokenType;
     private final TokenTypeEnum doubledSingTokenType;
@@ -7,11 +11,11 @@ public class DoubledSignTokenType {
         this.doubledSingTokenType = doubledSingTokenType;
     }
 
-    TokenTypeEnum getTokenTypeWhenSingleSign() {
+    public TokenTypeEnum getTokenTypeWhenSingleSign() {
         return singleSingTokenType;
     }
 
-    TokenTypeEnum getTokenTypeWhenDoubledSign() {
+    public TokenTypeEnum getTokenTypeWhenDoubledSign() {
         return doubledSingTokenType;
     }
 }

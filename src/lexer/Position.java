@@ -1,3 +1,5 @@
+package lexer;
+
 public class Position {
     private int lineNumber;
     private int columnNumber;
