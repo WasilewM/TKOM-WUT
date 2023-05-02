@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Lexer {
+public class Lexer implements ILexer {
     private final BufferedReader bufferedReader;
     private Character currentChar = null;
     private int stringMaxLength = 1000;
@@ -94,18 +94,22 @@ public class Lexer {
         this.stringMaxLength = stringMaxLength;
     }
 
+    @Override
     public void setIdentifierMaxLength(int identifierMaxLength) {
         this.identifierMaxLength = identifierMaxLength;
     }
 
+    @Override
     public void setMaxInt(int maxInt) {
         this.maxInt = maxInt;
     }
 
+    @Override
     public void setMaxDouble(double maxDouble) {
         this.maxDouble = maxDouble;
     }
 
+    @Override
     public Token lexToken() {
         if (currentChar == null) {
             nextChar();
