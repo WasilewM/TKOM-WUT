@@ -1,3 +1,8 @@
+package lexer.tokens;
+
+import lexer.Position;
+import lexer.TokenTypeEnum;
+
 public class Token {
     private final Position position;
 

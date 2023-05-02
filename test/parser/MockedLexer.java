@@ -1,3 +1,8 @@
+import lexer.ILexer;
+import lexer.Position;
+import lexer.tokens.Token;
+import lexer.TokenTypeEnum;
+
 import java.util.ArrayList;
 
 public class MockedLexer implements ILexer {

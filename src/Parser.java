@@ -1,3 +1,7 @@
+import lexer.ILexer;
+import lexer.tokens.Token;
+import lexer.TokenTypeEnum;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

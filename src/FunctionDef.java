@@ -1,3 +1,5 @@
+import lexer.TokenTypeEnum;
+
 import java.util.ArrayList;
 
 public record FunctionDef(String name, TokenTypeEnum functionType, ArrayList<Parameter> parameters,

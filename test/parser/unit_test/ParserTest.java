@@ -1,3 +1,7 @@
+import lexer.Position;
+import lexer.tokens.StringToken;
+import lexer.tokens.Token;
+import lexer.TokenTypeEnum;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
