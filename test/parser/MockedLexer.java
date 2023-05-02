@@ -15,6 +15,6 @@ public class MockedLexer implements ILexer {
             return tokens.get(currentIdx++);
         }
 
-        return null;
+        return new Token(new Position(1, 1), TokenTypeEnum.ETX);
     }
 }
