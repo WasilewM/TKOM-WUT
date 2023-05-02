@@ -1,7 +1,7 @@
 public class Parser {
-    private final Lexer lexer;
+    private final ILexer lexer;
 
-    public Parser(Lexer lexer) {
+    public Parser(ILexer lexer) {
         this.lexer = lexer;
     }
 }

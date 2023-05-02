@@ -94,17 +94,14 @@ public class Lexer implements ILexer {
         this.stringMaxLength = stringMaxLength;
     }
 
-    @Override
     public void setIdentifierMaxLength(int identifierMaxLength) {
         this.identifierMaxLength = identifierMaxLength;
     }
 
-    @Override
     public void setMaxInt(int maxInt) {
         this.maxInt = maxInt;
     }
 
-    @Override
     public void setMaxDouble(double maxDouble) {
         this.maxDouble = maxDouble;
     }
