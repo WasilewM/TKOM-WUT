@@ -3,6 +3,8 @@ package parser;
 import lexer.ILexer;
 import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
+import parser.exceptions.MissingIdentifierException;
+import parser.exceptions.MissingLeftBracketException;
 import parser.program_components.Program;
 import parser.program_components.Parameter;
 import parser.program_components.FunctionDef;
@@ -14,9 +16,11 @@ import java.util.HashMap;
 public class Parser {
     private final ILexer lexer;
     private Token currentToken;
+    private ErrorHandler errorHandler;
 
-    public Parser(ILexer lexer) {
+    public Parser(ILexer lexer, ErrorHandler errorHandler) {
         this.lexer = lexer;
+        this.errorHandler = errorHandler;
         currentToken = null;
     }
 
@@ -24,7 +28,7 @@ public class Parser {
         nextToken();
         HashMap<String, FunctionDef> functions = new HashMap<>();
         while (parseFunctionDef(functions)) {
-
+            assert true;
         }
 
         return new Program(functions);
@@ -38,13 +42,13 @@ public class Parser {
         nextToken();
 
         if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
-            assert true;
+            errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
         }
         String functionName = (String) currentToken.getValue();
         nextToken();
 
         if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
-            assert true;
+            errorHandler.handle(new MissingLeftBracketException(currentToken.toString()));
         }
 
         if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {

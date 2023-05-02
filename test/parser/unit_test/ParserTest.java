@@ -10,12 +10,11 @@ import parser.Parser;
 import parser.program_components.Program;
 import parser.program_components.FunctionDef;
 import parser.program_components.BlockStatement;
+import utils.MockedExitErrorHandler;
 import utils.MockedLexer;
 import utils.ParserSingleTestParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,7 +25,7 @@ public class ParserTest {
     @Test
     void parserInit() {
         ArrayList<Token> tokens = new ArrayList<>();
-        Parser parser = new Parser(new MockedLexer(tokens));
+        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
 
         assertNotNull(parser);
     }
@@ -35,7 +34,7 @@ public class ParserTest {
     @MethodSource("generateTestProgramData")
     void parseProgram(ParserSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
-        Parser parser = new Parser(new MockedLexer(tokens));
+        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
         Program program = parser.parse();
 
         assertEquals(testParams.expectedFunctions(), program.functions());

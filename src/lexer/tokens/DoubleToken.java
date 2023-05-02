@@ -14,4 +14,9 @@ public class DoubleToken extends Token {
     public Double getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + String.format(" with value: %s", value);
+    }
 }

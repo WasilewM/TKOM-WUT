@@ -10,18 +10,23 @@ import java.util.ArrayList;
 public class MockedLexer implements ILexer {
     private final ArrayList<Token> tokens;
     private int currentIdx;
+    private Position carriagePosition;
 
     public MockedLexer(ArrayList<Token> tokens) {
         this.tokens = tokens;
         currentIdx = 0;
+        carriagePosition = new Position(1, 0);
     }
 
     @Override
     public Token lexToken() {
         if (currentIdx < tokens.size()) {
-            return tokens.get(currentIdx++);
+            Token currentToken = tokens.get(currentIdx);
+            currentIdx++;
+            carriagePosition = currentToken.getPosition();
+            return currentToken;
         }
 
-        return new Token(new Position(1, 1), TokenTypeEnum.ETX);
+        return new Token(carriagePosition, TokenTypeEnum.ETX);
     }
 }

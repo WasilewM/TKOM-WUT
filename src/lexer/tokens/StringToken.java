@@ -15,4 +15,9 @@ public class StringToken extends Token {
     public String getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + String.format(" with value: %s", value);
+    }
 }

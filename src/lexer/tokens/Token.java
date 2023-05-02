@@ -24,4 +24,9 @@ public class Token {
     public Object getValue() {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Token %s at position: <line: %d, column %d>", tokenType.toString(), position.getLineNumber(), position.getColumnNumber());
+    }
 }
