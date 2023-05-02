@@ -1,3 +1,5 @@
+package utils;
+
 import lexer.ILexer;
 import lexer.Position;
 import lexer.tokens.Token;

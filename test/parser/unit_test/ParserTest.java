@@ -7,6 +7,7 @@ import parser.Parser;
 import parser.program_components.Program;
 import parser.program_components.FunctionDef;
 import parser.program_components.BlockStatement;
+import utils.MockedLexer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
