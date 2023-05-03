@@ -6,8 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
-import parser.exceptions.MissingIdentifierException;
-import parser.exceptions.MissingLeftBracketException;
+import parser.exceptions.*;
 import utils.MockedExitErrorHandler;
 import utils.MockedLexer;
 import utils.ParserMalformedSingleTestParams;
@@ -60,8 +59,50 @@ public class ParserMalformedProgramTest {
                                         new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
                                         new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER)
                                 ),
+                                Arrays.asList(
+                                        new MissingLeftBracketException(new Token(new Position(1, 5), TokenTypeEnum.ETX).toString()),
+                                        new MissingRightBracketException(new Token(new Position(1, 5), TokenTypeEnum.ETX).toString()),
+                                        new MissingLeftCurlyBracketException(new Token(new Position(1, 5), TokenTypeEnum.ETX).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET)
+                                        ),
+                                Arrays.asList(
+                                        new MissingRightBracketException(new Token(new Position(1, 9), TokenTypeEnum.ETX).toString()),
+                                        new MissingLeftCurlyBracketException(new Token(new Position(1, 9), TokenTypeEnum.ETX).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET)
+                                        ),
                                 List.of(
-                                        new MissingLeftBracketException(new Token(new Position(1, 5), TokenTypeEnum.ETX).toString())
+                                        new MissingLeftCurlyBracketException(new Token(new Position(1, 10), TokenTypeEnum.ETX).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_CURLY_BRACKET)
+                                        ),
+                                List.of(
+                                        new MissingRightCurlyBracketException(new Token(new Position(1, 11), TokenTypeEnum.ETX).toString())
                                 )
                         )
                 )

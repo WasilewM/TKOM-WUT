@@ -1,7 +1,6 @@
 package parser;
 
-import parser.exceptions.MissingIdentifierException;
-import parser.exceptions.MissingLeftBracketException;
+import parser.exceptions.*;
 
 import java.util.ArrayList;
 
@@ -17,13 +16,26 @@ public class ErrorHandler {
     }
 
     public void handle(Exception e) {
-        if (MissingIdentifierException.class.equals(e.getClass())) {
+        if (isErrorCritical(e)) {
             errorLogs.add(e);
             exit();
-        }
-        if (MissingLeftBracketException.class.equals(e.getClass())) {
+        } else if (isErrorHandleable(e)) {
             errorLogs.add(e);
+        } else {
+            exit();
         }
+
+    }
+
+    private static boolean isErrorCritical(Exception e) {
+        return MissingIdentifierException.class.equals(e.getClass())
+                || MissingLeftCurlyBracketException.class.equals(e.getClass())
+                || MissingRightCurlyBracketException.class.equals(e.getClass());
+    }
+
+    private static boolean isErrorHandleable(Exception e) {
+        return MissingLeftBracketException.class.equals(e.getClass())
+                || MissingRightBracketException.class.equals(e.getClass());
     }
 
     protected void exit() {

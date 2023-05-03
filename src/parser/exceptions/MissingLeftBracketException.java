@@ -2,6 +2,6 @@ package parser.exceptions;
 
 public class MissingLeftBracketException extends Exception {
     public MissingLeftBracketException(String message) {
-        super(message);
+        super("MissingLeftBracketException: " + message);
     }
 }

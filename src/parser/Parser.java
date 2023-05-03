@@ -3,10 +3,8 @@ package parser;
 import lexer.ILexer;
 import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
-import parser.exceptions.MissingIdentifierException;
-import parser.exceptions.MissingLeftBracketException;
+import parser.exceptions.*;
 import parser.program_components.Program;
-import parser.program_components.Parameter;
 import parser.program_components.FunctionDef;
 import parser.program_components.BlockStatement;
 
@@ -16,7 +14,7 @@ import java.util.HashMap;
 public class Parser {
     private final ILexer lexer;
     private Token currentToken;
-    private ErrorHandler errorHandler;
+    private final ErrorHandler errorHandler;
 
     public Parser(ILexer lexer, ErrorHandler errorHandler) {
         this.lexer = lexer;
@@ -52,18 +50,18 @@ public class Parser {
         }
 
         if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
-            assert true;
+            errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
         }
 
         if (!consumeIf(TokenTypeEnum.LEFT_CURLY_BRACKET)) {
-            assert true;
+            errorHandler.handle(new MissingLeftCurlyBracketException(currentToken.toString()));
         }
 
         if (!consumeIf(TokenTypeEnum.RIGHT_CURLY_BRACKET)) {
-            assert true;
+            errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
         }
 
-        functions.put(functionName, new FunctionDef(functionName, functionType, new ArrayList<Parameter>(), new BlockStatement(new ArrayList<IStatement>())));
+        functions.put(functionName, new FunctionDef(functionName, functionType, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
         return true;
     }
 
