@@ -53,14 +53,9 @@ public class Parser {
             errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
         }
 
-        if (!consumeIf(TokenTypeEnum.LEFT_CURLY_BRACKET)) {
-            errorHandler.handle(new MissingLeftCurlyBracketException(currentToken.toString()));
-        }
-
         CodeBlock codeBlock = parseCodeBlock();
-
-        if (!consumeIf(TokenTypeEnum.RIGHT_CURLY_BRACKET)) {
-            errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
+        if (codeBlock == null) {
+            errorHandler.handle(new MissingLeftCurlyBracketException(currentToken.toString()));
         }
 
         if (!(functions.containsKey(functionName))) {
@@ -121,11 +116,19 @@ public class Parser {
     }
 
     private CodeBlock parseCodeBlock() {
+        if (!consumeIf(TokenTypeEnum.LEFT_CURLY_BRACKET)) {
+            return null;
+        }
+
         ArrayList<IStatement> statements = new ArrayList<>();
         IStatement statement = parseStatement();
         while (statement != null) {
             statements.add(statement);
             statement = parseStatement();
+        }
+
+        if (!consumeIf(TokenTypeEnum.RIGHT_CURLY_BRACKET)) {
+            errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
         }
 
         return new CodeBlock(statements);
