@@ -9,13 +9,7 @@ import java.util.HashMap;
 
 public class Lexer implements ILexer {
     private final BufferedReader bufferedReader;
-    private Character currentChar = null;
-    private int stringMaxLength = 1000;
-    private int identifierMaxLength = 1000;
-    private int maxInt = Integer.MAX_VALUE;
-    private double maxDouble = Double.MAX_VALUE;
     private final Position carriagePosition;
-    private Token token;
     private final HashMap<String, TokenTypeEnum> keywordTokens = new HashMap<>();
     // `singleSignTokens` is a map of tokens that cannot be duplicated
     // and those signs are valid tokens only when they occur as a single sign.
@@ -30,6 +24,12 @@ public class Lexer implements ILexer {
     // `complexSignTokens` represent valid tokens that can be composed of one or two signs.
     // When they are composed od two signs, those signs are different
     private final ArrayList<ComplexSignTokenType> complexSignTokens = new ArrayList<>();
+    private Character currentChar = null;
+    private int stringMaxLength = 1000;
+    private int identifierMaxLength = 1000;
+    private int maxInt = Integer.MAX_VALUE;
+    private double maxDouble = Double.MAX_VALUE;
+    private Token token;
 
     public Lexer(BufferedReader bufferedReader) {
         this.bufferedReader = bufferedReader;
@@ -120,13 +120,13 @@ public class Lexer implements ILexer {
             nextChar();
         }
         if (tryBuildNumber()
-            || tryBuildIdentifierOrKeyword()
-            || tryBuildString()
-            || tryBuildComment()
-            || tryBuildOnlySingleSignToken()
-            || tryBuildOnlyDoubledSignToken()
-            || tryBuildSingleOrDoubledSignToken()
-            || tryBuildOneOrTwoSignsToken()) {
+                || tryBuildIdentifierOrKeyword()
+                || tryBuildString()
+                || tryBuildComment()
+                || tryBuildOnlySingleSignToken()
+                || tryBuildOnlyDoubledSignToken()
+                || tryBuildSingleOrDoubledSignToken()
+                || tryBuildOneOrTwoSignsToken()) {
             return token;
         }
 
@@ -145,15 +145,13 @@ public class Lexer implements ILexer {
             try {
                 int currentDigit = currentChar - '0';
                 if (Math.multiplyExact(value, 10) <= maxInt
-                    && Math.addExact(Math.multiplyExact(value, 10), currentDigit) <= maxInt) {
+                        && Math.addExact(Math.multiplyExact(value, 10), currentDigit) <= maxInt) {
                     value = Math.multiplyExact(value, 10);
                     value = Math.addExact(value, currentDigit);
-                }
-                else {
+                } else {
                     throw new ArithmeticException(Integer.toString(value));
                 }
-            }
-            catch (ArithmeticException e) {
+            } catch (ArithmeticException e) {
                 token = new StringToken(Integer.toString(value), tokenPosition, TokenTypeEnum.INT_EXCEEDED_RANGE_ERROR);
                 return true;
             }
@@ -172,12 +170,10 @@ public class Lexer implements ILexer {
                         decimalValue = Math.multiplyExact(decimalValue, 10);
                         decimalValue = Math.addExact(decimalValue, currentDigit);
                         digitsAfterDecimalPoint++;
-                    }
-                    else {
+                    } else {
                         throw new ArithmeticException(Integer.toString(value));
                     }
-                }
-                catch (ArithmeticException e) {
+                } catch (ArithmeticException e) {
                     token = new StringToken(Double.toString(value), tokenPosition, TokenTypeEnum.DOUBLE_EXCEEDED_RANGE_ERROR);
                     return true;
                 }
@@ -186,8 +182,7 @@ public class Lexer implements ILexer {
 
             double doubleValue = value + (decimalValue / Math.pow(10, digitsAfterDecimalPoint));
             token = new DoubleToken(doubleValue, tokenPosition);
-        }
-        else {
+        } else {
             token = new IntegerToken(value, tokenPosition);
         }
         return true;
@@ -213,11 +208,9 @@ public class Lexer implements ILexer {
 
         if (identifier.length() == identifierMaxLength && isCurrentCharNotEqualETX()) {
             token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.IDENTIFIER_EXCEEDED_MAXIMUM_LENGTH_ERROR);
-        }
-        else if (this.keywordTokens.containsKey(identifier.toString())) {
+        } else if (this.keywordTokens.containsKey(identifier.toString())) {
             token = new Token(tokenPosition, this.keywordTokens.get(identifier.toString()));
-        }
-        else {
+        } else {
             token = new StringToken(identifier.toString(), tokenPosition, TokenTypeEnum.IDENTIFIER);
         }
 
@@ -242,8 +235,7 @@ public class Lexer implements ILexer {
                 if (previousChar.equals('\\')) {
                     string.append(currentChar);
                 }
-            }
-            else {
+            } else {
                 string.append(currentChar);
             }
             previousChar = currentChar;
@@ -252,12 +244,10 @@ public class Lexer implements ILexer {
 
         if (string.length() == stringMaxLength && isCurrentCharNotEqualETX()) {
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR);
-        }
-        else if (hasStringEndedCorrectly(previousChar)) {
+        } else if (hasStringEndedCorrectly(previousChar)) {
             nextChar();
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.STRING_VALUE);
-        }
-        else {
+        } else {
             token = new StringToken(string.toString(), tokenPosition, TokenTypeEnum.UNCLOSED_QUOTES_ERROR);
         }
 
@@ -347,8 +337,7 @@ public class Lexer implements ILexer {
         if (currentChar.equals(sign)) {
             nextChar();
             token = new Token(tokenPosition, tokenTypeForDoubledSign);
-        }
-        else {
+        } else {
             token = new StringToken(foundSign.toString(), tokenPosition, tokenTypeForSingleSign);
         }
 
@@ -376,19 +365,19 @@ public class Lexer implements ILexer {
         if (currentChar.equals(secondSign)) {
             nextChar();
             token = new Token(tokenPosition, tokenTypeWhenTwoSigns);
-        }
-        else {
+        } else {
             token = new Token(tokenPosition, tokenTypeWhenOneSign);
         }
 
         return true;
     }
-    
+
     private void nextChar() {
         try {
             currentChar = (char) bufferedReader.read();
             updateCarriagePosition();
-        } catch (IOException ignored) { }
+        } catch (IOException ignored) {
+        }
     }
 
     private void updateCarriagePosition() {
