@@ -33,7 +33,7 @@ public class Parser {
     }
 
     private boolean parseFunctionDef(HashMap<String,FunctionDef> functions) {
-        if (currentToken.getTokenType() != TokenTypeEnum.INT_KEYWORD) {
+        if (notStartsWithDataTypeKeyword()) {
             return false;
         }
         TokenTypeEnum functionType = currentToken.getTokenType();
@@ -71,6 +71,17 @@ public class Parser {
             );
         }
         return true;
+    }
+
+    private boolean notStartsWithDataTypeKeyword() {
+        return currentToken.getTokenType() != TokenTypeEnum.INT_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.DOUBLE_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.STRING_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.BOOL_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.POINT_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.SECTION_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.FIGURE_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.SCENE_KEYWORD;
     }
 
     private boolean consumeIf(TokenTypeEnum tokenType) {
