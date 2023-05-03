@@ -60,7 +60,7 @@ public class ParserTest {
                                         new Token(new Position(1, 12), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("main", new FunctionDef("main", TokenTypeEnum.INT_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+                                    put("main", new FunctionDef("main", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -75,7 +75,7 @@ public class ParserTest {
                                         new Token(new Position(1, 15), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.DOUBLE_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.DOUBLE_KEYWORD, new HashMap<>(), new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -90,7 +90,7 @@ public class ParserTest {
                                         new Token(new Position(1, 15), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.STRING_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.STRING_KEYWORD, new HashMap<>(), new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -105,7 +105,7 @@ public class ParserTest {
                                         new Token(new Position(1, 13), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -120,7 +120,7 @@ public class ParserTest {
                                         new Token(new Position(1, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.POINT_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.POINT_KEYWORD, new HashMap<>(), new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -135,7 +135,7 @@ public class ParserTest {
                                         new Token(new Position(1, 16), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.SECTION_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.SECTION_KEYWORD, new HashMap<>(), new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -150,7 +150,7 @@ public class ParserTest {
                                         new Token(new Position(1, 15), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.FIGURE_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.FIGURE_KEYWORD, new HashMap<>(), new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -165,7 +165,7 @@ public class ParserTest {
                                         new Token(new Position(1, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.SCENE_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.SCENE_KEYWORD, new HashMap<>(), new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -182,10 +182,51 @@ public class ParserTest {
                                         new Token(new Position(1, 18), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, List.of(new Parameter(TokenTypeEnum.INT_KEYWORD, "a")), new BlockStatement(new ArrayList<>())));
+                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, new HashMap<>() {{ put("a", new Parameter(TokenTypeEnum.INT_KEYWORD, "a")); }}, new BlockStatement(new ArrayList<>())));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("cube", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("a", new Position(1, 14), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 15), TokenTypeEnum.COMMA),
+                                        new Token(new Position(1, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("b", new Position(1, 21), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 22), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 23), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(1, 24), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, new HashMap<>() {{ put("a", new Parameter(TokenTypeEnum.INT_KEYWORD, "a")); put("b", new Parameter(TokenTypeEnum.INT_KEYWORD, "b")); }}, new BlockStatement(new ArrayList<>())));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("cube", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.DOUBLE_KEYWORD),
+                                        new StringToken("a", new Position(1, 17), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 18), TokenTypeEnum.COMMA),
+                                        new Token(new Position(1, 17), TokenTypeEnum.STRING_KEYWORD),
+                                        new StringToken("b", new Position(1, 27), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 28), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 29), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(1, 30), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, new HashMap<>() {{ put("a", new Parameter(TokenTypeEnum.DOUBLE_KEYWORD, "a")); put("b", new Parameter(TokenTypeEnum.STRING_KEYWORD, "b")); }}, new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 )
+
         );
     }
 }

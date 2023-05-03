@@ -135,12 +135,60 @@ public class ParserMalformedProgramTest {
                                         new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
                                         new Token(new Position(1, 10), TokenTypeEnum.INT_KEYWORD),
-                                        new Token(new Position(1, 14), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(1, 15), TokenTypeEnum.LEFT_CURLY_BRACKET),
-                                        new Token(new Position(1, 16), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                        new Token(new Position(1, 14), TokenTypeEnum.RIGHT_BRACKET)
                                 ),
                                 List.of(
-                                        new MissingIdentifierException("Token RIGHT_BRACKET at position: <line: 1, column 14>")
+                                        new MissingIdentifierException(new Token(new Position(1, 14), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("cube", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("a", new Position(1, 14), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 15), TokenTypeEnum.COMMA),
+                                        new Token(new Position(1, 16), TokenTypeEnum.RIGHT_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingDataTypeDeclarationException(new Token(new Position(1, 16), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("cube", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("a", new Position(1, 14), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 15), TokenTypeEnum.COMMA),
+                                        new Token(new Position(1, 16), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(1, 19), TokenTypeEnum.RIGHT_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingIdentifierException(new Token(new Position(1, 19), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("cube", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("a", new Position(1, 14), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 15), TokenTypeEnum.COMMA),
+                                        new Token(new Position(1, 16), TokenTypeEnum.BOOL_KEYWORD),
+                                        new StringToken("a", new Position(1, 21), TokenTypeEnum.IDENTIFIER)
+                                ),
+                                List.of(
+                                        new DuplicatedParameterNameException("Parameter a at position: <line: 1, column 21>")
                                 )
                         )
                 )

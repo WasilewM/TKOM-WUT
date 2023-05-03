@@ -4,9 +4,9 @@ import lexer.TokenTypeEnum;
 import parser.IVisitable;
 import parser.IVisitor;
 
-import java.util.List;
+import java.util.HashMap;
 
-public record FunctionDef(String name, TokenTypeEnum functionType, List<Parameter> parameters,
+public record FunctionDef(String name, TokenTypeEnum functionType, HashMap<String, Parameter> parameters,
                           BlockStatement statement) implements IVisitable {
 
     @Override

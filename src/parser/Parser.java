@@ -50,7 +50,7 @@ public class Parser {
             errorHandler.handle(new MissingLeftBracketException(currentToken.toString()));
         }
 
-        ArrayList<Parameter> parameters = parseParameters();
+        HashMap<String, Parameter> parameters = parseParameters();
 
         if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
             errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
@@ -76,22 +76,47 @@ public class Parser {
         return true;
     }
 
-    private ArrayList<Parameter> parseParameters() {
-        ArrayList<Parameter> params = new ArrayList<>();
+    private HashMap<String, Parameter> parseParameters() {
+        HashMap<String, Parameter> params = new HashMap<>();
 
         if (!isCurrentTokenDataTypeKeyword()) {
             return params;
         }
 
-        TokenTypeEnum tokenType = currentToken.getTokenType();
+        TokenTypeEnum paramType = currentToken.getTokenType();
         nextToken();
 
         if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
             errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
         }
 
-        params.add(new Parameter(tokenType, currentToken.getValue().toString()));
+        String paramName = currentToken.getValue().toString();
+        params.put(paramName, new Parameter(paramType, paramName));
         nextToken();
+
+        while (consumeIf(TokenTypeEnum.COMMA)) {
+            if (!isCurrentTokenDataTypeKeyword()) {
+                errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
+                nextToken();
+            }
+            TokenTypeEnum nextParamType = currentToken.getTokenType();
+            nextToken();
+
+            if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
+                errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
+            }
+
+            String nextParamName = currentToken.getValue().toString();
+            if (params.containsKey(nextParamName)) {
+                errorHandler.handle(
+                        new DuplicatedParameterNameException(
+                                String.format("Parameter %s at position: <line: %d, column %d>", paramName, currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
+                        )
+                );
+            }
+            params.put(nextParamName, new Parameter(nextParamType, nextParamName));
+            nextToken();
+        }
 
         return params;
     }
