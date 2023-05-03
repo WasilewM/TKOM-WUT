@@ -1,25 +1,22 @@
 import lexer.Lexer;
-import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
+import lexer.tokens.Token;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import utils.MultipleTokensTestParams;
 import utils.SingleTokenDescription;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LexerConditionsTest {
-
-    @ParameterizedTest
-    @MethodSource("generateConditionTokensData")
-    void lexVariablesAssignment(MultipleTokensTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
 
     private static void performTest(MultipleTokensTestParams testScenarioParams) {
         InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
@@ -65,5 +62,11 @@ public class LexerConditionsTest {
                                 new SingleTokenDescription(TokenTypeEnum.IDENTIFIER, "d", 2, 1),
                                 new SingleTokenDescription(TokenTypeEnum.RIGHT_BRACKET, 2, 2))))
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateConditionTokensData")
+    void lexVariablesAssignment(MultipleTokensTestParams testScenarioParams) {
+        performTest(testScenarioParams);
     }
 }

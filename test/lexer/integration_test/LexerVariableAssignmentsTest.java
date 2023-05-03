@@ -1,25 +1,22 @@
 import lexer.Lexer;
-import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
+import lexer.tokens.Token;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import utils.MultipleTokensTestParams;
 import utils.SingleTokenDescription;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LexerVariableAssignmentsTest {
-
-    @ParameterizedTest
-    @MethodSource("generateVariablesAssignmentTokensData")
-    void lexVariablesAssignment(MultipleTokensTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
 
     private static void performTest(MultipleTokensTestParams testScenarioParams) {
         InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
@@ -75,5 +72,11 @@ public class LexerVariableAssignmentsTest {
                                 new SingleTokenDescription(TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD, 4, 2),
                                 new SingleTokenDescription(TokenTypeEnum.SEMICOLON, 5, 1))))
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateVariablesAssignmentTokensData")
+    void lexVariablesAssignment(MultipleTokensTestParams testScenarioParams) {
+        performTest(testScenarioParams);
     }
 }

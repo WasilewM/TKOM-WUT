@@ -1,25 +1,22 @@
 import lexer.Lexer;
-import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
+import lexer.tokens.Token;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import utils.SingleTokenDescription;
 import utils.SingleTokenTestParams;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class LexerKeywordsTest {
-
-    @ParameterizedTest
-    @MethodSource("generateKeywordTokensData")
-    void lexKeyword(SingleTokenTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
 
     private static void performTest(SingleTokenTestParams testScenarioParams) {
         InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
@@ -52,5 +49,11 @@ public class LexerKeywordsTest {
                 Arguments.of(new SingleTokenTestParams("return", new SingleTokenDescription(TokenTypeEnum.RETURN_KEYWORD, 1, 1))),
                 Arguments.of(new SingleTokenTestParams("void", new SingleTokenDescription(TokenTypeEnum.VOID_KEYWORD, 1, 1)))
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateKeywordTokensData")
+    void lexKeyword(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
     }
 }

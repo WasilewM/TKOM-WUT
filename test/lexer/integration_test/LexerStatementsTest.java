@@ -1,25 +1,22 @@
 import lexer.Lexer;
-import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
+import lexer.tokens.Token;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import utils.MultipleTokensTestParams;
 import utils.SingleTokenDescription;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LexerStatementsTest {
-
-    @ParameterizedTest
-    @MethodSource("generateStatementTokensData")
-    void lexStatement(MultipleTokensTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
 
     private static void performTest(MultipleTokensTestParams testScenarioParams) {
         InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
@@ -39,10 +36,10 @@ public class LexerStatementsTest {
     static Stream<Arguments> generateStatementTokensData() {
         return Stream.of(
                 Arguments.of(new MultipleTokensTestParams("""
-                Int main() {
-                Double a = 4.01 / 2.67;
-                return 0;
-                }""",
+                        Int main() {
+                        Double a = 4.01 / 2.67;
+                        return 0;
+                        }""",
                         Arrays.asList(new SingleTokenDescription(TokenTypeEnum.INT_KEYWORD, 1, 1),
                                 new SingleTokenDescription(TokenTypeEnum.IDENTIFIER, "main", 1, 5),
                                 new SingleTokenDescription(TokenTypeEnum.LEFT_BRACKET, 1, 9),
@@ -82,5 +79,11 @@ public class LexerStatementsTest {
                                 new SingleTokenDescription(TokenTypeEnum.SEMICOLON, 1, 49),
                                 new SingleTokenDescription(TokenTypeEnum.RIGHT_CURLY_BRACKET, 1, 51))))
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateStatementTokensData")
+    void lexStatement(MultipleTokensTestParams testScenarioParams) {
+        performTest(testScenarioParams);
     }
 }

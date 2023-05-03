@@ -1,10 +1,13 @@
 import lexer.Lexer;
+import lexer.TokenTypeEnum;
 import lexer.tokens.StringToken;
 import lexer.tokens.Token;
-import lexer.TokenTypeEnum;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
