@@ -1,45 +1,29 @@
 import lexer.Position;
+import lexer.TokenTypeEnum;
 import lexer.tokens.StringToken;
 import lexer.tokens.Token;
-import lexer.TokenTypeEnum;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
+import parser.program_components.BlockStatement;
+import parser.program_components.FunctionDef;
 import parser.program_components.Parameter;
 import parser.program_components.Program;
-import parser.program_components.FunctionDef;
-import parser.program_components.BlockStatement;
 import utils.MockedExitErrorHandler;
 import utils.MockedLexer;
 import utils.ParserSingleTestParams;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ParserTest {
-
-    @Test
-    void parserInit() {
-        ArrayList<Token> tokens = new ArrayList<>();
-        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
-
-        assertNotNull(parser);
-    }
-
-    @ParameterizedTest
-    @MethodSource("generateTestProgramData")
-    void parseProgram(ParserSingleTestParams testParams) {
-        ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
-        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
-        Program program = parser.parse();
-
-        assertEquals(testParams.expectedFunctions(), program.functions());
-    }
 
     static Stream<Arguments> generateTestProgramData() {
         return Stream.of(
@@ -182,7 +166,9 @@ public class ParserTest {
                                         new Token(new Position(1, 18), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, new HashMap<>() {{ put("a", new Parameter(TokenTypeEnum.INT_KEYWORD, "a")); }}, new BlockStatement(new ArrayList<>())));
+                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, new HashMap<>() {{
+                                        put("a", new Parameter(TokenTypeEnum.INT_KEYWORD, "a"));
+                                    }}, new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -202,7 +188,10 @@ public class ParserTest {
                                         new Token(new Position(1, 24), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, new HashMap<>() {{ put("a", new Parameter(TokenTypeEnum.INT_KEYWORD, "a")); put("b", new Parameter(TokenTypeEnum.INT_KEYWORD, "b")); }}, new BlockStatement(new ArrayList<>())));
+                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, new HashMap<>() {{
+                                        put("a", new Parameter(TokenTypeEnum.INT_KEYWORD, "a"));
+                                        put("b", new Parameter(TokenTypeEnum.INT_KEYWORD, "b"));
+                                    }}, new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -222,11 +211,32 @@ public class ParserTest {
                                         new Token(new Position(1, 30), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, new HashMap<>() {{ put("a", new Parameter(TokenTypeEnum.DOUBLE_KEYWORD, "a")); put("b", new Parameter(TokenTypeEnum.STRING_KEYWORD, "b")); }}, new BlockStatement(new ArrayList<>())));
+                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, new HashMap<>() {{
+                                        put("a", new Parameter(TokenTypeEnum.DOUBLE_KEYWORD, "a"));
+                                        put("b", new Parameter(TokenTypeEnum.STRING_KEYWORD, "b"));
+                                    }}, new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 )
 
         );
+    }
+
+    @Test
+    void parserInit() {
+        ArrayList<Token> tokens = new ArrayList<>();
+        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
+
+        assertNotNull(parser);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateTestProgramData")
+    void parseProgram(ParserSingleTestParams testParams) {
+        ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
+        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
+        Program program = parser.parse();
+
+        assertEquals(testParams.expectedFunctions(), program.functions());
     }
 }

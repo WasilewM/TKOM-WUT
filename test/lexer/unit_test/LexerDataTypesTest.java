@@ -1,4 +1,5 @@
-import lexer.*;
+import lexer.Lexer;
+import lexer.TokenTypeEnum;
 import lexer.tokens.DoubleToken;
 import lexer.tokens.IntegerToken;
 import lexer.tokens.StringToken;
@@ -10,42 +11,15 @@ import org.junit.jupiter.params.provider.MethodSource;
 import utils.SingleTokenDescription;
 import utils.SingleTokenTestParams;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LexerDataTypesTest {
-    @ParameterizedTest
-    @MethodSource("generateIntTokensData")
-    void lexIntValue(SingleTokenTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
-
-    @ParameterizedTest
-    @MethodSource("generateDoubleTokensData")
-    void lexDoubleValue(SingleTokenTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
-
-    @ParameterizedTest
-    @MethodSource("generateStringTokensData")
-    void lexStringValue(SingleTokenTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
-
-    @ParameterizedTest
-    @MethodSource("generateStringWithEscapingTokensData")
-    void lexStringWithEscaping(SingleTokenTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
-
-    @ParameterizedTest
-    @MethodSource("generateBoolTokensData")
-    void lexBoolValue(SingleTokenTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
-
     private static void performTest(SingleTokenTestParams testScenarioParams) {
         InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -61,11 +35,11 @@ public class LexerDataTypesTest {
 
     static Stream<Arguments> generateIntTokensData() {
         return Stream.of(
-          Arguments.of(new SingleTokenTestParams("0", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 0, 1, 1))),
-          Arguments.of(new SingleTokenTestParams("1", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 1, 1, 1))),
-          Arguments.of(new SingleTokenTestParams("7", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 7, 1, 1))),
-          Arguments.of(new SingleTokenTestParams("1023", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 1023, 1, 1))),
-          Arguments.of(new SingleTokenTestParams("        10", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 10, 1, 9)))
+                Arguments.of(new SingleTokenTestParams("0", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 0, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("1", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 1, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("7", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 7, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("1023", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 1023, 1, 1))),
+                Arguments.of(new SingleTokenTestParams("        10", new SingleTokenDescription(TokenTypeEnum.INT_VALUE, 10, 1, 9)))
         );
     }
 
@@ -101,6 +75,36 @@ public class LexerDataTypesTest {
         );
     }
 
+    @ParameterizedTest
+    @MethodSource("generateIntTokensData")
+    void lexIntValue(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateDoubleTokensData")
+    void lexDoubleValue(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateStringTokensData")
+    void lexStringValue(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateStringWithEscapingTokensData")
+    void lexStringWithEscaping(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateBoolTokensData")
+    void lexBoolValue(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
+    }
+
     @Test
     void lexStringLongerThanAllowedLength() {
         InputStream inputStream = new ByteArrayInputStream("\"thisIsSomeLongLongString\"".getBytes());
@@ -132,6 +136,7 @@ public class LexerDataTypesTest {
         assertEquals(1, token.getPosition().getLineNumber());
         assertEquals(1, token.getPosition().getColumnNumber());
     }
+
     @Test
     void lexLongStringWithNewline() {
         InputStream inputStream = new ByteArrayInputStream("\"thisIsSome\\\n\"".getBytes());

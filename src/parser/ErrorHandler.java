@@ -11,6 +11,20 @@ public class ErrorHandler {
         errorLogs = new ArrayList<>();
     }
 
+    private static boolean isErrorCritical(Exception e) {
+        return MissingIdentifierException.class.equals(e.getClass())
+                || MissingLeftCurlyBracketException.class.equals(e.getClass())
+                || MissingRightCurlyBracketException.class.equals(e.getClass())
+                || DuplicatedFunctionNameException.class.equals(e.getClass())
+                || DuplicatedParameterNameException.class.equals(e.getClass())
+                || MissingDataTypeDeclarationException.class.equals(e.getClass());
+    }
+
+    private static boolean isErrorHandleable(Exception e) {
+        return MissingLeftBracketException.class.equals(e.getClass())
+                || MissingRightBracketException.class.equals(e.getClass());
+    }
+
     public ArrayList<Exception> getErrorLog() {
         return errorLogs;
     }
@@ -25,20 +39,6 @@ public class ErrorHandler {
             exit();
         }
 
-    }
-
-    private static boolean isErrorCritical(Exception e) {
-        return MissingIdentifierException.class.equals(e.getClass())
-                || MissingLeftCurlyBracketException.class.equals(e.getClass())
-                || MissingRightCurlyBracketException.class.equals(e.getClass())
-                || DuplicatedFunctionNameException.class.equals(e.getClass())
-                || DuplicatedParameterNameException.class.equals(e.getClass())
-                || MissingDataTypeDeclarationException.class.equals(e.getClass());
-    }
-
-    private static boolean isErrorHandleable(Exception e) {
-        return MissingLeftBracketException.class.equals(e.getClass())
-                || MissingRightBracketException.class.equals(e.getClass());
     }
 
     protected void exit() {

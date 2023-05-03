@@ -1,21 +1,21 @@
 package parser;
 
 import lexer.ILexer;
-import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
+import lexer.tokens.Token;
 import parser.exceptions.*;
+import parser.program_components.BlockStatement;
+import parser.program_components.FunctionDef;
 import parser.program_components.Parameter;
 import parser.program_components.Program;
-import parser.program_components.FunctionDef;
-import parser.program_components.BlockStatement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Parser {
     private final ILexer lexer;
-    private Token currentToken;
     private final ErrorHandler errorHandler;
+    private Token currentToken;
 
     public Parser(ILexer lexer, ErrorHandler errorHandler) {
         this.lexer = lexer;
@@ -33,7 +33,7 @@ public class Parser {
         return new Program(functions);
     }
 
-    private boolean parseFunctionDef(HashMap<String,FunctionDef> functions) {
+    private boolean parseFunctionDef(HashMap<String, FunctionDef> functions) {
         if (!isCurrentTokenDataTypeKeyword()) {
             return false;
         }

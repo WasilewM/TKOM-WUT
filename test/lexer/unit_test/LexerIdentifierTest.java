@@ -1,6 +1,6 @@
 import lexer.Lexer;
-import lexer.tokens.StringToken;
 import lexer.TokenTypeEnum;
+import lexer.tokens.StringToken;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -17,18 +17,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LexerIdentifierTest {
-
-    @ParameterizedTest
-    @MethodSource("generateIdentifierTokensData")
-    void lexIdentifier(SingleTokenTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
-
-    @ParameterizedTest
-    @MethodSource("generateIdentifierLookingSimilarToKeywordTokensData")
-    void lexIdentifierLookingSimilarToKeywords(SingleTokenTestParams testScenarioParams) {
-        performTest(testScenarioParams);
-    }
 
     private static void performTest(SingleTokenTestParams testScenarioParams) {
         InputStream inputStream = new ByteArrayInputStream(testScenarioParams.inputString().getBytes());
@@ -63,6 +51,18 @@ public class LexerIdentifierTest {
                 Arguments.of(new SingleTokenTestParams("firstPoint", new SingleTokenDescription(TokenTypeEnum.IDENTIFIER, "firstPoint", 1, 1))),
                 Arguments.of(new SingleTokenTestParams("\n\nPointlessValue", new SingleTokenDescription(TokenTypeEnum.IDENTIFIER, "PointlessValue", 3, 1)))
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateIdentifierTokensData")
+    void lexIdentifier(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
+    }
+
+    @ParameterizedTest
+    @MethodSource("generateIdentifierLookingSimilarToKeywordTokensData")
+    void lexIdentifierLookingSimilarToKeywords(SingleTokenTestParams testScenarioParams) {
+        performTest(testScenarioParams);
     }
 
     @Test
