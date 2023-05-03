@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
+import parser.program_components.Parameter;
 import parser.program_components.Program;
 import parser.program_components.FunctionDef;
 import parser.program_components.BlockStatement;
@@ -165,6 +166,23 @@ public class ParserTest {
                                 ),
                                 new HashMap<>() {{
                                     put("func", new FunctionDef("func", TokenTypeEnum.SCENE_KEYWORD, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("cube", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("a", new Position(1, 14), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 16), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 17), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(1, 18), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("cube", new FunctionDef("cube", TokenTypeEnum.INT_KEYWORD, List.of(new Parameter(TokenTypeEnum.INT_KEYWORD, "a")), new BlockStatement(new ArrayList<>())));
                                 }}
                         )
                 )

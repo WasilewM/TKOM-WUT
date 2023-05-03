@@ -4,6 +4,7 @@ import lexer.ILexer;
 import lexer.tokens.Token;
 import lexer.TokenTypeEnum;
 import parser.exceptions.*;
+import parser.program_components.Parameter;
 import parser.program_components.Program;
 import parser.program_components.FunctionDef;
 import parser.program_components.BlockStatement;
@@ -33,7 +34,7 @@ public class Parser {
     }
 
     private boolean parseFunctionDef(HashMap<String,FunctionDef> functions) {
-        if (notStartsWithDataTypeKeyword()) {
+        if (!isCurrentTokenDataTypeKeyword()) {
             return false;
         }
         TokenTypeEnum functionType = currentToken.getTokenType();
@@ -49,6 +50,8 @@ public class Parser {
             errorHandler.handle(new MissingLeftBracketException(currentToken.toString()));
         }
 
+        ArrayList<Parameter> parameters = parseParameters();
+
         if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
             errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
         }
@@ -62,26 +65,46 @@ public class Parser {
         }
 
         if (!(functions.containsKey(functionName))) {
-            functions.put(functionName, new FunctionDef(functionName, functionType, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+            functions.put(functionName, new FunctionDef(functionName, functionType, parameters, new BlockStatement(new ArrayList<>())));
         } else {
             errorHandler.handle(
                     new DuplicatedFunctionNameException(
-                            String.format("Function name %s at position: <line: %d, column %d>", functionName, currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
+                            String.format("Function %s at position: <line: %d, column %d>", functionName, currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
                     )
             );
         }
         return true;
     }
 
-    private boolean notStartsWithDataTypeKeyword() {
-        return currentToken.getTokenType() != TokenTypeEnum.INT_KEYWORD
-                && currentToken.getTokenType() != TokenTypeEnum.DOUBLE_KEYWORD
-                && currentToken.getTokenType() != TokenTypeEnum.STRING_KEYWORD
-                && currentToken.getTokenType() != TokenTypeEnum.BOOL_KEYWORD
-                && currentToken.getTokenType() != TokenTypeEnum.POINT_KEYWORD
-                && currentToken.getTokenType() != TokenTypeEnum.SECTION_KEYWORD
-                && currentToken.getTokenType() != TokenTypeEnum.FIGURE_KEYWORD
-                && currentToken.getTokenType() != TokenTypeEnum.SCENE_KEYWORD;
+    private ArrayList<Parameter> parseParameters() {
+        ArrayList<Parameter> params = new ArrayList<>();
+
+        if (!isCurrentTokenDataTypeKeyword()) {
+            return params;
+        }
+
+        TokenTypeEnum tokenType = currentToken.getTokenType();
+        nextToken();
+
+        if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
+            errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
+        }
+
+        params.add(new Parameter(tokenType, currentToken.getValue().toString()));
+        nextToken();
+
+        return params;
+    }
+
+    private boolean isCurrentTokenDataTypeKeyword() {
+        return currentToken.getTokenType() == TokenTypeEnum.INT_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.DOUBLE_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.STRING_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.BOOL_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.POINT_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.SECTION_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.FIGURE_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.SCENE_KEYWORD;
     }
 
     private boolean consumeIf(TokenTypeEnum tokenType) {

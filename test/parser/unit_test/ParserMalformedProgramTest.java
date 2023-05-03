@@ -124,7 +124,23 @@ public class ParserMalformedProgramTest {
                                         new Token(new Position(2, 12), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
-                                        new DuplicatedFunctionNameException("Function name main at position: <line: 2, column 12>")
+                                        new DuplicatedFunctionNameException("Function main at position: <line: 2, column 12>")
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(1, 14), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 15), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(1, 16), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingIdentifierException("Token RIGHT_BRACKET at position: <line: 1, column 14>")
                                 )
                         )
                 )
