@@ -7,7 +7,7 @@ import parser.IVisitor;
 import java.util.HashMap;
 
 public record FunctionDef(String name, TokenTypeEnum functionType, HashMap<String, Parameter> parameters,
-                          BlockStatement statement) implements IVisitable {
+                          CodeBlock statement) implements IVisitable {
 
     @Override
     public void accept(IVisitor visitor) {

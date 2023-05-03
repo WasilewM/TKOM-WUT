@@ -4,10 +4,7 @@ import lexer.ILexer;
 import lexer.TokenTypeEnum;
 import lexer.tokens.Token;
 import parser.exceptions.*;
-import parser.program_components.BlockStatement;
-import parser.program_components.FunctionDef;
-import parser.program_components.Parameter;
-import parser.program_components.Program;
+import parser.program_components.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,12 +57,14 @@ public class Parser {
             errorHandler.handle(new MissingLeftCurlyBracketException(currentToken.toString()));
         }
 
+        CodeBlock codeBlock = parseCodeBlock();
+
         if (!consumeIf(TokenTypeEnum.RIGHT_CURLY_BRACKET)) {
             errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
         }
 
         if (!(functions.containsKey(functionName))) {
-            functions.put(functionName, new FunctionDef(functionName, functionType, parameters, new BlockStatement(new ArrayList<>())));
+            functions.put(functionName, new FunctionDef(functionName, functionType, parameters, codeBlock));
         } else {
             errorHandler.handle(
                     new DuplicatedFunctionNameException(
@@ -119,6 +118,33 @@ public class Parser {
         }
 
         return params;
+    }
+
+    private CodeBlock parseCodeBlock() {
+        ArrayList<IStatement> statements = new ArrayList<>();
+        IStatement statement = parseStatement();
+        while (statement != null) {
+            statements.add(statement);
+            statement = parseStatement();
+        }
+
+        return new CodeBlock(statements);
+    }
+
+    private IStatement parseStatement() {
+        return parseReturnStatement();
+    }
+
+    private IStatement parseReturnStatement() {
+        if (!consumeIf(TokenTypeEnum.RETURN_KEYWORD)) {
+            return null;
+        }
+
+        if (!consumeIf(TokenTypeEnum.SEMICOLON)) {
+            errorHandler.handle(new MissingSemicolonException(currentToken.toString()));
+        }
+
+        return new ReturnStatement();
     }
 
     private boolean isCurrentTokenDataTypeKeyword() {

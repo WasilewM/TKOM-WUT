@@ -4,9 +4,9 @@ import parser.IStatement;
 import parser.IVisitable;
 import parser.IVisitor;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public record BlockStatement(ArrayList<IStatement> statements) implements IVisitable {
+public record CodeBlock(List<IStatement> statements) implements IVisitable {
 
     @Override
     public void accept(IVisitor visitor) {

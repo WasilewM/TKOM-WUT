@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ParserMalformedProgramTest {
 
-    static Stream<Arguments> generateMalformedTestProgramData() {
+    static Stream<Arguments> getMalformedTestProgramData() {
         return Stream.of(
                 Arguments.of(
                         new ParserMalformedSingleTestParams(
@@ -175,7 +175,7 @@ public class ParserMalformedProgramTest {
     }
 
     @ParameterizedTest
-    @MethodSource("generateMalformedTestProgramData")
+    @MethodSource("getMalformedTestProgramData")
     void parseMalformedFunctionDefProgram(ParserMalformedSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
