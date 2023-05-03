@@ -11,10 +11,7 @@ import utils.MockedExitErrorHandler;
 import utils.MockedLexer;
 import utils.ParserMalformedSingleTestParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,11 +24,13 @@ public class ParserMalformedProgramTest {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
         Parser parser = new Parser(new MockedLexer(tokens), errorHandler);
+        boolean wasExceptionCaught = false;
 
         try {
             parser.parse();
         }
         catch (RuntimeException e) {
+            wasExceptionCaught = true;
             Iterator<Exception> expected = testParams.expectedErrorLog().iterator();
             Iterator<Exception> actual = errorHandler.getErrorLog().iterator();
             assertEquals(testParams.expectedErrorLog().size(), errorHandler.getErrorLog().size());
@@ -39,6 +38,8 @@ public class ParserMalformedProgramTest {
                 assertEquals(expected.next().getMessage(), actual.next().getMessage());
             }
         }
+
+        assert wasExceptionCaught;
     }
 
     static Stream<Arguments> generateMalformedTestProgramData() {
@@ -103,6 +104,27 @@ public class ParserMalformedProgramTest {
                                         ),
                                 List.of(
                                         new MissingRightCurlyBracketException(new Token(new Position(1, 11), TokenTypeEnum.ETX).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(1, 12), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(2, 1), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(2, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(2, 10), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(2, 11), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(2, 12), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new DuplicatedFunctionNameException("Function name main at position: <line: 2, column 12>")
                                 )
                         )
                 )

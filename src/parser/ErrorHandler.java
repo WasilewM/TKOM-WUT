@@ -30,7 +30,8 @@ public class ErrorHandler {
     private static boolean isErrorCritical(Exception e) {
         return MissingIdentifierException.class.equals(e.getClass())
                 || MissingLeftCurlyBracketException.class.equals(e.getClass())
-                || MissingRightCurlyBracketException.class.equals(e.getClass());
+                || MissingRightCurlyBracketException.class.equals(e.getClass())
+                || DuplicatedFunctionNameException.class.equals(e.getClass());
     }
 
     private static boolean isErrorHandleable(Exception e) {

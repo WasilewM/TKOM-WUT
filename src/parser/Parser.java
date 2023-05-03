@@ -61,7 +61,15 @@ public class Parser {
             errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
         }
 
-        functions.put(functionName, new FunctionDef(functionName, functionType, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+        if (!(functions.containsKey(functionName))) {
+            functions.put(functionName, new FunctionDef(functionName, functionType, new ArrayList<>(), new BlockStatement(new ArrayList<>())));
+        } else {
+            errorHandler.handle(
+                    new DuplicatedFunctionNameException(
+                            String.format("Function name %s at position: <line: %d, column %d>", functionName, currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
+                    )
+            );
+        }
         return true;
     }
 
