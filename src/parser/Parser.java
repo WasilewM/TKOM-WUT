@@ -167,9 +167,10 @@ public class Parser {
         }
 
         parseLeftBracket();
+        IExpression expression = parseAlternativeExpression();
         parseRightBracket();
 
-        return new IfExpression();
+        return new IfExpression(expression);
     }
 
     private void parseLeftBracket() {
@@ -182,6 +183,37 @@ public class Parser {
         if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
             errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
         }
+    }
+
+    private IExpression parseAlternativeExpression() {
+        IExpression leftExp = parseIdentifier();
+
+        if (leftExp == null) {
+            return null;
+        }
+
+        while (consumeIf(TokenTypeEnum.OR_OPERATOR)) {
+            IExpression rightExp = parseIdentifier();
+
+            if (rightExp == null) {
+                errorHandler.handle(new MissingExpressionException(currentToken.toString()));
+            }
+
+            leftExp = new AlternativeExpression(leftExp, rightExp);
+        }
+
+        return leftExp;
+    }
+
+    private IExpression parseIdentifier() {
+        if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
+            return null;
+        }
+
+        String identifierName = (String) currentToken.getValue();
+        nextToken();
+
+        return new Identifier(identifierName);
     }
 
     private boolean isCurrentTokenOfDataTypeKeyword() {

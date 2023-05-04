@@ -44,7 +44,7 @@ public class ParserIfExpressionTest {
         testTokens.add(new Token(new Position(2, 5), TokenTypeEnum.RIGHT_BRACKET));
         testTokens.add(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET));
         HashMap<String, FunctionDef> expectedFunctions = new HashMap<>() {{
-            put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression()))));
+            put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(null)))));
         }};
 
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();

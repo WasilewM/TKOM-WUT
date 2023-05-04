@@ -17,7 +17,8 @@ public class ErrorHandler {
                 || MissingRightCurlyBracketException.class.equals(e.getClass())
                 || DuplicatedFunctionNameException.class.equals(e.getClass())
                 || DuplicatedParameterNameException.class.equals(e.getClass())
-                || MissingDataTypeDeclarationException.class.equals(e.getClass());
+                || MissingDataTypeDeclarationException.class.equals(e.getClass())
+                || MissingExpressionException.class.equals(e.getClass());
     }
 
     private static boolean isErrorHandleable(Exception e) {
