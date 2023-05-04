@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ParserTest {
+public class ParserProgramTest {
 
     static Stream<Arguments> getTestProgramData() {
         return Stream.of(
