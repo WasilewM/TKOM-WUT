@@ -11,7 +11,7 @@ import parser.Parser;
 import parser.program_components.CodeBlock;
 import parser.program_components.FunctionDef;
 import parser.program_components.Program;
-import parser.program_components.ReturnStatement;
+import parser.program_components.ReturnExpression;
 import utils.MockedExitErrorHandler;
 import utils.MockedLexer;
 import utils.ParserSingleTestParams;
@@ -24,9 +24,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserReturnStatementTest {
+public class ParserReturnExpressionTest {
 
-    static Stream<Arguments> getReturnStatementProgramData() {
+    static Stream<Arguments> getReturnExpressionProgramData() {
         return Stream.of(
                 Arguments.of(
                         new ParserSingleTestParams(
@@ -41,7 +41,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(null)))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnExpression(null)))));
                                 }}
                         )
                 ),
@@ -59,7 +59,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(1)))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnExpression(1)))));
                                 }}
                         )
                 ),
@@ -77,7 +77,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.DOUBLE_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(2.14)))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.DOUBLE_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnExpression(2.14)))));
                                 }}
                         )
                 ),
@@ -95,7 +95,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.STRING_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement("a")))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.STRING_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnExpression("a")))));
                                 }}
                         )
                 ),
@@ -113,7 +113,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(true)))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnExpression(true)))));
                                 }}
                         )
                 ),
@@ -131,7 +131,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(false)))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnExpression(false)))));
                                 }}
                         )
                 )
@@ -139,8 +139,8 @@ public class ParserReturnStatementTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getReturnStatementProgramData")
-    void parseReturnStatement(ParserSingleTestParams testParams) {
+    @MethodSource("getReturnExpressionProgramData")
+    void parseReturnExpression(ParserSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
         Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
         Program program = parser.parse();

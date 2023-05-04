@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.program_components.CodeBlock;
 import parser.program_components.FunctionDef;
-import parser.program_components.IfStatement;
+import parser.program_components.IfExpression;
 import parser.program_components.Program;
 import utils.MockedExitErrorHandler;
 import utils.MockedLexer;
@@ -19,7 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserIfStatementTest {
+public class ParserIfExpressionTest {
 
     private ArrayList<Token> startTokens;
 
@@ -37,14 +37,14 @@ public class ParserIfStatementTest {
     }
 
     @Test
-    void parseIfStatement() {
+    void parseIfExpression() {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.add(new Token(new Position(2, 1), TokenTypeEnum.IF_KEYWORD));
         testTokens.add(new Token(new Position(2, 4), TokenTypeEnum.LEFT_BRACKET));
         testTokens.add(new Token(new Position(2, 5), TokenTypeEnum.RIGHT_BRACKET));
         testTokens.add(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET));
         HashMap<String, FunctionDef> expectedFunctions = new HashMap<>() {{
-            put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement()))));
+            put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression()))));
         }};
 
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();

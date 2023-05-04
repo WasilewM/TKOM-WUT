@@ -114,29 +114,29 @@ public class Parser {
             return null;
         }
 
-        ArrayList<IStatement> statements = new ArrayList<>();
-        IStatement statement = parseStatement();
-        while (statement != null) {
-            statements.add(statement);
-            statement = parseStatement();
+        ArrayList<IExpression> expressions = new ArrayList<>();
+        IExpression exp = parseExpression();
+        while (exp != null) {
+            expressions.add(exp);
+            exp = parseExpression();
         }
 
         if (!consumeIf(TokenTypeEnum.RIGHT_CURLY_BRACKET)) {
             errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
         }
 
-        return new CodeBlock(statements);
+        return new CodeBlock(expressions);
     }
 
-    private IStatement parseStatement() {
-        IStatement statement = parseReturnStatement();
-        if (statement == null) {
-            statement = parseIfStatement();
+    private IExpression parseExpression() {
+        IExpression exp = parseReturnExpression();
+        if (exp == null) {
+            exp = parseIfExpression();
         }
-        return statement;
+        return exp;
     }
 
-    private IStatement parseReturnStatement() {
+    private IExpression parseReturnExpression() {
         if (!consumeIf(TokenTypeEnum.RETURN_KEYWORD)) {
             return null;
         }
@@ -158,10 +158,10 @@ public class Parser {
             errorHandler.handle(new MissingSemicolonException(currentToken.toString()));
         }
 
-        return new ReturnStatement(value);
+        return new ReturnExpression(value);
     }
 
-    private IStatement parseIfStatement() {
+    private IExpression parseIfExpression() {
         if (!consumeIf(TokenTypeEnum.IF_KEYWORD)) {
             return null;
         }
@@ -169,7 +169,7 @@ public class Parser {
         parseLeftBracket();
         parseRightBracket();
 
-        return new IfStatement();
+        return new IfExpression();
     }
 
     private void parseLeftBracket() {

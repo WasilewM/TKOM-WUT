@@ -17,7 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserMalformedIfStatementTest {
+public class ParserMalformedIfExpressionTest {
 
     private ArrayList<Token> startTokens;
 
@@ -36,7 +36,7 @@ public class ParserMalformedIfStatementTest {
     }
 
     @Test
-    void parseIfStatementWithMissingLeftBracket() {
+    void parseIfExpressionWithMissingLeftBracket() {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.add(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET));
         List<Exception> expectedErrorLog = Arrays.asList(
@@ -57,7 +57,7 @@ public class ParserMalformedIfStatementTest {
     }
 
     @Test
-    void parseIfStatementWithMissingRightBracket() {
+    void parseIfExpressionWithMissingRightBracket() {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.add(new Token(new Position(10, 1), TokenTypeEnum.LEFT_BRACKET));
         testTokens.add(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET));
