@@ -24,9 +24,9 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserCodeBlockTest {
+public class ParserReturnStatementTest {
 
-    static Stream<Arguments> getCodeBlockProgramData() {
+    static Stream<Arguments> getReturnStatementProgramData() {
         return Stream.of(
                 Arguments.of(
                         new ParserSingleTestParams(
@@ -139,8 +139,8 @@ public class ParserCodeBlockTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getCodeBlockProgramData")
-    void parseCodeBlock(ParserSingleTestParams testParams) {
+    @MethodSource("getReturnStatementProgramData")
+    void parseReturnStatement(ParserSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
         Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
         Program program = parser.parse();
