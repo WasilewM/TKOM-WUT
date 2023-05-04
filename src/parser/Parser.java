@@ -43,15 +43,9 @@ public class Parser {
         String functionName = (String) currentToken.getValue();
         nextToken();
 
-        if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
-            errorHandler.handle(new MissingLeftBracketException(currentToken.toString()));
-        }
-
+        parseLeftBracket();
         HashMap<String, Parameter> parameters = parseParameters();
-
-        if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
-            errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
-        }
+        parseRightBracket();
 
         CodeBlock codeBlock = parseCodeBlock();
         if (codeBlock == null) {
@@ -135,7 +129,11 @@ public class Parser {
     }
 
     private IStatement parseStatement() {
-        return parseReturnStatement();
+        IStatement statement = parseReturnStatement();
+        if (statement == null) {
+            statement = parseIfStatement();
+        }
+        return statement;
     }
 
     private IStatement parseReturnStatement() {
@@ -161,6 +159,29 @@ public class Parser {
         }
 
         return new ReturnStatement(value);
+    }
+
+    private IStatement parseIfStatement() {
+        if (!consumeIf(TokenTypeEnum.IF_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        parseRightBracket();
+
+        return new IfStatement();
+    }
+
+    private void parseLeftBracket() {
+        if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
+            errorHandler.handle(new MissingLeftBracketException(currentToken.toString()));
+        }
+    }
+
+    private void parseRightBracket() {
+        if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
+            errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
+        }
     }
 
     private boolean isCurrentTokenOfDataTypeKeyword() {
