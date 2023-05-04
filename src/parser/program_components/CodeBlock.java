@@ -1,12 +1,12 @@
 package parser.program_components;
 
-import parser.IStatement;
+import parser.IExpression;
 import parser.IVisitable;
 import parser.IVisitor;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public record BlockStatement(ArrayList<IStatement> statements) implements IVisitable {
+public record CodeBlock(List<IExpression> expressions) implements IVisitable {
 
     @Override
     public void accept(IVisitor visitor) {

@@ -4,10 +4,7 @@ import lexer.ILexer;
 import lexer.TokenTypeEnum;
 import lexer.tokens.Token;
 import parser.exceptions.*;
-import parser.program_components.BlockStatement;
-import parser.program_components.FunctionDef;
-import parser.program_components.Parameter;
-import parser.program_components.Program;
+import parser.program_components.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +31,7 @@ public class Parser {
     }
 
     private boolean parseFunctionDef(HashMap<String, FunctionDef> functions) {
-        if (!isCurrentTokenDataTypeKeyword()) {
+        if (!isCurrentTokenOfDataTypeKeyword()) {
             return false;
         }
         TokenTypeEnum functionType = currentToken.getTokenType();
@@ -46,26 +43,17 @@ public class Parser {
         String functionName = (String) currentToken.getValue();
         nextToken();
 
-        if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
-            errorHandler.handle(new MissingLeftBracketException(currentToken.toString()));
-        }
-
+        parseLeftBracket();
         HashMap<String, Parameter> parameters = parseParameters();
+        parseRightBracket();
 
-        if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
-            errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
-        }
-
-        if (!consumeIf(TokenTypeEnum.LEFT_CURLY_BRACKET)) {
+        CodeBlock codeBlock = parseCodeBlock();
+        if (codeBlock == null) {
             errorHandler.handle(new MissingLeftCurlyBracketException(currentToken.toString()));
         }
 
-        if (!consumeIf(TokenTypeEnum.RIGHT_CURLY_BRACKET)) {
-            errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
-        }
-
         if (!(functions.containsKey(functionName))) {
-            functions.put(functionName, new FunctionDef(functionName, functionType, parameters, new BlockStatement(new ArrayList<>())));
+            functions.put(functionName, new FunctionDef(functionName, functionType, parameters, codeBlock));
         } else {
             errorHandler.handle(
                     new DuplicatedFunctionNameException(
@@ -79,7 +67,7 @@ public class Parser {
     private HashMap<String, Parameter> parseParameters() {
         HashMap<String, Parameter> params = new HashMap<>();
 
-        if (!isCurrentTokenDataTypeKeyword()) {
+        if (!isCurrentTokenOfDataTypeKeyword()) {
             return params;
         }
 
@@ -95,7 +83,7 @@ public class Parser {
         nextToken();
 
         while (consumeIf(TokenTypeEnum.COMMA)) {
-            if (!isCurrentTokenDataTypeKeyword()) {
+            if (!isCurrentTokenOfDataTypeKeyword()) {
                 errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
                 nextToken();
             }
@@ -121,7 +109,82 @@ public class Parser {
         return params;
     }
 
-    private boolean isCurrentTokenDataTypeKeyword() {
+    private CodeBlock parseCodeBlock() {
+        if (!consumeIf(TokenTypeEnum.LEFT_CURLY_BRACKET)) {
+            return null;
+        }
+
+        ArrayList<IExpression> expressions = new ArrayList<>();
+        IExpression exp = parseExpression();
+        while (exp != null) {
+            expressions.add(exp);
+            exp = parseExpression();
+        }
+
+        if (!consumeIf(TokenTypeEnum.RIGHT_CURLY_BRACKET)) {
+            errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
+        }
+
+        return new CodeBlock(expressions);
+    }
+
+    private IExpression parseExpression() {
+        IExpression exp = parseReturnExpression();
+        if (exp == null) {
+            exp = parseIfExpression();
+        }
+        return exp;
+    }
+
+    private IExpression parseReturnExpression() {
+        if (!consumeIf(TokenTypeEnum.RETURN_KEYWORD)) {
+            return null;
+        }
+
+        Object value = null;
+        if (isCurrentTokenOfBoolValue()) {
+            if (currentToken.getTokenType() == TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD) {
+                value = true;
+            } else {
+                value = false;
+            }
+            nextToken();
+        } else if (isCurrentTokenOfDataValue()) {
+            value = currentToken.getValue();
+            nextToken();
+        }
+
+        if (!consumeIf(TokenTypeEnum.SEMICOLON)) {
+            errorHandler.handle(new MissingSemicolonException(currentToken.toString()));
+        }
+
+        return new ReturnExpression(value);
+    }
+
+    private IExpression parseIfExpression() {
+        if (!consumeIf(TokenTypeEnum.IF_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        parseRightBracket();
+
+        return new IfExpression();
+    }
+
+    private void parseLeftBracket() {
+        if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
+            errorHandler.handle(new MissingLeftBracketException(currentToken.toString()));
+        }
+    }
+
+    private void parseRightBracket() {
+        if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
+            errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
+        }
+    }
+
+    private boolean isCurrentTokenOfDataTypeKeyword() {
         return currentToken.getTokenType() == TokenTypeEnum.INT_KEYWORD
                 || currentToken.getTokenType() == TokenTypeEnum.DOUBLE_KEYWORD
                 || currentToken.getTokenType() == TokenTypeEnum.STRING_KEYWORD
@@ -130,6 +193,17 @@ public class Parser {
                 || currentToken.getTokenType() == TokenTypeEnum.SECTION_KEYWORD
                 || currentToken.getTokenType() == TokenTypeEnum.FIGURE_KEYWORD
                 || currentToken.getTokenType() == TokenTypeEnum.SCENE_KEYWORD;
+    }
+
+    private boolean isCurrentTokenOfBoolValue() {
+        return currentToken.getTokenType() == TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD;
+    }
+
+    private boolean isCurrentTokenOfDataValue() {
+        return currentToken.getTokenType() == TokenTypeEnum.INT_VALUE
+                || currentToken.getTokenType() == TokenTypeEnum.DOUBLE_VALUE
+                || currentToken.getTokenType() == TokenTypeEnum.STRING_VALUE;
     }
 
     private boolean consumeIf(TokenTypeEnum tokenType) {

@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ParserMalformedProgramTest {
 
-    static Stream<Arguments> generateMalformedTestProgramData() {
+    static Stream<Arguments> getMalformedTestProgramData_withCriticalExceptions() {
         return Stream.of(
                 Arguments.of(
                         new ParserMalformedSingleTestParams(
@@ -56,33 +56,6 @@ public class ParserMalformedProgramTest {
                                 Arrays.asList(
                                         new MissingRightBracketException(new Token(new Position(1, 9), TokenTypeEnum.ETX).toString()),
                                         new MissingLeftCurlyBracketException(new Token(new Position(1, 9), TokenTypeEnum.ETX).toString())
-                                )
-                        )
-                ),
-                Arguments.of(
-                        new ParserMalformedSingleTestParams(
-                                Arrays.asList(
-                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
-                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
-                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
-                                        new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET)
-                                ),
-                                List.of(
-                                        new MissingLeftCurlyBracketException(new Token(new Position(1, 10), TokenTypeEnum.ETX).toString())
-                                )
-                        )
-                ),
-                Arguments.of(
-                        new ParserMalformedSingleTestParams(
-                                Arrays.asList(
-                                        new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
-                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
-                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
-                                        new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_CURLY_BRACKET)
-                                ),
-                                List.of(
-                                        new MissingRightCurlyBracketException(new Token(new Position(1, 11), TokenTypeEnum.ETX).toString())
                                 )
                         )
                 ),
@@ -175,8 +148,8 @@ public class ParserMalformedProgramTest {
     }
 
     @ParameterizedTest
-    @MethodSource("generateMalformedTestProgramData")
-    void parseMalformedFunctionDefProgram(ParserMalformedSingleTestParams testParams) {
+    @MethodSource("getMalformedTestProgramData_withCriticalExceptions")
+    void parseMalformedFunctionDefProgram_withCriticalExceptions(ParserMalformedSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
         Parser parser = new Parser(new MockedLexer(tokens), errorHandler);
