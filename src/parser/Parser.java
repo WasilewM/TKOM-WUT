@@ -355,11 +355,20 @@ public class Parser {
     private IExpression parseMultiplicationExpression() {
         IExpression leftExp = parseIdentifier();
 
-        while (consumeIf(TokenTypeEnum.MULTIPLICATION_OPERATOR)) {
-            IExpression rightExp = parseIdentifier();
-            registerErrorIfExpIsMissing(rightExp);
+        while (isCurrentTokenOfMultiplicativeOperatorType()) {
+            if (currentToken.getTokenType() == TokenTypeEnum.MULTIPLICATION_OPERATOR) {
+                nextToken();
+                IExpression rightExp = parseIdentifier();
+                registerErrorIfExpIsMissing(rightExp);
 
-            leftExp = new MultiplicationExpression(leftExp, rightExp);
+                leftExp = new MultiplicationExpression(leftExp, rightExp);
+            } else {
+                nextToken();
+                IExpression rightExp = parseIdentifier();
+                registerErrorIfExpIsMissing(rightExp);
+
+                leftExp = new DivisionExpression(leftExp, rightExp);
+            }
         }
 
         return leftExp;
@@ -422,6 +431,11 @@ public class Parser {
     private boolean isCurrentTokenOfAdditiveOperatorType() {
         return currentToken.getTokenType() == TokenTypeEnum.ADDITION_OPERATOR
                 || currentToken.getTokenType() == TokenTypeEnum.SUBTRACTION_OPERATOR;
+    }
+
+    private boolean isCurrentTokenOfMultiplicativeOperatorType() {
+        return currentToken.getTokenType() == TokenTypeEnum.MULTIPLICATION_OPERATOR
+                || currentToken.getTokenType() == TokenTypeEnum.DIVISION_OPERATOR;
     }
 
     private boolean consumeIf(TokenTypeEnum tokenType) {

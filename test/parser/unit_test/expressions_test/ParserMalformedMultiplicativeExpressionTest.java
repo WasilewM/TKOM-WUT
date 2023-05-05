@@ -38,6 +38,17 @@ public class ParserMalformedMultiplicativeExpressionTest {
                                         new MissingExpressionException(new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET).toString())
                                 )
                         )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 1), TokenTypeEnum.DIVISION_OPERATOR),
+                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
                 )
         );
     }
