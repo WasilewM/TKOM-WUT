@@ -119,6 +119,29 @@ public class ParserMalformedComparisonExpressionTest {
                                         new UnclearExpressionException(new Token(new Position(4, 1), TokenTypeEnum.GREATER_THAN_OPERATOR).toString())
                                 )
                         )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 1), TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR),
+                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 1), TokenTypeEnum.LESS_THAN_OPERATOR),
+                                        new StringToken("a", new Position(3, 1), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(4, 1), TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR)
+                                ),
+                                List.of(
+                                        new UnclearExpressionException(new Token(new Position(4, 1), TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR).toString())
+                                )
+                        )
                 )
         );
     }
