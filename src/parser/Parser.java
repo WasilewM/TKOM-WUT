@@ -171,6 +171,11 @@ public class Parser {
         IExpression expression = parseAlternativeExpression();
         parseRightBracket();
 
+        while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
+            parseLeftBracket();
+            parseRightBracket();
+        }
+
         return new IfExpression(expression);
     }
 

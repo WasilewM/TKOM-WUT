@@ -50,6 +50,34 @@ public class ParserMalformedIfExpressionTest {
                                         new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
                                 )
                         )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(10, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(10, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(10, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                Arrays.asList(
+                                        new MissingLeftBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString()),
+                                        new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(10, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(10, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(10, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
+                                        new Token(new Position(10, 10), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
                 )
         );
     }
