@@ -327,7 +327,7 @@ public class Parser {
     }
 
     private IExpression parseAdditiveExpression() {
-        IExpression leftExp = parseIdentifier();
+        IExpression leftExp = parseMultiplicationExpression();
 
         if (leftExp == null) {
             return null;
@@ -336,17 +336,30 @@ public class Parser {
         while (isCurrentTokenOfAdditiveOperatorType()) {
             if (currentToken.getTokenType() == TokenTypeEnum.ADDITION_OPERATOR) {
                 nextToken();
-                IExpression rightExp = parseIdentifier();
+                IExpression rightExp = parseMultiplicationExpression();
                 registerErrorIfExpIsMissing(rightExp);
 
                 leftExp = new AdditionExpression(leftExp, rightExp);
             } else {
                 nextToken();
-                IExpression rightExp = parseIdentifier();
+                IExpression rightExp = parseMultiplicationExpression();
                 registerErrorIfExpIsMissing(rightExp);
 
                 leftExp = new SubtractionExpression(leftExp, rightExp);
             }
+        }
+
+        return leftExp;
+    }
+
+    private IExpression parseMultiplicationExpression() {
+        IExpression leftExp = parseIdentifier();
+
+        while (consumeIf(TokenTypeEnum.MULTIPLICATION_OPERATOR)) {
+            IExpression rightExp = parseIdentifier();
+            registerErrorIfExpIsMissing(rightExp);
+
+            leftExp = new MultiplicationExpression(leftExp, rightExp);
         }
 
         return leftExp;
