@@ -194,10 +194,7 @@ public class Parser {
 
         while (consumeIf(TokenTypeEnum.OR_OPERATOR)) {
             IExpression rightExp = parseConjunctiveExpression();
-
-            if (rightExp == null) {
-                errorHandler.handle(new MissingExpressionException(currentToken.toString()));
-            }
+            checkIfRightExpIsNotNull(rightExp);
 
             leftExp = new AlternativeExpression(leftExp, rightExp);
         }
@@ -206,20 +203,38 @@ public class Parser {
     }
 
     private IExpression parseConjunctiveExpression() {
-        IExpression leftExp = parseIdentifier();
+        IExpression leftExp = parseComparisonExpression();
 
         if (leftExp == null) {
             return null;
         }
 
         while (consumeIf(TokenTypeEnum.AND_OPERATOR)) {
-            IExpression rightExp = parseIdentifier();
-
-            if (rightExp == null) {
-                errorHandler.handle(new MissingExpressionException(currentToken.toString()));
-            }
+            IExpression rightExp = parseComparisonExpression();
+            checkIfRightExpIsNotNull(rightExp);
 
             leftExp = new ConjunctiveExpression(leftExp, rightExp);
+        }
+
+        return leftExp;
+    }
+
+    private IExpression parseComparisonExpression() {
+        IExpression leftExp = parseIdentifier();
+
+        if (leftExp == null) {
+            return null;
+        }
+
+        if (consumeIf(TokenTypeEnum.LESS_THAN_OPERATOR)) {
+            IExpression rightExp = parseIdentifier();
+            checkIfRightExpIsNotNull(rightExp);
+
+            leftExp = new LessThanExpression(leftExp, rightExp);
+        }
+
+        if (currentToken.getTokenType() == TokenTypeEnum.LESS_THAN_OPERATOR) {
+            errorHandler.handle(new UnclearExpressionException(currentToken.toString()));
         }
 
         return leftExp;
@@ -234,6 +249,12 @@ public class Parser {
         nextToken();
 
         return new Identifier(identifierName);
+    }
+
+    private void checkIfRightExpIsNotNull(IExpression rightExp) {
+        if (rightExp == null) {
+            errorHandler.handle(new MissingExpressionException(currentToken.toString()));
+        }
     }
 
     private boolean isCurrentTokenOfDataTypeKeyword() {
