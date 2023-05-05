@@ -175,8 +175,10 @@ public class Parser {
         ArrayList<IExpression> elseIfExpressions = new ArrayList<>();
         while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
             parseLeftBracket();
+            IExpression elseIfExp = parseAlternativeExpression();
+            registerErrorIfExpIsMissing(elseIfExp);
             parseRightBracket();
-            elseIfExpressions.add(new ElseIfExpression());
+            elseIfExpressions.add(new ElseIfExpression(elseIfExp));
         }
 
         return new IfExpression(expression, elseIfExpressions);
