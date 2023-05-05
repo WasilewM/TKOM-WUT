@@ -5,22 +5,53 @@ import lexer.TokenTypeEnum;
 import lexer.tokens.StringToken;
 import lexer.tokens.Token;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.exceptions.MissingExpressionException;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
+import parser.utils.ParserMalformedSingleTestParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ParserMalformedAdditiveExpressionTest {
 
     private ArrayList<Token> startTokens;
+
+    public static Stream<Arguments> getAdditiveExpTestData() {
+        return Stream.of(
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 1), TokenTypeEnum.ADDITION_OPERATOR),
+                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 1), TokenTypeEnum.SUBTRACTION_OPERATOR),
+                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
+                )
+        );
+    }
 
     @BeforeEach
     public void initTestParams() {
@@ -38,16 +69,11 @@ public class ParserMalformedAdditiveExpressionTest {
         );
     }
 
-    @Test
-    void parseMalformedAdditiveExpression_missingRightExp() {
+    @ParameterizedTest
+    @MethodSource("getAdditiveExpTestData")
+    void parseMalformedAdditiveExpression_missingRightExp(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
-
-        testTokens.add(new Token(new Position(2, 1), TokenTypeEnum.ADDITION_OPERATOR));
-        testTokens.add(new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET));
-        List<Exception> expectedErrorLog = List.of(
-                new MissingExpressionException(new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET).toString())
-        );
-
+        testTokens.addAll(additionalParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         boolean wasExceptionCaught = false;
@@ -56,9 +82,9 @@ public class ParserMalformedAdditiveExpressionTest {
             parser.parse();
         } catch (RuntimeException e) {
             wasExceptionCaught = true;
-            Iterator<Exception> expected = expectedErrorLog.iterator();
+            Iterator<Exception> expected = additionalParams.expectedErrorLog().iterator();
             Iterator<Exception> actual = errorHandler.getErrorLog().iterator();
-            assertEquals(expectedErrorLog.size(), errorHandler.getErrorLog().size());
+            assertEquals(additionalParams.expectedErrorLog().size(), errorHandler.getErrorLog().size());
             while (expected.hasNext() && actual.hasNext()) {
                 assertEquals(expected.next().getMessage(), actual.next().getMessage());
             }
