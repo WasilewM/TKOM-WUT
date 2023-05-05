@@ -11,9 +11,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.exceptions.MissingExpressionException;
 import parser.exceptions.UnclearExpressionException;
-import utils.MockedExitErrorHandler;
-import utils.MockedLexer;
-import utils.ParserMalformedSingleTestParams;
+import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedLexer;
+import parser.utils.ParserMalformedSingleTestParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;

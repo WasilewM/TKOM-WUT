@@ -1,3 +1,5 @@
+package parser.unit_test;
+
 import lexer.Position;
 import lexer.TokenTypeEnum;
 import lexer.tokens.DoubleToken;
@@ -12,9 +14,9 @@ import parser.program_components.CodeBlock;
 import parser.program_components.FunctionDef;
 import parser.program_components.Program;
 import parser.program_components.ReturnExpression;
-import utils.MockedExitErrorHandler;
-import utils.MockedLexer;
-import utils.ParserSingleTestParams;
+import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedLexer;
+import parser.utils.ParserSingleTestParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;
