@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.*;
 import parser.program_components.expressions.ConjunctiveExpression;
+import parser.program_components.expressions.SubtractionExpression;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
@@ -56,6 +57,24 @@ public class ParserConjunctiveExpressionTest {
                                 ),
                                 new HashMap<>() {{
                                     put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new Identifier("ident3")))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new StringToken("ident1", new Position(2, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(2, 12), TokenTypeEnum.AND_OPERATOR),
+                                        new StringToken("ident2", new Position(2, 15), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(3, 1), TokenTypeEnum.AND_OPERATOR),
+                                        new StringToken("ident3", new Position(4, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(5, 5), TokenTypeEnum.SUBTRACTION_OPERATOR),
+                                        new StringToken("ident4", new Position(6, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new SubtractionExpression(new Identifier("ident3"), new Identifier("ident4"))))))));
                                 }}
                         )
                 )
