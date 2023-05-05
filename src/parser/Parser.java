@@ -256,6 +256,12 @@ public class Parser {
             return newLeftExp;
         }
 
+        newLeftExp = parseNotEqualExpression(leftExp);
+        if (leftExp != newLeftExp) {
+            registerErrorIfCurrentTokenIsComparisonOperator();
+            return newLeftExp;
+        }
+
         return leftExp;
     }
 
@@ -309,6 +315,16 @@ public class Parser {
         return leftExp;
     }
 
+    private IExpression parseNotEqualExpression(IExpression leftExp) {
+        if (consumeIf(TokenTypeEnum.NOT_EQUAL_OPERATOR)) {
+            IExpression rightExp = parseIdentifier();
+            registerErrorIfExpIsMissing(rightExp);
+
+            leftExp = new NotEqualExpression(leftExp, rightExp);
+        }
+        return leftExp;
+    }
+
     private IExpression parseIdentifier() {
         if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
             return null;
@@ -332,6 +348,7 @@ public class Parser {
         registerErrorIfCurrentTokenIsOfType(TokenTypeEnum.GREATER_THAN_OPERATOR);
         registerErrorIfCurrentTokenIsOfType(TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR);
         registerErrorIfCurrentTokenIsOfType(TokenTypeEnum.EQUAL_OPERATOR);
+        registerErrorIfCurrentTokenIsOfType(TokenTypeEnum.NOT_EQUAL_OPERATOR);
     }
 
     private void registerErrorIfCurrentTokenIsOfType(TokenTypeEnum expressionType) {

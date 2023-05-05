@@ -95,6 +95,20 @@ public class ParserComparisonExpressionTest {
                                     put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new EqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")))))));
                                 }}
                         )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new StringToken("x1_someName1", new Position(2, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(3, 1), TokenTypeEnum.NOT_EQUAL_OPERATOR),
+                                        new StringToken("y2_someName2", new Position(4, 1), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new NotEqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")))))));
+                                }}
+                        )
                 )
         );
     }
