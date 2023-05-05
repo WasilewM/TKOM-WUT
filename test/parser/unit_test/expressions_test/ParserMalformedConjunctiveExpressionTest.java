@@ -8,8 +8,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.exceptions.MissingExpressionException;
-import utils.MockedExitErrorHandler;
-import utils.MockedLexer;
+import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedLexer;
 
 import java.util.ArrayList;
 import java.util.Arrays;

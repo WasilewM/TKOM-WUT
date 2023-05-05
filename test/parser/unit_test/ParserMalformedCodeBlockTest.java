@@ -1,3 +1,5 @@
+package parser.unit_test;
+
 import lexer.Position;
 import lexer.TokenTypeEnum;
 import lexer.tokens.StringToken;
@@ -9,9 +11,9 @@ import parser.Parser;
 import parser.exceptions.MissingLeftCurlyBracketException;
 import parser.exceptions.MissingRightCurlyBracketException;
 import parser.exceptions.MissingSemicolonException;
-import utils.MockedExitErrorHandler;
-import utils.MockedLexer;
-import utils.ParserMalformedSingleTestParams;
+import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedLexer;
+import parser.utils.ParserMalformedSingleTestParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;

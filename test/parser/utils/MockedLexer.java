@@ -1,4 +1,4 @@
-package utils;
+package parser.utils;
 
 import lexer.ILexer;
 import lexer.Position;

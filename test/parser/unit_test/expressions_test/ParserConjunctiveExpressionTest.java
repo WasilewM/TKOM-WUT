@@ -11,9 +11,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.*;
 import parser.program_components.expressions.ConjunctiveExpression;
-import utils.MockedExitErrorHandler;
-import utils.MockedLexer;
-import utils.ParserSingleTestParams;
+import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedLexer;
+import parser.utils.ParserSingleTestParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;

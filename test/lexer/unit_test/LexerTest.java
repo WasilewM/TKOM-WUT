@@ -1,3 +1,5 @@
+package lexer.unit_test;
+
 import lexer.Lexer;
 import lexer.TokenTypeEnum;
 import lexer.tokens.StringToken;

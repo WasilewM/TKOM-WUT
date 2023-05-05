@@ -1,4 +1,4 @@
-package utils;
+package lexer.utils;
 
 import lexer.TokenTypeEnum;
 

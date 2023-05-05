@@ -1,3 +1,5 @@
+package lexer.integration_test;
+
 import lexer.Lexer;
 import lexer.TokenTypeEnum;
 import lexer.tokens.StringToken;
