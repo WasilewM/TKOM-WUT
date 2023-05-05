@@ -327,7 +327,7 @@ public class Parser {
     }
 
     private IExpression parseAdditiveExpression() {
-        IExpression leftExp = parseIdentifier();
+        IExpression leftExp = parseMultiplicationExpression();
 
         if (leftExp == null) {
             return null;
@@ -336,16 +336,44 @@ public class Parser {
         while (isCurrentTokenOfAdditiveOperatorType()) {
             if (currentToken.getTokenType() == TokenTypeEnum.ADDITION_OPERATOR) {
                 nextToken();
-                IExpression rightExp = parseIdentifier();
+                IExpression rightExp = parseMultiplicationExpression();
                 registerErrorIfExpIsMissing(rightExp);
 
                 leftExp = new AdditionExpression(leftExp, rightExp);
             } else {
                 nextToken();
-                IExpression rightExp = parseIdentifier();
+                IExpression rightExp = parseMultiplicationExpression();
                 registerErrorIfExpIsMissing(rightExp);
 
                 leftExp = new SubtractionExpression(leftExp, rightExp);
+            }
+        }
+
+        return leftExp;
+    }
+
+    private IExpression parseMultiplicationExpression() {
+        IExpression leftExp = parseIdentifier();
+
+        while (isCurrentTokenOfMultiplicativeOperatorType()) {
+            if (currentToken.getTokenType() == TokenTypeEnum.MULTIPLICATION_OPERATOR) {
+                nextToken();
+                IExpression rightExp = parseIdentifier();
+                registerErrorIfExpIsMissing(rightExp);
+
+                leftExp = new MultiplicationExpression(leftExp, rightExp);
+            } else if (currentToken.getTokenType() == TokenTypeEnum.DIVISION_OPERATOR) {
+                nextToken();
+                IExpression rightExp = parseIdentifier();
+                registerErrorIfExpIsMissing(rightExp);
+
+                leftExp = new DivisionExpression(leftExp, rightExp);
+            } else {
+                nextToken();
+                IExpression rightExp = parseIdentifier();
+                registerErrorIfExpIsMissing(rightExp);
+
+                leftExp = new DiscreteDivisionExpression(leftExp, rightExp);
             }
         }
 
@@ -409,6 +437,12 @@ public class Parser {
     private boolean isCurrentTokenOfAdditiveOperatorType() {
         return currentToken.getTokenType() == TokenTypeEnum.ADDITION_OPERATOR
                 || currentToken.getTokenType() == TokenTypeEnum.SUBTRACTION_OPERATOR;
+    }
+
+    private boolean isCurrentTokenOfMultiplicativeOperatorType() {
+        return currentToken.getTokenType() == TokenTypeEnum.MULTIPLICATION_OPERATOR
+                || currentToken.getTokenType() == TokenTypeEnum.DIVISION_OPERATOR
+                || currentToken.getTokenType() == TokenTypeEnum.DISCRETE_DIVISION_OPERATOR;
     }
 
     private boolean consumeIf(TokenTypeEnum tokenType) {
