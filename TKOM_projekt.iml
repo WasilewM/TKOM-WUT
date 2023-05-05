@@ -7,12 +7,6 @@
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/acceptance_test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test/unit_test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/test/lexer" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/test/lexer/integration_test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/test/lexer/unit_test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/test/parser" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/test/parser/integration_test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/test/parser/unit_test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

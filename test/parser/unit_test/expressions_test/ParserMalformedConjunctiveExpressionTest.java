@@ -1,3 +1,5 @@
+package parser.unit_test.expressions_test;
+
 import lexer.Position;
 import lexer.TokenTypeEnum;
 import lexer.tokens.StringToken;
@@ -16,7 +18,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserMalformedAlternativeExpressionTest {
+public class ParserMalformedConjunctiveExpressionTest {
 
     private ArrayList<Token> startTokens;
 
@@ -37,10 +39,10 @@ public class ParserMalformedAlternativeExpressionTest {
     }
 
     @Test
-    void parseMalformedAlternativeExpression_missingRightExp() {
+    void parseMalformedConjunctiveExpression_missingRightExp() {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
 
-        testTokens.add(new Token(new Position(2, 1), TokenTypeEnum.OR_OPERATOR));
+        testTokens.add(new Token(new Position(2, 1), TokenTypeEnum.AND_OPERATOR));
         testTokens.add(new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET));
         List<Exception> expectedErrorLog = List.of(
                 new MissingExpressionException(new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET).toString())
