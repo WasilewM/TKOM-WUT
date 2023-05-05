@@ -226,17 +226,37 @@ public class Parser {
             return null;
         }
 
+        IExpression newLeftExp = parseLessThanExpression(leftExp);
+        if (leftExp != newLeftExp) {
+            checkIfUnclearExpression(TokenTypeEnum.LESS_THAN_OPERATOR);
+            checkIfUnclearExpression(TokenTypeEnum.LESS_OR_EQUAL_OPERATOR);
+            return newLeftExp;
+        }
+
+        leftExp = parseLessOrEqualExpression(leftExp);
+        checkIfUnclearExpression(TokenTypeEnum.LESS_THAN_OPERATOR);
+        checkIfUnclearExpression(TokenTypeEnum.LESS_OR_EQUAL_OPERATOR);
+
+        return leftExp;
+    }
+
+    private IExpression parseLessThanExpression(IExpression leftExp) {
         if (consumeIf(TokenTypeEnum.LESS_THAN_OPERATOR)) {
             IExpression rightExp = parseIdentifier();
             checkIfRightExpIsNotNull(rightExp);
 
             leftExp = new LessThanExpression(leftExp, rightExp);
         }
+        return leftExp;
+    }
 
-        if (currentToken.getTokenType() == TokenTypeEnum.LESS_THAN_OPERATOR) {
-            errorHandler.handle(new UnclearExpressionException(currentToken.toString()));
+    private IExpression parseLessOrEqualExpression(IExpression leftExp) {
+        if (consumeIf(TokenTypeEnum.LESS_OR_EQUAL_OPERATOR)) {
+            IExpression rightExp = parseIdentifier();
+            checkIfRightExpIsNotNull(rightExp);
+
+            leftExp = new LessOrEqualExpression(leftExp, rightExp);
         }
-
         return leftExp;
     }
 
@@ -254,6 +274,12 @@ public class Parser {
     private void checkIfRightExpIsNotNull(IExpression rightExp) {
         if (rightExp == null) {
             errorHandler.handle(new MissingExpressionException(currentToken.toString()));
+        }
+    }
+
+    private void checkIfUnclearExpression(TokenTypeEnum expressionType) {
+        if (currentToken.getTokenType() == expressionType) {
+            errorHandler.handle(new UnclearExpressionException(currentToken.toString()));
         }
     }
 
