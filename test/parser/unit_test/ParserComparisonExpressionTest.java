@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.*;
+import parser.program_components.expressions.*;
 import utils.MockedExitErrorHandler;
 import utils.MockedLexer;
 import utils.ParserSingleTestParams;

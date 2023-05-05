@@ -1,4 +1,4 @@
-package parser.program_components;
+package parser.program_components.expressions;
 
 import parser.IExpression;
 

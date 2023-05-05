@@ -5,6 +5,7 @@ import lexer.TokenTypeEnum;
 import lexer.tokens.Token;
 import parser.exceptions.*;
 import parser.program_components.*;
+import parser.program_components.expressions.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
