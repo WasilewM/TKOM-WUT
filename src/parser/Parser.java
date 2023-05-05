@@ -194,7 +194,7 @@ public class Parser {
 
         while (consumeIf(TokenTypeEnum.OR_OPERATOR)) {
             IExpression rightExp = parseConjunctiveExpression();
-            checkIfRightExpIsNotNull(rightExp);
+            registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new AlternativeExpression(leftExp, rightExp);
         }
@@ -211,7 +211,7 @@ public class Parser {
 
         while (consumeIf(TokenTypeEnum.AND_OPERATOR)) {
             IExpression rightExp = parseComparisonExpression();
-            checkIfRightExpIsNotNull(rightExp);
+            registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new ConjunctiveExpression(leftExp, rightExp);
         }
@@ -228,14 +228,21 @@ public class Parser {
 
         IExpression newLeftExp = parseLessThanExpression(leftExp);
         if (leftExp != newLeftExp) {
-            checkIfUnclearExpression(TokenTypeEnum.LESS_THAN_OPERATOR);
-            checkIfUnclearExpression(TokenTypeEnum.LESS_OR_EQUAL_OPERATOR);
+            registerErrorIfCurrentTokenIsComparisonOperator();
             return newLeftExp;
         }
 
-        leftExp = parseLessOrEqualExpression(leftExp);
-        checkIfUnclearExpression(TokenTypeEnum.LESS_THAN_OPERATOR);
-        checkIfUnclearExpression(TokenTypeEnum.LESS_OR_EQUAL_OPERATOR);
+        newLeftExp = parseLessOrEqualExpression(leftExp);
+        if (leftExp != newLeftExp) {
+            registerErrorIfCurrentTokenIsComparisonOperator();
+            return newLeftExp;
+        }
+
+        newLeftExp = parseGreaterThanExpression(leftExp);
+        if (leftExp != newLeftExp) {
+            registerErrorIfCurrentTokenIsComparisonOperator();
+            return newLeftExp;
+        }
 
         return leftExp;
     }
@@ -243,7 +250,7 @@ public class Parser {
     private IExpression parseLessThanExpression(IExpression leftExp) {
         if (consumeIf(TokenTypeEnum.LESS_THAN_OPERATOR)) {
             IExpression rightExp = parseIdentifier();
-            checkIfRightExpIsNotNull(rightExp);
+            registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new LessThanExpression(leftExp, rightExp);
         }
@@ -253,9 +260,19 @@ public class Parser {
     private IExpression parseLessOrEqualExpression(IExpression leftExp) {
         if (consumeIf(TokenTypeEnum.LESS_OR_EQUAL_OPERATOR)) {
             IExpression rightExp = parseIdentifier();
-            checkIfRightExpIsNotNull(rightExp);
+            registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new LessOrEqualExpression(leftExp, rightExp);
+        }
+        return leftExp;
+    }
+
+    private IExpression parseGreaterThanExpression(IExpression leftExp) {
+        if (consumeIf(TokenTypeEnum.GREATER_THAN_OPERATOR)) {
+            IExpression rightExp = parseIdentifier();
+            registerErrorIfExpIsMissing(rightExp);
+
+            leftExp = new GreaterThanExpression(leftExp, rightExp);
         }
         return leftExp;
     }
@@ -271,13 +288,19 @@ public class Parser {
         return new Identifier(identifierName);
     }
 
-    private void checkIfRightExpIsNotNull(IExpression rightExp) {
-        if (rightExp == null) {
+    private void registerErrorIfExpIsMissing(IExpression exp) {
+        if (exp == null) {
             errorHandler.handle(new MissingExpressionException(currentToken.toString()));
         }
     }
 
-    private void checkIfUnclearExpression(TokenTypeEnum expressionType) {
+    private void registerErrorIfCurrentTokenIsComparisonOperator() {
+        registerErrorIfCurrentTokenIsOfType(TokenTypeEnum.LESS_THAN_OPERATOR);
+        registerErrorIfCurrentTokenIsOfType(TokenTypeEnum.LESS_OR_EQUAL_OPERATOR);
+        registerErrorIfCurrentTokenIsOfType(TokenTypeEnum.GREATER_THAN_OPERATOR);
+    }
+
+    private void registerErrorIfCurrentTokenIsOfType(TokenTypeEnum expressionType) {
         if (currentToken.getTokenType() == expressionType) {
             errorHandler.handle(new UnclearExpressionException(currentToken.toString()));
         }
