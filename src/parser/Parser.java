@@ -186,20 +186,40 @@ public class Parser {
     }
 
     private IExpression parseAlternativeExpression() {
-        IExpression leftExp = parseIdentifier();
+        IExpression leftExp = parseConjunctiveExpression();
 
         if (leftExp == null) {
             return null;
         }
 
         while (consumeIf(TokenTypeEnum.OR_OPERATOR)) {
-            IExpression rightExp = parseIdentifier();
+            IExpression rightExp = parseConjunctiveExpression();
 
             if (rightExp == null) {
                 errorHandler.handle(new MissingExpressionException(currentToken.toString()));
             }
 
             leftExp = new AlternativeExpression(leftExp, rightExp);
+        }
+
+        return leftExp;
+    }
+
+    private IExpression parseConjunctiveExpression() {
+        IExpression leftExp = parseIdentifier();
+
+        if (leftExp == null) {
+            return null;
+        }
+
+        while (consumeIf(TokenTypeEnum.AND_OPERATOR)) {
+            IExpression rightExp = parseIdentifier();
+
+            if (rightExp == null) {
+                errorHandler.handle(new MissingExpressionException(currentToken.toString()));
+            }
+
+            leftExp = new ConjunctiveExpression(leftExp, rightExp);
         }
 
         return leftExp;
