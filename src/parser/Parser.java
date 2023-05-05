@@ -169,14 +169,17 @@ public class Parser {
 
         parseLeftBracket();
         IExpression expression = parseAlternativeExpression();
+        registerErrorIfExpIsMissing(expression);
         parseRightBracket();
 
+        ArrayList<IExpression> elseIfExpressions = new ArrayList<>();
         while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
             parseLeftBracket();
             parseRightBracket();
+            elseIfExpressions.add(new ElseIfExpression());
         }
 
-        return new IfExpression(expression);
+        return new IfExpression(expression, elseIfExpressions);
     }
 
     private void parseLeftBracket() {

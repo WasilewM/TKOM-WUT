@@ -2,5 +2,11 @@ package parser.program_components;
 
 import parser.IExpression;
 
-public record IfExpression(IExpression alternativeExp) implements IExpression {
+import java.util.ArrayList;
+import java.util.List;
+
+public record IfExpression(IExpression alternativeExp, List<IExpression> elseIfExps) implements IExpression {
+    public IfExpression(IExpression alternativeExp) {
+        this(alternativeExp, new ArrayList<>());
+    }
 }
