@@ -67,6 +67,22 @@ public class ParserAlternativeExpressionTest {
                                     put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AlternativeExpression(new AlternativeExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")))))));
                                 }}
                         )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new StringToken("identA", new Position(2, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(2, 13), TokenTypeEnum.AND_OPERATOR),
+                                        new StringToken("identB", new Position(2, 16), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(2, 24), TokenTypeEnum.OR_OPERATOR),
+                                        new StringToken("identC", new Position(2, 26), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AlternativeExpression(new ConjunctiveExpression(new Identifier("identA"), new Identifier("identB")), new Identifier("identC")))))));
+                                }}
+                        )
                 )
         );
     }
