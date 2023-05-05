@@ -221,7 +221,7 @@ public class Parser {
     }
 
     private IExpression parseComparisonExpression() {
-        IExpression leftExp = parseIdentifier();
+        IExpression leftExp = parseAdditiveExpression();
 
         if (leftExp == null) {
             return null;
@@ -268,7 +268,7 @@ public class Parser {
 
     private IExpression parseLessThanExpression(IExpression leftExp) {
         if (consumeIf(TokenTypeEnum.LESS_THAN_OPERATOR)) {
-            IExpression rightExp = parseIdentifier();
+            IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new LessThanExpression(leftExp, rightExp);
@@ -278,7 +278,7 @@ public class Parser {
 
     private IExpression parseLessOrEqualExpression(IExpression leftExp) {
         if (consumeIf(TokenTypeEnum.LESS_OR_EQUAL_OPERATOR)) {
-            IExpression rightExp = parseIdentifier();
+            IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new LessOrEqualExpression(leftExp, rightExp);
@@ -288,7 +288,7 @@ public class Parser {
 
     private IExpression parseGreaterThanExpression(IExpression leftExp) {
         if (consumeIf(TokenTypeEnum.GREATER_THAN_OPERATOR)) {
-            IExpression rightExp = parseIdentifier();
+            IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new GreaterThanExpression(leftExp, rightExp);
@@ -298,7 +298,7 @@ public class Parser {
 
     private IExpression parseGreaterOrEqualExpression(IExpression leftExp) {
         if (consumeIf(TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR)) {
-            IExpression rightExp = parseIdentifier();
+            IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new GreaterOrEqualExpression(leftExp, rightExp);
@@ -308,7 +308,7 @@ public class Parser {
 
     private IExpression parseEqualExpression(IExpression leftExp) {
         if (consumeIf(TokenTypeEnum.EQUAL_OPERATOR)) {
-            IExpression rightExp = parseIdentifier();
+            IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new EqualExpression(leftExp, rightExp);
@@ -318,11 +318,28 @@ public class Parser {
 
     private IExpression parseNotEqualExpression(IExpression leftExp) {
         if (consumeIf(TokenTypeEnum.NOT_EQUAL_OPERATOR)) {
-            IExpression rightExp = parseIdentifier();
+            IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
             leftExp = new NotEqualExpression(leftExp, rightExp);
         }
+        return leftExp;
+    }
+
+    private IExpression parseAdditiveExpression() {
+        IExpression leftExp = parseIdentifier();
+
+        if (leftExp == null) {
+            return null;
+        }
+
+        while (consumeIf(TokenTypeEnum.ADDITION_OPERATOR)) {
+            IExpression rightExp = parseIdentifier();
+            registerErrorIfExpIsMissing(rightExp);
+
+            leftExp = new AdditionExpression(leftExp, rightExp);
+        }
+
         return leftExp;
     }
 
