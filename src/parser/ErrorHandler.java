@@ -25,7 +25,8 @@ public class ErrorHandler {
     private static boolean isErrorHandleable(Exception e) {
         return MissingLeftBracketException.class.equals(e.getClass())
                 || MissingRightBracketException.class.equals(e.getClass())
-                || MissingSemicolonException.class.equals(e.getClass());
+                || MissingSemicolonException.class.equals(e.getClass())
+                || MissingCodeBlockException.class.equals(e.getClass());
     }
 
     public ArrayList<Exception> getErrorLog() {

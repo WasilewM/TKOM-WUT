@@ -167,11 +167,50 @@ public class Parser {
             return null;
         }
 
+        IExpression expression = parseExpressionCondition();
+        CodeBlock ifCodeBlock = parseCodeBlock();
+        registerErrorIfCodeBlockIsMissing(ifCodeBlock);
+
+        ArrayList<IExpression> elseIfExpressions = parseElseIfExpression();
+        IExpression elseExp = parseElseExpression();
+
+        return new IfExpression(expression, ifCodeBlock, elseIfExpressions, elseExp);
+    }
+
+    private ArrayList<IExpression> parseElseIfExpression() {
+        ArrayList<IExpression> elseIfExpressions = new ArrayList<>();
+        while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
+            IExpression elseIfExp = parseExpressionCondition();
+
+            CodeBlock elseIfCodeBlock = parseCodeBlock();
+            registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
+
+            elseIfExpressions.add(new ElseIfExpression(elseIfExp, elseIfCodeBlock));
+        }
+        return elseIfExpressions;
+    }
+
+    private IExpression parseElseExpression() {
+        if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
+            parseLeftBracket();
+            IExpression elseExp = parseAlternativeExpression();
+            registerErrorIfExpIsMissing(elseExp);
+            parseRightBracket();
+
+            CodeBlock elseCodeBlock = parseCodeBlock();
+            registerErrorIfCodeBlockIsMissing(elseCodeBlock);
+
+            return new ElseExpression(elseExp, elseCodeBlock);
+        }
+        return new ElseExpression();
+    }
+
+    private IExpression parseExpressionCondition() {
         parseLeftBracket();
         IExpression expression = parseAlternativeExpression();
+        registerErrorIfExpIsMissing(expression);
         parseRightBracket();
-
-        return new IfExpression(expression);
+        return expression;
     }
 
     private void parseLeftBracket() {
@@ -394,6 +433,12 @@ public class Parser {
     private void registerErrorIfExpIsMissing(IExpression exp) {
         if (exp == null) {
             errorHandler.handle(new MissingExpressionException(currentToken.toString()));
+        }
+    }
+
+    private void registerErrorIfCodeBlockIsMissing(CodeBlock codeBlock) {
+        if (codeBlock == null) {
+            errorHandler.handle(new MissingCodeBlockException(currentToken.toString()));
         }
     }
 
