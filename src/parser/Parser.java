@@ -5,6 +5,10 @@ import lexer.TokenTypeEnum;
 import lexer.tokens.Token;
 import parser.exceptions.*;
 import parser.program_components.*;
+import parser.program_components.data_values.BoolValue;
+import parser.program_components.data_values.DoubleValue;
+import parser.program_components.data_values.IntValue;
+import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.*;
 
 import java.util.ArrayList;
@@ -138,6 +142,10 @@ public class Parser {
         if (exp == null) {
             exp = parseWhileExpression();
         }
+
+        if (exp == null) {
+            exp = parseFactor();
+        }
         return exp;
     }
 
@@ -146,24 +154,13 @@ public class Parser {
             return null;
         }
 
-        Object value = null;
-        if (isCurrentTokenOfBoolValue()) {
-            if (currentToken.getTokenType() == TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD) {
-                value = true;
-            } else {
-                value = false;
-            }
-            nextToken();
-        } else if (isCurrentTokenOfDataValue()) {
-            value = currentToken.getValue();
-            nextToken();
-        }
+        IExpression exp = parseExpression();
 
         if (!consumeIf(TokenTypeEnum.SEMICOLON)) {
             errorHandler.handle(new MissingSemicolonException(currentToken.toString()));
         }
 
-        return new ReturnExpression(value);
+        return new ReturnExpression(exp);
     }
 
     private IExpression parseIfExpression() {
@@ -411,24 +408,24 @@ public class Parser {
     }
 
     private IExpression parseMultiplicationExpression() {
-        IExpression leftExp = parseIdentifier();
+        IExpression leftExp = parseFactor();
 
         while (isCurrentTokenOfMultiplicativeOperatorType()) {
             if (currentToken.getTokenType() == TokenTypeEnum.MULTIPLICATION_OPERATOR) {
                 nextToken();
-                IExpression rightExp = parseIdentifier();
+                IExpression rightExp = parseFactor();
                 registerErrorIfExpIsMissing(rightExp);
 
                 leftExp = new MultiplicationExpression(leftExp, rightExp);
             } else if (currentToken.getTokenType() == TokenTypeEnum.DIVISION_OPERATOR) {
                 nextToken();
-                IExpression rightExp = parseIdentifier();
+                IExpression rightExp = parseFactor();
                 registerErrorIfExpIsMissing(rightExp);
 
                 leftExp = new DivisionExpression(leftExp, rightExp);
             } else {
                 nextToken();
-                IExpression rightExp = parseIdentifier();
+                IExpression rightExp = parseFactor();
                 registerErrorIfExpIsMissing(rightExp);
 
                 leftExp = new DiscreteDivisionExpression(leftExp, rightExp);
@@ -437,6 +434,95 @@ public class Parser {
 
         return leftExp;
     }
+
+    private IExpression parseFactor() {
+        IExpression exp = parseParenthesesExpression();
+        if (exp != null) {
+            return exp;
+        }
+
+        return parseAssignable();
+    }
+
+    private IExpression parseParenthesesExpression() {
+        if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
+            return null;
+        }
+
+        IExpression exp = parseAlternativeExpression();
+        registerErrorIfExpIsMissing(exp);
+
+        if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
+            errorHandler.handle(new UnclosedParenthesesException(currentToken.toString()));
+        }
+
+        return new ParenthesesExpression(exp);
+    }
+
+    private IExpression parseAssignable() {
+        IExpression exp = parseIdentifier();
+        if (exp != null) {
+            return exp;
+        }
+
+        exp = parseStringValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        exp = parseIntValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        exp = parseDoubleValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        return parseBoolValue();
+    }
+
+    private IExpression parseStringValue() {
+        if (currentToken.getTokenType() != TokenTypeEnum.STRING_VALUE) {
+            return null;
+        }
+
+        String value = (String) currentToken.getValue();
+        nextToken();
+        return new StringValue(value);
+    }
+
+    private IExpression parseIntValue() {
+        if (currentToken.getTokenType() != TokenTypeEnum.INT_VALUE) {
+            return null;
+        }
+
+        int value = (int) currentToken.getValue();
+        nextToken();
+        return new IntValue(value);
+    }
+
+    private IExpression parseDoubleValue() {
+        if (currentToken.getTokenType() != TokenTypeEnum.DOUBLE_VALUE) {
+            return null;
+        }
+
+        double value = (double) currentToken.getValue();
+        nextToken();
+        return new DoubleValue(value);
+    }
+
+    private IExpression parseBoolValue() {
+        if (consumeIf(TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD)) {
+            return new BoolValue(true);
+        } else if (consumeIf(TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD)) {
+            return new BoolValue(false);
+        }
+
+        return null;
+    }
+
 
     private IExpression parseIdentifier() {
         if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
@@ -485,17 +571,6 @@ public class Parser {
                 || currentToken.getTokenType() == TokenTypeEnum.SECTION_KEYWORD
                 || currentToken.getTokenType() == TokenTypeEnum.FIGURE_KEYWORD
                 || currentToken.getTokenType() == TokenTypeEnum.SCENE_KEYWORD;
-    }
-
-    private boolean isCurrentTokenOfBoolValue() {
-        return currentToken.getTokenType() == TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD;
-    }
-
-    private boolean isCurrentTokenOfDataValue() {
-        return currentToken.getTokenType() == TokenTypeEnum.INT_VALUE
-                || currentToken.getTokenType() == TokenTypeEnum.DOUBLE_VALUE
-                || currentToken.getTokenType() == TokenTypeEnum.STRING_VALUE;
     }
 
     private boolean isCurrentTokenOfAdditiveOperatorType() {
