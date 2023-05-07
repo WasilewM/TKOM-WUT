@@ -38,6 +38,8 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(2, 12), TokenTypeEnum.MULTIPLICATION_OPERATOR),
                                         new StringToken("ident", new Position(2, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -54,6 +56,8 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(3, 12), TokenTypeEnum.MULTIPLICATION_OPERATOR),
                                         new StringToken("ident", new Position(3, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -68,6 +72,8 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(2, 12), TokenTypeEnum.DIVISION_OPERATOR),
                                         new StringToken("ident", new Position(2, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -84,6 +90,8 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(6, 12), TokenTypeEnum.DIVISION_OPERATOR),
                                         new StringToken("ident", new Position(6, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -100,6 +108,8 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(6, 12), TokenTypeEnum.MULTIPLICATION_OPERATOR),
                                         new StringToken("ident", new Position(6, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -114,6 +124,8 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(2, 12), TokenTypeEnum.DISCRETE_DIVISION_OPERATOR),
                                         new StringToken("ident", new Position(2, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -130,6 +142,8 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(6, 12), TokenTypeEnum.DISCRETE_DIVISION_OPERATOR),
                                         new StringToken("ident", new Position(6, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -148,6 +162,8 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(7, 12), TokenTypeEnum.DISCRETE_DIVISION_OPERATOR),
                                         new StringToken("ident-D", new Position(7, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{

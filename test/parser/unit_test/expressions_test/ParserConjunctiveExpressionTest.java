@@ -38,6 +38,8 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(2, 12), TokenTypeEnum.AND_OPERATOR),
                                         new StringToken("ident2", new Position(2, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -54,6 +56,8 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.AND_OPERATOR),
                                         new StringToken("ident3", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -72,6 +76,8 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(5, 5), TokenTypeEnum.SUBTRACTION_OPERATOR),
                                         new StringToken("ident4", new Position(6, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -90,6 +96,8 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(5, 5), TokenTypeEnum.SUBTRACTION_OPERATOR),
                                         new StringToken("ident4", new Position(6, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{

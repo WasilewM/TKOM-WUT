@@ -37,6 +37,8 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(2, 12), TokenTypeEnum.ADDITION_OPERATOR),
                                         new StringToken("ident", new Position(2, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -55,6 +57,8 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(4, 12), TokenTypeEnum.ADDITION_OPERATOR),
                                         new StringToken("then", new Position(4, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -69,6 +73,8 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(2, 12), TokenTypeEnum.SUBTRACTION_OPERATOR),
                                         new StringToken("ident", new Position(2, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -87,6 +93,8 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(4, 12), TokenTypeEnum.SUBTRACTION_OPERATOR),
                                         new StringToken("then", new Position(4, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{

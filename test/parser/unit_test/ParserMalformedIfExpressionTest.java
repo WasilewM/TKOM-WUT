@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
+import parser.exceptions.MissingCodeBlockException;
 import parser.exceptions.MissingExpressionException;
 import parser.exceptions.MissingLeftBracketException;
 import parser.exceptions.MissingRightBracketException;
@@ -34,11 +35,13 @@ public class ParserMalformedIfExpressionTest {
                         new ParserMalformedSingleTestParams(
                                 Arrays.asList(
                                         new StringToken("a", new Position(2, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(10, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(11, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 Arrays.asList(
                                         new MissingLeftBracketException(new StringToken("a", new Position(2, 5), TokenTypeEnum.IDENTIFIER).toString()),
-                                        new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                        new MissingRightBracketException(new Token(new Position(10, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString())
                                 )
                         )
                 ),
@@ -47,10 +50,12 @@ public class ParserMalformedIfExpressionTest {
                                 Arrays.asList(
                                         new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(10, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(11, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
-                                        new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                        new MissingRightBracketException(new Token(new Position(10, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString())
                                 )
                         )
                 ),
@@ -60,7 +65,9 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(10, 2), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(10, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
+                                        new Token(new Position(10, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(11, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(12, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
                                         new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
@@ -76,8 +83,10 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(4, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("c", new Position(5, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(6, 2), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(10, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
-                                        new Token(new Position(10, 10), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(10, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(11, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(12, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
+                                        new Token(new Position(13, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
@@ -92,7 +101,9 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(10, 2), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(10, 3), TokenTypeEnum.ELSE_KEYWORD),
+                                        new Token(new Position(11, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(12, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(13, 1), TokenTypeEnum.ELSE_KEYWORD),
                                         new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
@@ -108,9 +119,11 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(4, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("c", new Position(5, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(6, 2), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(10, 3), TokenTypeEnum.ELSE_KEYWORD),
-                                        new Token(new Position(10, 10), TokenTypeEnum.LEFT_BRACKET),
-                                        new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(11, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(12, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(13, 1), TokenTypeEnum.ELSE_KEYWORD),
+                                        new Token(new Position(14, 10), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("B", new Position(14, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
@@ -124,6 +137,8 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(4, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("c", new Position(5, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(6, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(7, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(8, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(10, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
                                         new Token(new Position(10, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
@@ -135,6 +150,19 @@ public class ParserMalformedIfExpressionTest {
                                 List.of(
                                         new MissingRightBracketException(new Token(new Position(20, 3), TokenTypeEnum.ELSE_KEYWORD).toString()),
                                         new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 4), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("a", new Position(2, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(3, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingCodeBlockException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
                                 )
                         )
                 )
@@ -160,6 +188,8 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(4, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(4, 12), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(4, 22), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(5, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
                                         new Token(new Position(6, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET),
@@ -176,6 +206,8 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(4, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(4, 12), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(4, 22), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(5, 3), TokenTypeEnum.ELSE_KEYWORD),
                                         new Token(new Position(6, 1), TokenTypeEnum.LEFT_BRACKET),
                                         new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET),

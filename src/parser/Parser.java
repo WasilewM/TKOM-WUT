@@ -172,6 +172,11 @@ public class Parser {
         registerErrorIfExpIsMissing(expression);
         parseRightBracket();
 
+        CodeBlock ifCodeBlock = parseCodeBlock();
+        if (ifCodeBlock == null) {
+            errorHandler.handle(new MissingCodeBlockException(currentToken.toString()));
+        }
+
         ArrayList<IExpression> elseIfExpressions = new ArrayList<>();
         while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
             parseLeftBracket();

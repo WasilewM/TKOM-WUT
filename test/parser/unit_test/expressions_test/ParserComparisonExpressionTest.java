@@ -36,6 +36,8 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.LESS_THAN_OPERATOR),
                                         new StringToken("y2_someName2", new Position(4, 1), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -50,6 +52,8 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.LESS_OR_EQUAL_OPERATOR),
                                         new StringToken("y2_someName2", new Position(4, 1), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -64,6 +68,8 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.GREATER_THAN_OPERATOR),
                                         new StringToken("y2_someName2", new Position(4, 1), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -78,6 +84,8 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR),
                                         new StringToken("y2_someName2", new Position(4, 1), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -92,6 +100,8 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.EQUAL_OPERATOR),
                                         new StringToken("y2_someName2", new Position(4, 1), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -106,6 +116,8 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.NOT_EQUAL_OPERATOR),
                                         new StringToken("y2_someName2", new Position(4, 1), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
