@@ -185,7 +185,7 @@ public class Parser {
             CodeBlock elseIfCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
 
-            elseIfExpressions.add(new ElseIfExpression(elseIfExp));
+            elseIfExpressions.add(new ElseIfExpression(elseIfExp, elseIfCodeBlock));
         }
         return elseIfExpressions;
     }
