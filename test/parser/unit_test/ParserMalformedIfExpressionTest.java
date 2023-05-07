@@ -164,6 +164,58 @@ public class ParserMalformedIfExpressionTest {
                                         new MissingRightBracketException(new Token(new Position(26, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString())
                                 )
                         )
+                )
+        );
+    }
+
+    static Stream<Arguments> getMalformedIfExpression_withCriticalExceptions() {
+        return Stream.of(
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 7), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(4, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(4, 12), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(4, 22), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(5, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
+                                        new Token(new Position(6, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(4, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(4, 12), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(4, 22), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(5, 3), TokenTypeEnum.ELSE_KEYWORD),
+                                        new Token(new Position(6, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET).toString())
+                                )
+                        )
                 ),
                 Arguments.of(
                         new ParserMalformedSingleTestParams(
@@ -219,58 +271,6 @@ public class ParserMalformedIfExpressionTest {
         );
     }
 
-    static Stream<Arguments> getMalformedIfExpression_withCriticalExceptions() {
-        return Stream.of(
-                Arguments.of(
-                        new ParserMalformedSingleTestParams(
-                                Arrays.asList(
-                                        new Token(new Position(1, 7), TokenTypeEnum.LEFT_BRACKET),
-                                        new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET)
-                                ),
-                                List.of(
-                                        new MissingExpressionException(new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET).toString())
-                                )
-                        )
-                ),
-                Arguments.of(
-                        new ParserMalformedSingleTestParams(
-                                Arrays.asList(
-                                        new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
-                                        new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
-                                        new Token(new Position(4, 2), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(4, 12), TokenTypeEnum.LEFT_CURLY_BRACKET),
-                                        new Token(new Position(4, 22), TokenTypeEnum.RIGHT_CURLY_BRACKET),
-                                        new Token(new Position(5, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
-                                        new Token(new Position(6, 1), TokenTypeEnum.LEFT_BRACKET),
-                                        new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
-                                ),
-                                List.of(
-                                        new MissingExpressionException(new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET).toString())
-                                )
-                        )
-                ),
-                Arguments.of(
-                        new ParserMalformedSingleTestParams(
-                                Arrays.asList(
-                                        new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
-                                        new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
-                                        new Token(new Position(4, 2), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(4, 12), TokenTypeEnum.LEFT_CURLY_BRACKET),
-                                        new Token(new Position(4, 22), TokenTypeEnum.RIGHT_CURLY_BRACKET),
-                                        new Token(new Position(5, 3), TokenTypeEnum.ELSE_KEYWORD),
-                                        new Token(new Position(6, 1), TokenTypeEnum.LEFT_BRACKET),
-                                        new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
-                                ),
-                                List.of(
-                                        new MissingExpressionException(new Token(new Position(7, 2), TokenTypeEnum.RIGHT_BRACKET).toString())
-                                )
-                        )
-                )
-        );
-    }
-
     @BeforeEach
     public void initTestParams() {
         startTokens = new ArrayList<>(
@@ -304,7 +304,7 @@ public class ParserMalformedIfExpressionTest {
 
     @ParameterizedTest
     @MethodSource("getMalformedIfExpression_withCriticalExceptions")
-    void parseMalformedFunctionDefProgram_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
+    void parseMalformedIfExpression_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();

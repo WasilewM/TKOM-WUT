@@ -134,6 +134,10 @@ public class Parser {
         if (exp == null) {
             exp = parseIfExpression();
         }
+
+        if (exp == null) {
+            exp = parseWhileExpression();
+        }
         return exp;
     }
 
@@ -203,6 +207,21 @@ public class Parser {
             return new ElseExpression(elseExp, elseCodeBlock);
         }
         return new ElseExpression();
+    }
+
+    private IExpression parseWhileExpression() {
+        if (!consumeIf(TokenTypeEnum.WHILE_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        IExpression whileExp = parseAlternativeExpression();
+        registerErrorIfExpIsMissing(whileExp);
+        parseRightBracket();
+
+        CodeBlock codeBlock = parseCodeBlock();
+        registerErrorIfCodeBlockIsMissing(codeBlock);
+        return new WhileExpression(whileExp, codeBlock);
     }
 
     private IExpression parseExpressionCondition() {
