@@ -107,6 +107,8 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(3, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("cube2", new Position(4, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(5, 11), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(12, 21), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(12, 31), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{

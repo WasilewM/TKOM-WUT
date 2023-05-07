@@ -109,11 +109,13 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(12, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(13, 1), TokenTypeEnum.ELSE_KEYWORD),
                                         new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(16, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(17, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 Arrays.asList(
                                         new MissingLeftBracketException(new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER).toString()),
-                                        new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                        new MissingRightBracketException(new Token(new Position(16, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString())
                                 )
                         )
                 ),
@@ -128,10 +130,12 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(13, 1), TokenTypeEnum.ELSE_KEYWORD),
                                         new Token(new Position(14, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("B", new Position(14, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(16, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(17, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
-                                        new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                        new MissingRightBracketException(new Token(new Position(16, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString())
                                 )
                         )
                 ),
@@ -151,11 +155,13 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(20, 3), TokenTypeEnum.ELSE_KEYWORD),
                                         new Token(new Position(20, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("X", new Position(23, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(26, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(27, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
                                         new MissingRightBracketException(new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString()),
-                                        new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                        new MissingRightBracketException(new Token(new Position(26, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString())
                                 )
                         )
                 ),
@@ -184,6 +190,25 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(13, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(14, 10), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingCodeBlockException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("b", new Position(3, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(10, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(11, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(12, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(13, 1), TokenTypeEnum.ELSE_KEYWORD),
+                                        new Token(new Position(14, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(16, 2), TokenTypeEnum.RIGHT_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(

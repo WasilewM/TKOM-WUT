@@ -198,6 +198,11 @@ public class Parser {
             elseExp = parseAlternativeExpression();
             registerErrorIfExpIsMissing(elseExp);
             parseRightBracket();
+
+            CodeBlock elseIfCodeBlock = parseCodeBlock();
+            if (elseIfCodeBlock == null) {
+                errorHandler.handle(new MissingCodeBlockException(currentToken.toString()));
+            }
         }
 
         return new IfExpression(expression, elseIfExpressions, new ElseExpression(elseExp));
