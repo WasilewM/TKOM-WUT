@@ -43,7 +43,7 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -61,7 +61,7 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new Identifier("ident3")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new Identifier("ident3")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -81,7 +81,7 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new SubtractionExpression(new Identifier("ident3"), new Identifier("ident4"))))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new SubtractionExpression(new Identifier("ident3"), new Identifier("ident4"))), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -101,7 +101,7 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new Identifier("ident1"), new SubtractionExpression(new MultiplicationExpression(new Identifier("ident2"), new Identifier("ident3")), new Identifier("ident4"))))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new ConjunctiveExpression(new Identifier("ident1"), new SubtractionExpression(new MultiplicationExpression(new Identifier("ident2"), new Identifier("ident3")), new Identifier("ident4"))), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 )

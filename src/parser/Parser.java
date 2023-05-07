@@ -174,7 +174,7 @@ public class Parser {
         ArrayList<IExpression> elseIfExpressions = parseElseIfExpression();
         IExpression elseExp = parseElseExpression();
 
-        return new IfExpression(expression, elseIfExpressions, new ElseExpression(elseExp));
+        return new IfExpression(expression, ifCodeBlock, elseIfExpressions, new ElseExpression(elseExp));
     }
 
     private ArrayList<IExpression> parseElseIfExpression() {

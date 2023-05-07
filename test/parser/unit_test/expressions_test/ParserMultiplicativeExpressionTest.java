@@ -43,7 +43,7 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new MultiplicationExpression(new Identifier("ident"), new Identifier("ident")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new MultiplicationExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -61,7 +61,7 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new MultiplicationExpression(new MultiplicationExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new MultiplicationExpression(new MultiplicationExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -77,7 +77,7 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DivisionExpression(new Identifier("ident"), new Identifier("ident")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DivisionExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -95,7 +95,7 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DivisionExpression(new DivisionExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DivisionExpression(new DivisionExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -113,7 +113,7 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new MultiplicationExpression(new DivisionExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new MultiplicationExpression(new DivisionExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -129,7 +129,7 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DiscreteDivisionExpression(new Identifier("ident"), new Identifier("ident")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DiscreteDivisionExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -147,7 +147,7 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DiscreteDivisionExpression(new DiscreteDivisionExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DiscreteDivisionExpression(new DiscreteDivisionExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -167,7 +167,7 @@ public class ParserMultiplicativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DiscreteDivisionExpression(new MultiplicationExpression(new DivisionExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")), new Identifier("ident-D")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new DiscreteDivisionExpression(new MultiplicationExpression(new DivisionExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")), new Identifier("ident-D")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 )

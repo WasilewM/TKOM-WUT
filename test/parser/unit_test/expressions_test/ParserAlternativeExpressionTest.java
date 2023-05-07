@@ -40,7 +40,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("ident"))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("ident"), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -56,7 +56,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AlternativeExpression(new Identifier("ident"), new Identifier("ident")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AlternativeExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -74,7 +74,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AlternativeExpression(new AlternativeExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AlternativeExpression(new AlternativeExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -92,7 +92,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AlternativeExpression(new ConjunctiveExpression(new Identifier("identA"), new Identifier("identB")), new Identifier("identC")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AlternativeExpression(new ConjunctiveExpression(new Identifier("identA"), new Identifier("identB")), new Identifier("identC")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 )

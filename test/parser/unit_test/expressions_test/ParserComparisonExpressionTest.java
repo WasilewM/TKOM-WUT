@@ -41,7 +41,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new LessThanExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new LessThanExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -57,7 +57,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new LessOrEqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new LessOrEqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -73,7 +73,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new GreaterThanExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new GreaterThanExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -89,7 +89,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new GreaterOrEqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new GreaterOrEqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -105,7 +105,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new EqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new EqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -121,7 +121,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new NotEqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new NotEqualExpression(new Identifier("x1_someName1"), new Identifier("y2_someName2")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 )

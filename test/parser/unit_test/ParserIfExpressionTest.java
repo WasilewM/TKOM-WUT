@@ -40,7 +40,7 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("a"))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("a"), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -62,7 +62,7 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("cube"), List.of(new ElseIfExpression(new Identifier("cube2"))))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("cube"), new CodeBlock(new ArrayList<>()), List.of(new ElseIfExpression(new Identifier("cube2"))))))));
                                 }}
                         )
                 ),
@@ -90,7 +90,7 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("isHandleable"), Arrays.asList(new ElseIfExpression(new Identifier("x")), new ElseIfExpression(new Identifier("y"))))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("isHandleable"), new CodeBlock(new ArrayList<>()), Arrays.asList(new ElseIfExpression(new Identifier("x")), new ElseIfExpression(new Identifier("y"))))))));
                                 }}
                         )
                 ),
@@ -112,7 +112,7 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("cube"), new ElseExpression(new Identifier("cube2")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("cube"), new CodeBlock(new ArrayList<>()), new ElseExpression(new Identifier("cube2")))))));
                                 }}
                         )
                 )
