@@ -181,7 +181,15 @@ public class Parser {
             elseIfExpressions.add(new ElseIfExpression(elseIfExp));
         }
 
-        return new IfExpression(expression, elseIfExpressions);
+        IExpression elseExp = null;
+        if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
+            parseLeftBracket();
+            elseExp = parseAlternativeExpression();
+            registerErrorIfExpIsMissing(elseExp);
+            parseRightBracket();
+        }
+
+        return new IfExpression(expression, elseIfExpressions, new ElseExpression(elseExp));
     }
 
     private void parseLeftBracket() {

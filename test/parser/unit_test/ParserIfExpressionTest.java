@@ -81,6 +81,24 @@ public class ParserIfExpressionTest {
                                     put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("isHandleable"), Arrays.asList(new ElseIfExpression(new Identifier("x")), new ElseIfExpression(new Identifier("y"))))))));
                                 }}
                         )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(2, 1), TokenTypeEnum.IF_KEYWORD),
+                                        new Token(new Position(2, 4), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("cube", new Position(2, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(3, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(3, 1), TokenTypeEnum.ELSE_KEYWORD),
+                                        new Token(new Position(3, 10), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("cube2", new Position(4, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(5, 11), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("cube"), new ElseExpression(new Identifier("cube2")))))));
+                                }}
+                        )
                 )
         );
     }
