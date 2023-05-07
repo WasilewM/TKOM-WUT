@@ -57,6 +57,8 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(3, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("cube2", new Position(4, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(5, 11), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(15, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -77,10 +79,14 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(3, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("x", new Position(3, 15), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(3, 21), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(3, 100), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(3, 101), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(4, 1), TokenTypeEnum.ELSE_IF_KEYWORD),
                                         new Token(new Position(4, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("y", new Position(4, 25), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(4, 31), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(15, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{

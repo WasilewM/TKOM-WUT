@@ -69,11 +69,13 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(11, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(12, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
                                         new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(15, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 Arrays.asList(
                                         new MissingLeftBracketException(new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER).toString()),
-                                        new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                        new MissingRightBracketException(new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString())
                                 )
                         )
                 ),
@@ -88,10 +90,12 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(12, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
                                         new Token(new Position(13, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(15, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
-                                        new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                        new MissingRightBracketException(new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString())
                                 )
                         )
                 ),
@@ -142,13 +146,15 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(10, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
                                         new Token(new Position(10, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(15, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(20, 3), TokenTypeEnum.ELSE_KEYWORD),
                                         new Token(new Position(20, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("X", new Position(23, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
-                                        new MissingRightBracketException(new Token(new Position(20, 3), TokenTypeEnum.ELSE_KEYWORD).toString()),
+                                        new MissingRightBracketException(new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET).toString()),
                                         new MissingRightBracketException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
                                 )
                         )
@@ -159,6 +165,25 @@ public class ParserMalformedIfExpressionTest {
                                         new Token(new Position(2, 4), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("a", new Position(2, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingCodeBlockException(new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(4, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("c", new Position(5, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(6, 2), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(10, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(11, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(12, 3), TokenTypeEnum.ELSE_IF_KEYWORD),
+                                        new Token(new Position(13, 10), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("B", new Position(13, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(14, 10), TokenTypeEnum.RIGHT_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
