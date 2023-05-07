@@ -112,7 +112,7 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("cube"), new CodeBlock(new ArrayList<>()), new ElseExpression(new Identifier("cube2")))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("cube"), new CodeBlock(new ArrayList<>()), new ElseExpression(new Identifier("cube2"), new CodeBlock(new ArrayList<>())))))));
                                 }}
                         )
                 )

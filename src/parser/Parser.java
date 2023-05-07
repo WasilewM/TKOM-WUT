@@ -174,7 +174,7 @@ public class Parser {
         ArrayList<IExpression> elseIfExpressions = parseElseIfExpression();
         IExpression elseExp = parseElseExpression();
 
-        return new IfExpression(expression, ifCodeBlock, elseIfExpressions, new ElseExpression(elseExp));
+        return new IfExpression(expression, ifCodeBlock, elseIfExpressions, elseExp);
     }
 
     private ArrayList<IExpression> parseElseIfExpression() {
@@ -191,17 +191,18 @@ public class Parser {
     }
 
     private IExpression parseElseExpression() {
-        IExpression elseExp = null;
         if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
             parseLeftBracket();
-            elseExp = parseAlternativeExpression();
+            IExpression elseExp = parseAlternativeExpression();
             registerErrorIfExpIsMissing(elseExp);
             parseRightBracket();
 
-            CodeBlock elseIfCodeBlock = parseCodeBlock();
-            registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
+            CodeBlock elseCodeBlock = parseCodeBlock();
+            registerErrorIfCodeBlockIsMissing(elseCodeBlock);
+
+            return new ElseExpression(elseExp, elseCodeBlock);
         }
-        return elseExp;
+        return new ElseExpression();
     }
 
     private IExpression parseExpressionCondition() {
