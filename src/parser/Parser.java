@@ -167,31 +167,30 @@ public class Parser {
             return null;
         }
 
-        parseLeftBracket();
-        IExpression expression = parseAlternativeExpression();
-        registerErrorIfExpIsMissing(expression);
-        parseRightBracket();
-
+        IExpression expression = parseExpressionCondition();
         CodeBlock ifCodeBlock = parseCodeBlock();
-        if (ifCodeBlock == null) {
-            errorHandler.handle(new MissingCodeBlockException(currentToken.toString()));
-        }
+        registerErrorIfCodeBlockIsMissing(ifCodeBlock);
 
+        ArrayList<IExpression> elseIfExpressions = parseElseIfExpression();
+        IExpression elseExp = parseElseExpression();
+
+        return new IfExpression(expression, elseIfExpressions, new ElseExpression(elseExp));
+    }
+
+    private ArrayList<IExpression> parseElseIfExpression() {
         ArrayList<IExpression> elseIfExpressions = new ArrayList<>();
         while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
-            parseLeftBracket();
-            IExpression elseIfExp = parseAlternativeExpression();
-            registerErrorIfExpIsMissing(elseIfExp);
-            parseRightBracket();
+            IExpression elseIfExp = parseExpressionCondition();
 
             CodeBlock elseIfCodeBlock = parseCodeBlock();
-            if (elseIfCodeBlock == null) {
-                errorHandler.handle(new MissingCodeBlockException(currentToken.toString()));
-            }
+            registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
 
             elseIfExpressions.add(new ElseIfExpression(elseIfExp));
         }
+        return elseIfExpressions;
+    }
 
+    private IExpression parseElseExpression() {
         IExpression elseExp = null;
         if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
             parseLeftBracket();
@@ -200,12 +199,17 @@ public class Parser {
             parseRightBracket();
 
             CodeBlock elseIfCodeBlock = parseCodeBlock();
-            if (elseIfCodeBlock == null) {
-                errorHandler.handle(new MissingCodeBlockException(currentToken.toString()));
-            }
+            registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
         }
+        return elseExp;
+    }
 
-        return new IfExpression(expression, elseIfExpressions, new ElseExpression(elseExp));
+    private IExpression parseExpressionCondition() {
+        parseLeftBracket();
+        IExpression expression = parseAlternativeExpression();
+        registerErrorIfExpIsMissing(expression);
+        parseRightBracket();
+        return expression;
     }
 
     private void parseLeftBracket() {
@@ -428,6 +432,12 @@ public class Parser {
     private void registerErrorIfExpIsMissing(IExpression exp) {
         if (exp == null) {
             errorHandler.handle(new MissingExpressionException(currentToken.toString()));
+        }
+    }
+
+    private void registerErrorIfCodeBlockIsMissing(CodeBlock codeBlock) {
+        if (codeBlock == null) {
+            errorHandler.handle(new MissingCodeBlockException(currentToken.toString()));
         }
     }
 
