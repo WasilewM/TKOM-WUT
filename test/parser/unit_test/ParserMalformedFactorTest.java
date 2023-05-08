@@ -9,42 +9,38 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
-import parser.program_components.*;
+import parser.exceptions.MissingExpressionException;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
-import parser.utils.ParserSingleTestParams;
+import parser.utils.ParserMalformedSingleTestParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserParenthesesExpressionTest {
+public class ParserMalformedFactorTest {
 
     private ArrayList<Token> startTokens;
 
-    static Stream<Arguments> getReturnExpressionProgramData() {
+    static Stream<Arguments> getMalformedFactor_withCriticalExceptions() {
         return Stream.of(
                 Arguments.of(
-                        new ParserSingleTestParams(
+                        new ParserMalformedSingleTestParams(
                                 Arrays.asList(
-                                        new Token(new Position(3, 1), TokenTypeEnum.LEFT_BRACKET),
-                                        new StringToken("abv", new Position(4, 7), TokenTypeEnum.IDENTIFIER),
-                                        new Token(new Position(5, 1), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(6, 12), TokenTypeEnum.SEMICOLON),
-                                        new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                        new Token(new Position(4, 7), TokenTypeEnum.NEGATION_OPERATOR),
+                                        new Token(new Position(6, 12), TokenTypeEnum.SEMICOLON)
                                 ),
-                                new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnExpression(new ParenthesesExpression(new Identifier("abv")))))));
-                                }}
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(6, 12), TokenTypeEnum.SEMICOLON).toString())
+                                )
                         )
                 )
         );
     }
-
 
     @BeforeEach
     public void initTestParams() {
@@ -61,16 +57,26 @@ public class ParserParenthesesExpressionTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getReturnExpressionProgramData")
-    void parseReturnExpression(ParserSingleTestParams additionalTestParams) {
+    @MethodSource("getMalformedFactor_withCriticalExceptions")
+    void getMalformedFactor_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
-        testTokens.addAll(additionalTestParams.tokens());
-
+        testTokens.addAll(additionalParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
-        Program program = parser.parse();
+        boolean wasExceptionCaught = false;
 
-        assertEquals(additionalTestParams.expectedFunctions(), program.functions());
-        assertEquals(0, errorHandler.getErrorLog().size());
+        try {
+            parser.parse();
+        } catch (RuntimeException e) {
+            wasExceptionCaught = true;
+            Iterator<Exception> expected = additionalParams.expectedErrorLog().iterator();
+            Iterator<Exception> actual = errorHandler.getErrorLog().iterator();
+            assertEquals(additionalParams.expectedErrorLog().size(), errorHandler.getErrorLog().size());
+            while (expected.hasNext() && actual.hasNext()) {
+                assertEquals(expected.next().getMessage(), actual.next().getMessage());
+            }
+        }
+
+        assert wasExceptionCaught;
     }
 }

@@ -441,7 +441,7 @@ public class Parser {
             return exp;
         }
 
-        return parseAssignable();
+        return parseAssignableValue();
     }
 
     private IExpression parseParenthesesExpression() {
@@ -459,7 +459,17 @@ public class Parser {
         return new ParenthesesExpression(exp);
     }
 
-    private IExpression parseAssignable() {
+    private IExpression parseAssignableValue() {
+        if (consumeIf(TokenTypeEnum.NEGATION_OPERATOR)) {
+            IExpression assignableValue = parsePositiveAssignableValue();
+            registerErrorIfExpIsMissing(assignableValue);
+            return new NegationExpression(assignableValue);
+        }
+
+        return parsePositiveAssignableValue();
+    }
+
+    private IExpression parsePositiveAssignableValue() {
         IExpression exp = parseIdentifier();
         if (exp != null) {
             return exp;
