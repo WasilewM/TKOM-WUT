@@ -1,23 +1,32 @@
 # 23L-TKOM
+
 ## Autor: Mateusz Wasilewski
 
 ## Temat projektu
-Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odcinek (zbudowany z punktów) są wbudowanymi typami języka. Z odcinków można budować figury geometryczne. Kolekcja figur tworzy scenę wyświetlaną na ekranie.
+
+Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odcinek (zbudowany z punktów) są wbudowanymi typami
+języka. Z odcinków można budować figury geometryczne. Kolekcja figur tworzy scenę wyświetlaną na ekranie.
 
 ## Założenia
+
 1. Projekt zostanie zrealizowany w języku Java.
 1. Projektowany język będzie typowany silnie i statycznie.
-1. Za plik napisany w projektowanym języku uznawane będą pliki z rozszerzeniem `.surface` lub strumień danych. Analiza programu kończona jest w wyniku otrzymania znaku końca tekstu `ETX`.
+1. Za plik napisany w projektowanym języku uznawane będą pliki z rozszerzeniem `.surface` lub strumień danych. Analiza
+   programu kończona jest w wyniku otrzymania znaku końca tekstu `ETX`.
 1. W języku dostępne będą następujące typy danych:
     1. Numeryczne: `Int`, `Double`
     1. Tekstowy: `String`
     1. Wbudowane typy obiektowe: `Point`, `Section`, `Figure`, `Scene` (opisy tych typów przedstawiony jest niżej)
-    1. Kolekcja - lista: `List`. Do kolejnych elementów listy można odwoływać się poprzez indeksy: `someList[i]`. Ponadto. type `List` posiada wbudowane funkcje `add` do dodania elementu na koniec listy oraz `pop` do usunięcia ostatniego elementu z listy. Opis tego typu również znajduje się poniżej.
+    1. Kolekcja - lista: `List`. Do kolejnych elementów listy można odwoływać się poprzez indeksy: `someList[i]`.
+       Ponadto. type `List` posiada wbudowane funkcje `add` do dodania elementu na koniec listy oraz `pop` do usunięcia
+       ostatniego elementu z listy. Opis tego typu również znajduje się poniżej.
     1. Typ boole'owski: `Bool` o wartościach `True` i `False`.
 1. Komentarze oznacza się znakami `#`. Komentarze obowiązują do końca linii.
 1. Pętla realizowana będzie przez instrukcję `while`.
 1. Sprawdzenie warunków logicznych będzie można zapisać w bloku `if`, `elseif`, `else`.
-1. Znak końca linii może być reprezentowany przez `\r`, `\n`, `\r\n` lub `\n\r`. Przyjmowana będzie konwencja rozpoznana na końcu pierwszej linii pliku lub źródła. Zastosowanie dwóch lub więcej różnych konwencji w jednym pliku będzie powodowało generowanie komunikatów o błędach.
+1. Znak końca linii może być reprezentowany przez `\r`, `\n`, `\r\n` lub `\n\r`. Przyjmowana będzie konwencja rozpoznana
+   na końcu pierwszej linii pliku lub źródła. Zastosowanie dwóch lub więcej różnych konwencji w jednym pliku będzie
+   powodowało generowanie komunikatów o błędach.
 1. Dostępne operatory arytmetyczne:
     1. `+`
     1. `-`
@@ -36,8 +45,10 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
     1. `<=`
     1. `>=`
 1. Operator przypisania: `=`.
-1. Istnieć będzie możliwość definiowania funkcji. Nazwa funkcji musi być reprezentowalna przez następujące wyrażenie regularne `[a-zA-Z][-a-zA-Z0-9]*`. Parametry do funkcji będą przekazywane poprzez referencję.
-1. Istnieć będzie możliwość definiowania zmiennych. Nazwa zmiennej musi być reprezentowalna przez następujące wyrażenie regularne `[a-zA-Z][-a-zA-Z0-9]*`. Zmienne będą widoczne tylko w zakresie funkcji, w której zostały zdefiniowane.
+1. Istnieć będzie możliwość definiowania funkcji. Nazwa funkcji musi być reprezentowalna przez następujące wyrażenie
+   regularne `[a-zA-Z][-a-zA-Z0-9]*`. Parametry do funkcji będą przekazywane poprzez referencję.
+1. Istnieć będzie możliwość definiowania zmiennych. Nazwa zmiennej musi być reprezentowalna przez następujące wyrażenie
+   regularne `[a-zA-Z][-a-zA-Z0-9]*`. Zmienne będą widoczne tylko w zakresie funkcji, w której zostały zdefiniowane.
 1. Słowa kluczowe języka i znaki specjalne:
     1. Typy danych: `Int`, `Double`, `String`, `Point`, `Section`, `Figure`, `Scene`, `Bool`, `List`
     1. Instrukcje sterujące: `if`, `elseif`, `else`, `while`
@@ -46,14 +57,16 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
     1. Znak rozpoczęcia komentarza
     1. `main`
     1. `return`
-    1. `void` - słowo kluczowe oznaczające brak zwracania danych z funkcji. W przypadku deklaracji funkcji `void` a następnie próbie zwrócenia jakichś danych z wykorzystaniem słowa kluczowego `return` wygenerowany zostanie błąd.
+    1. `void` - słowo kluczowe oznaczające brak zwracania danych z funkcji. W przypadku deklaracji funkcji `void` a
+       następnie próbie zwrócenia jakichś danych z wykorzystaniem słowa kluczowego `return` wygenerowany zostanie błąd.
     1. Znaki otwierające i zamykające nawiasy: `(`, `)`, `[`, `]`, `{`, `}`
     1. Znak końca instrukcji `;`
     1. Operator odwołania do właściwości i metod obiekty: `.`
     1. Operator przypisania: `=`
     1. `,`
     1. nazwy wszystkich metod zapisanych poniżej w definicji typów wbudowanych `Point`, `Section`, `Figure` oraz `Scene`
-1. Domyślne ograniczenia parametrów wypisanych poniżej zapisane będą w pliku konfiguracyjnym (patrz sekcja [Plik konfiguracyjny](#Plik konfiguracyjny)) i będzie możliwość ich modyfikacji.
+1. Domyślne ograniczenia parametrów wypisanych poniżej zapisane będą w pliku konfiguracyjnym (patrz
+   sekcja [Plik konfiguracyjny](#Plik konfiguracyjny)) i będzie możliwość ich modyfikacji.
     1. `IntMax` - maksymalny zakres zmiennych typu `Int`
     1. `IntMin` - minimalny zakres zmiennych typu `Int`
     1. `DoubleMax` - maksymalny zakres zmiennych typu `Double`
@@ -61,14 +74,18 @@ Język umożliwiający opis punktów i odcinków na płaszczyźnie. Punkt i odci
     1. `RecursionMaxDepth` - maksymalna liczba poziomów rekursji
 
 ### Plik konfiguracyjny
+
 Konfiguracja parametrów zapisana będzie w pliku `config.yaml`. Zawartość pliku będzie następująca:
+
 ```
 IntMax: 2147483646
 DoubleMax: 21474836460000000000
 StringMaxLength: 1000
 RecursionMaxDepth: 1000
 ```
+
 ### Tokeny
+
 W projekcie tokeny są reprezentowane przez `lexer.TokenTypeEnum`.
 
 #### Słowa kluczowe oraz odpowiadające im tokeny
@@ -94,6 +111,7 @@ W projekcie tokeny są reprezentowane przez `lexer.TokenTypeEnum`.
 | void           | VOID_KEYWORD             |
 
 #### Operatory oraz odpowiadające im tokeny
+
 Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlatego nie został w niej umieszczony.
 
 | Operator | Nazwa tokenu               |
@@ -115,6 +133,7 @@ Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlateg
 | `=`      | ASSIGNMENT_OPERATOR        |
 
 #### Znaki specjalne oraz odpowiadające im tokeny
+
 | Znak specjalny | Nazwa tokenu         |
 |----------------|----------------------|
 | `#`            | COMMENT              |
@@ -128,8 +147,8 @@ Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlateg
 | `.`            | DOT                  |
 | `,`            | COMMA                |
 
-
 #### Inne tokeny będące częścią projektowanego języka
+
 | Element języka                 | Nazwa tokenu |
 |--------------------------------|--------------|
 | Wartość zmiennej typu `String` | STRING_VALUE |
@@ -137,8 +156,8 @@ Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlateg
 | Wartość zmiennej typu `Double` | DOUBLE_VALE  |
 | Nazwa zmiennej lub funkcji     | IDENTIFIER   |
 
-
 #### Tokeny błędów rozpoznanych przez lekser
+
 | Błąd                                                     | Nazwa tokenu                             |
 |----------------------------------------------------------|------------------------------------------|
 | Nieznany znak                                            | UNKNOWN_CHAR_ERROR                       |
@@ -149,14 +168,20 @@ Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlateg
 | Zmienna typu `Double` przekroczyła ustalony zakres       | DOUBLE_EXCEEDED_RANGE_ERROR              |
 
 ## Definicje wbudowanych typów obiektowych
-Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.  
+
+Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.
 
 ### Wyświetlanie
+
 Obiekty (punkty, odcinki, figury) będą wyświetlane przy wykorzystaniu biblioteki `awt` oraz `swing`:
-- W bibliotece `awt` znajdują się takie metody jak `drawPolygon(int[] x, int[] y, nPoints)` oraz `drawLine(int x1, int y1, int x2, int y2)` przy pomocy których możliwe będzie rysowanie krzywych z odcinków oraz na podstawie punktów.
-- Wyświetlany obrazek umieszczany będzie w obiekcie klasy `JFrame` z biblioteki `swing`.  
+
+- W bibliotece `awt` znajdują się takie metody jak `drawPolygon(int[] x, int[] y, nPoints)`
+  oraz `drawLine(int x1, int y1, int x2, int y2)` przy pomocy których możliwe będzie rysowanie krzywych z odcinków oraz
+  na podstawie punktów.
+- Wyświetlany obrazek umieszczany będzie w obiekcie klasy `JFrame` z biblioteki `swing`.
 
 ### Point
+
 ```
 public class Point {
 	private Double x;
@@ -198,6 +223,7 @@ public class Point {
 ```
 
 ### Section
+
 ```
 public class Section {
 	private Point left;
@@ -239,7 +265,10 @@ public class Section {
 ```
 
 ### List
-Obiekt typu klasy `List` może przyjmować wszystkie typy obiektowe zdefiniowane w języku z wyłączeniem `List`, tj.: `Int`, `Double`, `String`, `Point`, `Section`, `Figure`, `Scene`, `Bool`. Zagnieżdżanie list nie będzie dozwolone.
+
+Obiekt typu klasy `List` może przyjmować wszystkie typy obiektowe zdefiniowane w języku z wyłączeniem `List`, tj.: `Int`
+, `Double`, `String`, `Point`, `Section`, `Figure`, `Scene`, `Bool`. Zagnieżdżanie list nie będzie dozwolone.
+
 ```
 public class List {
 	public ArrayList<Object> list = new ArrayList<>();
@@ -258,7 +287,11 @@ public class List {
 ```
 
 ### Figure
-Figura będzie krzywą łamaną, tj. nie będzie konieczności przekazania do niej takich odcinków, aby stworzyła figurę zamkniętą. Takie podejście wydaje się logiczne z racji na możliwość dodawania kolejnych odcinków do figury. Należy jednak pamiętać o tym, że kolejny dodawany odcinek powinien się łączyć z ostatnio dodanym odcinkiem.
+
+Figura będzie krzywą łamaną, tj. nie będzie konieczności przekazania do niej takich odcinków, aby stworzyła figurę
+zamkniętą. Takie podejście wydaje się logiczne z racji na możliwość dodawania kolejnych odcinków do figury. Należy
+jednak pamiętać o tym, że kolejny dodawany odcinek powinien się łączyć z ostatnio dodanym odcinkiem.
+
 ```
 public class Figure {
     public List sections = List();
@@ -290,6 +323,7 @@ public class Figure {
 ```
 
 ### Scene
+
 ```
 public class Scene {
     public List figures = List();
@@ -312,7 +346,9 @@ public class Scene {
 ```
 
 ## Gramatyka
+
 ### EBNF
+
 ```
 program                 = { functionDef }, { functionCall }
 functionDef             = functionType, identifier, "(", { parameters }, ")", codeBlock
@@ -343,10 +379,10 @@ positiveAssignableValue = identifier
                            | functionCall
                            | objectMethodCall
                            | alternativeExp
-                           | literal
-                           | integer
-                           | double
-                           | bool
+                           | string_value
+                           | int_value
+                           | double_value
+                           | bool_value
 
 
 alternativeOper         = orOper
@@ -359,12 +395,12 @@ objectMethodCall        = identifier, ".", identifier, "(", [ parameters ], ")",
 
 
 identifier              = letter { digit | literalSign }
-double                  = integer, [ ".", integer ]
-integer                 = zeroDigit
+double_value            = int_value, [ ".", int_value ]
+int_value               = zeroDigit
                            | notZeroDigit, { digit }
 digit                   = zeroDigit | notZeroDigit
-string                  = "\"", literal, "\""
-literal                 = literalSign, { literalSign }
+string                  = "\"", string_value, "\""
+string_value            = literalSign, { literalSign }
 literalSign             = "_"
                            | letter
 logicalOper             = andOper
@@ -386,7 +422,7 @@ dataType                = "Int"
                            | "Scene"
                            | "Bool"
                            | "List"
-bool                    = "True"
+bool_value              = "True"
                            | False   
 equalOper               = "=="
 notEqualOper            = "!="
@@ -412,6 +448,7 @@ letter                  = "a".."z"
 ```
 
 ### Analiza przykładowego bloku instrukcji if
+
 ```
 ifBlock: if (i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool()) { return True; }
 ifBlock: "if", "(", alternativeExp, "), "{", codeBlock, "}":
@@ -560,10 +597,11 @@ ifBlock: "if", "(", alternativeExp, "), "{", codeBlock, "}":
         |-- assignableValue: True
             assignableValue: positiveAssignableValue
             |-- positiveAssignableValue: True
-                positiveAssignableValue: bool
+                positiveAssignableValue: bool_value
 ```
 
 ### Przykład kodu
+
 ```
 Int doSomeMath(Int n) {
    # alternativeExp bellow could be simplified by it has been written this way on purpose,
@@ -654,18 +692,25 @@ Int main() {
 ```
 
 ## Obsługa błędów
+
 Poniżej przedstawiony jest błędy kod:
+
 ```
 Int main() {
 	Point a = Point("x", "y");  # konstruktor klasy Point wymaga dwóch wartości Double 
 }
 ```
+
 W rezultacie powyższy błędny kod powinien wygenerować następujący błąd:
+
 ```
 Error in <line: 2, col: 21>: Double value expected
 ```
 
 ## Testowanie
+
 Lekser oraz parser zostaną napisane w metodologii TDD. Biblioteką do testów będzie `JUnit5`.  
-W przypadku leksera testy jednostkowe polegać będą na poprawnym preparsowaniu każdego tokena. Przygotowane zostaną zarówno testy pozytywne, jak i negatywne (tj. z niepoprawnymi tokenami).  
-Ponadto, przygotowane zostaną również testy akceptacyjne, które będą polegały na analizie przykładowego kodu w projektowanym języku. Przykład pozytywnego testu akceptacyjnego znajduje się w sekcji [Przykład kodu](#Przykład kodu).
+W przypadku leksera testy jednostkowe polegać będą na poprawnym preparsowaniu każdego tokena. Przygotowane zostaną
+zarówno testy pozytywne, jak i negatywne (tj. z niepoprawnymi tokenami).  
+Ponadto, przygotowane zostaną również testy akceptacyjne, które będą polegały na analizie przykładowego kodu w
+projektowanym języku. Przykład pozytywnego testu akceptacyjnego znajduje się w sekcji [Przykład kodu](#Przykład kodu).

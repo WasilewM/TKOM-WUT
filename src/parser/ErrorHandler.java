@@ -20,7 +20,8 @@ public class ErrorHandler {
                 || MissingDataTypeDeclarationException.class.equals(e.getClass())
                 || MissingExpressionException.class.equals(e.getClass())
                 || UnclearExpressionException.class.equals(e.getClass())
-                || MissingCodeBlockException.class.equals(e.getClass());
+                || MissingCodeBlockException.class.equals(e.getClass())
+                || UnclosedParenthesesException.class.equals(e.getClass());
     }
 
     private static boolean isErrorHandleable(Exception e) {
