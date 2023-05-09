@@ -373,9 +373,9 @@ multiplicativeExp       = factor, { multiplicativeOper, factor }
 factor                  =  [notOper | minusOper ] ( parenthesesExp | assignableValue)
 parenthesesExp          = "(", alternativeExp, ")"
 assignableValue         = objectAccess  // @TODO
-                           | string_value
-                           | int_value
-                           | double_value
+                           | stringValue
+                           | intValue
+                           | doubleValue
                            | bool_value
                            | list_value
                                                    
@@ -397,10 +397,10 @@ identifierOrFuntionCall = identifier, { "(", [ alternativeExp ], ")" } ";"
 identifier              = letter { digit | literal }
 
 
-double_value            = int_value, [ ".", int_value ]
-int_value               = zeroDigit
+doubleValue             = intValue, [ ".", intValue ]
+intValue                = zeroDigit
                            | notZeroDigit, { digit }
-string_value            = "\"", literal, "\""
+stringValue             = "\"", literal, "\""
 literal                 = literalSign, { literalSign }
 literalSign             = "_"
                            | letter
@@ -639,10 +639,6 @@ List mergeSort(List n) {
     int r = n.length() // 2;
     while (r < n.length()) {
         rightHalf.add(n[r]);
-        # EBNF
-        # memberAccess = identifierOrFunctionCall, [ listAccess ]
-        # objectAccess = memberAccess, { ".", memberAccess }
-        # listAccess =  "[", alternativeExp, "]" 
         r += 1;
     }
     

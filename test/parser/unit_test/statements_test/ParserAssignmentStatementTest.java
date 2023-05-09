@@ -12,7 +12,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.CodeBlock;
 import parser.program_components.FunctionDef;
-import parser.program_components.Parameter;
 import parser.program_components.Program;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.statements.AssignmentStatement;
@@ -45,7 +44,26 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(new Parameter(TokenTypeEnum.INT_KEYWORD, "A"), new IntValue(1))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(TokenTypeEnum.INT_KEYWORD, "A", new IntValue(1))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new IntegerToken(1, new Position(8, 14)),
+                                        new Token(new Position(8, 24), TokenTypeEnum.SEMICOLON),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new IntegerToken(11, new Position(8, 14)),
+                                        new Token(new Position(8, 24), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(TokenTypeEnum.INT_KEYWORD, "A", new IntValue(1)), new AssignmentStatement(null, "A", new IntValue(11))))));
                                 }}
                         )
                 )

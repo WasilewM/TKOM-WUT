@@ -123,10 +123,18 @@ public class Parser implements IParser {
     }
 
     private AssignmentStatement parseAssignmentStatement() {
-        Parameter parameter = parseParameter();
-        if (parameter == null) {
+        TokenTypeEnum dataType = null;
+        if (isCurrentTokenOfDataTypeKeyword()) {
+            dataType = currentToken.getTokenType();
+            nextToken();
+        }
+
+        if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
             return null;
         }
+
+        String identifierName = (String) currentToken.getValue();
+        nextToken();
 
         if (!consumeIf(TokenTypeEnum.ASSIGNMENT_OPERATOR)) {
             return null;
@@ -136,7 +144,7 @@ public class Parser implements IParser {
         registerErrorIfExpIsMissing(exp);
         registerErrorIfSemicolonIsMissing();
 
-        return new AssignmentStatement(parameter, exp);
+        return new AssignmentStatement(dataType, identifierName, exp);
     }
 
     private IfStatement parseIfStatement() {
@@ -212,23 +220,22 @@ public class Parser implements IParser {
                 errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
                 nextToken();
             }
-            TokenTypeEnum nextParamType = currentToken.getTokenType();
-            nextToken();
+            Parameter nextParam = parseParameter();
 
-            if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
+            if (nextParam == null) {
                 errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
+            } else {
+                if (params.containsKey(nextParam.name())) {
+                    errorHandler.handle(
+                            new DuplicatedParameterNameException(
+                                    String.format("Parameter %s at position: <line: %d, column %d>", nextParam.name(), currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
+                            )
+                    );
+                }
+                params.put(nextParam.name(), nextParam);
+                nextToken();
             }
 
-            String nextParamName = currentToken.getValue().toString();
-            if (params.containsKey(nextParamName)) {
-                errorHandler.handle(
-                        new DuplicatedParameterNameException(
-                                String.format("Parameter %s at position: <line: %d, column %d>", nextParamName, currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
-                        )
-                );
-            }
-            params.put(nextParamName, new Parameter(nextParamType, nextParamName));
-            nextToken();
         }
 
         return params;
