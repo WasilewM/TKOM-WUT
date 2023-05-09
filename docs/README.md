@@ -354,13 +354,13 @@ program                 = { functionDef }, { functionCall }
 functionDef             = functionType, identifier, "(", { parameters }, ")", codeBlock
 functionType            = "void"
                            | dataType
-codeBlock               = "{", { ifBlock | whileStmnt | functionCall | assignmentStmnt | reassignmentExp | returnExp }, "}"
+codeBlock               = "{", { ifBlock | whileStmnt | functionCall | assignmentStmnt | reassignmentExp | returnStmnt }, "}"
 ifBlock                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
 elseIfBlock             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseBlock               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
 whileStmnt              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
 reassignmentExp         = identifier, assignmentOper, assignableValue, ";"
-returnExp               = "return", assignableValue, ";"
+returnStmnt               = "return", assignableValue, ";"
 assignmentStmnt         = parameter, assignmentOper, assignableValue, ";"
 parameters              = paremeter, ",", { parameter }
 parameter               = dataType, identifier
@@ -589,9 +589,9 @@ ifBlock: "if", "(", alternativeExp, "), "{", codeBlock, "}":
 |                                                   |-- positiveAssignableValue: checkSomeBool()
 |                                                       positiveAssignableValue: functionCall
 |-- codeBlock: return True;
-    codeBlock: "{", returnExp, "}"
-    |-- returnExp: return True;
-        returnExp: "return", assignableValue, ";"
+    codeBlock: "{", returnStmnt, "}"
+    |-- returnStmnt: return True;
+        returnStmnt: "return", assignableValue, ";"
         |-- assignableValue: True
             assignableValue: positiveAssignableValue
             |-- positiveAssignableValue: True

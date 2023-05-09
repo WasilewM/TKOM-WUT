@@ -11,6 +11,7 @@ import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.*;
 import parser.program_components.statements.AssignmentStatement;
+import parser.program_components.statements.ReturnStatement;
 import parser.program_components.statements.WhileStatement;
 
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class Parser {
     }
 
     private IExpression parseExpression() {
-        IExpression exp = parseReturnExpression();
+        IExpression exp = parseReturnStatement();
         if (exp != null) {
             return exp;
         }
@@ -114,7 +115,7 @@ public class Parser {
         return parseAssignmentStatement();
     }
 
-    private IExpression parseReturnExpression() {
+    private IExpression parseReturnStatement() {
         if (!consumeIf(TokenTypeEnum.RETURN_KEYWORD)) {
             return null;
         }
@@ -122,7 +123,7 @@ public class Parser {
         IExpression exp = parseExpression();
         registerErrorIfSemicolonIsMissing();
 
-        return new ReturnExpression(exp);
+        return new ReturnStatement(exp);
     }
 
     private IExpression parseAssignmentStatement() {
