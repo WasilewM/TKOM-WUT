@@ -69,51 +69,6 @@ public class Parser {
         return true;
     }
 
-    private HashMap<String, Parameter> parseParameters() {
-        HashMap<String, Parameter> params = new HashMap<>();
-
-        if (!isCurrentTokenOfDataTypeKeyword()) {
-            return params;
-        }
-
-        TokenTypeEnum paramType = currentToken.getTokenType();
-        nextToken();
-
-        if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
-            errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
-        }
-
-        String paramName = currentToken.getValue().toString();
-        params.put(paramName, new Parameter(paramType, paramName));
-        nextToken();
-
-        while (consumeIf(TokenTypeEnum.COMMA)) {
-            if (!isCurrentTokenOfDataTypeKeyword()) {
-                errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
-                nextToken();
-            }
-            TokenTypeEnum nextParamType = currentToken.getTokenType();
-            nextToken();
-
-            if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
-                errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
-            }
-
-            String nextParamName = currentToken.getValue().toString();
-            if (params.containsKey(nextParamName)) {
-                errorHandler.handle(
-                        new DuplicatedParameterNameException(
-                                String.format("Parameter %s at position: <line: %d, column %d>", paramName, currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
-                        )
-                );
-            }
-            params.put(nextParamName, new Parameter(nextParamType, nextParamName));
-            nextToken();
-        }
-
-        return params;
-    }
-
     private CodeBlock parseCodeBlock() {
         if (!consumeIf(TokenTypeEnum.LEFT_CURLY_BRACKET)) {
             return null;
@@ -135,18 +90,26 @@ public class Parser {
 
     private IExpression parseExpression() {
         IExpression exp = parseReturnExpression();
-        if (exp == null) {
-            exp = parseIfExpression();
+        if (exp != null) {
+            return exp;
         }
 
-        if (exp == null) {
-            exp = parseWhileExpression();
+        exp = parseIfExpression();
+        if (exp != null) {
+            return exp;
         }
 
-        if (exp == null) {
-            exp = parseFactor();
+        exp = parseWhileExpression();
+        if (exp != null) {
+            return exp;
         }
-        return exp;
+
+        exp = parseFactor();
+        if (exp != null) {
+            return exp;
+        }
+
+        return parseAssignmentExpression();
     }
 
     private IExpression parseReturnExpression() {
@@ -155,12 +118,81 @@ public class Parser {
         }
 
         IExpression exp = parseExpression();
-
-        if (!consumeIf(TokenTypeEnum.SEMICOLON)) {
-            errorHandler.handle(new MissingSemicolonException(currentToken.toString()));
-        }
+        registerErrorIfSemicolonIsMissing();
 
         return new ReturnExpression(exp);
+    }
+
+    private IExpression parseAssignmentExpression() {
+        Parameter parameter = parseParameter();
+        if (parameter == null) {
+            return null;
+        }
+
+        if (!consumeIf(TokenTypeEnum.ASSIGNMENT_OPERATOR)) {
+            return null;
+        }
+
+        IExpression exp = parseAlternativeExpression();
+        registerErrorIfExpIsMissing(exp);
+        registerErrorIfSemicolonIsMissing();
+
+        return new AssignmentExpression(parameter, exp);
+    }
+
+    private HashMap<String, Parameter> parseParameters() {
+        HashMap<String, Parameter> params = new HashMap<>();
+
+        Parameter firstParam = parseParameter();
+        if (firstParam == null) {
+            return params;
+        }
+
+        params.put(firstParam.name(), firstParam);
+
+        while (consumeIf(TokenTypeEnum.COMMA)) {
+            if (!isCurrentTokenOfDataTypeKeyword()) {
+                errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
+                nextToken();
+            }
+            TokenTypeEnum nextParamType = currentToken.getTokenType();
+            nextToken();
+
+            if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
+                errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
+            }
+
+            String nextParamName = currentToken.getValue().toString();
+            if (params.containsKey(nextParamName)) {
+                errorHandler.handle(
+                        new DuplicatedParameterNameException(
+                                String.format("Parameter %s at position: <line: %d, column %d>", nextParamName, currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
+                        )
+                );
+            }
+            params.put(nextParamName, new Parameter(nextParamType, nextParamName));
+            nextToken();
+        }
+
+        return params;
+    }
+
+    private Parameter parseParameter() {
+        if (!isCurrentTokenOfDataTypeKeyword()) {
+            return null;
+        }
+
+        TokenTypeEnum paramType = currentToken.getTokenType();
+        nextToken();
+
+        if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
+            errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
+        }
+
+        String paramName = currentToken.getValue().toString();
+        nextToken();
+
+        return new Parameter(paramType, paramName);
     }
 
     private IExpression parseIfExpression() {
@@ -569,6 +601,12 @@ public class Parser {
     private void registerErrorIfCurrentTokenIsOfType(TokenTypeEnum expressionType) {
         if (currentToken.getTokenType() == expressionType) {
             errorHandler.handle(new UnclearExpressionException(currentToken.toString()));
+        }
+    }
+
+    private void registerErrorIfSemicolonIsMissing() {
+        if (!consumeIf(TokenTypeEnum.SEMICOLON)) {
+            errorHandler.handle(new MissingSemicolonException(currentToken.toString()));
         }
     }
 
