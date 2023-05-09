@@ -10,6 +10,7 @@ import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.*;
+import parser.program_components.statements.AssignmentStatement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,7 +110,7 @@ public class Parser {
             return exp;
         }
 
-        return parseAssignmentExpression();
+        return parseAssignmentStatement();
     }
 
     private IExpression parseReturnExpression() {
@@ -123,7 +124,7 @@ public class Parser {
         return new ReturnExpression(exp);
     }
 
-    private IExpression parseAssignmentExpression() {
+    private IExpression parseAssignmentStatement() {
         Parameter parameter = parseParameter();
         if (parameter == null) {
             return null;
@@ -137,7 +138,7 @@ public class Parser {
         registerErrorIfExpIsMissing(exp);
         registerErrorIfSemicolonIsMissing();
 
-        return new AssignmentExpression(parameter, exp);
+        return new AssignmentStatement(parameter, exp);
     }
 
     private HashMap<String, Parameter> parseParameters() {
