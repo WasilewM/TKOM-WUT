@@ -354,10 +354,10 @@ program                 = { functionDef }, { functionCall }
 functionDef             = functionType, identifier, "(", { parameters }, ")", codeBlock
 functionType            = "void"
                            | dataType
-codeBlock               = "{", { ifBlock | whileStmnt | functionCall | assignmentStmnt | reassignmentExp | returnStmnt }, "}"
-ifBlock                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
-elseIfBlock             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
-elseBlock               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
+codeBlock               = "{", { ifStmnt | whileStmnt | functionCall | assignmentStmnt | reassignmentExp | returnStmnt }, "}"
+ifStmnt                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseifStmnt }, [ elseStmnt ]
+elseifStmnt             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
+elseStmnt               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
 whileStmnt              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
 reassignmentExp         = identifier, assignmentOper, assignableValue, ";"
 returnStmnt               = "return", assignableValue, ";"
@@ -448,8 +448,8 @@ letter                  = "a".."z"
 ### Analiza przykładowego bloku instrukcji if
 
 ```
-ifBlock: if (i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool()) { return True; }
-ifBlock: "if", "(", alternativeExp, "), "{", codeBlock, "}":
+ifStmnt: if (i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool()) { return True; }
+ifStmnt: "if", "(", alternativeExp, "), "{", codeBlock, "}":
 |-- alternativeExp: i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool())
 |   alternativeExp: conjunctiveExp
 |   |-- conjunctiveExp: i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool())

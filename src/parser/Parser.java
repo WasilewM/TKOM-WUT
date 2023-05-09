@@ -10,9 +10,7 @@ import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.*;
-import parser.program_components.statements.AssignmentStatement;
-import parser.program_components.statements.ReturnStatement;
-import parser.program_components.statements.WhileStatement;
+import parser.program_components.statements.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,7 +95,7 @@ public class Parser {
             return exp;
         }
 
-        exp = parseIfExpression();
+        exp = parseIfStatement();
         if (exp != null) {
             return exp;
         }
@@ -198,7 +196,7 @@ public class Parser {
         return new Parameter(paramType, paramName);
     }
 
-    private IExpression parseIfExpression() {
+    private IExpression parseIfStatement() {
         if (!consumeIf(TokenTypeEnum.IF_KEYWORD)) {
             return null;
         }
@@ -207,26 +205,26 @@ public class Parser {
         CodeBlock ifCodeBlock = parseCodeBlock();
         registerErrorIfCodeBlockIsMissing(ifCodeBlock);
 
-        ArrayList<IExpression> elseIfExpressions = parseElseIfExpression();
-        IExpression elseExp = parseElseExpression();
+        ArrayList<IExpression> elseIfStatements = parseElseIfStatement();
+        IExpression elseExp = parseElseStatement();
 
-        return new IfExpression(expression, ifCodeBlock, elseIfExpressions, elseExp);
+        return new IfStatement(expression, ifCodeBlock, elseIfStatements, elseExp);
     }
 
-    private ArrayList<IExpression> parseElseIfExpression() {
-        ArrayList<IExpression> elseIfExpressions = new ArrayList<>();
+    private ArrayList<IExpression> parseElseIfStatement() {
+        ArrayList<IExpression> elseIfStatements = new ArrayList<>();
         while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
             IExpression elseIfExp = parseExpressionCondition();
 
             CodeBlock elseIfCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
 
-            elseIfExpressions.add(new ElseIfExpression(elseIfExp, elseIfCodeBlock));
+            elseIfStatements.add(new ElseIfStatement(elseIfExp, elseIfCodeBlock));
         }
-        return elseIfExpressions;
+        return elseIfStatements;
     }
 
-    private IExpression parseElseExpression() {
+    private IExpression parseElseStatement() {
         if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
             parseLeftBracket();
             IExpression elseExp = parseAlternativeExpression();
@@ -236,9 +234,9 @@ public class Parser {
             CodeBlock elseCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseCodeBlock);
 
-            return new ElseExpression(elseExp, elseCodeBlock);
+            return new ElseStatement(elseExp, elseCodeBlock);
         }
-        return new ElseExpression();
+        return new ElseStatement();
     }
 
     private IExpression parseWhileStatement() {

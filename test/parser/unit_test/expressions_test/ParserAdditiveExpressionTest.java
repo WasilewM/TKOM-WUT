@@ -9,9 +9,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
-import parser.program_components.*;
+import parser.program_components.CodeBlock;
+import parser.program_components.FunctionDef;
+import parser.program_components.Identifier;
+import parser.program_components.Program;
 import parser.program_components.expressions.AdditionExpression;
 import parser.program_components.expressions.SubtractionExpression;
+import parser.program_components.statements.IfStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
@@ -42,7 +46,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AdditionExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AdditionExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -62,7 +66,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new AdditionExpression(new AdditionExpression(new AdditionExpression(new Identifier("cube"), new Identifier("sqrt")), new Identifier("path")), new Identifier("then")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AdditionExpression(new AdditionExpression(new AdditionExpression(new Identifier("cube"), new Identifier("sqrt")), new Identifier("path")), new Identifier("then")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -78,7 +82,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new SubtractionExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new SubtractionExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -98,7 +102,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new SubtractionExpression(new AdditionExpression(new SubtractionExpression(new Identifier("cube"), new Identifier("sqrt")), new Identifier("path")), new Identifier("then")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new SubtractionExpression(new AdditionExpression(new SubtractionExpression(new Identifier("cube"), new Identifier("sqrt")), new Identifier("path")), new Identifier("then")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 )
