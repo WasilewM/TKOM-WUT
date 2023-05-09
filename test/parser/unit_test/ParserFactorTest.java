@@ -9,8 +9,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
-import parser.program_components.*;
+import parser.program_components.CodeBlock;
+import parser.program_components.FunctionDef;
+import parser.program_components.Identifier;
+import parser.program_components.Program;
 import parser.program_components.data_values.BoolValue;
+import parser.program_components.expressions.NegatedExpression;
 import parser.program_components.expressions.ParenthesesExpression;
 import parser.program_components.statements.ReturnStatement;
 import parser.utils.MockedExitErrorHandler;
@@ -54,7 +58,7 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new NegationExpression(new BoolValue(true)))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new NegatedExpression(new BoolValue(true)))))));
                                 }}
                         )
                 )

@@ -496,7 +496,7 @@ public class Parser {
         if (consumeIf(TokenTypeEnum.NEGATION_OPERATOR)) {
             IExpression assignableValue = parsePositiveAssignableValue();
             registerErrorIfExpIsMissing(assignableValue);
-            return new NegationExpression(assignableValue);
+            return new NegatedExpression(assignableValue);
         }
 
         return parsePositiveAssignableValue();
