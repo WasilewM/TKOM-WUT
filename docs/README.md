@@ -375,7 +375,7 @@ factor                  = parenthesesExp
                            | assignableValue
 parenthesesExp          = "(", alternativeExp, ")"
 assignableValue         = [ notOper | minusOper ], positiveAssignableValue
-positiveAssignableValue = identifier
+positiveAssignableValue = identifierOrFunctionCall
                            | functionCall
                            | objectMethodCall
                            | alternativeExp
@@ -389,18 +389,16 @@ alternativeOper         = orOper
                            | additiveOper
 conjunctionOper         = andOper
                            | multiplicativeOper
-                           
-functionCall            = identifier, "(", [ parameters ], ")", ";"
-objectMethodCall        = identifier, ".", identifier, "(", [ parameters ], ")", ";"
+                        
+identifierOrFuntionCall = identifier, { "(", [ alternativeExp ], ")" } ";"
+identifier              = letter { digit | literal }
 
 
-identifier              = letter { digit | literalSign }
 double_value            = int_value, [ ".", int_value ]
 int_value               = zeroDigit
                            | notZeroDigit, { digit }
-digit                   = zeroDigit | notZeroDigit
-string                  = "\"", string_value, "\""
-string_value            = literalSign, { literalSign }
+string_value            = "\"", literal, "\""
+literal                 = literalSign, { literalSign }
 literalSign             = "_"
                            | letter
 logicalOper             = andOper
