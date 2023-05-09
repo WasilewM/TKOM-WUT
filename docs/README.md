@@ -359,9 +359,9 @@ ifBlock                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", {
 elseIfBlock             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseBlock               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
 whileBlock              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
-reassignmentExp         = identifier, assignmentOper, assignedValue, ";"
+reassignmentExp         = identifier, assignmentOper, assignableValue, ";"
 returnExp               = "return", assignableValue, ";"
-assignmentExp           = parameter, assignmentOper, assignedValue, ";"
+assignmentExp           = parameter, assignmentOper, assignableValue, ";"
 parameters              = paremeter, ",", { parameter }
 parameter               = dataType, identifier
 
