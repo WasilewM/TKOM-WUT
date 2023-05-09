@@ -354,16 +354,16 @@ program                 = { functionDef }, { functionCall }
 functionDef             = functionType, identifier, "(", { parameters }, ")", codeBlock
 functionType            = "void"
                            | dataType
-parameters              = paremeter, ",", { parameter }
-parameter               = dataType, identifier
-codeBlock               = "{", { ifBlock | whileBlock | functionCall | objectMethodCall | assignmentExp | reassignmentExp | returnExp }, "}"
+codeBlock               = "{", { ifBlock | whileBlock | functionCall | assignmentExp | reassignmentExp | returnExp }, "}"
 ifBlock                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
 elseIfBlock             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseBlock               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
-whileBlock              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"                                
-assignmentExp           = dataType, identifier, assignmentOper, assignedValue, ";"
+whileBlock              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
 reassignmentExp         = identifier, assignmentOper, assignedValue, ";"
 returnExp               = "return", assignableValue, ";"
+assignmentExp           = parameter, assignmentOper, assignedValue, ";"
+parameters              = paremeter, ",", { parameter }
+parameter               = dataType, identifier
 
 
 alternativeExp          = conjunctiveExp, { orOper, conjunctiveExp }
