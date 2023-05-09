@@ -11,6 +11,7 @@ import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.*;
 import parser.program_components.statements.AssignmentStatement;
+import parser.program_components.statements.WhileStatement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -100,7 +101,7 @@ public class Parser {
             return exp;
         }
 
-        exp = parseWhileExpression();
+        exp = parseWhileStatement();
         if (exp != null) {
             return exp;
         }
@@ -239,7 +240,7 @@ public class Parser {
         return new ElseExpression();
     }
 
-    private IExpression parseWhileExpression() {
+    private IExpression parseWhileStatement() {
         if (!consumeIf(TokenTypeEnum.WHILE_KEYWORD)) {
             return null;
         }
@@ -251,7 +252,7 @@ public class Parser {
 
         CodeBlock codeBlock = parseCodeBlock();
         registerErrorIfCodeBlockIsMissing(codeBlock);
-        return new WhileExpression(whileExp, codeBlock);
+        return new WhileStatement(whileExp, codeBlock);
     }
 
     private IExpression parseExpressionCondition() {

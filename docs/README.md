@@ -354,14 +354,14 @@ program                 = { functionDef }, { functionCall }
 functionDef             = functionType, identifier, "(", { parameters }, ")", codeBlock
 functionType            = "void"
                            | dataType
-codeBlock               = "{", { ifBlock | whileBlock | functionCall | sssignmentStmnt | reassignmentExp | returnExp }, "}"
+codeBlock               = "{", { ifBlock | whileStmnt | functionCall | assignmentStmnt | reassignmentExp | returnExp }, "}"
 ifBlock                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
 elseIfBlock             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseBlock               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
-whileBlock              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
+whileStmnt              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
 reassignmentExp         = identifier, assignmentOper, assignableValue, ";"
 returnExp               = "return", assignableValue, ";"
-sssignmentStmnt         = parameter, assignmentOper, assignableValue, ";"
+assignmentStmnt         = parameter, assignmentOper, assignableValue, ";"
 parameters              = paremeter, ",", { parameter }
 parameter               = dataType, identifier
 
