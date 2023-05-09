@@ -9,6 +9,6 @@ public record Program(HashMap<String, FunctionDef> functions) implements IVisita
 
     @Override
     public void accept(IVisitor visitor) {
-        visitor.visit(this);
+
     }
 }

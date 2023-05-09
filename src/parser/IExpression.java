@@ -1,4 +1,4 @@
 package parser;
 
-public interface IExpression {
+public interface IExpression extends IVisitable {
 }

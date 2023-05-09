@@ -15,7 +15,7 @@ import parser.program_components.statements.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Parser {
+public class Parser implements IParser {
     private final ILexer lexer;
     private final ErrorHandler errorHandler;
     private Token currentToken;
@@ -26,6 +26,7 @@ public class Parser {
         currentToken = null;
     }
 
+    @Override
     public Program parse() {
         nextToken();
         HashMap<String, FunctionDef> functions = new HashMap<>();
@@ -75,11 +76,11 @@ public class Parser {
             return null;
         }
 
-        ArrayList<IExpression> expressions = new ArrayList<>();
-        IExpression exp = parseExpression();
-        while (exp != null) {
-            expressions.add(exp);
-            exp = parseExpression();
+        ArrayList<IStatement> expressions = new ArrayList<>();
+        IStatement statement = parseStatement();
+        while (statement != null) {
+            expressions.add(statement);
+            statement = parseStatement();
         }
 
         if (!consumeIf(TokenTypeEnum.RIGHT_CURLY_BRACKET)) {
@@ -89,42 +90,37 @@ public class Parser {
         return new CodeBlock(expressions);
     }
 
-    private IExpression parseExpression() {
-        IExpression exp = parseReturnStatement();
-        if (exp != null) {
-            return exp;
+    private IStatement parseStatement() {
+        ReturnStatement returnStmnt = parseReturnStatement();
+        if (returnStmnt != null) {
+            return returnStmnt;
         }
 
-        exp = parseIfStatement();
-        if (exp != null) {
-            return exp;
+        AssignmentStatement assignmentStmnt = parseAssignmentStatement();
+        if (assignmentStmnt != null) {
+            return assignmentStmnt;
         }
 
-        exp = parseWhileStatement();
-        if (exp != null) {
-            return exp;
+        IfStatement ifStmnt = parseIfStatement();
+        if (ifStmnt != null) {
+            return ifStmnt;
         }
 
-        exp = parseFactor();
-        if (exp != null) {
-            return exp;
-        }
-
-        return parseAssignmentStatement();
+        return parseWhileStatement();
     }
 
-    private IExpression parseReturnStatement() {
+    private ReturnStatement parseReturnStatement() {
         if (!consumeIf(TokenTypeEnum.RETURN_KEYWORD)) {
             return null;
         }
 
-        IExpression exp = parseExpression();
+        IExpression exp = parseFactor();
         registerErrorIfSemicolonIsMissing();
 
         return new ReturnStatement(exp);
     }
 
-    private IExpression parseAssignmentStatement() {
+    private AssignmentStatement parseAssignmentStatement() {
         Parameter parameter = parseParameter();
         if (parameter == null) {
             return null;
@@ -139,6 +135,64 @@ public class Parser {
         registerErrorIfSemicolonIsMissing();
 
         return new AssignmentStatement(parameter, exp);
+    }
+
+    private IfStatement parseIfStatement() {
+        if (!consumeIf(TokenTypeEnum.IF_KEYWORD)) {
+            return null;
+        }
+
+        IExpression expression = parseConditionExpression();
+        CodeBlock ifCodeBlock = parseCodeBlock();
+        registerErrorIfCodeBlockIsMissing(ifCodeBlock);
+
+        ArrayList<ElseIfStatement> elseIfStatements = parseElseIfStatements();
+        IStatement elseExp = parseElseStatement();
+
+        return new IfStatement(expression, ifCodeBlock, elseIfStatements, elseExp);
+    }
+
+    private ArrayList<ElseIfStatement> parseElseIfStatements() {
+        ArrayList<ElseIfStatement> elseIfStatements = new ArrayList<>();
+        while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
+            IExpression exp = parseConditionExpression();
+
+            CodeBlock elseIfCodeBlock = parseCodeBlock();
+            registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
+
+            elseIfStatements.add(new ElseIfStatement(exp, elseIfCodeBlock));
+        }
+        return elseIfStatements;
+    }
+
+    private ElseStatement parseElseStatement() {
+        if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
+            parseLeftBracket();
+            IExpression exp = parseAlternativeExpression();
+            registerErrorIfExpIsMissing(exp);
+            parseRightBracket();
+
+            CodeBlock elseCodeBlock = parseCodeBlock();
+            registerErrorIfCodeBlockIsMissing(elseCodeBlock);
+
+            return new ElseStatement(exp, elseCodeBlock);
+        }
+        return new ElseStatement();
+    }
+
+    private WhileStatement parseWhileStatement() {
+        if (!consumeIf(TokenTypeEnum.WHILE_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        IExpression exp = parseAlternativeExpression();
+        registerErrorIfExpIsMissing(exp);
+        parseRightBracket();
+
+        CodeBlock codeBlock = parseCodeBlock();
+        registerErrorIfCodeBlockIsMissing(codeBlock);
+        return new WhileStatement(exp, codeBlock);
     }
 
     private HashMap<String, Parameter> parseParameters() {
@@ -196,65 +250,7 @@ public class Parser {
         return new Parameter(paramType, paramName);
     }
 
-    private IExpression parseIfStatement() {
-        if (!consumeIf(TokenTypeEnum.IF_KEYWORD)) {
-            return null;
-        }
-
-        IExpression expression = parseExpressionCondition();
-        CodeBlock ifCodeBlock = parseCodeBlock();
-        registerErrorIfCodeBlockIsMissing(ifCodeBlock);
-
-        ArrayList<IExpression> elseIfStatements = parseElseIfStatement();
-        IExpression elseExp = parseElseStatement();
-
-        return new IfStatement(expression, ifCodeBlock, elseIfStatements, elseExp);
-    }
-
-    private ArrayList<IExpression> parseElseIfStatement() {
-        ArrayList<IExpression> elseIfStatements = new ArrayList<>();
-        while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
-            IExpression exp = parseExpressionCondition();
-
-            CodeBlock elseIfCodeBlock = parseCodeBlock();
-            registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
-
-            elseIfStatements.add(new ElseIfStatement(exp, elseIfCodeBlock));
-        }
-        return elseIfStatements;
-    }
-
-    private IExpression parseElseStatement() {
-        if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
-            parseLeftBracket();
-            IExpression exp = parseAlternativeExpression();
-            registerErrorIfExpIsMissing(exp);
-            parseRightBracket();
-
-            CodeBlock elseCodeBlock = parseCodeBlock();
-            registerErrorIfCodeBlockIsMissing(elseCodeBlock);
-
-            return new ElseStatement(exp, elseCodeBlock);
-        }
-        return new ElseStatement();
-    }
-
-    private IExpression parseWhileStatement() {
-        if (!consumeIf(TokenTypeEnum.WHILE_KEYWORD)) {
-            return null;
-        }
-
-        parseLeftBracket();
-        IExpression exp = parseAlternativeExpression();
-        registerErrorIfExpIsMissing(exp);
-        parseRightBracket();
-
-        CodeBlock codeBlock = parseCodeBlock();
-        registerErrorIfCodeBlockIsMissing(codeBlock);
-        return new WhileStatement(exp, codeBlock);
-    }
-
-    private IExpression parseExpressionCondition() {
+    private IExpression parseConditionExpression() {
         parseLeftBracket();
         IExpression expression = parseAlternativeExpression();
         registerErrorIfExpIsMissing(expression);

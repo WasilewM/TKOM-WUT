@@ -8,6 +8,6 @@ public record Parameter(TokenTypeEnum tokenType, String name) implements IVisita
 
     @Override
     public void accept(IVisitor visitor) {
-        visitor.visit(this);
+
     }
 }
