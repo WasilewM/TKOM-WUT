@@ -37,6 +37,7 @@ public class Parser implements IParser {
         return new Program(functions);
     }
 
+    //    @TODO wynieść dodawanie funkcji do mapy poza parsowanie
     private boolean parseFunctionDef(HashMap<String, FunctionDef> functions) {
         if (!isCurrentTokenOfDataTypeKeyword()) {
             return false;
@@ -59,6 +60,7 @@ public class Parser implements IParser {
             errorHandler.handle(new MissingLeftCurlyBracketException(currentToken.toString()));
         }
 
+//        @TODO wynieść
         if (!(functions.containsKey(functionName))) {
             functions.put(functionName, new FunctionDef(functionName, functionType, parameters, codeBlock));
         } else {
@@ -76,10 +78,10 @@ public class Parser implements IParser {
             return null;
         }
 
-        ArrayList<IStatement> expressions = new ArrayList<>();
+        ArrayList<IStatement> statements = new ArrayList<>();
         IStatement statement = parseStatement();
         while (statement != null) {
-            expressions.add(statement);
+            statements.add(statement);
             statement = parseStatement();
         }
 
@@ -87,7 +89,7 @@ public class Parser implements IParser {
             errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
         }
 
-        return new CodeBlock(expressions);
+        return new CodeBlock(statements);
     }
 
     private IStatement parseStatement() {
@@ -114,7 +116,7 @@ public class Parser implements IParser {
             return null;
         }
 
-        IExpression exp = parseFactor();
+        IExpression exp = parseAlternativeExpression();
         registerErrorIfSemicolonIsMissing();
 
         return new ReturnStatement(exp);

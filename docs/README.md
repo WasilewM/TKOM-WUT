@@ -326,7 +326,7 @@ public class Figure {
 
 ```
 public class Scene {
-    public List figures = List();
+    public List<Figure> figures = List();
 	
 	public List getFigures() {
 		return figures;
@@ -359,9 +359,8 @@ ifStmnt                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", {
 elseifStmnt             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseStmnt               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
 whileStmnt              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
-reassignmentStmnt       = identifier, assignmentOper, assignableValue, ";"
-returnStmnt             = "return", assignableValue, ";"
-assignmentStmnt         = parameter, assignmentOper, assignableValue, ";"
+returnStmnt             = "return", alternativeExpression , ";"
+assignmentStmnt         = [ dataType ], identifier, assignmentOper, alternativeExp, ";"
 parameters              = paremeter, ",", { parameter }
 parameter               = dataType, identifier
 
@@ -371,18 +370,22 @@ conjunctiveExp          = comparisonExp, { andOper, comparisonExp }
 comparisonExp           = additiveExp, [ comparisonOper, additiveExp ]
 additiveExp             = multiplicativeExp, { additiveOper, multiplicativeExp }
 multiplicativeExp       = factor, { multiplicativeOper, factor }
-factor                  = parenthesesExp
-                           | assignableValue
+factor                  =  [notOper | minusOper ] ( parenthesesExp | assignableValue)
 parenthesesExp          = "(", alternativeExp, ")"
-assignableValue         = [ notOper | minusOper ], positiveAssignableValue
-positiveAssignableValue = identifierOrFunctionCall
-                           | functionCall
-                           | objectMethodCall
-                           | alternativeExp
+assignableValue         = objectAccess  // @TODO
                            | string_value
                            | int_value
                            | double_value
                            | bool_value
+                           | list_value
+                                                   
+                           
+        # EBNF
+        # parseObjectAccessExpressionOrStatement, 5 węzłów na 3 produkcjach
+        # objectAccess implements IExpression / IStatement
+        # objectAccess = memberAccess, { ".", memberAccess }
+        # memberAccess = identifierOrFunctionCall, [ listAccess ]
+        # listAccess =  "[", alternativeExp, "]" 
 
 
 alternativeOper         = orOper
@@ -636,6 +639,10 @@ List mergeSort(List n) {
     int r = n.length() // 2;
     while (r < n.length()) {
         rightHalf.add(n[r]);
+        # EBNF
+        # memberAccess = identifierOrFunctionCall, [ listAccess ]
+        # objectAccess = memberAccess, { ".", memberAccess }
+        # listAccess =  "[", alternativeExp, "]" 
         r += 1;
     }
     
