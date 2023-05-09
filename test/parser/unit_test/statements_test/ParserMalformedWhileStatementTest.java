@@ -1,4 +1,4 @@
-package parser.unit_test;
+package parser.unit_test.statements_test;
 
 import lexer.Position;
 import lexer.TokenTypeEnum;
@@ -25,11 +25,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserMalformedWhileExpressionTest {
+public class ParserMalformedWhileStatementTest {
 
     private ArrayList<Token> startTokens;
 
-    public static Stream<Arguments> getMalformedWhileExpression_withHandleableExceptions() {
+    public static Stream<Arguments> getMalformedWhileStatement_withHandleableExceptions() {
         return Stream.of(
                 Arguments.of(
                         new ParserMalformedSingleTestParams(
@@ -76,7 +76,7 @@ public class ParserMalformedWhileExpressionTest {
         );
     }
 
-    static Stream<Arguments> getMalformedWhileExpression_withCriticalExceptions() {
+    static Stream<Arguments> getMalformedWhileStatement_withCriticalExceptions() {
         return Stream.of(
                 Arguments.of(
                         new ParserMalformedSingleTestParams(
@@ -122,8 +122,8 @@ public class ParserMalformedWhileExpressionTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getMalformedWhileExpression_withHandleableExceptions")
-    void parseMalformedWhileExpression_withHandleableExceptions(ParserMalformedSingleTestParams additionalParams) {
+    @MethodSource("getMalformedWhileStatement_withHandleableExceptions")
+    void parseMalformedWhileStatement_withHandleableExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
@@ -139,8 +139,8 @@ public class ParserMalformedWhileExpressionTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getMalformedWhileExpression_withCriticalExceptions")
-    void parseMalformedWhileExpression_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
+    @MethodSource("getMalformedWhileStatement_withCriticalExceptions")
+    void parseMalformedWhileStatement_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();

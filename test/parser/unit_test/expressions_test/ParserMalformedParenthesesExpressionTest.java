@@ -1,4 +1,4 @@
-package parser.unit_test;
+package parser.unit_test.expressions_test;
 
 import lexer.Position;
 import lexer.TokenTypeEnum;

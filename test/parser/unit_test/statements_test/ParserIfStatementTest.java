@@ -1,4 +1,4 @@
-package parser.unit_test;
+package parser.unit_test.statements_test;
 
 import lexer.Position;
 import lexer.TokenTypeEnum;
@@ -9,7 +9,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
-import parser.program_components.*;
+import parser.program_components.CodeBlock;
+import parser.program_components.FunctionDef;
+import parser.program_components.Identifier;
+import parser.program_components.Program;
+import parser.program_components.statements.ElseIfStatement;
+import parser.program_components.statements.ElseStatement;
+import parser.program_components.statements.IfStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
@@ -22,11 +28,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserIfExpressionTest {
+public class ParserIfStatementTest {
 
     private ArrayList<Token> startTokens;
 
-    public static Stream<Arguments> getIfExpressionTestData() {
+    public static Stream<Arguments> getIfStatementTestData() {
         return Stream.of(
                 Arguments.of(
                         new ParserSingleTestParams(
@@ -40,7 +46,7 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("a"), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("a"), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -62,7 +68,7 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("cube"), new CodeBlock(new ArrayList<>()), List.of(new ElseIfExpression(new Identifier("cube2"), new CodeBlock(new ArrayList<>()))))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("cube"), new CodeBlock(new ArrayList<>()), List.of(new ElseIfStatement(new Identifier("cube2"), new CodeBlock(new ArrayList<>()))))))));
                                 }}
                         )
                 ),
@@ -90,7 +96,7 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("isHandleable"), new CodeBlock(new ArrayList<>()), Arrays.asList(new ElseIfExpression(new Identifier("x"), new CodeBlock(new ArrayList<>())), new ElseIfExpression(new Identifier("y"), new CodeBlock(new ArrayList<>()))))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("isHandleable"), new CodeBlock(new ArrayList<>()), Arrays.asList(new ElseIfStatement(new Identifier("x"), new CodeBlock(new ArrayList<>())), new ElseIfStatement(new Identifier("y"), new CodeBlock(new ArrayList<>()))))))));
                                 }}
                         )
                 ),
@@ -112,7 +118,7 @@ public class ParserIfExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfExpression(new Identifier("cube"), new CodeBlock(new ArrayList<>()), new ElseExpression(new Identifier("cube2"), new CodeBlock(new ArrayList<>())))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("cube"), new CodeBlock(new ArrayList<>()), new ElseStatement(new Identifier("cube2"), new CodeBlock(new ArrayList<>())))))));
                                 }}
                         )
                 )
@@ -133,8 +139,8 @@ public class ParserIfExpressionTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getIfExpressionTestData")
-    void parseIfExpression(ParserSingleTestParams additionalTestParams) {
+    @MethodSource("getIfStatementTestData")
+    void parseIfStatement(ParserSingleTestParams additionalTestParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalTestParams.tokens());
 

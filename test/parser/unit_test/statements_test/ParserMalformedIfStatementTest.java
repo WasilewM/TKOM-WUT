@@ -1,4 +1,4 @@
-package parser.unit_test;
+package parser.unit_test.statements_test;
 
 import lexer.Position;
 import lexer.TokenTypeEnum;
@@ -25,11 +25,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserMalformedIfExpressionTest {
+public class ParserMalformedIfStatementTest {
 
     private ArrayList<Token> startTokens;
 
-    public static Stream<Arguments> getMalformedIfExpression_withHandleableExceptions() {
+    public static Stream<Arguments> getMalformedIfStatement_withHandleableExceptions() {
         return Stream.of(
                 Arguments.of(
                         new ParserMalformedSingleTestParams(
@@ -168,7 +168,7 @@ public class ParserMalformedIfExpressionTest {
         );
     }
 
-    static Stream<Arguments> getMalformedIfExpression_withCriticalExceptions() {
+    static Stream<Arguments> getMalformedIfStatement_withCriticalExceptions() {
         return Stream.of(
                 Arguments.of(
                         new ParserMalformedSingleTestParams(
@@ -286,8 +286,8 @@ public class ParserMalformedIfExpressionTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getMalformedIfExpression_withHandleableExceptions")
-    void parseMalformedIfExpression_withHandleableExceptions(ParserMalformedSingleTestParams additionalParams) {
+    @MethodSource("getMalformedIfStatement_withHandleableExceptions")
+    void parseMalformedIfStatement_withHandleableExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
@@ -303,8 +303,8 @@ public class ParserMalformedIfExpressionTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getMalformedIfExpression_withCriticalExceptions")
-    void parseMalformedIfExpression_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
+    @MethodSource("getMalformedIfStatement_withCriticalExceptions")
+    void parseMalformedIfStatement_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
         MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();

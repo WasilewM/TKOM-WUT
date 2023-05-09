@@ -1,4 +1,4 @@
-package parser.unit_test;
+package parser.unit_test.statements_test;
 
 import lexer.Position;
 import lexer.TokenTypeEnum;
@@ -10,8 +10,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
-import parser.program_components.*;
+import parser.program_components.CodeBlock;
+import parser.program_components.FunctionDef;
+import parser.program_components.Parameter;
+import parser.program_components.Program;
 import parser.program_components.data_values.IntValue;
+import parser.program_components.statements.AssignmentStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
@@ -24,11 +28,11 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParserAssignmentExpressionTest {
+public class ParserAssignmentStatementTest {
 
     private ArrayList<Token> startTokens;
 
-    public static Stream<Arguments> getAssignmentExpressionTestData() {
+    public static Stream<Arguments> getAssignmentStatementTestData() {
         return Stream.of(
                 Arguments.of(
                         new ParserSingleTestParams(
@@ -41,7 +45,7 @@ public class ParserAssignmentExpressionTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new AssignmentExpression(new Parameter(TokenTypeEnum.INT_KEYWORD, "A"), new IntValue(1))))));
+                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(new Parameter(TokenTypeEnum.INT_KEYWORD, "A"), new IntValue(1))))));
                                 }}
                         )
                 )
@@ -62,8 +66,8 @@ public class ParserAssignmentExpressionTest {
     }
 
     @ParameterizedTest
-    @MethodSource("getAssignmentExpressionTestData")
-    void parseAssignmentExpression(ParserSingleTestParams additionalTestParams) {
+    @MethodSource("getAssignmentStatementTestData")
+    void parseAssignmentStatement(ParserSingleTestParams additionalTestParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalTestParams.tokens());
 

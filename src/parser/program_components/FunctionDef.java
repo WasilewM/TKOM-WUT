@@ -11,6 +11,5 @@ public record FunctionDef(String name, TokenTypeEnum functionType, HashMap<Strin
 
     @Override
     public void accept(IVisitor visitor) {
-        visitor.visit(this);
     }
 }

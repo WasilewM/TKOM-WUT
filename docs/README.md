@@ -354,14 +354,14 @@ program                 = { functionDef }, { functionCall }
 functionDef             = functionType, identifier, "(", { parameters }, ")", codeBlock
 functionType            = "void"
                            | dataType
-codeBlock               = "{", { ifBlock | whileBlock | functionCall | assignmentExp | reassignmentExp | returnExp }, "}"
-ifBlock                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseIfBlock }, [ elseBlock ]
-elseIfBlock             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
-elseBlock               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
-whileBlock              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
-reassignmentExp         = identifier, assignmentOper, assignableValue, ";"
-returnExp               = "return", assignableValue, ";"
-assignmentExp           = parameter, assignmentOper, assignableValue, ";"
+codeBlock               = "{", { ifStmnt | whileStmnt | functionCall | assignmentStmnt | reassignmentStmnt | returnStmnt }, "}"
+ifStmnt                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseifStmnt }, [ elseStmnt ]
+elseifStmnt             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
+elseStmnt               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
+whileStmnt              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
+reassignmentStmnt       = identifier, assignmentOper, assignableValue, ";"
+returnStmnt             = "return", assignableValue, ";"
+assignmentStmnt         = parameter, assignmentOper, assignableValue, ";"
 parameters              = paremeter, ",", { parameter }
 parameter               = dataType, identifier
 
@@ -448,8 +448,8 @@ letter                  = "a".."z"
 ### Analiza przykładowego bloku instrukcji if
 
 ```
-ifBlock: if (i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool()) { return True; }
-ifBlock: "if", "(", alternativeExp, "), "{", codeBlock, "}":
+ifStmnt: if (i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool()) { return True; }
+ifStmnt: "if", "(", alternativeExp, "), "{", codeBlock, "}":
 |-- alternativeExp: i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool())
 |   alternativeExp: conjunctiveExp
 |   |-- conjunctiveExp: i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool())
@@ -589,9 +589,9 @@ ifBlock: "if", "(", alternativeExp, "), "{", codeBlock, "}":
 |                                                   |-- positiveAssignableValue: checkSomeBool()
 |                                                       positiveAssignableValue: functionCall
 |-- codeBlock: return True;
-    codeBlock: "{", returnExp, "}"
-    |-- returnExp: return True;
-        returnExp: "return", assignableValue, ";"
+    codeBlock: "{", returnStmnt, "}"
+    |-- returnStmnt: return True;
+        returnStmnt: "return", assignableValue, ";"
         |-- assignableValue: True
             assignableValue: positiveAssignableValue
             |-- positiveAssignableValue: True
