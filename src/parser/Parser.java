@@ -474,6 +474,16 @@ public class Parser implements IParser {
     }
 
     private IExpression parseFactor() {
+        if (consumeIf(TokenTypeEnum.NEGATION_OPERATOR)) {
+            IExpression exp = parseParenthesesExpOrAssignableVal();
+            registerErrorIfExpIsMissing(exp);
+            return new NegatedExpression(exp);
+        }
+
+        return parseParenthesesExpOrAssignableVal();
+    }
+
+    private IExpression parseParenthesesExpOrAssignableVal() {
         IExpression exp = parseParenthesesExpression();
         if (exp != null) {
             return exp;
@@ -498,16 +508,6 @@ public class Parser implements IParser {
     }
 
     private IExpression parseAssignableValue() {
-        if (consumeIf(TokenTypeEnum.NEGATION_OPERATOR)) {
-            IExpression assignableValue = parsePositiveAssignableValue();
-            registerErrorIfExpIsMissing(assignableValue);
-            return new NegatedExpression(assignableValue);
-        }
-
-        return parsePositiveAssignableValue();
-    }
-
-    private IExpression parsePositiveAssignableValue() {
         IExpression exp = parseIdentifier();
         if (exp != null) {
             return exp;

@@ -14,6 +14,7 @@ import parser.program_components.FunctionDef;
 import parser.program_components.Identifier;
 import parser.program_components.Program;
 import parser.program_components.data_values.BoolValue;
+import parser.program_components.expressions.ConjunctiveExpression;
 import parser.program_components.expressions.NegatedExpression;
 import parser.program_components.expressions.ParenthesesExpression;
 import parser.program_components.statements.ReturnStatement;
@@ -59,6 +60,23 @@ public class ParserFactorTest {
                                 ),
                                 new HashMap<>() {{
                                     put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new NegatedExpression(new BoolValue(true)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(4, 7), TokenTypeEnum.NEGATION_OPERATOR),
+                                        new Token(new Position(5, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("a1", new Position(5, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(5, 20), TokenTypeEnum.AND_OPERATOR),
+                                        new StringToken("a11", new Position(5, 30), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(5, 100), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(6, 12), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new NegatedExpression(new ParenthesesExpression(new ConjunctiveExpression(new Identifier("a1"), new Identifier("a11")))))))));
                                 }}
                         )
                 )
