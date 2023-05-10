@@ -350,18 +350,23 @@ public class Scene {
 ### EBNF
 
 ```
-program                 = { functionDef }, { functionCall }
+program                 = { functionDef }
 functionDef             = functionType, identifier, "(", { parameters }, ")", codeBlock
 functionType            = "void"
                            | dataType
-codeBlock               = "{", { ifStmnt | whileStmnt | functionCall | assignmentStmnt | reassignmentStmnt | returnStmnt }, "}"
+codeBlock               = "{", { stmnt }, "}"
+stmnt                   = ifStmnt
+                           | whileStmnt
+                           | functionCall
+                           | assignmentStmnt
+                           | returnStmnt
 ifStmnt                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseifStmnt }, [ elseStmnt ]
 elseifStmnt             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseStmnt               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
 whileStmnt              = "while", "(", alternativeExp, ")", "{", codeBlock, "}"
 returnStmnt             = "return", alternativeExpression , ";"
 assignmentStmnt         = [ dataType ], identifier, assignmentOper, alternativeExp, ";"
-parameters              = paremeter, ",", { parameter }
+parameters              = paremater, ",", { parameter }
 parameter               = dataType, identifier
 
 
@@ -370,7 +375,7 @@ conjunctiveExp          = comparisonExp, { andOper, comparisonExp }
 comparisonExp           = additiveExp, [ comparisonOper, additiveExp ]
 additiveExp             = multiplicativeExp, { additiveOper, multiplicativeExp }
 multiplicativeExp       = factor, { multiplicativeOper, factor }
-factor                  =  [notOper | minusOper ] ( parenthesesExp | assignableValue)
+factor                  =  [notOper ] ( parenthesesExp | assignableValue )
 parenthesesExp          = "(", alternativeExp, ")"
 assignableValue         = objectAccess  // @TODO
                            | stringValue
@@ -386,12 +391,7 @@ assignableValue         = objectAccess  // @TODO
         # objectAccess = memberAccess, { ".", memberAccess }
         # memberAccess = identifierOrFunctionCall, [ listAccess ]
         # listAccess =  "[", alternativeExp, "]" 
-
-
-alternativeOper         = orOper
-                           | additiveOper
-conjunctionOper         = andOper
-                           | multiplicativeOper
+        
                         
 identifierOrFuntionCall = identifier, { "(", [ alternativeExp ], ")" } ";"
 identifier              = letter { digit | literal }
@@ -435,9 +435,9 @@ andOper                 = "&&"
 orOper                  = "||"
 notOper                 = "!"
 minusOper               = "-"
-additivOper             = "+"
+additiveOper            = "+"
                            | "-"
-multiplicativOper       = "*"
+multiplicativeOper      = "*"
                            | "/"
                            | "//"
 assignmentOper          = "="

@@ -51,7 +51,7 @@ public class Parser implements IParser {
         return new Program(functions);
     }
 
-    //    @TODO wynieść dodawanie funkcji do mapy poza parsowanie
+    /* program = { functionDef } */
     private IFunctionDef parseFunctionDef() {
         if (!isCurrentTokenOfDataTypeKeyword()) {
             return null;
@@ -93,6 +93,7 @@ public class Parser implements IParser {
         }
     }
 
+    /* codeBlock = "{", { stmnt }, "}" */
     private CodeBlock parseCodeBlock() {
         if (!consumeIf(TokenTypeEnum.LEFT_CURLY_BRACKET)) {
             return null;
@@ -112,10 +113,16 @@ public class Parser implements IParser {
         return new CodeBlock(statements);
     }
 
+    /* stmnt = ifStmnt | whileStmnt | functionCall | assignmentStmnt | returnStmnt */
     private IStatement parseStatement() {
-        ReturnStatement returnStmnt = parseReturnStatement();
-        if (returnStmnt != null) {
-            return returnStmnt;
+        IfStatement ifStmnt = parseIfStatement();
+        if (ifStmnt != null) {
+            return ifStmnt;
+        }
+
+        WhileStatement whileStmnt = parseWhileStatement();
+        if (whileStmnt != null) {
+            return whileStmnt;
         }
 
         AssignmentStatement assignmentStmnt = parseAssignmentStatement();
@@ -123,14 +130,10 @@ public class Parser implements IParser {
             return assignmentStmnt;
         }
 
-        IfStatement ifStmnt = parseIfStatement();
-        if (ifStmnt != null) {
-            return ifStmnt;
-        }
-
-        return parseWhileStatement();
+        return parseReturnStatement();
     }
 
+    /* returnStmnt = "return", alternativeExpression , ";" */
     private ReturnStatement parseReturnStatement() {
         if (!consumeIf(TokenTypeEnum.RETURN_KEYWORD)) {
             return null;
@@ -142,6 +145,7 @@ public class Parser implements IParser {
         return new ReturnStatement(exp);
     }
 
+    /* assignmentStmnt = [ dataType ], identifier, assignmentOper, alternativeExp, ";" */
     private AssignmentStatement parseAssignmentStatement() {
         TokenTypeEnum dataType = null;
         if (isCurrentTokenOfDataTypeKeyword()) {
@@ -167,6 +171,7 @@ public class Parser implements IParser {
         return new AssignmentStatement(dataType, identifierName, exp);
     }
 
+    /* ifStmnt = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseifStmnt }, [ elseStmnt ] */
     private IfStatement parseIfStatement() {
         if (!consumeIf(TokenTypeEnum.IF_KEYWORD)) {
             return null;
@@ -182,6 +187,7 @@ public class Parser implements IParser {
         return new IfStatement(expression, ifCodeBlock, elseIfStatements, elseExp);
     }
 
+    /* elseifStmnt = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}" */
     private ArrayList<ElseIfStatement> parseElseIfStatements() {
         ArrayList<ElseIfStatement> elseIfStatements = new ArrayList<>();
         while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
@@ -195,6 +201,7 @@ public class Parser implements IParser {
         return elseIfStatements;
     }
 
+    /* elseStmnt = "else", "(", alternativeExp, ")", "{", codeBlock, "}" */
     private ElseStatement parseElseStatement() {
         if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
             parseLeftBracket();
@@ -210,6 +217,7 @@ public class Parser implements IParser {
         return new ElseStatement();
     }
 
+    /* whileStmnt = "while", "(", alternativeExp, ")", "{", codeBlock, "}" */
     private WhileStatement parseWhileStatement() {
         if (!consumeIf(TokenTypeEnum.WHILE_KEYWORD)) {
             return null;
@@ -225,6 +233,7 @@ public class Parser implements IParser {
         return new WhileStatement(exp, codeBlock);
     }
 
+    /* parameters = parameter, ",", { parameter } */
     private HashMap<String, Parameter> parseParameters() {
         HashMap<String, Parameter> params = new HashMap<>();
 
@@ -261,6 +270,10 @@ public class Parser implements IParser {
         return params;
     }
 
+    /*
+        parameter = dataType, identifier
+        dataType = "Int" | "Double" | "String" | "Point" | "Section" | "Scene" | "Bool" | "List"
+    */
     private Parameter parseParameter() {
         if (!isCurrentTokenOfDataTypeKeyword()) {
             return null;
@@ -299,6 +312,7 @@ public class Parser implements IParser {
         }
     }
 
+    /* alternativeExp = conjunctiveExp, { orOper, conjunctiveExp } */
     private IExpression parseAlternativeExpression() {
         IExpression leftExp = parseConjunctiveExpression();
 
@@ -316,6 +330,7 @@ public class Parser implements IParser {
         return leftExp;
     }
 
+    /* conjunctiveExp = comparisonExp, { andOper, comparisonExp } */
     private IExpression parseConjunctiveExpression() {
         IExpression leftExp = parseComparisonExpression();
 
@@ -333,6 +348,10 @@ public class Parser implements IParser {
         return leftExp;
     }
 
+    /*
+        comparisonExp = additiveExp, [ comparisonOper, additiveExp ]
+        comparisonOper = equalOper | notEqualOper | lessThanOper | lessThanOrEqualOper | greaterThanOper | greaterThanOrEqualOper
+    */
     private IExpression parseComparisonExpression() {
         IExpression leftExp = parseAdditiveExpression();
 
@@ -439,6 +458,10 @@ public class Parser implements IParser {
         return leftExp;
     }
 
+    /*
+        additiveExp = multiplicativeExp, { additiveOper, multiplicativeExp }
+        additiveOper = "+" | "-"
+    */
     private IExpression parseAdditiveExpression() {
         IExpression leftExp = parseMultiplicativeExpression();
 
@@ -465,6 +488,10 @@ public class Parser implements IParser {
         return leftExp;
     }
 
+    /*
+        multiplicativeExp = factor, { multiplicativeOper, factor }
+        multiplicativeOper = "*" | "/" | "//"
+    */
     private IExpression parseMultiplicativeExpression() {
         IExpression leftExp = parseFactor();
 
@@ -493,6 +520,7 @@ public class Parser implements IParser {
         return leftExp;
     }
 
+    /* factor =  [ notOper ] ( parenthesesExp | assignableValue ) */
     private IExpression parseFactor() {
         if (consumeIf(TokenTypeEnum.NEGATION_OPERATOR)) {
             IExpression exp = parseParenthesesExpOrAssignableVal();
@@ -512,6 +540,7 @@ public class Parser implements IParser {
         return parseAssignableValue();
     }
 
+    /* parenthesesExp = "(", alternativeExp, ")" */
     private IExpression parseParenthesesExpression() {
         if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
             return null;
@@ -527,6 +556,7 @@ public class Parser implements IParser {
         return new ParenthesesExpression(exp);
     }
 
+    /* assignableValue = objectAccess | stringValue | intValue | doubleValue | bool_value | list_value */
     private IExpression parseAssignableValue() {
         IExpression exp = parseIdentifier();
         if (exp != null) {
@@ -551,6 +581,7 @@ public class Parser implements IParser {
         return parseBoolValue();
     }
 
+    /* stringValue = "\"", literal, "\"" */
     private IExpression parseStringValue() {
         if (currentToken.getTokenType() != TokenTypeEnum.STRING_VALUE) {
             return null;
@@ -561,6 +592,7 @@ public class Parser implements IParser {
         return new StringValue(value);
     }
 
+    /* intValue = zeroDigit | notZeroDigit, { digit } */
     private IExpression parseIntValue() {
         if (currentToken.getTokenType() != TokenTypeEnum.INT_VALUE) {
             return null;
@@ -571,6 +603,7 @@ public class Parser implements IParser {
         return new IntValue(value);
     }
 
+    /* doubleValue = intValue, [ ".", intValue ] */
     private IExpression parseDoubleValue() {
         if (currentToken.getTokenType() != TokenTypeEnum.DOUBLE_VALUE) {
             return null;
@@ -581,6 +614,7 @@ public class Parser implements IParser {
         return new DoubleValue(value);
     }
 
+    /* bool_value = "True" | False */
     private IExpression parseBoolValue() {
         if (consumeIf(TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD)) {
             return new BoolValue(true);
@@ -591,7 +625,7 @@ public class Parser implements IParser {
         return null;
     }
 
-
+    /* identifier = letter { digit | literal } */
     private IExpression parseIdentifier() {
         if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
             return null;
