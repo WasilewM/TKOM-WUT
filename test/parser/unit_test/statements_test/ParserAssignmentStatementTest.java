@@ -14,6 +14,8 @@ import parser.program_components.CodeBlock;
 import parser.program_components.Program;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.function_definitions.BoolFunctionDef;
+import parser.program_components.parameters.IntParameter;
+import parser.program_components.parameters.ReassignedParameter;
 import parser.program_components.statements.AssignmentStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
@@ -44,7 +46,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(TokenTypeEnum.INT_KEYWORD, "A", new IntValue(1))))));
+                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(new IntParameter("A"), new IntValue(1))))));
                                 }}
                         )
                 ),
@@ -63,7 +65,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(TokenTypeEnum.INT_KEYWORD, "A", new IntValue(1)), new AssignmentStatement(null, "A", new IntValue(11))))));
+                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(new IntParameter("A"), new IntValue(1)), new AssignmentStatement(new ReassignedParameter("A"), new IntValue(11))))));
                                 }}
                         )
                 )

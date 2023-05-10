@@ -13,10 +13,7 @@ import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
-import parser.program_components.parameters.BoolParameter;
-import parser.program_components.parameters.DoubleParameter;
-import parser.program_components.parameters.IntParameter;
-import parser.program_components.parameters.StringParameter;
+import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 
 import java.util.ArrayList;
@@ -148,30 +145,30 @@ public class Parser implements IParser {
         return new ReturnStatement(exp);
     }
 
-    /* assignmentStmnt = [ dataType ], identifier, assignmentOper, alternativeExp, ";" */
+    /*
+        assignmentStmnt = [ dataType ], identifier, assignmentOper, alternativeExp, ";"
+        parameter = dataType, identifier
+    */
     private AssignmentStatement parseAssignmentStatement() {
-        TokenTypeEnum dataType = null;
-        if (isCurrentTokenOfDataTypeKeyword()) {
-            dataType = currentToken.getTokenType();
-            nextToken();
+        IParameter param = parseParameter();
+        if (param == null) {
+            if (currentToken.getTokenType() == TokenTypeEnum.IDENTIFIER) {
+                param = new ReassignedParameter((String) currentToken.getValue());
+                nextToken();
+            } else {
+                return null;
+            }
         }
-
-        if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
-            return null;
-        }
-
-        String identifierName = (String) currentToken.getValue();
-        nextToken();
 
         if (!consumeIf(TokenTypeEnum.ASSIGNMENT_OPERATOR)) {
-            return null;
+            errorHandler.handle(new MissingAssignmentOperatorException(currentToken.toString()));
         }
 
         IExpression exp = parseAlternativeExpression();
         registerErrorIfExpIsMissing(exp);
         registerErrorIfSemicolonIsMissing();
 
-        return new AssignmentStatement(dataType, identifierName, exp);
+        return new AssignmentStatement(param, exp);
     }
 
     /* ifStmnt = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseifStmnt }, [ elseStmnt ] */
