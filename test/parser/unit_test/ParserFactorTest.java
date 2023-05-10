@@ -46,7 +46,7 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new ParenthesesExpression(new Identifier("abv")))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new ParenthesesExpression(new Position(3, 1), new Identifier(new Position(4, 7), "abv")))))));
                                 }}
                         )
                 ),
@@ -59,7 +59,7 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new NegatedExpression(new BoolValue(true)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new BoolValue(new Position(4, 27), true)))))));
                                 }}
                         )
                 ),
@@ -76,7 +76,7 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new NegatedExpression(new ParenthesesExpression(new ConjunctiveExpression(new Identifier("a1"), new Identifier("a11")))))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new ParenthesesExpression(new Position(5, 11), new ConjunctiveExpression(new Position(5, 20), new Identifier(new Position(5, 10), "a1"), new Identifier(new Position(5, 30), "a11")))))))));
                                 }}
                         )
                 )

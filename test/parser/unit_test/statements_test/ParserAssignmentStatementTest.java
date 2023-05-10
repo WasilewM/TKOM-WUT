@@ -46,7 +46,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(new IntParameter("A"), new IntValue(1))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntParameter(new Position(5, 7), "A"), new IntValue(new Position(8, 14), 1))))));
                                 }}
                         )
                 ),
@@ -58,14 +58,14 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
                                         new IntegerToken(1, new Position(8, 14)),
                                         new Token(new Position(8, 24), TokenTypeEnum.SEMICOLON),
-                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
-                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
-                                        new IntegerToken(11, new Position(8, 14)),
-                                        new Token(new Position(8, 24), TokenTypeEnum.SEMICOLON),
-                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                        new StringToken("A", new Position(9, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(10, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new IntegerToken(11, new Position(10, 14)),
+                                        new Token(new Position(12, 24), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(13, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new AssignmentStatement(new IntParameter("A"), new IntValue(1)), new AssignmentStatement(new ReassignedParameter("A"), new IntValue(11))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntParameter(new Position(5, 7), "A"), new IntValue(new Position(8, 14), 1)), new AssignmentStatement(new Position(9, 10), new ReassignedParameter(new Position(9, 10), "A"), new IntValue(new Position(10, 14), 11))))));
                                 }}
                         )
                 )

@@ -46,7 +46,7 @@ public class ParserIfStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("a"), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(2, 1), new Identifier(new Position(2, 5), "a"), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -68,7 +68,7 @@ public class ParserIfStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("cube"), new CodeBlock(new ArrayList<>()), List.of(new ElseIfStatement(new Identifier("cube2"), new CodeBlock(new ArrayList<>()))))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(2, 1), new Identifier(new Position(2, 5), "cube"), new CodeBlock(new Position(2, 21), new ArrayList<>()), List.of(new ElseIfStatement(new Position(3, 1), new Identifier(new Position(4, 5), "cube2"), new CodeBlock(new Position(14, 1), new ArrayList<>()))))))));
                                 }}
                         )
                 ),
@@ -96,7 +96,7 @@ public class ParserIfStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("isHandleable"), new CodeBlock(new ArrayList<>()), Arrays.asList(new ElseIfStatement(new Identifier("x"), new CodeBlock(new ArrayList<>())), new ElseIfStatement(new Identifier("y"), new CodeBlock(new ArrayList<>()))))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(2, 1), new Identifier(new Position(2, 5), "isHandleable"), new CodeBlock(new Position(2, 21), new ArrayList<>()), Arrays.asList(new ElseIfStatement(new Position(3, 1), new Identifier(new Position(3, 15), "x"), new CodeBlock(new Position(3, 100), new ArrayList<>())), new ElseIfStatement(new Position(4, 1), new Identifier(new Position(4, 25), "y"), new CodeBlock(new Position(14, 1), new ArrayList<>()))))))));
                                 }}
                         )
                 ),
@@ -118,7 +118,7 @@ public class ParserIfStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("cube"), new CodeBlock(new ArrayList<>()), new ElseStatement(new Identifier("cube2"), new CodeBlock(new ArrayList<>())))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(2, 1), new Identifier(new Position(2, 5), "cube"), new CodeBlock(new Position(2, 21), new ArrayList<>()), new ElseStatement(new Position(3, 1), new Identifier(new Position(4, 5), "cube2"), new CodeBlock(new Position(12, 21), new ArrayList<>())))))));
                                 }}
                         )
                 )

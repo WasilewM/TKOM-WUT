@@ -47,7 +47,7 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 12), new ConjunctiveExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident1"), new Identifier(new Position(2, 15), "ident2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -65,7 +65,7 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new ConjunctiveExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new Identifier("ident3")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 12), new ConjunctiveExpression(new Position(2, 12), new ConjunctiveExpression(new Position(3, 1), new Identifier(new Position(2, 5), "ident1"), new Identifier(new Position(2, 15), "ident2")), new Identifier(new Position(3, 5), "ident3")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -85,7 +85,7 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new ConjunctiveExpression(new ConjunctiveExpression(new Identifier("ident1"), new Identifier("ident2")), new SubtractionExpression(new Identifier("ident3"), new Identifier("ident4"))), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 12), new ConjunctiveExpression(new Position(2, 12), new ConjunctiveExpression(new Position(3, 1), new Identifier(new Position(2, 5), "ident1"), new Identifier(new Position(2, 15), "ident2")), new SubtractionExpression(new Position(5, 5), new Identifier(new Position(4, 5), "ident3"), new Identifier(new Position(6, 5), "ident4"))), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -105,7 +105,7 @@ public class ParserConjunctiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new ConjunctiveExpression(new Identifier("ident1"), new SubtractionExpression(new MultiplicationExpression(new Identifier("ident2"), new Identifier("ident3")), new Identifier("ident4"))), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 12), new ConjunctiveExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident1"), new SubtractionExpression(new Position(5, 5), new MultiplicationExpression(new Position(3, 1), new Identifier(new Position(2, 15), "ident2"), new Identifier(new Position(4, 5), "ident3")), new Identifier(new Position(6, 5), "ident4"))), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 )

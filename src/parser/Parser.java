@@ -1,6 +1,7 @@
 package parser;
 
 import lexer.ILexer;
+import lexer.Position;
 import lexer.TokenTypeEnum;
 import lexer.tokens.Token;
 import parser.exceptions.*;
@@ -33,6 +34,7 @@ public class Parser implements IParser {
     @Override
     public Program parse() {
         nextToken();
+        Position position = currentToken.getPosition();
         HashMap<String, IFunctionDef> functions = new HashMap<>();
         IFunctionDef newFunction = parseFunctionDef();
         while (newFunction != null) {
@@ -48,7 +50,7 @@ public class Parser implements IParser {
             }
         }
 
-        return new Program(functions);
+        return new Program(position, functions);
     }
 
     /* program = { functionDef } */
@@ -57,6 +59,7 @@ public class Parser implements IParser {
             return null;
         }
         TokenTypeEnum functionType = currentToken.getTokenType();
+        Position position = currentToken.getPosition();
         nextToken();
 
         if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
@@ -75,26 +78,27 @@ public class Parser implements IParser {
         }
 
         if (functionType == TokenTypeEnum.INT_KEYWORD) {
-            return new IntFunctionDef(functionName, parameters, codeBlock);
+            return new IntFunctionDef(position, functionName, parameters, codeBlock);
         } else if (functionType == TokenTypeEnum.DOUBLE_KEYWORD) {
-            return new DoubleFunctionDef(functionName, parameters, codeBlock);
+            return new DoubleFunctionDef(position, functionName, parameters, codeBlock);
         } else if (functionType == TokenTypeEnum.STRING_KEYWORD) {
-            return new StringFunctionDef(functionName, parameters, codeBlock);
+            return new StringFunctionDef(position, functionName, parameters, codeBlock);
         } else if (functionType == TokenTypeEnum.BOOL_KEYWORD) {
-            return new BoolFunctionDef(functionName, parameters, codeBlock);
+            return new BoolFunctionDef(position, functionName, parameters, codeBlock);
         } else if (functionType == TokenTypeEnum.POINT_KEYWORD) {
-            return new PointFunctionDef(functionName, parameters, codeBlock);
+            return new PointFunctionDef(position, functionName, parameters, codeBlock);
         } else if (functionType == TokenTypeEnum.SECTION_KEYWORD) {
-            return new SectionFunctionDef(functionName, parameters, codeBlock);
+            return new SectionFunctionDef(position, functionName, parameters, codeBlock);
         } else if (functionType == TokenTypeEnum.FIGURE_KEYWORD) {
-            return new FigureFunctionDef(functionName, parameters, codeBlock);
+            return new FigureFunctionDef(position, functionName, parameters, codeBlock);
         } else {
-            return new SceneFunctionDef(functionName, parameters, codeBlock);
+            return new SceneFunctionDef(position, functionName, parameters, codeBlock);
         }
     }
 
     /* codeBlock = "{", { stmnt }, "}" */
     private CodeBlock parseCodeBlock() {
+        Position position = currentToken.getPosition();
         if (!consumeIf(TokenTypeEnum.LEFT_CURLY_BRACKET)) {
             return null;
         }
@@ -110,7 +114,7 @@ public class Parser implements IParser {
             errorHandler.handle(new MissingRightCurlyBracketException(currentToken.toString()));
         }
 
-        return new CodeBlock(statements);
+        return new CodeBlock(position, statements);
     }
 
     /* stmnt = ifStmnt | whileStmnt | functionCall | assignmentStmnt | returnStmnt */
@@ -135,6 +139,7 @@ public class Parser implements IParser {
 
     /* returnStmnt = "return", alternativeExpression , ";" */
     private ReturnStatement parseReturnStatement() {
+        Position position = currentToken.getPosition();
         if (!consumeIf(TokenTypeEnum.RETURN_KEYWORD)) {
             return null;
         }
@@ -142,7 +147,7 @@ public class Parser implements IParser {
         IExpression exp = parseAlternativeExpression();
         registerErrorIfSemicolonIsMissing();
 
-        return new ReturnStatement(exp);
+        return new ReturnStatement(position, exp);
     }
 
     /*
@@ -150,10 +155,11 @@ public class Parser implements IParser {
         parameter = dataType, identifier
     */
     private AssignmentStatement parseAssignmentStatement() {
+        Position position = currentToken.getPosition();
         IParameter param = parseParameter();
         if (param == null) {
             if (currentToken.getTokenType() == TokenTypeEnum.IDENTIFIER) {
-                param = new ReassignedParameter((String) currentToken.getValue());
+                param = new ReassignedParameter(position, (String) currentToken.getValue());
                 nextToken();
             } else {
                 return null;
@@ -168,11 +174,12 @@ public class Parser implements IParser {
         registerErrorIfExpIsMissing(exp);
         registerErrorIfSemicolonIsMissing();
 
-        return new AssignmentStatement(param, exp);
+        return new AssignmentStatement(position, param, exp);
     }
 
     /* ifStmnt = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseifStmnt }, [ elseStmnt ] */
     private IfStatement parseIfStatement() {
+        Position position = currentToken.getPosition();
         if (!consumeIf(TokenTypeEnum.IF_KEYWORD)) {
             return null;
         }
@@ -184,25 +191,27 @@ public class Parser implements IParser {
         ArrayList<ElseIfStatement> elseIfStatements = parseElseIfStatements();
         IStatement elseExp = parseElseStatement();
 
-        return new IfStatement(expression, ifCodeBlock, elseIfStatements, elseExp);
+        return new IfStatement(position, expression, ifCodeBlock, elseIfStatements, elseExp);
     }
 
     /* elseifStmnt = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}" */
     private ArrayList<ElseIfStatement> parseElseIfStatements() {
         ArrayList<ElseIfStatement> elseIfStatements = new ArrayList<>();
         while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
+            Position position = currentToken.getPosition();
             IExpression exp = parseConditionExpression();
 
             CodeBlock elseIfCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
 
-            elseIfStatements.add(new ElseIfStatement(exp, elseIfCodeBlock));
+            elseIfStatements.add(new ElseIfStatement(position, exp, elseIfCodeBlock));
         }
         return elseIfStatements;
     }
 
     /* elseStmnt = "else", "(", alternativeExp, ")", "{", codeBlock, "}" */
     private ElseStatement parseElseStatement() {
+        Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
             parseLeftBracket();
             IExpression exp = parseAlternativeExpression();
@@ -212,13 +221,14 @@ public class Parser implements IParser {
             CodeBlock elseCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseCodeBlock);
 
-            return new ElseStatement(exp, elseCodeBlock);
+            return new ElseStatement(position, exp, elseCodeBlock);
         }
         return new ElseStatement();
     }
 
     /* whileStmnt = "while", "(", alternativeExp, ")", "{", codeBlock, "}" */
     private WhileStatement parseWhileStatement() {
+        Position position = currentToken.getPosition();
         if (!consumeIf(TokenTypeEnum.WHILE_KEYWORD)) {
             return null;
         }
@@ -230,7 +240,7 @@ public class Parser implements IParser {
 
         CodeBlock codeBlock = parseCodeBlock();
         registerErrorIfCodeBlockIsMissing(codeBlock);
-        return new WhileStatement(exp, codeBlock);
+        return new WhileStatement(position, exp, codeBlock);
     }
 
     /* parameters = parameter, ",", { parameter } */
@@ -275,6 +285,7 @@ public class Parser implements IParser {
         dataType = "Int" | "Double" | "String" | "Point" | "Section" | "Scene" | "Bool" | "List"
     */
     private IParameter parseParameter() {
+        Position position = currentToken.getPosition();
         if (!isCurrentTokenOfDataTypeKeyword()) {
             return null;
         }
@@ -290,13 +301,13 @@ public class Parser implements IParser {
         nextToken();
 
         if (paramType == TokenTypeEnum.INT_KEYWORD) {
-            return new IntParameter(paramName);
+            return new IntParameter(position, paramName);
         } else if (paramType == TokenTypeEnum.DOUBLE_KEYWORD) {
-            return new DoubleParameter(paramName);
+            return new DoubleParameter(position, paramName);
         } else if (paramType == TokenTypeEnum.STRING_KEYWORD) {
-            return new StringParameter(paramName);
+            return new StringParameter(position, paramName);
         } else {
-            return new BoolParameter(paramName);
+            return new BoolParameter(position, paramName);
         }
     }
 
@@ -328,11 +339,13 @@ public class Parser implements IParser {
             return null;
         }
 
+        Position position = currentToken.getPosition();
         while (consumeIf(TokenTypeEnum.OR_OPERATOR)) {
             IExpression rightExp = parseConjunctiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
-            leftExp = new AlternativeExpression(leftExp, rightExp);
+            leftExp = new AlternativeExpression(position, leftExp, rightExp);
+            position = currentToken.getPosition();
         }
 
         return leftExp;
@@ -346,11 +359,13 @@ public class Parser implements IParser {
             return null;
         }
 
+        Position position = currentToken.getPosition();
         while (consumeIf(TokenTypeEnum.AND_OPERATOR)) {
             IExpression rightExp = parseComparisonExpression();
             registerErrorIfExpIsMissing(rightExp);
 
-            leftExp = new ConjunctiveExpression(leftExp, rightExp);
+            leftExp = new ConjunctiveExpression(position, leftExp, rightExp);
+            position = currentToken.getPosition();
         }
 
         return leftExp;
@@ -407,61 +422,67 @@ public class Parser implements IParser {
     }
 
     private IExpression parseLessThanExpression(IExpression leftExp) {
+        Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.LESS_THAN_OPERATOR)) {
             IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
-            leftExp = new LessThanExpression(leftExp, rightExp);
+            leftExp = new LessThanExpression(position, leftExp, rightExp);
         }
         return leftExp;
     }
 
     private IExpression parseLessOrEqualExpression(IExpression leftExp) {
+        Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.LESS_OR_EQUAL_OPERATOR)) {
             IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
-            leftExp = new LessOrEqualExpression(leftExp, rightExp);
+            leftExp = new LessOrEqualExpression(position, leftExp, rightExp);
         }
         return leftExp;
     }
 
     private IExpression parseGreaterThanExpression(IExpression leftExp) {
+        Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.GREATER_THAN_OPERATOR)) {
             IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
-            leftExp = new GreaterThanExpression(leftExp, rightExp);
+            leftExp = new GreaterThanExpression(position, leftExp, rightExp);
         }
         return leftExp;
     }
 
     private IExpression parseGreaterOrEqualExpression(IExpression leftExp) {
+        Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.GREATER_OR_EQUAL_OPERATOR)) {
             IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
-            leftExp = new GreaterOrEqualExpression(leftExp, rightExp);
+            leftExp = new GreaterOrEqualExpression(position, leftExp, rightExp);
         }
         return leftExp;
     }
 
     private IExpression parseEqualExpression(IExpression leftExp) {
+        Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.EQUAL_OPERATOR)) {
             IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
-            leftExp = new EqualExpression(leftExp, rightExp);
+            leftExp = new EqualExpression(position, leftExp, rightExp);
         }
         return leftExp;
     }
 
     private IExpression parseNotEqualExpression(IExpression leftExp) {
+        Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.NOT_EQUAL_OPERATOR)) {
             IExpression rightExp = parseAdditiveExpression();
             registerErrorIfExpIsMissing(rightExp);
 
-            leftExp = new NotEqualExpression(leftExp, rightExp);
+            leftExp = new NotEqualExpression(position, leftExp, rightExp);
         }
         return leftExp;
     }
@@ -477,20 +498,22 @@ public class Parser implements IParser {
             return null;
         }
 
+        Position position = currentToken.getPosition();
         while (isCurrentTokenOfAdditiveOperatorType()) {
             if (currentToken.getTokenType() == TokenTypeEnum.ADDITION_OPERATOR) {
                 nextToken();
                 IExpression rightExp = parseMultiplicativeExpression();
                 registerErrorIfExpIsMissing(rightExp);
 
-                leftExp = new AdditionExpression(leftExp, rightExp);
+                leftExp = new AdditionExpression(position, leftExp, rightExp);
             } else {
                 nextToken();
                 IExpression rightExp = parseMultiplicativeExpression();
                 registerErrorIfExpIsMissing(rightExp);
 
-                leftExp = new SubtractionExpression(leftExp, rightExp);
+                leftExp = new SubtractionExpression(position, leftExp, rightExp);
             }
+            position = currentToken.getPosition();
         }
 
         return leftExp;
@@ -503,26 +526,28 @@ public class Parser implements IParser {
     private IExpression parseMultiplicativeExpression() {
         IExpression leftExp = parseFactor();
 
+        Position position = currentToken.getPosition();
         while (isCurrentTokenOfMultiplicativeOperatorType()) {
             if (currentToken.getTokenType() == TokenTypeEnum.MULTIPLICATION_OPERATOR) {
                 nextToken();
                 IExpression rightExp = parseFactor();
                 registerErrorIfExpIsMissing(rightExp);
 
-                leftExp = new MultiplicationExpression(leftExp, rightExp);
+                leftExp = new MultiplicationExpression(position, leftExp, rightExp);
             } else if (currentToken.getTokenType() == TokenTypeEnum.DIVISION_OPERATOR) {
                 nextToken();
                 IExpression rightExp = parseFactor();
                 registerErrorIfExpIsMissing(rightExp);
 
-                leftExp = new DivisionExpression(leftExp, rightExp);
+                leftExp = new DivisionExpression(position, leftExp, rightExp);
             } else {
                 nextToken();
                 IExpression rightExp = parseFactor();
                 registerErrorIfExpIsMissing(rightExp);
 
-                leftExp = new DiscreteDivisionExpression(leftExp, rightExp);
+                leftExp = new DiscreteDivisionExpression(position, leftExp, rightExp);
             }
+            position = currentToken.getPosition();
         }
 
         return leftExp;
@@ -530,10 +555,11 @@ public class Parser implements IParser {
 
     /* factor =  [ notOper ] ( parenthesesExp | assignableValue ) */
     private IExpression parseFactor() {
+        Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.NEGATION_OPERATOR)) {
             IExpression exp = parseParenthesesExpOrAssignableVal();
             registerErrorIfExpIsMissing(exp);
-            return new NegatedExpression(exp);
+            return new NegatedExpression(position, exp);
         }
 
         return parseParenthesesExpOrAssignableVal();
@@ -550,6 +576,7 @@ public class Parser implements IParser {
 
     /* parenthesesExp = "(", alternativeExp, ")" */
     private IExpression parseParenthesesExpression() {
+        Position position = currentToken.getPosition();
         if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
             return null;
         }
@@ -561,7 +588,7 @@ public class Parser implements IParser {
             errorHandler.handle(new UnclosedParenthesesException(currentToken.toString()));
         }
 
-        return new ParenthesesExpression(exp);
+        return new ParenthesesExpression(position, exp);
     }
 
     /* assignableValue = objectAccess | stringValue | intValue | doubleValue | bool_value | list_value */
@@ -591,43 +618,47 @@ public class Parser implements IParser {
 
     /* stringValue = "\"", literal, "\"" */
     private IExpression parseStringValue() {
+        Position position = currentToken.getPosition();
         if (currentToken.getTokenType() != TokenTypeEnum.STRING_VALUE) {
             return null;
         }
 
         String value = (String) currentToken.getValue();
         nextToken();
-        return new StringValue(value);
+        return new StringValue(position, value);
     }
 
     /* intValue = zeroDigit | notZeroDigit, { digit } */
     private IExpression parseIntValue() {
+        Position position = currentToken.getPosition();
         if (currentToken.getTokenType() != TokenTypeEnum.INT_VALUE) {
             return null;
         }
 
         int value = (int) currentToken.getValue();
         nextToken();
-        return new IntValue(value);
+        return new IntValue(position, value);
     }
 
     /* doubleValue = intValue, [ ".", intValue ] */
     private IExpression parseDoubleValue() {
+        Position position = currentToken.getPosition();
         if (currentToken.getTokenType() != TokenTypeEnum.DOUBLE_VALUE) {
             return null;
         }
 
         double value = (double) currentToken.getValue();
         nextToken();
-        return new DoubleValue(value);
+        return new DoubleValue(position, value);
     }
 
     /* bool_value = "True" | False */
     private IExpression parseBoolValue() {
+        Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.BOOL_TRUE_VALUE_KEYWORD)) {
-            return new BoolValue(true);
+            return new BoolValue(position, true);
         } else if (consumeIf(TokenTypeEnum.BOOL_FALSE_VALUE_KEYWORD)) {
-            return new BoolValue(false);
+            return new BoolValue(position, false);
         }
 
         return null;
@@ -635,6 +666,7 @@ public class Parser implements IParser {
 
     /* identifier = letter { digit | literal } */
     private IExpression parseIdentifier() {
+        Position position = currentToken.getPosition();
         if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
             return null;
         }
@@ -642,7 +674,7 @@ public class Parser implements IParser {
         String identifierName = (String) currentToken.getValue();
         nextToken();
 
-        return new Identifier(identifierName);
+        return new Identifier(position, identifierName);
     }
 
     private void registerErrorIfExpIsMissing(IExpression exp) {
