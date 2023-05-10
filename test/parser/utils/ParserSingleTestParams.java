@@ -1,7 +1,7 @@
 package parser.utils;
 
 import lexer.tokens.Token;
-import parser.program_components.FunctionDef;
+import parser.program_components.function_definitions.FunctionDef;
 
 import java.util.HashMap;
 import java.util.List;

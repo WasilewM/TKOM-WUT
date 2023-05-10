@@ -4,12 +4,16 @@ import lexer.ILexer;
 import lexer.TokenTypeEnum;
 import lexer.tokens.Token;
 import parser.exceptions.*;
-import parser.program_components.*;
+import parser.program_components.CodeBlock;
+import parser.program_components.Identifier;
+import parser.program_components.Parameter;
+import parser.program_components.Program;
 import parser.program_components.data_values.BoolValue;
 import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.*;
+import parser.program_components.function_definitions.FunctionDef;
 import parser.program_components.statements.*;
 
 import java.util.ArrayList;
@@ -29,18 +33,28 @@ public class Parser implements IParser {
     @Override
     public Program parse() {
         nextToken();
-        HashMap<String, FunctionDef> functions = new HashMap<>();
-        while (parseFunctionDef(functions)) {
-            assert true;
+        HashMap<String, IFunctionDef> functions = new HashMap<>();
+        IFunctionDef newFunction = parseFunctionDef();
+        while (newFunction != null) {
+            if (!(functions.containsKey(newFunction.name()))) {
+                functions.put(newFunction.name(), newFunction);
+                newFunction = parseFunctionDef();
+            } else {
+                errorHandler.handle(
+                        new DuplicatedFunctionNameException(
+                                String.format("Function %s at position: <line: %d, column %d>", newFunction.name(), currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
+                        )
+                );
+            }
         }
 
         return new Program(functions);
     }
 
     //    @TODO wynieść dodawanie funkcji do mapy poza parsowanie
-    private boolean parseFunctionDef(HashMap<String, FunctionDef> functions) {
+    private IFunctionDef parseFunctionDef() {
         if (!isCurrentTokenOfDataTypeKeyword()) {
-            return false;
+            return null;
         }
         TokenTypeEnum functionType = currentToken.getTokenType();
         nextToken();
@@ -60,17 +74,7 @@ public class Parser implements IParser {
             errorHandler.handle(new MissingLeftCurlyBracketException(currentToken.toString()));
         }
 
-//        @TODO wynieść
-        if (!(functions.containsKey(functionName))) {
-            functions.put(functionName, new FunctionDef(functionName, functionType, parameters, codeBlock));
-        } else {
-            errorHandler.handle(
-                    new DuplicatedFunctionNameException(
-                            String.format("Function %s at position: <line: %d, column %d>", functionName, currentToken.getPosition().getLineNumber(), currentToken.getPosition().getColumnNumber())
-                    )
-            );
-        }
-        return true;
+        return new FunctionDef(functionName, functionType, parameters, codeBlock);
     }
 
     private CodeBlock parseCodeBlock() {
