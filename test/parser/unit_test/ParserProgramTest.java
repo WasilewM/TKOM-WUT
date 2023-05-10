@@ -10,9 +10,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.CodeBlock;
-import parser.program_components.Parameter;
 import parser.program_components.Program;
 import parser.program_components.function_definitions.*;
+import parser.program_components.parameters.DoubleParameter;
+import parser.program_components.parameters.IntParameter;
+import parser.program_components.parameters.StringParameter;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
@@ -169,7 +171,7 @@ public class ParserProgramTest {
                                 ),
                                 new HashMap<>() {{
                                     put("cube", new IntFunctionDef("cube", new HashMap<>() {{
-                                        put("a", new Parameter(TokenTypeEnum.INT_KEYWORD, "a"));
+                                        put("a", new IntParameter("a"));
                                     }}, new CodeBlock(new ArrayList<>())));
                                 }}
                         )
@@ -191,8 +193,8 @@ public class ParserProgramTest {
                                 ),
                                 new HashMap<>() {{
                                     put("cube", new IntFunctionDef("cube", new HashMap<>() {{
-                                        put("a", new Parameter(TokenTypeEnum.INT_KEYWORD, "a"));
-                                        put("b", new Parameter(TokenTypeEnum.INT_KEYWORD, "b"));
+                                        put("a", new IntParameter("a"));
+                                        put("b", new IntParameter("b"));
                                     }}, new CodeBlock(new ArrayList<>())));
                                 }}
                         )
@@ -214,8 +216,8 @@ public class ParserProgramTest {
                                 ),
                                 new HashMap<>() {{
                                     put("cube", new IntFunctionDef("cube", new HashMap<>() {{
-                                        put("a", new Parameter(TokenTypeEnum.DOUBLE_KEYWORD, "a"));
-                                        put("b", new Parameter(TokenTypeEnum.STRING_KEYWORD, "b"));
+                                        put("a", new DoubleParameter("a"));
+                                        put("b", new StringParameter("b"));
                                     }}, new CodeBlock(new ArrayList<>())));
                                 }}
                         )

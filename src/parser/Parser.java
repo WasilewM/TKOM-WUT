@@ -6,7 +6,6 @@ import lexer.tokens.Token;
 import parser.exceptions.*;
 import parser.program_components.CodeBlock;
 import parser.program_components.Identifier;
-import parser.program_components.Parameter;
 import parser.program_components.Program;
 import parser.program_components.data_values.BoolValue;
 import parser.program_components.data_values.DoubleValue;
@@ -14,6 +13,10 @@ import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
+import parser.program_components.parameters.BoolParameter;
+import parser.program_components.parameters.DoubleParameter;
+import parser.program_components.parameters.IntParameter;
+import parser.program_components.parameters.StringParameter;
 import parser.program_components.statements.*;
 
 import java.util.ArrayList;
@@ -66,7 +69,7 @@ public class Parser implements IParser {
         nextToken();
 
         parseLeftBracket();
-        HashMap<String, Parameter> parameters = parseParameters();
+        HashMap<String, IParameter> parameters = parseParameters();
         parseRightBracket();
 
         CodeBlock codeBlock = parseCodeBlock();
@@ -234,10 +237,10 @@ public class Parser implements IParser {
     }
 
     /* parameters = parameter, ",", { parameter } */
-    private HashMap<String, Parameter> parseParameters() {
-        HashMap<String, Parameter> params = new HashMap<>();
+    private HashMap<String, IParameter> parseParameters() {
+        HashMap<String, IParameter> params = new HashMap<>();
 
-        Parameter firstParam = parseParameter();
+        IParameter firstParam = parseParameter();
         if (firstParam == null) {
             return params;
         }
@@ -249,7 +252,7 @@ public class Parser implements IParser {
                 errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
                 nextToken();
             }
-            Parameter nextParam = parseParameter();
+            IParameter nextParam = parseParameter();
 
             if (nextParam == null) {
                 errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
@@ -274,7 +277,7 @@ public class Parser implements IParser {
         parameter = dataType, identifier
         dataType = "Int" | "Double" | "String" | "Point" | "Section" | "Scene" | "Bool" | "List"
     */
-    private Parameter parseParameter() {
+    private IParameter parseParameter() {
         if (!isCurrentTokenOfDataTypeKeyword()) {
             return null;
         }
@@ -289,7 +292,15 @@ public class Parser implements IParser {
         String paramName = currentToken.getValue().toString();
         nextToken();
 
-        return new Parameter(paramType, paramName);
+        if (paramType == TokenTypeEnum.INT_KEYWORD) {
+            return new IntParameter(paramName);
+        } else if (paramType == TokenTypeEnum.DOUBLE_KEYWORD) {
+            return new DoubleParameter(paramName);
+        } else if (paramType == TokenTypeEnum.STRING_KEYWORD) {
+            return new StringParameter(paramName);
+        } else {
+            return new BoolParameter(paramName);
+        }
     }
 
     private IExpression parseConditionExpression() {
