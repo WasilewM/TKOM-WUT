@@ -45,7 +45,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 11), new LessThanExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new LessThanExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -61,7 +61,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 11), new LessOrEqualExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new LessOrEqualExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -77,7 +77,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 11), new GreaterThanExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new GreaterThanExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -93,7 +93,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 11), new GreaterOrEqualExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new GreaterOrEqualExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -109,7 +109,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 11), new EqualExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new EqualExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -125,7 +125,7 @@ public class ParserComparisonExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 9), List.of(new IfStatement(new Position(1, 11), new NotEqualExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new NotEqualExpression(new Position(3, 1), new Identifier(new Position(2, 5), "x1_someName1"), new Identifier(new Position(4, 1), "y2_someName2")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 )

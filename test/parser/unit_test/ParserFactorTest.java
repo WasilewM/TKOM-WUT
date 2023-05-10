@@ -76,7 +76,7 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new ParenthesesExpression(new Position(5, 11), new ConjunctiveExpression(new Position(5, 20), new Identifier(new Position(5, 10), "a1"), new Identifier(new Position(5, 30), "a11")))))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new ParenthesesExpression(new Position(5, 1), new ConjunctiveExpression(new Position(5, 20), new Identifier(new Position(5, 10), "a1"), new Identifier(new Position(5, 30), "a11")))))))));
                                 }}
                         )
                 )

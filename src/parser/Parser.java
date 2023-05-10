@@ -197,14 +197,15 @@ public class Parser implements IParser {
     /* elseifStmnt = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}" */
     private ArrayList<ElseIfStatement> parseElseIfStatements() {
         ArrayList<ElseIfStatement> elseIfStatements = new ArrayList<>();
+        Position position = currentToken.getPosition();
         while (consumeIf(TokenTypeEnum.ELSE_IF_KEYWORD)) {
-            Position position = currentToken.getPosition();
             IExpression exp = parseConditionExpression();
 
             CodeBlock elseIfCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseIfCodeBlock);
 
             elseIfStatements.add(new ElseIfStatement(position, exp, elseIfCodeBlock));
+            position = currentToken.getPosition();
         }
         return elseIfStatements;
     }
