@@ -10,12 +10,13 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.CodeBlock;
-import parser.program_components.FunctionDef;
 import parser.program_components.Identifier;
 import parser.program_components.Program;
 import parser.program_components.data_values.BoolValue;
+import parser.program_components.expressions.ConjunctiveExpression;
 import parser.program_components.expressions.NegatedExpression;
 import parser.program_components.expressions.ParenthesesExpression;
+import parser.program_components.function_definitions.BoolFunctionDef;
 import parser.program_components.statements.ReturnStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
@@ -45,7 +46,7 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new ParenthesesExpression(new Identifier("abv")))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new ParenthesesExpression(new Position(3, 1), new Identifier(new Position(4, 7), "abv")))))));
                                 }}
                         )
                 ),
@@ -58,7 +59,24 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new NegatedExpression(new BoolValue(true)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new BoolValue(new Position(4, 27), true)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(4, 7), TokenTypeEnum.NEGATION_OPERATOR),
+                                        new Token(new Position(5, 1), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("a1", new Position(5, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(5, 20), TokenTypeEnum.AND_OPERATOR),
+                                        new StringToken("a11", new Position(5, 30), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(5, 100), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(6, 12), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new ParenthesesExpression(new Position(5, 1), new ConjunctiveExpression(new Position(5, 20), new Identifier(new Position(5, 10), "a1"), new Identifier(new Position(5, 30), "a11")))))))));
                                 }}
                         )
                 )

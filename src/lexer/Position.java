@@ -34,4 +34,18 @@ public class Position {
     public void returnCarriage() {
         columnNumber = 0;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        return this.lineNumber == ((Position) o).lineNumber
+                && this.columnNumber == ((Position) o).columnNumber;
+    }
 }

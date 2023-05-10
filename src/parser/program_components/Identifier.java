@@ -1,9 +1,10 @@
 package parser.program_components;
 
+import lexer.Position;
 import parser.IExpression;
 import parser.IVisitor;
 
-public record Identifier(String name) implements IExpression {
+public record Identifier(Position position, String name) implements IExpression {
     @Override
     public void accept(IVisitor visitor) {
 
