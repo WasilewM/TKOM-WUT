@@ -12,7 +12,7 @@ import parser.Parser;
 import parser.program_components.CodeBlock;
 import parser.program_components.Identifier;
 import parser.program_components.Program;
-import parser.program_components.function_definitions.FunctionDef;
+import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.WhileStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
@@ -44,7 +44,7 @@ public class ParserWhileStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new WhileStatement(new Identifier("a"), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new WhileStatement(new Identifier("a"), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 )

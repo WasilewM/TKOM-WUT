@@ -16,7 +16,10 @@ import parser.program_components.data_values.BoolValue;
 import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
-import parser.program_components.function_definitions.FunctionDef;
+import parser.program_components.function_definitions.BoolFunctionDef;
+import parser.program_components.function_definitions.DoubleFunctionDef;
+import parser.program_components.function_definitions.IntFunctionDef;
+import parser.program_components.function_definitions.StringFunctionDef;
 import parser.program_components.statements.ReturnStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
@@ -47,7 +50,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(null)))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(null)))));
                                 }}
                         )
                 ),
@@ -65,7 +68,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new IntValue(1))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new IntValue(1))))));
                                 }}
                         )
                 ),
@@ -83,7 +86,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.DOUBLE_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new DoubleValue(2.14))))));
+                                    put("func", new DoubleFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new DoubleValue(2.14))))));
                                 }}
                         )
                 ),
@@ -101,7 +104,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.STRING_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new StringValue("a"))))));
+                                    put("func", new StringFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new StringValue("a"))))));
                                 }}
                         )
                 ),
@@ -119,7 +122,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new BoolValue(true))))));
+                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new BoolValue(true))))));
                                 }}
                         )
                 ),
@@ -137,7 +140,7 @@ public class ParserReturnStatementTest {
                                         new Token(new Position(3, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.BOOL_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new BoolValue(false))))));
+                                    put("func", new BoolFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new ReturnStatement(new BoolValue(false))))));
                                 }}
                         )
                 )

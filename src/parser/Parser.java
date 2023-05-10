@@ -13,7 +13,7 @@ import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.*;
-import parser.program_components.function_definitions.FunctionDef;
+import parser.program_components.function_definitions.*;
 import parser.program_components.statements.*;
 
 import java.util.ArrayList;
@@ -74,7 +74,23 @@ public class Parser implements IParser {
             errorHandler.handle(new MissingLeftCurlyBracketException(currentToken.toString()));
         }
 
-        return new FunctionDef(functionName, functionType, parameters, codeBlock);
+        if (functionType == TokenTypeEnum.INT_KEYWORD) {
+            return new IntFunctionDef(functionName, parameters, codeBlock);
+        } else if (functionType == TokenTypeEnum.DOUBLE_KEYWORD) {
+            return new DoubleFunctionDef(functionName, parameters, codeBlock);
+        } else if (functionType == TokenTypeEnum.STRING_KEYWORD) {
+            return new StringFunctionDef(functionName, parameters, codeBlock);
+        } else if (functionType == TokenTypeEnum.BOOL_KEYWORD) {
+            return new BoolFunctionDef(functionName, parameters, codeBlock);
+        } else if (functionType == TokenTypeEnum.POINT_KEYWORD) {
+            return new PointFunctionDef(functionName, parameters, codeBlock);
+        } else if (functionType == TokenTypeEnum.SECTION_KEYWORD) {
+            return new SectionFunctionDef(functionName, parameters, codeBlock);
+        } else if (functionType == TokenTypeEnum.FIGURE_KEYWORD) {
+            return new FigureFunctionDef(functionName, parameters, codeBlock);
+        } else {
+            return new SceneFunctionDef(functionName, parameters, codeBlock);
+        }
     }
 
     private CodeBlock parseCodeBlock() {
