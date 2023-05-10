@@ -6,7 +6,7 @@ import parser.IStatement;
 import parser.IVisitor;
 import parser.program_components.CodeBlock;
 
-public record ElseStatement(Position position, IExpression alternativeExp, CodeBlock codeBlock) implements IStatement {
+public record ElseStatement(Position position, IExpression exp, CodeBlock codeBlock) implements IStatement {
 
     public ElseStatement() {
         this(null, null, null);

@@ -9,8 +9,7 @@ import parser.program_components.CodeBlock;
 import java.util.ArrayList;
 import java.util.List;
 
-public record IfStatement(Position position, IExpression alternativeExp, CodeBlock codeBlock,
-                          List<ElseIfStatement> elseIfStmnts,
+public record IfStatement(Position position, IExpression exp, CodeBlock codeBlock, List<ElseIfStatement> elseIfStmnts,
                           IStatement elseExp) implements IStatement {
     public IfStatement(Position position, IExpression alternativeExp, CodeBlock codeBlock) {
         this(position, alternativeExp, codeBlock, new ArrayList<>(), new ElseStatement(null, null, null));

@@ -6,8 +6,7 @@ import parser.IStatement;
 import parser.IVisitor;
 import parser.program_components.CodeBlock;
 
-public record ElseIfStatement(Position position, IExpression alternativeExp,
-                              CodeBlock codeBlock) implements IStatement {
+public record ElseIfStatement(Position position, IExpression exp, CodeBlock codeBlock) implements IStatement {
     @Override
     public void accept(IVisitor visitor) {
 

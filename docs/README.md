@@ -375,7 +375,7 @@ conjunctiveExp          = comparisonExp, { andOper, comparisonExp }
 comparisonExp           = additiveExp, [ comparisonOper, additiveExp ]
 additiveExp             = multiplicativeExp, { additiveOper, multiplicativeExp }
 multiplicativeExp       = factor, { multiplicativeOper, factor }
-factor                  = [notOper ] ( parenthesesExp | assignableValue )
+factor                  = [ notOper ] ( parenthesesExp | assignableValue )
 parenthesesExp          = "(", alternativeExp, ")"
 assignableValue         = objectAccess  // @TODO
                            | stringValue
