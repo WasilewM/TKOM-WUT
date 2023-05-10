@@ -46,7 +46,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AdditionExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AdditionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -66,7 +66,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AdditionExpression(new AdditionExpression(new AdditionExpression(new Identifier("cube"), new Identifier("sqrt")), new Identifier("path")), new Identifier("then")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AdditionExpression(new Position(4, 12), new AdditionExpression(new Position(3, 12), new AdditionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "cube"), new Identifier(new Position(2, 15), "sqrt")), new Identifier(new Position(3, 15), "path")), new Identifier(new Position(4, 15), "then")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -82,7 +82,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new SubtractionExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new SubtractionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -102,7 +102,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new SubtractionExpression(new AdditionExpression(new SubtractionExpression(new Identifier("cube"), new Identifier("sqrt")), new Identifier("path")), new Identifier("then")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new SubtractionExpression(new Position(4, 12), new AdditionExpression(new Position(3, 12), new SubtractionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "cube"), new Identifier(new Position(2, 15), "sqrt")), new Identifier(new Position(3, 15), "path")), new Identifier(new Position(4, 15), "then")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 )

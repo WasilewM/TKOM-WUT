@@ -44,7 +44,7 @@ public class ParserWhileStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new WhileStatement(new Identifier("a"), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new WhileStatement(new Position(2, 1), new Identifier(new Position(2, 5), "a"), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 )

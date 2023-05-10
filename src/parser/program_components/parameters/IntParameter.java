@@ -1,9 +1,10 @@
 package parser.program_components.parameters;
 
+import lexer.Position;
 import parser.IParameter;
 import parser.IVisitor;
 
-public record IntParameter(String name) implements IParameter {
+public record IntParameter(Position position, String name) implements IParameter {
 
     @Override
     public void accept(IVisitor visitor) {
