@@ -10,11 +10,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.CodeBlock;
-import parser.program_components.FunctionDef;
 import parser.program_components.Identifier;
 import parser.program_components.Program;
 import parser.program_components.expressions.AlternativeExpression;
 import parser.program_components.expressions.ConjunctiveExpression;
+import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.IfStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
@@ -44,7 +44,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("ident"), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("ident"), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -60,7 +60,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AlternativeExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AlternativeExpression(new Identifier("ident"), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -78,7 +78,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AlternativeExpression(new AlternativeExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AlternativeExpression(new AlternativeExpression(new Identifier("ident"), new Identifier("ident")), new Identifier("ident")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -96,7 +96,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AlternativeExpression(new ConjunctiveExpression(new Identifier("identA"), new Identifier("identB")), new Identifier("identC")), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new AlternativeExpression(new ConjunctiveExpression(new Identifier("identA"), new Identifier("identB")), new Identifier("identC")), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 )

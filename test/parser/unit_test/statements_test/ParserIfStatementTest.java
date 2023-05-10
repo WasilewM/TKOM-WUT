@@ -10,9 +10,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.CodeBlock;
-import parser.program_components.FunctionDef;
 import parser.program_components.Identifier;
 import parser.program_components.Program;
+import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.ElseIfStatement;
 import parser.program_components.statements.ElseStatement;
 import parser.program_components.statements.IfStatement;
@@ -46,7 +46,7 @@ public class ParserIfStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("a"), new CodeBlock(new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("a"), new CodeBlock(new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -68,7 +68,7 @@ public class ParserIfStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("cube"), new CodeBlock(new ArrayList<>()), List.of(new ElseIfStatement(new Identifier("cube2"), new CodeBlock(new ArrayList<>()))))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("cube"), new CodeBlock(new ArrayList<>()), List.of(new ElseIfStatement(new Identifier("cube2"), new CodeBlock(new ArrayList<>()))))))));
                                 }}
                         )
                 ),
@@ -96,7 +96,7 @@ public class ParserIfStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("isHandleable"), new CodeBlock(new ArrayList<>()), Arrays.asList(new ElseIfStatement(new Identifier("x"), new CodeBlock(new ArrayList<>())), new ElseIfStatement(new Identifier("y"), new CodeBlock(new ArrayList<>()))))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("isHandleable"), new CodeBlock(new ArrayList<>()), Arrays.asList(new ElseIfStatement(new Identifier("x"), new CodeBlock(new ArrayList<>())), new ElseIfStatement(new Identifier("y"), new CodeBlock(new ArrayList<>()))))))));
                                 }}
                         )
                 ),
@@ -118,7 +118,7 @@ public class ParserIfStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FunctionDef("func", TokenTypeEnum.INT_KEYWORD, new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("cube"), new CodeBlock(new ArrayList<>()), new ElseStatement(new Identifier("cube2"), new CodeBlock(new ArrayList<>())))))));
+                                    put("func", new IntFunctionDef("func", new HashMap<>(), new CodeBlock(List.of(new IfStatement(new Identifier("cube"), new CodeBlock(new ArrayList<>()), new ElseStatement(new Identifier("cube2"), new CodeBlock(new ArrayList<>())))))));
                                 }}
                         )
                 )
