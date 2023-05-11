@@ -2,6 +2,7 @@ package parser.unit_test.statements_test;
 
 import lexer.Position;
 import lexer.TokenTypeEnum;
+import lexer.tokens.DoubleToken;
 import lexer.tokens.IntegerToken;
 import lexer.tokens.StringToken;
 import lexer.tokens.Token;
@@ -12,9 +13,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
+import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
+import parser.program_components.data_values.PointValue;
 import parser.program_components.function_definitions.BoolFunctionDef;
 import parser.program_components.parameters.IntParameter;
+import parser.program_components.parameters.PointParameter;
 import parser.program_components.parameters.ReassignedParameter;
 import parser.program_components.statements.AssignmentStatement;
 import parser.utils.MockedExitErrorHandler;
@@ -66,6 +70,26 @@ public class ParserAssignmentStatementTest {
                                 ),
                                 new HashMap<>() {{
                                     put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntParameter(new Position(5, 7), "A"), new IntValue(new Position(8, 14), 1)), new AssignmentStatement(new Position(9, 10), new ReassignedParameter(new Position(9, 10), "A"), new IntValue(new Position(10, 14), 11))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.POINT_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(8, 24)),
+                                        new Token(new Position(8, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(8, 34)),
+                                        new Token(new Position(8, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(8, 44), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new PointParameter(new Position(5, 7), "A"), new PointValue(new Position(8, 14), new DoubleValue(new Position(8, 24), 2.0), new DoubleValue(new Position(8, 34), 2.0)))))));
                                 }}
                         )
                 )

@@ -8,10 +8,7 @@ import parser.exceptions.*;
 import parser.program_components.CodeBlock;
 import parser.program_components.Identifier;
 import parser.program_components.Program;
-import parser.program_components.data_values.BoolValue;
-import parser.program_components.data_values.DoubleValue;
-import parser.program_components.data_values.IntValue;
-import parser.program_components.data_values.StringValue;
+import parser.program_components.data_values.*;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;
@@ -307,8 +304,10 @@ public class Parser implements IParser {
             return new DoubleParameter(position, paramName);
         } else if (paramType == TokenTypeEnum.STRING_KEYWORD) {
             return new StringParameter(position, paramName);
-        } else {
+        } else if (paramType == TokenTypeEnum.BOOL_KEYWORD) {
             return new BoolParameter(position, paramName);
+        } else {
+            return new PointParameter(position, paramName);
         }
     }
 
@@ -614,7 +613,12 @@ public class Parser implements IParser {
             return exp;
         }
 
-        return parseBoolValue();
+        exp = parseBoolValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        return parsePointValue();
     }
 
     /* stringValue = "\"", literal, "\"" */
@@ -663,6 +667,28 @@ public class Parser implements IParser {
         }
 
         return null;
+    }
+
+    /* pointValue = "Point", "(", alternativeExp, ",", alternativeExp, ")" */
+    private IExpression parsePointValue() {
+        Position position = currentToken.getPosition();
+        if (!consumeIf(TokenTypeEnum.POINT_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        IExpression firstExp = parseAlternativeExpression();
+        registerErrorIfExpIsMissing(firstExp);
+
+        if (!consumeIf(TokenTypeEnum.COMMA)) {
+            errorHandler.handle(new MissingCommaException(currentToken.toString()));
+        }
+
+        IExpression secondExp = parseAlternativeExpression();
+        registerErrorIfExpIsMissing(secondExp);
+        parseRightBracket();
+
+        return new PointValue(position, firstExp, secondExp);
     }
 
     /* identifier = letter { digit | literal } */
