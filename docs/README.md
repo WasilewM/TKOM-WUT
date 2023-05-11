@@ -418,8 +418,8 @@ comparisonOper          = equalOper
                            | greaterThanOrEqualOper
 
 
-pointValue              = "Point", "(", alternativeExp, ",", alternativeExp, ")"
-sectionValue            = "Section", "(", alternativeExp, ",", alternativeExp, ")"
+pointValue              = "Point", "(", assignableValue, ",", assignableValue, ")"
+sectionValue            = "Section", "(", assignableValue, ",", assignableValue, ")"
 figureValue             = "Figure", "(", ")"
 sceneValue              = "Scene", "(", ")"
 

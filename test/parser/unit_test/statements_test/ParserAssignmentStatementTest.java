@@ -16,10 +16,12 @@ import parser.program_components.Program;
 import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.PointValue;
+import parser.program_components.data_values.SectionValue;
 import parser.program_components.function_definitions.BoolFunctionDef;
 import parser.program_components.parameters.IntParameter;
 import parser.program_components.parameters.PointParameter;
 import parser.program_components.parameters.ReassignedParameter;
+import parser.program_components.parameters.SectionParameter;
 import parser.program_components.statements.AssignmentStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
@@ -80,7 +82,7 @@ public class ParserAssignmentStatementTest {
                                         new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
                                         new Token(new Position(8, 14), TokenTypeEnum.POINT_KEYWORD),
-                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(8, 23), TokenTypeEnum.LEFT_BRACKET),
                                         new DoubleToken(2.0, new Position(8, 24)),
                                         new Token(new Position(8, 30), TokenTypeEnum.COMMA),
                                         new DoubleToken(2.0, new Position(8, 34)),
@@ -90,6 +92,36 @@ public class ParserAssignmentStatementTest {
                                 ),
                                 new HashMap<>() {{
                                     put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new PointParameter(new Position(5, 7), "A"), new PointValue(new Position(8, 14), new DoubleValue(new Position(8, 24), 2.0), new DoubleValue(new Position(8, 34), 2.0)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.SECTION_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SECTION_KEYWORD),
+                                        new Token(new Position(8, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(9, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(9, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(9, 24)),
+                                        new Token(new Position(9, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(9, 34)),
+                                        new Token(new Position(9, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(19, 1), TokenTypeEnum.COMMA),
+                                        new Token(new Position(19, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(19, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(19, 24)),
+                                        new Token(new Position(19, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(19, 34)),
+                                        new Token(new Position(19, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(20, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(28, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(39, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new SectionParameter(new Position(5, 7), "A"), new SectionValue(new Position(8, 14), new PointValue(new Position(9, 14), new DoubleValue(new Position(9, 24), 2.0), new DoubleValue(new Position(9, 34), 2.0)), new PointValue(new Position(19, 14), new DoubleValue(new Position(19, 24), 2.0), new DoubleValue(new Position(19, 34), 2.0))))))));
                                 }}
                         )
                 )

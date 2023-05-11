@@ -306,8 +306,10 @@ public class Parser implements IParser {
             return new StringParameter(position, paramName);
         } else if (paramType == TokenTypeEnum.BOOL_KEYWORD) {
             return new BoolParameter(position, paramName);
-        } else {
+        } else if (paramType == TokenTypeEnum.POINT_KEYWORD) {
             return new PointParameter(position, paramName);
+        } else {
+            return new SectionParameter(position, paramName);
         }
     }
 
@@ -618,7 +620,12 @@ public class Parser implements IParser {
             return exp;
         }
 
-        return parsePointValue();
+        exp = parsePointValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        return parseSectionValue();
     }
 
     /* stringValue = "\"", literal, "\"" */
@@ -669,7 +676,7 @@ public class Parser implements IParser {
         return null;
     }
 
-    /* pointValue = "Point", "(", alternativeExp, ",", alternativeExp, ")" */
+    /* pointValue = "Point", "(", assignableValue, ",", assignableValue, ")" */
     private IExpression parsePointValue() {
         Position position = currentToken.getPosition();
         if (!consumeIf(TokenTypeEnum.POINT_KEYWORD)) {
@@ -677,18 +684,36 @@ public class Parser implements IParser {
         }
 
         parseLeftBracket();
-        IExpression firstExp = parseAlternativeExpression();
+        IExpression firstExp = parseAssignableValue();
         registerErrorIfExpIsMissing(firstExp);
 
-        if (!consumeIf(TokenTypeEnum.COMMA)) {
-            errorHandler.handle(new MissingCommaException(currentToken.toString()));
-        }
+        parseComma();
 
-        IExpression secondExp = parseAlternativeExpression();
+        IExpression secondExp = parseAssignableValue();
         registerErrorIfExpIsMissing(secondExp);
         parseRightBracket();
 
         return new PointValue(position, firstExp, secondExp);
+    }
+
+    /* sectionValue = "Section", "(", assignableValue, ",", assignableValue, ")" */
+    private IExpression parseSectionValue() {
+        Position position = currentToken.getPosition();
+        if (!consumeIf(TokenTypeEnum.SECTION_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        IExpression firstExp = parseAssignableValue();
+        registerErrorIfExpIsMissing(firstExp);
+
+        parseComma();
+
+        IExpression secondExp = parseAssignableValue();
+        registerErrorIfExpIsMissing(secondExp);
+        parseRightBracket();
+
+        return new SectionValue(position, firstExp, secondExp);
     }
 
     /* identifier = letter { digit | literal } */
@@ -702,6 +727,12 @@ public class Parser implements IParser {
         nextToken();
 
         return new Identifier(position, identifierName);
+    }
+
+    private void parseComma() {
+        if (!consumeIf(TokenTypeEnum.COMMA)) {
+            errorHandler.handle(new MissingCommaException(currentToken.toString()));
+        }
     }
 
     private void registerErrorIfExpIsMissing(IExpression exp) {
