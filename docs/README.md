@@ -381,8 +381,11 @@ assignableValue         = objectAccess  // @TODO
                            | stringValue
                            | intValue
                            | doubleValue
-                           | bool_value
-                           | list_value
+                           | boolValue
+                           | pointValue
+                           | sectionValue
+                           | figureValue
+                           | sceneValue
                                                    
                            
         # EBNF
@@ -415,15 +418,20 @@ comparisonOper          = equalOper
                            | greaterThanOrEqualOper
 
 
+pointValue              = "Point", "(", assignableValue, ",", assignableValue, ")"
+sectionValue            = "Section", "(", assignableValue, ",", assignableValue, ")"
+figureValue             = "Figure", "(", ")"
+sceneValue              = "Scene", "(", ")"
+
 dataType                = "Int"
                            | "Double"
                            | "String"
+                           | "Bool"
                            | "Point"
                            | "Section"
                            | "Scene"
-                           | "Bool"
                            | "List"
-bool_value              = "True"
+boolValue               = "True"
                            | False   
 equalOper               = "=="
 notEqualOper            = "!="
@@ -598,7 +606,7 @@ ifStmnt: "if", "(", alternativeExp, "), "{", codeBlock, "}":
         |-- assignableValue: True
             assignableValue: positiveAssignableValue
             |-- positiveAssignableValue: True
-                positiveAssignableValue: bool_value
+                positiveAssignableValue: boolValue
 ```
 
 ### Przykład kodu

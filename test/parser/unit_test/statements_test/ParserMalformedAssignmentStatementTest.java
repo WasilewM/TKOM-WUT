@@ -2,6 +2,7 @@ package parser.unit_test.statements_test;
 
 import lexer.Position;
 import lexer.TokenTypeEnum;
+import lexer.tokens.DoubleToken;
 import lexer.tokens.IntegerToken;
 import lexer.tokens.StringToken;
 import lexer.tokens.Token;
@@ -10,9 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
-import parser.exceptions.MissingAssignmentOperatorException;
-import parser.exceptions.MissingExpressionException;
-import parser.exceptions.MissingSemicolonException;
+import parser.exceptions.*;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserMalformedSingleTestParams;
@@ -48,11 +47,86 @@ public class ParserMalformedAssignmentStatementTest {
                         new ParserMalformedSingleTestParams(
                                 Arrays.asList(
                                         new Token(new Position(5, 7), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR)
+                                ),
+                                List.of(
+                                        new MissingIdentifierException(new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.INT_KEYWORD),
                                         new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
                                         new MissingAssignmentOperatorException(new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.POINT_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.POINT_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(8, 24)),
+                                        new Token(new Position(8, 30), TokenTypeEnum.COMMA),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.SECTION_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SECTION_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.SECTION_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SECTION_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(8, 24)),
+                                        new Token(new Position(8, 30), TokenTypeEnum.COMMA),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
                                 )
                         )
                 )
@@ -72,6 +146,134 @@ public class ParserMalformedAssignmentStatementTest {
                                 ),
                                 List.of(
                                         new MissingSemicolonException(new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.POINT_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new DoubleToken(2.0, new Position(8, 24)),
+                                        new Token(new Position(8, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(8, 34)),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingLeftBracketException(new DoubleToken(2.0, new Position(8, 24)).toString()),
+                                        new MissingRightBracketException(new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.POINT_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(7, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(8, 24)),
+                                        new DoubleToken(2.0, new Position(8, 34)),
+                                        new Token(new Position(8, 54), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingCommaException(new DoubleToken(2.0, new Position(8, 34)).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.SECTION_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SECTION_KEYWORD),
+                                        new Token(new Position(9, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(9, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(9, 24)),
+                                        new Token(new Position(9, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(9, 34)),
+                                        new Token(new Position(9, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(9, 50), TokenTypeEnum.COMMA),
+                                        new Token(new Position(19, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(19, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(19, 24)),
+                                        new Token(new Position(19, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(19, 34)),
+                                        new Token(new Position(19, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(28, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(39, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingLeftBracketException(new Token(new Position(9, 14), TokenTypeEnum.POINT_KEYWORD).toString()),
+                                        new MissingRightBracketException(new Token(new Position(28, 94), TokenTypeEnum.SEMICOLON).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.SECTION_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SECTION_KEYWORD),
+                                        new Token(new Position(8, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(9, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(9, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(9, 24)),
+                                        new Token(new Position(9, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(9, 34)),
+                                        new Token(new Position(9, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(19, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(19, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(19, 24)),
+                                        new Token(new Position(19, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(19, 34)),
+                                        new Token(new Position(19, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(20, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(28, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(39, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingCommaException(new Token(new Position(19, 14), TokenTypeEnum.POINT_KEYWORD).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.FIGURE_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.FIGURE_KEYWORD),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingLeftBracketException(new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON).toString()),
+                                        new MissingRightBracketException(new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.SCENE_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SCENE_KEYWORD),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingLeftBracketException(new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON).toString()),
+                                        new MissingRightBracketException(new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON).toString())
                                 )
                         )
                 )

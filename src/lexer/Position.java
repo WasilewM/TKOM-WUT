@@ -48,4 +48,9 @@ public class Position {
         return this.lineNumber == ((Position) o).lineNumber
                 && this.columnNumber == ((Position) o).columnNumber;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Position: <line: %d, column %d>", this.getLineNumber(), this.getColumnNumber());
+    }
 }

@@ -8,10 +8,7 @@ import parser.exceptions.*;
 import parser.program_components.CodeBlock;
 import parser.program_components.Identifier;
 import parser.program_components.Program;
-import parser.program_components.data_values.BoolValue;
-import parser.program_components.data_values.DoubleValue;
-import parser.program_components.data_values.IntValue;
-import parser.program_components.data_values.StringValue;
+import parser.program_components.data_values.*;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;
@@ -258,7 +255,6 @@ public class Parser implements IParser {
         while (consumeIf(TokenTypeEnum.COMMA)) {
             if (!isCurrentTokenOfDataTypeKeyword()) {
                 errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
-                nextToken();
             }
             IParameter nextParam = parseParameter();
 
@@ -307,8 +303,16 @@ public class Parser implements IParser {
             return new DoubleParameter(position, paramName);
         } else if (paramType == TokenTypeEnum.STRING_KEYWORD) {
             return new StringParameter(position, paramName);
-        } else {
+        } else if (paramType == TokenTypeEnum.BOOL_KEYWORD) {
             return new BoolParameter(position, paramName);
+        } else if (paramType == TokenTypeEnum.POINT_KEYWORD) {
+            return new PointParameter(position, paramName);
+        } else if (paramType == TokenTypeEnum.SECTION_KEYWORD) {
+            return new SectionParameter(position, paramName);
+        } else if (paramType == TokenTypeEnum.FIGURE_KEYWORD) {
+            return new FigureParameter(position, paramName);
+        } else {
+            return new SceneParameter(position, paramName);
         }
     }
 
@@ -614,7 +618,27 @@ public class Parser implements IParser {
             return exp;
         }
 
-        return parseBoolValue();
+        exp = parseBoolValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        exp = parsePointValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        exp = parseSectionValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        exp = parseFigureValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        return parseSceneValue();
     }
 
     /* stringValue = "\"", literal, "\"" */
@@ -665,6 +689,70 @@ public class Parser implements IParser {
         return null;
     }
 
+    /* pointValue = "Point", "(", assignableValue, ",", assignableValue, ")" */
+    private IExpression parsePointValue() {
+        Position position = currentToken.getPosition();
+        if (!consumeIf(TokenTypeEnum.POINT_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        IExpression firstExp = parseAssignableValue();
+        registerErrorIfExpIsMissing(firstExp);
+
+        parseComma();
+
+        IExpression secondExp = parseAssignableValue();
+        registerErrorIfExpIsMissing(secondExp);
+        parseRightBracket();
+
+        return new PointValue(position, firstExp, secondExp);
+    }
+
+    /* sectionValue = "Section", "(", assignableValue, ",", assignableValue, ")" */
+    private IExpression parseSectionValue() {
+        Position position = currentToken.getPosition();
+        if (!consumeIf(TokenTypeEnum.SECTION_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        IExpression firstExp = parseAssignableValue();
+        registerErrorIfExpIsMissing(firstExp);
+
+        parseComma();
+
+        IExpression secondExp = parseAssignableValue();
+        registerErrorIfExpIsMissing(secondExp);
+        parseRightBracket();
+
+        return new SectionValue(position, firstExp, secondExp);
+    }
+
+    /* figureValue = "Figure", "(", ")" */
+    private IExpression parseFigureValue() {
+        Position position = currentToken.getPosition();
+        if (!consumeIf(TokenTypeEnum.FIGURE_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        parseRightBracket();
+        return new FigureValue(position);
+    }
+
+    /* sceneValue = "Scene", "(", ")" */
+    private IExpression parseSceneValue() {
+        Position position = currentToken.getPosition();
+        if (!consumeIf(TokenTypeEnum.SCENE_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        parseRightBracket();
+        return new SceneValue(position);
+    }
+
     /* identifier = letter { digit | literal } */
     private IExpression parseIdentifier() {
         Position position = currentToken.getPosition();
@@ -676,6 +764,12 @@ public class Parser implements IParser {
         nextToken();
 
         return new Identifier(position, identifierName);
+    }
+
+    private void parseComma() {
+        if (!consumeIf(TokenTypeEnum.COMMA)) {
+            errorHandler.handle(new MissingCommaException(currentToken.toString()));
+        }
     }
 
     private void registerErrorIfExpIsMissing(IExpression exp) {
