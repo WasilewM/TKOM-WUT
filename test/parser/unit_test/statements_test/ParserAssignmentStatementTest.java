@@ -13,15 +13,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
-import parser.program_components.data_values.DoubleValue;
-import parser.program_components.data_values.IntValue;
-import parser.program_components.data_values.PointValue;
-import parser.program_components.data_values.SectionValue;
+import parser.program_components.data_values.*;
 import parser.program_components.function_definitions.BoolFunctionDef;
-import parser.program_components.parameters.IntParameter;
-import parser.program_components.parameters.PointParameter;
-import parser.program_components.parameters.ReassignedParameter;
-import parser.program_components.parameters.SectionParameter;
+import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
@@ -122,6 +116,23 @@ public class ParserAssignmentStatementTest {
                                 ),
                                 new HashMap<>() {{
                                     put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new SectionParameter(new Position(5, 7), "A"), new SectionValue(new Position(8, 14), new PointValue(new Position(9, 14), new DoubleValue(new Position(9, 24), 2.0), new DoubleValue(new Position(9, 34), 2.0)), new PointValue(new Position(19, 14), new DoubleValue(new Position(19, 24), 2.0), new DoubleValue(new Position(19, 34), 2.0))))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.FIGURE_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.FIGURE_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(8, 34), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new FigureParameter(new Position(5, 7), "A"), new FigureValue(new Position(8, 14)))))));
                                 }}
                         )
                 )

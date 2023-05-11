@@ -308,8 +308,10 @@ public class Parser implements IParser {
             return new BoolParameter(position, paramName);
         } else if (paramType == TokenTypeEnum.POINT_KEYWORD) {
             return new PointParameter(position, paramName);
-        } else {
+        } else if (paramType == TokenTypeEnum.SECTION_KEYWORD) {
             return new SectionParameter(position, paramName);
+        } else {
+            return new FigureParameter(position, paramName);
         }
     }
 
@@ -625,7 +627,12 @@ public class Parser implements IParser {
             return exp;
         }
 
-        return parseSectionValue();
+        exp = parseSectionValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        return parseFigureValue();
     }
 
     /* stringValue = "\"", literal, "\"" */
@@ -714,6 +721,18 @@ public class Parser implements IParser {
         parseRightBracket();
 
         return new SectionValue(position, firstExp, secondExp);
+    }
+
+    /* figureValue = "Figure", "(", ")" */
+    private IExpression parseFigureValue() {
+        Position position = currentToken.getPosition();
+        if (!consumeIf(TokenTypeEnum.FIGURE_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        parseRightBracket();
+        return new FigureValue(position);
     }
 
     /* identifier = letter { digit | literal } */
