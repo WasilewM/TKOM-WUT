@@ -255,7 +255,6 @@ public class Parser implements IParser {
         while (consumeIf(TokenTypeEnum.COMMA)) {
             if (!isCurrentTokenOfDataTypeKeyword()) {
                 errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
-                nextToken();
             }
             IParameter nextParam = parseParameter();
 
@@ -310,8 +309,10 @@ public class Parser implements IParser {
             return new PointParameter(position, paramName);
         } else if (paramType == TokenTypeEnum.SECTION_KEYWORD) {
             return new SectionParameter(position, paramName);
-        } else {
+        } else if (paramType == TokenTypeEnum.FIGURE_KEYWORD) {
             return new FigureParameter(position, paramName);
+        } else {
+            return new SceneParameter(position, paramName);
         }
     }
 
@@ -632,7 +633,12 @@ public class Parser implements IParser {
             return exp;
         }
 
-        return parseFigureValue();
+        exp = parseFigureValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        return parseSceneValue();
     }
 
     /* stringValue = "\"", literal, "\"" */
@@ -733,6 +739,18 @@ public class Parser implements IParser {
         parseLeftBracket();
         parseRightBracket();
         return new FigureValue(position);
+    }
+
+    /* sceneValue = "Scene", "(", ")" */
+    private IExpression parseSceneValue() {
+        Position position = currentToken.getPosition();
+        if (!consumeIf(TokenTypeEnum.SCENE_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftBracket();
+        parseRightBracket();
+        return new SceneValue(position);
     }
 
     /* identifier = letter { digit | literal } */

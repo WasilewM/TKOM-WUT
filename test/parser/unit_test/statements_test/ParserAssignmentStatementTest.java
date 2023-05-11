@@ -135,6 +135,23 @@ public class ParserAssignmentStatementTest {
                                     put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new FigureParameter(new Position(5, 7), "A"), new FigureValue(new Position(8, 14)))))));
                                 }}
                         )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.SCENE_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SCENE_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(8, 34), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new SceneParameter(new Position(5, 7), "A"), new SceneValue(new Position(8, 14)))))));
+                                }}
+                        )
                 )
         );
     }

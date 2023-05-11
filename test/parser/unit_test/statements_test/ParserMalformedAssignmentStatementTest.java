@@ -260,6 +260,22 @@ public class ParserMalformedAssignmentStatementTest {
                                         new MissingRightBracketException(new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON).toString())
                                 )
                         )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.SCENE_KEYWORD),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SCENE_KEYWORD),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingLeftBracketException(new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON).toString()),
+                                        new MissingRightBracketException(new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON).toString())
+                                )
+                        )
                 )
         );
     }
