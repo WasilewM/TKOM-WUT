@@ -65,9 +65,9 @@ public class Parser implements IParser {
         String functionName = (String) currentToken.getValue();
         nextToken();
 
-        parseLeftBracket();
+        parseLeftBracketWithoutReturningIt();
         HashMap<String, IParameter> parameters = parseParameters();
-        parseRightBracket();
+        parseRightBracketWithoutReturningIt();
 
         CodeBlock codeBlock = parseCodeBlock();
         if (codeBlock == null) {
@@ -142,7 +142,7 @@ public class Parser implements IParser {
         }
 
         IExpression exp = parseAlternativeExpression();
-        registerErrorIfSemicolonIsMissing();
+        parseSemicolonWithoutReturningIt();
 
         return new ReturnStatement(position, exp);
     }
@@ -169,7 +169,7 @@ public class Parser implements IParser {
 
         IExpression exp = parseAlternativeExpression();
         registerErrorIfExpIsMissing(exp);
-        registerErrorIfSemicolonIsMissing();
+        parseSemicolonWithoutReturningIt();
 
         return new AssignmentStatement(position, param, exp);
     }
@@ -211,10 +211,10 @@ public class Parser implements IParser {
     private ElseStatement parseElseStatement() {
         Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
-            parseLeftBracket();
+            parseLeftBracketWithoutReturningIt();
             IExpression exp = parseAlternativeExpression();
             registerErrorIfExpIsMissing(exp);
-            parseRightBracket();
+            parseRightBracketWithoutReturningIt();
 
             CodeBlock elseCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseCodeBlock);
@@ -231,10 +231,10 @@ public class Parser implements IParser {
             return null;
         }
 
-        parseLeftBracket();
+        parseLeftBracketWithoutReturningIt();
         IExpression exp = parseAlternativeExpression();
         registerErrorIfExpIsMissing(exp);
-        parseRightBracket();
+        parseRightBracketWithoutReturningIt();
 
         CodeBlock codeBlock = parseCodeBlock();
         registerErrorIfCodeBlockIsMissing(codeBlock);
@@ -317,23 +317,11 @@ public class Parser implements IParser {
     }
 
     private IExpression parseConditionExpression() {
-        parseLeftBracket();
+        parseLeftBracketWithoutReturningIt();
         IExpression expression = parseAlternativeExpression();
         registerErrorIfExpIsMissing(expression);
-        parseRightBracket();
+        parseRightBracketWithoutReturningIt();
         return expression;
-    }
-
-    private void parseLeftBracket() {
-        if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
-            errorHandler.handle(new MissingLeftBracketException(currentToken.toString()));
-        }
-    }
-
-    private void parseRightBracket() {
-        if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
-            errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
-        }
     }
 
     /* alternativeExp = conjunctiveExp, { orOper, conjunctiveExp } */
@@ -696,15 +684,15 @@ public class Parser implements IParser {
             return null;
         }
 
-        parseLeftBracket();
+        parseLeftBracketWithoutReturningIt();
         IExpression firstExp = parseAssignableValue();
         registerErrorIfExpIsMissing(firstExp);
 
-        parseComma();
+        parseCommaWithoutReturningIt();
 
         IExpression secondExp = parseAssignableValue();
         registerErrorIfExpIsMissing(secondExp);
-        parseRightBracket();
+        parseRightBracketWithoutReturningIt();
 
         return new PointValue(position, firstExp, secondExp);
     }
@@ -716,15 +704,15 @@ public class Parser implements IParser {
             return null;
         }
 
-        parseLeftBracket();
+        parseLeftBracketWithoutReturningIt();
         IExpression firstExp = parseAssignableValue();
         registerErrorIfExpIsMissing(firstExp);
 
-        parseComma();
+        parseCommaWithoutReturningIt();
 
         IExpression secondExp = parseAssignableValue();
         registerErrorIfExpIsMissing(secondExp);
-        parseRightBracket();
+        parseRightBracketWithoutReturningIt();
 
         return new SectionValue(position, firstExp, secondExp);
     }
@@ -736,8 +724,8 @@ public class Parser implements IParser {
             return null;
         }
 
-        parseLeftBracket();
-        parseRightBracket();
+        parseLeftBracketWithoutReturningIt();
+        parseRightBracketWithoutReturningIt();
         return new FigureValue(position);
     }
 
@@ -748,8 +736,8 @@ public class Parser implements IParser {
             return null;
         }
 
-        parseLeftBracket();
-        parseRightBracket();
+        parseLeftBracketWithoutReturningIt();
+        parseRightBracketWithoutReturningIt();
         return new SceneValue(position);
     }
 
@@ -764,12 +752,6 @@ public class Parser implements IParser {
         nextToken();
 
         return new Identifier(position, identifierName);
-    }
-
-    private void parseComma() {
-        if (!consumeIf(TokenTypeEnum.COMMA)) {
-            errorHandler.handle(new MissingCommaException(currentToken.toString()));
-        }
     }
 
     private void registerErrorIfExpIsMissing(IExpression exp) {
@@ -799,7 +781,25 @@ public class Parser implements IParser {
         }
     }
 
-    private void registerErrorIfSemicolonIsMissing() {
+    private void parseLeftBracketWithoutReturningIt() {
+        if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
+            errorHandler.handle(new MissingLeftBracketException(currentToken.toString()));
+        }
+    }
+
+    private void parseRightBracketWithoutReturningIt() {
+        if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
+            errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
+        }
+    }
+
+    private void parseCommaWithoutReturningIt() {
+        if (!consumeIf(TokenTypeEnum.COMMA)) {
+            errorHandler.handle(new MissingCommaException(currentToken.toString()));
+        }
+    }
+
+    private void parseSemicolonWithoutReturningIt() {
         if (!consumeIf(TokenTypeEnum.SEMICOLON)) {
             errorHandler.handle(new MissingSemicolonException(currentToken.toString()));
         }
