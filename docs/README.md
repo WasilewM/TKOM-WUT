@@ -377,7 +377,7 @@ additiveExp             = multiplicativeExp, { additiveOper, multiplicativeExp }
 multiplicativeExp       = factor, { multiplicativeOper, factor }
 factor                  = [ notOper ] ( parenthesesExp | assignableValue )
 parenthesesExp          = "(", alternativeExp, ")"
-assignableValue         = objectAccess  // @TODO
+assignableValue         = objectAccess
                            | stringValue
                            | intValue
                            | doubleValue
@@ -386,6 +386,7 @@ assignableValue         = objectAccess  // @TODO
                            | sectionValue
                            | figureValue
                            | sceneValue
+                           | listValue
                                                    
                            
         # EBNF
