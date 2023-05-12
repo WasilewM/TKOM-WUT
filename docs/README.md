@@ -357,9 +357,9 @@ functionType            = parameter
 codeBlock               = "{", { stmnt }, "}"
 stmnt                   = ifStmnt
                            | whileStmnt
-                           | functionCall
                            | assignmentStmnt
                            | returnStmnt
+                           | objectAccessStmnt
 ifStmnt                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseifStmnt }, [ elseStmnt ]
 elseifStmnt             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseStmnt               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
@@ -370,6 +370,14 @@ parameters              = paremater, ",", { parameter }
 parameter               = dataType, identifier
 
 
+objectAccessStmnt       = objectAccessExp, ";"
+objectAccessExp         = memberAccessExp, { ".", memberAccessExp }
+memberAccessExp         = identOrFuncCallExp, [ listAccessExp ]
+listAccessExp              = "[", alternativeExp, "]"                    
+identOrFuncCallExp      = identifier, { "(", [ alternativeExp ], ")" }
+identifier              = letter { digit | literal }
+
+
 alternativeExp          = conjunctiveExp, { orOper, conjunctiveExp }
 conjunctiveExp          = comparisonExp, { andOper, comparisonExp }
 comparisonExp           = additiveExp, [ comparisonOper, additiveExp ]
@@ -377,7 +385,7 @@ additiveExp             = multiplicativeExp, { additiveOper, multiplicativeExp }
 multiplicativeExp       = factor, { multiplicativeOper, factor }
 factor                  = [ notOper ] ( parenthesesExp | assignableValue )
 parenthesesExp          = "(", alternativeExp, ")"
-assignableValue         = objectAccess
+assignableValue         = objectAccessExp
                            | stringValue
                            | intValue
                            | doubleValue
@@ -387,18 +395,6 @@ assignableValue         = objectAccess
                            | figureValue
                            | sceneValue
                            | listValue
-                                                   
-                           
-        # EBNF
-        # parseObjectAccessExpressionOrStatement, 5 węzłów na 3 produkcjach
-        # objectAccess implements IExpression / IStatement
-        # objectAccess = memberAccess, { ".", memberAccess }
-        # memberAccess = identifierOrFunctionCall, [ listAccess ]
-        # listAccess =  "[", alternativeExp, "]" 
-        
-                        
-identifierOrFuntionCall = identifier, { "(", [ alternativeExp ], ")" } ";"
-identifier              = letter { digit | literal }
 
 
 doubleValue             = intValue, [ ".", intValue ]
