@@ -28,6 +28,7 @@ public class Parser implements IParser {
         currentToken = null;
     }
 
+    /* program = { functionDef } */
     @Override
     public Program parse() {
         nextToken();
@@ -50,20 +51,12 @@ public class Parser implements IParser {
         return new Program(position, functions);
     }
 
-    /* program = { functionDef } */
+    /* functionDef = functionType, "(", { parameters }, ")", codeBlock */
     private IFunctionDef parseFunctionDef() {
-        if (!isCurrentTokenOfDataTypeKeyword()) {
+        IParameter functionType = parseFunctionType();
+        if (functionType == null) {
             return null;
         }
-        TokenTypeEnum functionType = currentToken.getTokenType();
-        Position position = currentToken.getPosition();
-        nextToken();
-
-        if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
-            errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
-        }
-        String functionName = (String) currentToken.getValue();
-        nextToken();
 
         parseLeftBracketWithoutReturningIt();
         HashMap<String, IParameter> parameters = parseParameters();
@@ -74,22 +67,22 @@ public class Parser implements IParser {
             errorHandler.handle(new MissingLeftCurlyBracketException(currentToken.toString()));
         }
 
-        if (functionType == TokenTypeEnum.INT_KEYWORD) {
-            return new IntFunctionDef(position, functionName, parameters, codeBlock);
-        } else if (functionType == TokenTypeEnum.DOUBLE_KEYWORD) {
-            return new DoubleFunctionDef(position, functionName, parameters, codeBlock);
-        } else if (functionType == TokenTypeEnum.STRING_KEYWORD) {
-            return new StringFunctionDef(position, functionName, parameters, codeBlock);
-        } else if (functionType == TokenTypeEnum.BOOL_KEYWORD) {
-            return new BoolFunctionDef(position, functionName, parameters, codeBlock);
-        } else if (functionType == TokenTypeEnum.POINT_KEYWORD) {
-            return new PointFunctionDef(position, functionName, parameters, codeBlock);
-        } else if (functionType == TokenTypeEnum.SECTION_KEYWORD) {
-            return new SectionFunctionDef(position, functionName, parameters, codeBlock);
-        } else if (functionType == TokenTypeEnum.FIGURE_KEYWORD) {
-            return new FigureFunctionDef(position, functionName, parameters, codeBlock);
+        if (functionType.getClass().equals(IntParameter.class)) {
+            return new IntFunctionDef((IntParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(DoubleParameter.class)) {
+            return new DoubleFunctionDef((DoubleParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(StringParameter.class)) {
+            return new StringFunctionDef((StringParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(BoolParameter.class)) {
+            return new BoolFunctionDef((BoolParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(PointParameter.class)) {
+            return new PointFunctionDef((PointParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(SectionParameter.class)) {
+            return new SectionFunctionDef((SectionParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(FigureParameter.class)) {
+            return new FigureFunctionDef((FigureParameter) functionType, parameters, codeBlock);
         } else {
-            return new SceneFunctionDef(position, functionName, parameters, codeBlock);
+            return new SceneFunctionDef((SceneParameter) functionType, parameters, codeBlock);
         }
     }
 
@@ -241,6 +234,11 @@ public class Parser implements IParser {
         return new WhileStatement(position, exp, codeBlock);
     }
 
+    /* functionType = parameter | ( "void", identifier ) */
+    private IParameter parseFunctionType() {
+        return parseParameter();
+    }
+
     /* parameters = parameter, ",", { parameter } */
     private HashMap<String, IParameter> parseParameters() {
         HashMap<String, IParameter> params = new HashMap<>();
@@ -253,13 +251,9 @@ public class Parser implements IParser {
         params.put(firstParam.name(), firstParam);
 
         while (consumeIf(TokenTypeEnum.COMMA)) {
-            if (!isCurrentTokenOfDataTypeKeyword()) {
-                errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
-            }
             IParameter nextParam = parseParameter();
-
             if (nextParam == null) {
-                errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
+                errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
             } else {
                 if (params.containsKey(nextParam.name())) {
                     errorHandler.handle(
@@ -754,6 +748,17 @@ public class Parser implements IParser {
         return new Identifier(position, identifierName);
     }
 
+    private boolean isCurrentTokenOfDataTypeKeyword() {
+        return currentToken.getTokenType() == TokenTypeEnum.INT_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.DOUBLE_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.STRING_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.BOOL_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.POINT_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.SECTION_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.FIGURE_KEYWORD
+                || currentToken.getTokenType() == TokenTypeEnum.SCENE_KEYWORD;
+    }
+
     private void registerErrorIfExpIsMissing(IExpression exp) {
         if (exp == null) {
             errorHandler.handle(new MissingExpressionException(currentToken.toString()));
@@ -803,17 +808,6 @@ public class Parser implements IParser {
         if (!consumeIf(TokenTypeEnum.SEMICOLON)) {
             errorHandler.handle(new MissingSemicolonException(currentToken.toString()));
         }
-    }
-
-    private boolean isCurrentTokenOfDataTypeKeyword() {
-        return currentToken.getTokenType() == TokenTypeEnum.INT_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.DOUBLE_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.STRING_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.BOOL_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.POINT_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.SECTION_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.FIGURE_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.SCENE_KEYWORD;
     }
 
     private boolean isCurrentTokenOfAdditiveOperatorType() {

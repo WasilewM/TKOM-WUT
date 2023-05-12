@@ -351,9 +351,9 @@ public class Scene {
 
 ```
 program                 = { functionDef }
-functionDef             = functionType, identifier, "(", { parameters }, ")", codeBlock
-functionType            = "void"
-                           | dataType
+functionDef             = functionType, "(", { parameters }, ")", codeBlock
+functionType            = parameter
+                           | ( "void", identifier )
 codeBlock               = "{", { stmnt }, "}"
 stmnt                   = ifStmnt
                            | whileStmnt
@@ -423,14 +423,17 @@ sectionValue            = "Section", "(", assignableValue, ",", assignableValue,
 figureValue             = "Figure", "(", ")"
 sceneValue              = "Scene", "(", ")"
 
-dataType                = "Int"
+dataType                = "List", "[", listableDataType, "]"
+                           | listableDataType
+listableDataType        = "Int"
                            | "Double"
                            | "String"
                            | "Bool"
                            | "Point"
                            | "Section"
                            | "Scene"
-                           | "List"
+
+listValue               = "[", listableDataType, "]"
 boolValue               = "True"
                            | False   
 equalOper               = "=="
