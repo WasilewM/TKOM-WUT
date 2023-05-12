@@ -151,15 +151,22 @@ public class ParserMalformedProgramTest {
                                 Arrays.asList(
                                         new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
                                         new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
-                                        new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
-                                        new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER),
-                                        new Token(new Position(2, 11), TokenTypeEnum.LEFT_BRACKET),
-                                        new Token(new Position(2, 12), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(2, 13), TokenTypeEnum.LEFT_CURLY_BRACKET),
-                                        new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                        new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET)
                                 ),
                                 List.of(
                                         new MissingDataTypeDeclarationException(new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(1, 21), TokenTypeEnum.LIST_KEYWORD)
+                                ),
+                                List.of(
+                                        new MissingDataTypeDeclarationException(new Token(new Position(1, 21), TokenTypeEnum.LIST_KEYWORD).toString())
                                 )
                         )
                 )

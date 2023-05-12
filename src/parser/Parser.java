@@ -83,8 +83,10 @@ public class Parser implements IParser {
             return new FigureFunctionDef((FigureParameter) functionType, parameters, codeBlock);
         } else if (functionType.getClass().equals(SceneParameter.class)) {
             return new SceneFunctionDef((SceneParameter) functionType, parameters, codeBlock);
-        } else {
+        } else if (functionType.getClass().equals(IntListParameter.class)) {
             return new IntListFunctionDef((IntListParameter) functionType, parameters, codeBlock);
+        } else {
+            return new DoubleListFunctionDef((DoubleListParameter) functionType, parameters, codeBlock);
         }
     }
 
@@ -298,7 +300,8 @@ public class Parser implements IParser {
             errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
         }
 
-        nextToken();    // Int
+        TokenTypeEnum listParamType = currentToken.getTokenType();
+        nextToken();
         parseRightSquareBracketWithoutReturningIt();
 
         if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
@@ -308,7 +311,11 @@ public class Parser implements IParser {
         String paramName = currentToken.getValue().toString();
         nextToken();
 
-        return new IntListParameter(position, paramName);
+        if (listParamType == TokenTypeEnum.INT_KEYWORD) {
+            return new IntListParameter(position, paramName);
+        } else {
+            return new DoubleListParameter(position, paramName);
+        }
     }
 
     private IParameter parseListableDataTypeParameter() {
