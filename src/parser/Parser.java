@@ -87,8 +87,10 @@ public class Parser implements IParser {
             return new IntListFunctionDef((IntListParameter) functionType, parameters, codeBlock);
         } else if (functionType.getClass().equals(DoubleListParameter.class)) {
             return new DoubleListFunctionDef((DoubleListParameter) functionType, parameters, codeBlock);
-        } else {
+        } else if (functionType.getClass().equals(BoolListParameter.class)) {
             return new BoolListFunctionDef((BoolListParameter) functionType, parameters, codeBlock);
+        } else {
+            return new StringListFunctionDef((StringListParameter) functionType, parameters, codeBlock);
         }
     }
 
@@ -317,8 +319,10 @@ public class Parser implements IParser {
             return new IntListParameter(position, paramName);
         } else if (listParamType == TokenTypeEnum.DOUBLE_KEYWORD) {
             return new DoubleListParameter(position, paramName);
-        } else {
+        } else if (listParamType == TokenTypeEnum.BOOL_KEYWORD) {
             return new BoolListParameter(position, paramName);
+        } else {
+            return new StringListParameter(position, paramName);
         }
     }
 
