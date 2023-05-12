@@ -134,7 +134,7 @@ public class Parser implements IParser {
         return parseReturnStatement();
     }
 
-    /* returnStmnt = "return", alternativeExpression , ";" */
+    /* returnStmnt = "return", alternativeExp , ";" */
     private ReturnStatement parseReturnStatement() {
         Position position = currentToken.getPosition();
         if (!consumeIf(TokenTypeEnum.RETURN_KEYWORD)) {

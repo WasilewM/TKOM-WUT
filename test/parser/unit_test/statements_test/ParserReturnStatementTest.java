@@ -12,14 +12,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
-import parser.program_components.data_values.BoolValue;
-import parser.program_components.data_values.DoubleValue;
-import parser.program_components.data_values.IntValue;
-import parser.program_components.data_values.StringValue;
-import parser.program_components.function_definitions.BoolFunctionDef;
-import parser.program_components.function_definitions.DoubleFunctionDef;
-import parser.program_components.function_definitions.IntFunctionDef;
-import parser.program_components.function_definitions.StringFunctionDef;
+import parser.program_components.data_values.*;
+import parser.program_components.function_definitions.*;
 import parser.program_components.statements.ReturnStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
@@ -141,6 +135,102 @@ public class ParserReturnStatementTest {
                                 ),
                                 new HashMap<>() {{
                                     put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new BoolValue(new Position(2, 7), false))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.POINT_KEYWORD),
+                                        new StringToken("func", new Position(1, 8), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 12), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 13), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 14), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(2, 1), TokenTypeEnum.RETURN_KEYWORD),
+                                        new Token(new Position(8, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(8, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(8, 24)),
+                                        new Token(new Position(8, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(8, 34)),
+                                        new Token(new Position(8, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(8, 44), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(13, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new PointFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new PointValue(new Position(8, 14), new DoubleValue(new Position(8, 24), 2.0), new DoubleValue(new Position(8, 34), 2.0)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.SECTION_KEYWORD),
+                                        new StringToken("func", new Position(1, 8), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 12), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 13), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 14), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(2, 1), TokenTypeEnum.RETURN_KEYWORD),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SECTION_KEYWORD),
+                                        new Token(new Position(8, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(9, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(9, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(9, 24)),
+                                        new Token(new Position(9, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(9, 34)),
+                                        new Token(new Position(9, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(19, 1), TokenTypeEnum.COMMA),
+                                        new Token(new Position(19, 14), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(19, 23), TokenTypeEnum.LEFT_BRACKET),
+                                        new DoubleToken(2.0, new Position(19, 24)),
+                                        new Token(new Position(19, 30), TokenTypeEnum.COMMA),
+                                        new DoubleToken(2.0, new Position(19, 34)),
+                                        new Token(new Position(19, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(20, 44), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(28, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(13, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new SectionFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new SectionValue(new Position(8, 14), new PointValue(new Position(9, 14), new DoubleValue(new Position(9, 24), 2.0), new DoubleValue(new Position(9, 34), 2.0)), new PointValue(new Position(19, 14), new DoubleValue(new Position(19, 24), 2.0), new DoubleValue(new Position(19, 34), 2.0))))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.FIGURE_KEYWORD),
+                                        new StringToken("func", new Position(1, 8), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 12), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 13), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 14), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(2, 1), TokenTypeEnum.RETURN_KEYWORD),
+                                        new Token(new Position(8, 14), TokenTypeEnum.FIGURE_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(8, 34), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(13, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new FigureFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new FigureValue(new Position(8, 14)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.SCENE_KEYWORD),
+                                        new StringToken("func", new Position(1, 8), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 12), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 13), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 14), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(2, 1), TokenTypeEnum.RETURN_KEYWORD),
+                                        new Token(new Position(8, 14), TokenTypeEnum.SCENE_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(8, 34), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(13, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new SceneFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new SceneValue(new Position(8, 14)))))));
                                 }}
                         )
                 )
