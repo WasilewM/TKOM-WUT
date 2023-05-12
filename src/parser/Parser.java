@@ -89,8 +89,19 @@ public class Parser implements IParser {
             return new DoubleListFunctionDef((DoubleListParameter) functionType, parameters, codeBlock);
         } else if (functionType.getClass().equals(BoolListParameter.class)) {
             return new BoolListFunctionDef((BoolListParameter) functionType, parameters, codeBlock);
-        } else {
+        } else if (functionType.getClass().equals(StringListParameter.class)) {
             return new StringListFunctionDef((StringListParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(PointListParameter.class)) {
+            return new PointListFunctionDef((PointListParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(SectionListParameter.class)) {
+            return new SectionListFunctionDef((SectionListParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(FigureListParameter.class)) {
+            return new FigureListFunctionDef((FigureListParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(SceneListParameter.class)) {
+            return new SceneListFunctionDef((SceneListParameter) functionType, parameters, codeBlock);
+        } else {
+            errorHandler.handle(new RuntimeException(currentToken.toString()));
+            return null;
         }
     }
 
@@ -321,8 +332,19 @@ public class Parser implements IParser {
             return new DoubleListParameter(position, paramName);
         } else if (listParamType == TokenTypeEnum.BOOL_KEYWORD) {
             return new BoolListParameter(position, paramName);
-        } else {
+        } else if (listParamType == TokenTypeEnum.STRING_KEYWORD) {
             return new StringListParameter(position, paramName);
+        } else if (listParamType == TokenTypeEnum.POINT_KEYWORD) {
+            return new PointListParameter(position, paramName);
+        } else if (listParamType == TokenTypeEnum.SECTION_KEYWORD) {
+            return new SectionListParameter(position, paramName);
+        } else if (listParamType == TokenTypeEnum.FIGURE_KEYWORD) {
+            return new FigureListParameter(position, paramName);
+        } else if (listParamType == TokenTypeEnum.SCENE_KEYWORD) {
+            return new SceneListParameter(position, paramName);
+        } else {
+            errorHandler.handle(new RuntimeException(currentToken.toString()));
+            return null;
         }
     }
 

@@ -232,6 +232,78 @@ public class ParserProgramTest {
                 Arguments.of(
                         new ParserSingleTestParams(
                                 Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(1, 21), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(2, 11), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(2, 12), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(2, 13), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new PointListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(1, 21), TokenTypeEnum.SECTION_KEYWORD),
+                                        new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(2, 11), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(2, 12), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(2, 13), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new SectionListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(1, 21), TokenTypeEnum.FIGURE_KEYWORD),
+                                        new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(2, 11), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(2, 12), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(2, 13), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new FigureListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(1, 21), TokenTypeEnum.SCENE_KEYWORD),
+                                        new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(2, 11), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(2, 12), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(2, 13), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new SceneListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
                                         new Token(new Position(1, 1), TokenTypeEnum.INT_KEYWORD),
                                         new StringToken("cube", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
