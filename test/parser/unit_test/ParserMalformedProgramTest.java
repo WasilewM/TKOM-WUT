@@ -145,6 +145,54 @@ public class ParserMalformedProgramTest {
                                         new DuplicatedParameterNameException("Parameter a at position: <line: 1, column 21>")
                                 )
                         )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingDataTypeDeclarationException(new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(1, 21), TokenTypeEnum.LIST_KEYWORD)
+                                ),
+                                List.of(
+                                        new MissingDataTypeDeclarationException(new Token(new Position(1, 21), TokenTypeEnum.LIST_KEYWORD).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(1, 11), TokenTypeEnum.INT_KEYWORD)
+                                ),
+                                List.of(
+                                        new MissingLeftSquareBracketException(new Token(new Position(1, 11), TokenTypeEnum.INT_KEYWORD).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(1, 21), TokenTypeEnum.INT_KEYWORD),
+                                        new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER)
+                                ),
+                                List.of(
+                                        new MissingRightSquareBracketException(new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER).toString())
+                                )
+                        )
                 )
         );
     }

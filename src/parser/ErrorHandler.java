@@ -15,6 +15,8 @@ public class ErrorHandler {
         return MissingIdentifierException.class.equals(e.getClass())
                 || MissingLeftCurlyBracketException.class.equals(e.getClass())
                 || MissingRightCurlyBracketException.class.equals(e.getClass())
+                || MissingLeftSquareBracketException.class.equals(e.getClass())
+                || MissingRightSquareBracketException.class.equals(e.getClass())
                 || DuplicatedFunctionNameException.class.equals(e.getClass())
                 || DuplicatedParameterNameException.class.equals(e.getClass())
                 || MissingDataTypeDeclarationException.class.equals(e.getClass())
