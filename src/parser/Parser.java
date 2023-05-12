@@ -81,8 +81,10 @@ public class Parser implements IParser {
             return new SectionFunctionDef((SectionParameter) functionType, parameters, codeBlock);
         } else if (functionType.getClass().equals(FigureParameter.class)) {
             return new FigureFunctionDef((FigureParameter) functionType, parameters, codeBlock);
-        } else {
+        } else if (functionType.getClass().equals(SceneParameter.class)) {
             return new SceneFunctionDef((SceneParameter) functionType, parameters, codeBlock);
+        } else {
+            return new IntListFunctionDef((IntListParameter) functionType, parameters, codeBlock);
         }
     }
 
@@ -273,11 +275,45 @@ public class Parser implements IParser {
 
     /*
         parameter = dataType, identifier
-        dataType = "Int" | "Double" | "String" | "Point" | "Section" | "Scene" | "Bool" | "List"
+        dataType = "List", "[", listableDataType, "]" | listableDataType
+        listableDataType = "Int" | "Double" | "String" | "Bool" | "Point" | "Section" | "Scene"
     */
     private IParameter parseParameter() {
+        IParameter param = parseListDataTypeParameter();
+        if (param != null) {
+            return param;
+        }
+
+        return parseListableDataTypeParameter();
+    }
+
+    private IParameter parseListDataTypeParameter() {
         Position position = currentToken.getPosition();
-        if (!isCurrentTokenOfDataTypeKeyword()) {
+        if (!consumeIf(TokenTypeEnum.LIST_KEYWORD)) {
+            return null;
+        }
+
+        parseLeftSquareBracketWithoutReturningIt();
+        if (isNotCurrentTokenOfListableDataTypeKeyword()) {
+            errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
+        }
+
+        nextToken();    // Int
+        parseRightSquareBracketWithoutReturningIt();
+
+        if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
+            errorHandler.handle(new MissingIdentifierException(currentToken.toString()));
+        }
+
+        String paramName = currentToken.getValue().toString();
+        nextToken();
+
+        return new IntListParameter(position, paramName);
+    }
+
+    private IParameter parseListableDataTypeParameter() {
+        Position position = currentToken.getPosition();
+        if (isNotCurrentTokenOfListableDataTypeKeyword()) {
             return null;
         }
 
@@ -748,15 +784,16 @@ public class Parser implements IParser {
         return new Identifier(position, identifierName);
     }
 
-    private boolean isCurrentTokenOfDataTypeKeyword() {
-        return currentToken.getTokenType() == TokenTypeEnum.INT_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.DOUBLE_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.STRING_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.BOOL_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.POINT_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.SECTION_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.FIGURE_KEYWORD
-                || currentToken.getTokenType() == TokenTypeEnum.SCENE_KEYWORD;
+    /* listableDataType = "Int" | "Double" | "String" | "Bool" | "Point" | "Section" | "Scene" */
+    private boolean isNotCurrentTokenOfListableDataTypeKeyword() {
+        return currentToken.getTokenType() != TokenTypeEnum.INT_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.DOUBLE_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.STRING_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.BOOL_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.POINT_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.SECTION_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.FIGURE_KEYWORD
+                && currentToken.getTokenType() != TokenTypeEnum.SCENE_KEYWORD;
     }
 
     private void registerErrorIfExpIsMissing(IExpression exp) {
@@ -795,6 +832,18 @@ public class Parser implements IParser {
     private void parseRightBracketWithoutReturningIt() {
         if (!consumeIf(TokenTypeEnum.RIGHT_BRACKET)) {
             errorHandler.handle(new MissingRightBracketException(currentToken.toString()));
+        }
+    }
+
+    private void parseLeftSquareBracketWithoutReturningIt() {
+        if (!consumeIf(TokenTypeEnum.LEFT_SQUARE_BRACKET)) {
+            errorHandler.handle(new MissingLeftSquareBracketException(currentToken.toString()));
+        }
+    }
+
+    private void parseRightSquareBracketWithoutReturningIt() {
+        if (!consumeIf(TokenTypeEnum.RIGHT_SQUARE_BRACKET)) {
+            errorHandler.handle(new MissingRightSquareBracketException(currentToken.toString()));
         }
     }
 

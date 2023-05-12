@@ -29,7 +29,9 @@ public class ErrorHandler {
         return MissingLeftBracketException.class.equals(e.getClass())
                 || MissingRightBracketException.class.equals(e.getClass())
                 || MissingSemicolonException.class.equals(e.getClass())
-                || MissingCommaException.class.equals(e.getClass());
+                || MissingCommaException.class.equals(e.getClass())
+                || MissingLeftSquareBracketException.class.equals(e.getClass())
+                || MissingRightSquareBracketException.class.equals(e.getClass());
     }
 
     public ArrayList<Exception> getErrorLog() {
