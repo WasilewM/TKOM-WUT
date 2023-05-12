@@ -152,6 +152,166 @@ public class ParserAssignmentStatementTest {
                                     put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new SceneParameter(new Position(5, 7), "A"), new SceneValue(new Position(8, 14)))))));
                                 }}
                         )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(5, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(5, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(5, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 15), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new IntListValue(new Position(8, 14)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(5, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(5, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(5, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 15), TokenTypeEnum.DOUBLE_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new DoubleListValue(new Position(8, 14)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(5, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(5, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(5, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 15), TokenTypeEnum.BOOL_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new BoolListValue(new Position(8, 14)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(5, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(5, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(5, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 15), TokenTypeEnum.STRING_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new StringListValue(new Position(8, 14)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(5, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(5, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(5, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 15), TokenTypeEnum.POINT_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new PointListValue(new Position(8, 14)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(5, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(5, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(5, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 15), TokenTypeEnum.SECTION_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new SectionListValue(new Position(8, 14)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(5, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(5, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(5, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 15), TokenTypeEnum.FIGURE_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new FigureListValue(new Position(8, 14)))))));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(5, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(5, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(5, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 15), TokenTypeEnum.SCENE_KEYWORD),
+                                        new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 94), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new SceneListValue(new Position(8, 14)))))));
+                                }}
+                        )
                 )
         );
     }

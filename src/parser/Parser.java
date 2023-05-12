@@ -311,12 +311,7 @@ public class Parser implements IParser {
         }
 
         parseLeftSquareBracketWithoutReturningIt();
-        if (isNotCurrentTokenOfListableDataTypeKeyword()) {
-            errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
-        }
-
-        TokenTypeEnum listParamType = currentToken.getTokenType();
-        nextToken();
+        TokenTypeEnum listParamType = parseListableDataType();
         parseRightSquareBracketWithoutReturningIt();
 
         if (currentToken.getTokenType() != TokenTypeEnum.IDENTIFIER) {
@@ -693,7 +688,12 @@ public class Parser implements IParser {
             return exp;
         }
 
-        return parseSceneValue();
+        exp = parseSceneValue();
+        if (exp != null) {
+            return exp;
+        }
+
+        return parseListValue();
     }
 
     /* stringValue = "\"", literal, "\"" */
@@ -806,6 +806,48 @@ public class Parser implements IParser {
         parseLeftBracketWithoutReturningIt();
         parseRightBracketWithoutReturningIt();
         return new SceneValue(position);
+    }
+
+    /* listValue = "[", listableDataType, "]" */
+    private IExpression parseListValue() {
+        Position position = currentToken.getPosition();
+        if (!consumeIf(TokenTypeEnum.LEFT_SQUARE_BRACKET)) {
+            return null;
+        }
+
+        TokenTypeEnum listParamType = parseListableDataType();
+        parseRightSquareBracketWithoutReturningIt();
+
+        if (listParamType == TokenTypeEnum.INT_KEYWORD) {
+            return new IntListValue(position);
+        } else if (listParamType == TokenTypeEnum.DOUBLE_KEYWORD) {
+            return new DoubleListValue(position);
+        } else if (listParamType == TokenTypeEnum.BOOL_KEYWORD) {
+            return new BoolListValue(position);
+        } else if (listParamType == TokenTypeEnum.STRING_KEYWORD) {
+            return new StringListValue(position);
+        } else if (listParamType == TokenTypeEnum.POINT_KEYWORD) {
+            return new PointListValue(position);
+        } else if (listParamType == TokenTypeEnum.SECTION_KEYWORD) {
+            return new SectionListValue(position);
+        } else if (listParamType == TokenTypeEnum.FIGURE_KEYWORD) {
+            return new FigureListValue(position);
+        } else if (listParamType == TokenTypeEnum.SCENE_KEYWORD) {
+            return new SceneListValue(position);
+        } else {
+            errorHandler.handle(new RuntimeException(currentToken.toString()));
+            return null;
+        }
+    }
+
+    private TokenTypeEnum parseListableDataType() {
+        if (isNotCurrentTokenOfListableDataTypeKeyword()) {
+            errorHandler.handle(new MissingDataTypeDeclarationException(currentToken.toString()));
+        }
+
+        TokenTypeEnum listParamType = currentToken.getTokenType();
+        nextToken();
+        return listParamType;
     }
 
     /* identifier = letter { digit | literal } */

@@ -129,6 +129,23 @@ public class ParserMalformedAssignmentStatementTest {
                                         new MissingExpressionException(new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
                                 )
                         )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(5, 7), TokenTypeEnum.LIST_KEYWORD),
+                                        new Token(new Position(5, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(5, 17), TokenTypeEnum.INT_KEYWORD),
+                                        new Token(new Position(5, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
+                                        new StringToken("A", new Position(7, 10), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(8, 4), TokenTypeEnum.ASSIGNMENT_OPERATOR),
+                                        new Token(new Position(8, 14), TokenTypeEnum.LEFT_SQUARE_BRACKET),
+                                        new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingDataTypeDeclarationException(new Token(new Position(8, 24), TokenTypeEnum.RIGHT_SQUARE_BRACKET).toString())
+                                )
+                        )
                 )
         );
     }
