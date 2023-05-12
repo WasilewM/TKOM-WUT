@@ -169,23 +169,12 @@ public class ParserMalformedProgramTest {
                                         new MissingDataTypeDeclarationException(new Token(new Position(1, 21), TokenTypeEnum.LIST_KEYWORD).toString())
                                 )
                         )
-                )
-        );
-    }
-
-    static Stream<Arguments> getMalformedFunctionDefProgram_withHandleableExceptions() {
-        return Stream.of(
+                ),
                 Arguments.of(
                         new ParserMalformedSingleTestParams(
                                 Arrays.asList(
                                         new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
-                                        new Token(new Position(1, 11), TokenTypeEnum.INT_KEYWORD),
-                                        new Token(new Position(1, 31), TokenTypeEnum.RIGHT_SQUARE_BRACKET),
-                                        new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER),
-                                        new Token(new Position(2, 11), TokenTypeEnum.LEFT_BRACKET),
-                                        new Token(new Position(2, 12), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(2, 13), TokenTypeEnum.LEFT_CURLY_BRACKET),
-                                        new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                        new Token(new Position(1, 11), TokenTypeEnum.INT_KEYWORD)
                                 ),
                                 List.of(
                                         new MissingLeftSquareBracketException(new Token(new Position(1, 11), TokenTypeEnum.INT_KEYWORD).toString())
@@ -198,11 +187,7 @@ public class ParserMalformedProgramTest {
                                         new Token(new Position(1, 1), TokenTypeEnum.LIST_KEYWORD),
                                         new Token(new Position(1, 11), TokenTypeEnum.LEFT_SQUARE_BRACKET),
                                         new Token(new Position(1, 21), TokenTypeEnum.INT_KEYWORD),
-                                        new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER),
-                                        new Token(new Position(2, 11), TokenTypeEnum.LEFT_BRACKET),
-                                        new Token(new Position(2, 12), TokenTypeEnum.RIGHT_BRACKET),
-                                        new Token(new Position(2, 13), TokenTypeEnum.LEFT_CURLY_BRACKET),
-                                        new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                        new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER)
                                 ),
                                 List.of(
                                         new MissingRightSquareBracketException(new StringToken("func", new Position(2, 7), TokenTypeEnum.IDENTIFIER).toString())
@@ -233,21 +218,5 @@ public class ParserMalformedProgramTest {
         }
 
         assert wasExceptionCaught;
-    }
-
-    @ParameterizedTest
-    @MethodSource("getMalformedFunctionDefProgram_withHandleableExceptions")
-    void parseMalformedFunctionDefProgram_withHandleableExceptions(ParserMalformedSingleTestParams testParams) {
-        ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
-        Parser parser = new Parser(new MockedLexer(tokens), errorHandler);
-        parser.parse();
-
-        Iterator<Exception> expected = testParams.expectedErrorLog().iterator();
-        Iterator<Exception> actual = errorHandler.getErrorLog().iterator();
-        assertEquals(testParams.expectedErrorLog().size(), errorHandler.getErrorLog().size());
-        while (expected.hasNext() && actual.hasNext()) {
-            assertEquals(expected.next().getMessage(), actual.next().getMessage());
-        }
     }
 }
