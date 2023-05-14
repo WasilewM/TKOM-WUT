@@ -193,8 +193,7 @@ public class Parser implements IParser {
 
     /*
         objectAccessStmnt       = objectAccessExp, ";"
-        objectAccessExp         = memberAccessExp, { ".", memberAccessExp }
-        memberAccessExp         = identOrFuncCallExp, [ "[", alternativeExp, "]" ]
+        objectAccessExp         = identOrFuncCallExp, { ".", identOrFuncCallExp }
         identOrFuncCallExp      = identifier, { "(", [ alternativeExp ], ")" }
     */
     private IStatement parseRestOfObjectAccessStatement(Position position, IExpression leftExp) {
@@ -629,6 +628,11 @@ public class Parser implements IParser {
         return parseParenthesesExpOrAssignableVal();
     }
 
+    /*
+        parenthesesExp      = "(", alternativeExp, ")"
+        assignableValue     = objectAccessExp | stringValue | intValue | doubleValue | boolValue | pointValue
+                                | sectionValue | figureValue | sceneValue | listValue
+    */
     private IExpression parseParenthesesExpOrAssignableVal() {
         IExpression exp = parseParenthesesExpression();
         if (exp != null) {
@@ -859,7 +863,7 @@ public class Parser implements IParser {
         return listParamType;
     }
 
-    /* objectAccessExp = memberAccessExp, { ".", memberAccessExp } */
+    /* objectAccessExp = identOrFuncCallExp, { ".", identOrFuncCallExp } */
     private IExpression parseObjectAccessExpression() {
         Position position = currentToken.getPosition();
         IExpression leftExp = parseIdentifierOrFunctionCallExpression();
