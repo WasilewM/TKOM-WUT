@@ -159,7 +159,7 @@ public class Parser implements IParser {
 
     /*
         assignmentStmnt = [ dataType ], identifier, assignmentOper, alternativeExp, ";"
-        parameter = dataType, identifier
+        parameter       = dataType, identifier
     */
     private IStatement parseAssignmentOrObjectAccessStatement() {
         Position position = currentToken.getPosition();
@@ -189,7 +189,13 @@ public class Parser implements IParser {
         return new AssignmentStatement(position, param, exp);
     }
 
-    /* objectAccessStmnt = objectAccessExp, ";" */
+    /*
+        objectAccessStmnt       = objectAccessExp, ";"
+        objectAccessExp         = memberAccessExp, { ".", memberAccessExp }
+        memberAccessExp         = identOrFuncCallExp, [ listAccessExp ]
+        listAccessExp           = "[", alternativeExp, "]"
+        identOrFuncCallExp      = identifier, { "(", [ alternativeExp ], ")" }
+    */
     private IStatement parseRestOfObjectAccessStatement(Position position, IExpression leftExp) {
         if (!consumeIf(TokenTypeEnum.DOT)) {
             errorHandler.handle(new AmbiguousExpressionException(currentToken.toString()));
@@ -320,7 +326,7 @@ public class Parser implements IParser {
         listableDataType = "Int" | "Double" | "String" | "Bool" | "Point" | "Section" | "Scene"
     */
     private IParameter parseParameter() {
-        IParameter param = parseListDataTypeParameter();
+        IParameter param = parseDataTypeParameter();
         if (param != null) {
             return param;
         }
@@ -328,7 +334,8 @@ public class Parser implements IParser {
         return parseListableDataTypeParameter();
     }
 
-    private IParameter parseListDataTypeParameter() {
+    /* dataType = "List", "[", listableDataType, "]" | listableDataType */
+    private IParameter parseDataTypeParameter() {
         Position position = currentToken.getPosition();
         if (!consumeIf(TokenTypeEnum.LIST_KEYWORD)) {
             return null;
@@ -362,6 +369,7 @@ public class Parser implements IParser {
         }
     }
 
+    /* listableDataType = "Int" | "Double" | "String" | "Bool" | "Point" | "Section" | "Scene" */
     private IParameter parseListableDataTypeParameter() {
         Position position = currentToken.getPosition();
         if (isNotCurrentTokenOfListableDataTypeKeyword()) {
@@ -441,8 +449,8 @@ public class Parser implements IParser {
     }
 
     /*
-        comparisonExp = additiveExp, [ comparisonOper, additiveExp ]
-        comparisonOper = equalOper | notEqualOper | lessThanOper | lessThanOrEqualOper | greaterThanOper | greaterThanOrEqualOper
+        comparisonExp   = additiveExp, [ comparisonOper, additiveExp ]
+        comparisonOper  = equalOper | notEqualOper | lessThanOper | lessThanOrEqualOper | greaterThanOper | greaterThanOrEqualOper
     */
     private IExpression parseComparisonExpression() {
         IExpression leftExp = parseAdditiveExpression();
@@ -557,8 +565,8 @@ public class Parser implements IParser {
     }
 
     /*
-        additiveExp = multiplicativeExp, { additiveOper, multiplicativeExp }
-        additiveOper = "+" | "-"
+        additiveExp     = multiplicativeExp, { additiveOper, multiplicativeExp }
+        additiveOper    = "+" | "-"
     */
     private IExpression parseAdditiveExpression() {
         IExpression leftExp = parseMultiplicativeExpression();
@@ -589,8 +597,8 @@ public class Parser implements IParser {
     }
 
     /*
-        multiplicativeExp = factor, { multiplicativeOper, factor }
-        multiplicativeOper = "*" | "/" | "//"
+        multiplicativeExp   = factor, { multiplicativeOper, factor }
+        multiplicativeOper  = "*" | "/" | "//"
     */
     private IExpression parseMultiplicativeExpression() {
         IExpression leftExp = parseFactor();
@@ -889,6 +897,7 @@ public class Parser implements IParser {
         return paramName;
     }
 
+    /* identOrFuncCallExp = identifier, { "(", [ alternativeExp ], ")" } */
     private IExpression parseIdentifierOrFunctionCallExpression() {
         Position position = currentToken.getPosition();
         IExpression identifier = parseIdentifier();
@@ -988,11 +997,13 @@ public class Parser implements IParser {
         }
     }
 
+    /* additiveOper = "+" | "-" */
     private boolean isCurrentTokenOfAdditiveOperatorType() {
         return currentToken.getTokenType() == TokenTypeEnum.ADDITION_OPERATOR
                 || currentToken.getTokenType() == TokenTypeEnum.SUBTRACTION_OPERATOR;
     }
 
+    /* multiplicativeOper = "*" | "/" | "//" */
     private boolean isCurrentTokenOfMultiplicativeOperatorType() {
         return currentToken.getTokenType() == TokenTypeEnum.MULTIPLICATION_OPERATOR
                 || currentToken.getTokenType() == TokenTypeEnum.DIVISION_OPERATOR

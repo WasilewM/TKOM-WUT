@@ -373,7 +373,7 @@ parameter               = dataType, identifier
 objectAccessStmnt       = objectAccessExp, ";"
 objectAccessExp         = memberAccessExp, { ".", memberAccessExp }
 memberAccessExp         = identOrFuncCallExp, [ listAccessExp ]
-listAccessExp              = "[", alternativeExp, "]"                    
+listAccessExp           = "[", alternativeExp, "]"                    
 identOrFuncCallExp      = identifier, { "(", [ alternativeExp ], ")" }
 identifier              = letter { digit | literal }
 
