@@ -112,8 +112,12 @@ public class Lexer implements ILexer {
 
     @Override
     public Token lexToken() {
-        if (currentChar == null) {
+        if (currentChar == null || isCurrentCharEqualETX()) {
             nextChar();
+
+            if (currentChar == null || isCurrentCharEqualETX()) {
+                return new Token(carriagePosition, TokenTypeEnum.ETX);
+            }
         }
 
         while (Character.isWhitespace(currentChar)) {
@@ -274,6 +278,10 @@ public class Lexer implements ILexer {
 
         token = new StringToken(comment.toString(), tokenPosition, TokenTypeEnum.COMMENT);
         return true;
+    }
+
+    private boolean isCurrentCharEqualETX() {
+        return currentChar.equals((char) (-1));
     }
 
     private boolean isCurrentCharNotEqualETX() {

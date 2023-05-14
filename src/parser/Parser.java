@@ -907,8 +907,9 @@ public class Parser implements IParser {
         if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
             return identifier;
         }
+        IExpression exp = parseAlternativeExpression();
         parseRightBracketWithoutReturningIt();
-        return new FunctionCall(position, identifier);
+        return new FunctionCall(position, identifier, exp);
     }
 
     /* identifier = letter { digit | literal } */

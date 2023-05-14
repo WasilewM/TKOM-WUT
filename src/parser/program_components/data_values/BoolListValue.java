@@ -2,7 +2,7 @@ package parser.program_components.data_values;
 
 import lexer.Position;
 import parser.IExpression;
-import parser.IVisitor;
+import visitor.IVisitor;
 
 import java.util.ArrayList;
 
@@ -13,6 +13,6 @@ public record BoolListValue(Position position, ArrayList<Integer> value) impleme
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

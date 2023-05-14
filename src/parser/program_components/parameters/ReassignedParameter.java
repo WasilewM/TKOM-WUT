@@ -2,7 +2,7 @@ package parser.program_components.parameters;
 
 import lexer.Position;
 import parser.IParameter;
-import parser.IVisitor;
+import visitor.IVisitor;
 import parser.program_components.Identifier;
 
 public record ReassignedParameter(Position position, String name) implements IParameter {
@@ -13,6 +13,6 @@ public record ReassignedParameter(Position position, String name) implements IPa
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

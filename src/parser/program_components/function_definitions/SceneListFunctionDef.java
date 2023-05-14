@@ -3,7 +3,7 @@ package parser.program_components.function_definitions;
 import lexer.Position;
 import parser.IFunctionDef;
 import parser.IParameter;
-import parser.IVisitor;
+import visitor.IVisitor;
 import parser.program_components.CodeBlock;
 import parser.program_components.parameters.SceneListParameter;
 
@@ -18,5 +18,6 @@ public record SceneListFunctionDef(Position position, String name, HashMap<Strin
 
     @Override
     public void accept(IVisitor visitor) {
+        visitor.visit(this);
     }
 }

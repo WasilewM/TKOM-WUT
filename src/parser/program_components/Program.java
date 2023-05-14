@@ -3,7 +3,7 @@ package parser.program_components;
 import lexer.Position;
 import parser.IFunctionDef;
 import parser.IVisitable;
-import parser.IVisitor;
+import visitor.IVisitor;
 
 import java.util.HashMap;
 
@@ -11,6 +11,6 @@ public record Program(Position position, HashMap<String, IFunctionDef> functions
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }
