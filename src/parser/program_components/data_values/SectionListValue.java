@@ -13,6 +13,6 @@ public record SectionListValue(Position position, ArrayList<Integer> value) impl
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

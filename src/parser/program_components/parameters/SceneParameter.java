@@ -8,6 +8,6 @@ public record SceneParameter(Position position, String name) implements IParamet
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

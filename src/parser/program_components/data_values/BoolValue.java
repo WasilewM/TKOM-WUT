@@ -7,6 +7,6 @@ import parser.IVisitor;
 public record BoolValue(Position position, Boolean value) implements IExpression {
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

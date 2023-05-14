@@ -14,6 +14,6 @@ public record ElseStatement(Position position, IExpression exp, CodeBlock codeBl
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

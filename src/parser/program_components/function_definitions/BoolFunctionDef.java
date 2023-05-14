@@ -18,5 +18,6 @@ public record BoolFunctionDef(Position position, String name, HashMap<String, IP
 
     @Override
     public void accept(IVisitor visitor) {
+        visitor.visit(this);
     }
 }

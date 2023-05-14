@@ -18,5 +18,6 @@ public record SectionListFunctionDef(Position position, String name, HashMap<Str
 
     @Override
     public void accept(IVisitor visitor) {
+        visitor.visit(this);
     }
 }

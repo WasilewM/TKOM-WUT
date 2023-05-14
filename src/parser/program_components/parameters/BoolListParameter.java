@@ -8,6 +8,6 @@ public record BoolListParameter(Position position, String name) implements IPara
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

@@ -18,5 +18,6 @@ public record IntFunctionDef(Position position, String name, HashMap<String, IPa
 
     @Override
     public void accept(IVisitor visitor) {
+        visitor.visit(this);
     }
 }

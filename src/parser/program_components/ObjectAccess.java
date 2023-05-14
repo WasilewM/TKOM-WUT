@@ -9,6 +9,6 @@ public record ObjectAccess(Position position, IExpression leftExp, IExpression r
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

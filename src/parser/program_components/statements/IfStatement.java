@@ -25,6 +25,6 @@ public record IfStatement(Position position, IExpression exp, CodeBlock codeBloc
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

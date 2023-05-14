@@ -11,5 +11,6 @@ public record CodeBlock(Position position, List<IStatement> statements) implemen
 
     @Override
     public void accept(IVisitor visitor) {
+        visitor.visit(this);
     }
 }

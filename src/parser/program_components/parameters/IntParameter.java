@@ -8,6 +8,6 @@ public record IntParameter(Position position, String name) implements IParameter
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

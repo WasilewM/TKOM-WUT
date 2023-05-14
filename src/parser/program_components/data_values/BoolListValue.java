@@ -13,6 +13,6 @@ public record BoolListValue(Position position, ArrayList<Integer> value) impleme
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

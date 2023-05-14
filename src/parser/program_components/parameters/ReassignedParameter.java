@@ -13,6 +13,6 @@ public record ReassignedParameter(Position position, String name) implements IPa
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

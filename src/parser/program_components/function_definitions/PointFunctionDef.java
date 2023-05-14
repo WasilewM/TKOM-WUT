@@ -18,5 +18,6 @@ public record PointFunctionDef(Position position, String name, HashMap<String, I
 
     @Override
     public void accept(IVisitor visitor) {
+        visitor.visit(this);
     }
 }

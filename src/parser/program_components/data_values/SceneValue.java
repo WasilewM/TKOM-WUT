@@ -7,6 +7,6 @@ import parser.IVisitor;
 public record SceneValue(Position position) implements IExpression {
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

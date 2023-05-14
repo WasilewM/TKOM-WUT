@@ -13,6 +13,6 @@ public record IntListValue(Position position, ArrayList<Integer> value) implemen
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

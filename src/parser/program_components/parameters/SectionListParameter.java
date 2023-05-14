@@ -8,6 +8,6 @@ public record SectionListParameter(Position position, String name) implements IP
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

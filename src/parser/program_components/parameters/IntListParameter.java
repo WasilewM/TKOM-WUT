@@ -8,6 +8,6 @@ public record IntListParameter(Position position, String name) implements IParam
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

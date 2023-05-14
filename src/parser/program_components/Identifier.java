@@ -7,6 +7,6 @@ import parser.IVisitor;
 public record Identifier(Position position, String name) implements IExpression {
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

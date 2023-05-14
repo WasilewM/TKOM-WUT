@@ -9,6 +9,6 @@ import parser.program_components.CodeBlock;
 public record ElseIfStatement(Position position, IExpression exp, CodeBlock codeBlock) implements IStatement {
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

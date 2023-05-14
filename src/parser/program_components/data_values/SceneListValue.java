@@ -13,6 +13,6 @@ public record SceneListValue(Position position, ArrayList<Integer> value) implem
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

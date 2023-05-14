@@ -8,6 +8,6 @@ public record BoolParameter(Position position, String name) implements IParamete
 
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }

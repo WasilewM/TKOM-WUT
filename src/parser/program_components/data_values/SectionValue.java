@@ -7,6 +7,6 @@ import parser.IVisitor;
 public record SectionValue(Position position, IExpression first, IExpression second) implements IExpression {
     @Override
     public void accept(IVisitor visitor) {
-
+        visitor.visit(this);
     }
 }
