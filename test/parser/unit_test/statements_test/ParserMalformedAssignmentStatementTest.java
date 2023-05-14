@@ -62,7 +62,7 @@ public class ParserMalformedAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 List.of(
-                                        new MissingAssignmentOperatorException(new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
+                                        new AmbiguousExpressionException(new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET).toString())
                                 )
                         )
                 ),

@@ -24,7 +24,8 @@ public class ErrorHandler {
                 || UnclearExpressionException.class.equals(e.getClass())
                 || MissingCodeBlockException.class.equals(e.getClass())
                 || UnclosedParenthesesException.class.equals(e.getClass())
-                || MissingAssignmentOperatorException.class.equals(e.getClass());
+                || MissingAssignmentOperatorException.class.equals(e.getClass())
+                || AmbiguousExpressionException.class.equals(e.getClass());
     }
 
     private static boolean isErrorHandleable(Exception e) {

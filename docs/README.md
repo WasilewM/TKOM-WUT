@@ -18,7 +18,8 @@ języka. Z odcinków można budować figury geometryczne. Kolekcja figur tworzy 
     1. Tekstowy: `String`
     1. Wbudowane typy obiektowe: `Point`, `Section`, `Figure`, `Scene` (opisy tych typów przedstawiony jest niżej)
     1. Kolekcja - lista: `List`. Do kolejnych elementów listy można odwoływać się poprzez indeksy: `someList[i]`.
-       Ponadto. type `List` posiada wbudowane funkcje `add` do dodania elementu na koniec listy oraz `pop` do usunięcia
+       Ponadto. type `List` posiada wbudowane funkcje `add` do dodania elementu na koniec listy, `get(int i)` do
+       sięgania do wskazanego elementu listy oraz `pop` do usunięcia
        ostatniego elementu z listy. Opis tego typu również znajduje się poniżej.
     1. Typ boole'owski: `Bool` o wartościach `True` i `False`.
 1. Komentarze oznacza się znakami `#`. Komentarze obowiązują do końca linii.
@@ -280,6 +281,10 @@ public class List {
         list.add(o);
 	}
 	
+	public Object get(int i) {
+	    return list[i];
+	}
+	
 	public void pop() {
 	    list.remove(list.size() - 1);
 	}
@@ -357,9 +362,9 @@ functionType            = parameter
 codeBlock               = "{", { stmnt }, "}"
 stmnt                   = ifStmnt
                            | whileStmnt
-                           | functionCall
                            | assignmentStmnt
                            | returnStmnt
+                           | objectAccessStmnt
 ifStmnt                 = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseifStmnt }, [ elseStmnt ]
 elseifStmnt             = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}"
 elseStmnt               = "else", "(", alternativeExp, ")", "{", codeBlock, "}"
@@ -370,6 +375,12 @@ parameters              = paremater, ",", { parameter }
 parameter               = dataType, identifier
 
 
+objectAccessStmnt       = objectAccessExp, ";"
+objectAccessExp         = identOrFuncCallExp, { ".", identOrFuncCallExp }
+identOrFuncCallExp      = identifier, { "(", [ alternativeExp ], ")" }
+identifier              = letter { digit | literal }
+
+
 alternativeExp          = conjunctiveExp, { orOper, conjunctiveExp }
 conjunctiveExp          = comparisonExp, { andOper, comparisonExp }
 comparisonExp           = additiveExp, [ comparisonOper, additiveExp ]
@@ -377,7 +388,7 @@ additiveExp             = multiplicativeExp, { additiveOper, multiplicativeExp }
 multiplicativeExp       = factor, { multiplicativeOper, factor }
 factor                  = [ notOper ] ( parenthesesExp | assignableValue )
 parenthesesExp          = "(", alternativeExp, ")"
-assignableValue         = objectAccess
+assignableValue         = objectAccessExp
                            | stringValue
                            | intValue
                            | doubleValue
@@ -387,18 +398,6 @@ assignableValue         = objectAccess
                            | figureValue
                            | sceneValue
                            | listValue
-                                                   
-                           
-        # EBNF
-        # parseObjectAccessExpressionOrStatement, 5 węzłów na 3 produkcjach
-        # objectAccess implements IExpression / IStatement
-        # objectAccess = memberAccess, { ".", memberAccess }
-        # memberAccess = identifierOrFunctionCall, [ listAccess ]
-        # listAccess =  "[", alternativeExp, "]" 
-        
-                        
-identifierOrFuntionCall = identifier, { "(", [ alternativeExp ], ")" } ";"
-identifier              = letter { digit | literal }
 
 
 doubleValue             = intValue, [ ".", intValue ]
@@ -633,49 +632,49 @@ Int doSomeMath(Int n) {
    return result;
 }
 
-List mergeSort(List n) {
+List[Int] mergeSort(List[Int] n) {
     if (n.length() == 1) {
         return n;
     }
     
     # get a list of items from List n from index 0 to index n.length() // 2 (exclusively)
-    List leftHalf = List();
+    List[Int] leftHalf = List();
     int l = 0;
     while (l < (n.length() // 2)) {
-        leftHalf.add(n[l]);
+        leftHalf.add(n.get(l));
         l += 1;
     }
     
     # get a list of items from List n from index n.length() // 2 (inclusively) to the last element
-    List rightHalf = List();
+    List[Int] rightHalf = List();
     int r = n.length() // 2;
     while (r < n.length()) {
-        rightHalf.add(n[r]);
+        rightHalf.add(n.get(r));
         r += 1;
     }
     
-    List sortedLeftHalf = mergeSort(leftHalf);
-    List sortedRightHalf = mergeSort(rightHalf);
+    List[Int] sortedLeftHalf = mergeSort(leftHalf);
+    List[Int] sortedRightHalf = mergeSort(rightHalf);
     
     int i = 0;
     int j = 0;
-    List sortedList = List();
+    List[Int] sortedList = List();
     
     while (i < sortedLeftHalf.length() && j < sortedRightHalf.length()) {
         if (i == sortedLeftHalf.length() && j < sortedRightHalf.length()) {
-            sortedList.add(sortedRightHalf[j]);
+            sortedList.add(sortedRightHalf.get(j));
             j += 1;
         }
         elseif (i < sortedLeftHalf.length() && j == sortedRightHalf.length()) {
-            sortedList.add(sortedLeftHalf[i]);
+            sortedList.add(sortedLeftHalf.get(i));
             i += 1;
         }
-        elseif (sortedLeftHalf[i] < sortedRightHalf[j]) {
-            sortedList.add(sortedLeftHalf[i]);
+        elseif (sortedLeftHalf.get(i) < sortedRightHalf.get(j)) {
+            sortedList.add(sortedLeftHalf.get(i));
             i += 1;
         }
         else {
-            sortedList.add(sortedRightHalf[j]);
+            sortedList.add(sortedRightHalf.get(j));
             j += 1;
         }
     }
@@ -692,7 +691,7 @@ Int main() {
 	Section l = Section(b, c);
 	Section m = Section(c, a);
 	
-	List sections = List();
+	List[Section] sections = List();
 	sections.add(k);
 	sections.add(l);
 	sections.add(m);
