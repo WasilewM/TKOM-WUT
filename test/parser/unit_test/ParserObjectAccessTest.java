@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.program_components.*;
 import parser.program_components.function_definitions.IntFunctionDef;
+import parser.program_components.statements.IfStatement;
 import parser.program_components.statements.ReturnStatement;
 import parser.utils.MockedExitErrorHandler;
 import parser.utils.MockedLexer;
@@ -37,7 +38,6 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(10, 10), TokenTypeEnum.DOT),
                                         new StringToken("func2", new Position(12, 5), TokenTypeEnum.IDENTIFIER),
                                         new Token(new Position(13, 7), TokenTypeEnum.SEMICOLON),
-                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -54,7 +54,6 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(10, 10), TokenTypeEnum.LEFT_BRACKET),
                                         new Token(new Position(10, 10), TokenTypeEnum.RIGHT_BRACKET),
                                         new Token(new Position(13, 7), TokenTypeEnum.SEMICOLON),
-                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
@@ -72,11 +71,31 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(12, 9), TokenTypeEnum.LEFT_BRACKET),
                                         new Token(new Position(12, 10), TokenTypeEnum.RIGHT_BRACKET),
                                         new Token(new Position(13, 7), TokenTypeEnum.SEMICOLON),
-                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
                                     put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2")))))));
+                                }}
+                        )
+
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(8, 5), TokenTypeEnum.IF_KEYWORD),
+                                        new Token(new Position(8, 15), TokenTypeEnum.LEFT_BRACKET),
+                                        new StringToken("func1", new Position(10, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(10, 10), TokenTypeEnum.DOT),
+                                        new StringToken("func2", new Position(12, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(12, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(12, 10), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(13, 25), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(14, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(15, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new IfStatement(new Position(8, 5), new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2"))), new CodeBlock(new Position(14, 1), new ArrayList<>()))))));
                                 }}
                         )
 
