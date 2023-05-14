@@ -176,6 +176,8 @@ public class Parser implements IParser {
 
         if (consumeIf(TokenTypeEnum.ASSIGNMENT_OPERATOR)) {
             return parseRestOfAssignmentStatement(position, param);
+        } else if (exp == null) {
+            errorHandler.handle(new AmbiguousExpressionException(currentToken.toString()));
         }
 
         return parseRestOfObjectAccessStatement(position, exp);
@@ -192,28 +194,13 @@ public class Parser implements IParser {
     /*
         objectAccessStmnt       = objectAccessExp, ";"
         objectAccessExp         = memberAccessExp, { ".", memberAccessExp }
-        memberAccessExp         = identOrFuncCallExp, [ listAccessExp ]
-        listAccessExp           = "[", alternativeExp, "]"
+        memberAccessExp         = identOrFuncCallExp, [ "[", alternativeExp, "]" ]
         identOrFuncCallExp      = identifier, { "(", [ alternativeExp ], ")" }
     */
     private IStatement parseRestOfObjectAccessStatement(Position position, IExpression leftExp) {
-        if (!consumeIf(TokenTypeEnum.DOT)) {
-            errorHandler.handle(new AmbiguousExpressionException(currentToken.toString()));
-        }
-        IExpression rightExp = parseIdentifierOrFunctionCallExpression();
-        registerErrorIfExpIsMissing(rightExp);
-        ObjectAccess objectAccessStmnt = new ObjectAccess(position, leftExp, rightExp);
-
-        position = currentToken.getPosition();
-        while (consumeIf(TokenTypeEnum.DOT)) {
-            rightExp = parseIdentifierOrFunctionCallExpression();
-            registerErrorIfExpIsMissing(rightExp);
-            objectAccessStmnt = new ObjectAccess(position, objectAccessStmnt, rightExp);
-            position = currentToken.getPosition();
-        }
-
+        IExpression exp = parseRestOfObjectAccessExpression(position, leftExp);
         parseSemicolonWithoutReturningIt();
-        return objectAccessStmnt;
+        return (IStatement) exp;
     }
 
     /* ifStmnt = "if", "(", alternativeExp, ")", "{", codeBlock, "}", { elseifStmnt }, [ elseStmnt ] */
@@ -877,14 +864,25 @@ public class Parser implements IParser {
         Position position = currentToken.getPosition();
         IExpression leftExp = parseIdentifierOrFunctionCallExpression();
 
+        return parseRestOfObjectAccessExpression(position, leftExp);
+    }
+
+    private IExpression parseRestOfObjectAccessExpression(Position position, IExpression leftExp) {
         if (!consumeIf(TokenTypeEnum.DOT)) {
             return leftExp;
         }
-
         IExpression rightExp = parseIdentifierOrFunctionCallExpression();
         registerErrorIfExpIsMissing(rightExp);
+        ObjectAccess objectAccessExp = new ObjectAccess(position, leftExp, rightExp);
 
-        return new ObjectAccess(position, leftExp, rightExp);
+        position = currentToken.getPosition();
+        while (consumeIf(TokenTypeEnum.DOT)) {
+            rightExp = parseIdentifierOrFunctionCallExpression();
+            registerErrorIfExpIsMissing(rightExp);
+            objectAccessExp = new ObjectAccess(position, objectAccessExp, rightExp);
+            position = currentToken.getPosition();
+        }
+        return objectAccessExp;
     }
 
     private String parseIdentifierName() {
