@@ -1,293 +1,282 @@
 package visitor;
 
+import parser.IExpression;
 import parser.IFunctionDef;
+import parser.IParameter;
+import parser.IStatement;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
 import parser.program_components.expressions.*;
-import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 
 public class ProgramPrinterVisitor implements IVisitor {
     private String prefix = "";
 
+
+    // values
     @Override
-    public void visit(BoolListValue boolListValue) {
+    public void visit(BoolListValue val) {
 
     }
 
     @Override
-    public void visit(BoolValue boolValue) {
+    public void visit(BoolValue val) {
 
     }
 
     @Override
-    public void visit(DoubleListValue doubleListValue) {
+    public void visit(DoubleListValue val) {
 
     }
 
     @Override
-    public void visit(DoubleValue doubleValue) {
+    public void visit(DoubleValue val) {
 
     }
 
     @Override
-    public void visit(FigureListValue figureListValue) {
+    public void visit(FigureListValue val) {
 
     }
 
     @Override
-    public void visit(FigureValue figureValue) {
+    public void visit(FigureValue val) {
 
     }
 
     @Override
-    public void visit(IntListValue intListValue) {
+    public void visit(IntListValue val) {
 
     }
 
     @Override
-    public void visit(IntValue intValue) {
+    public void visit(IntValue val) {
 
     }
 
     @Override
-    public void visit(PointListValue pointListValue) {
+    public void visit(PointListValue val) {
 
     }
 
     @Override
-    public void visit(PointValue pointValue) {
+    public void visit(PointValue val) {
 
     }
 
     @Override
-    public void visit(SceneListValue sceneListValue) {
+    public void visit(SceneListValue val) {
 
     }
 
     @Override
-    public void visit(SceneValue sceneValue) {
+    public void visit(SceneValue val) {
 
     }
 
     @Override
-    public void visit(SectionListValue sectionListValue) {
+    public void visit(SectionListValue val) {
 
     }
 
     @Override
-    public void visit(SectionValue sectionValue) {
+    public void visit(SectionValue val) {
 
     }
 
     @Override
-    public void visit(StringListValue stringListValue) {
+    public void visit(StringListValue val) {
 
     }
 
     @Override
-    public void visit(StringValue stringValue) {
+    public void visit(StringValue val) {
+
+    }
+
+
+    // expressions
+    public void visit(IExpression exp) {
 
     }
 
     @Override
-    public void visit(AdditionExpression additionExpression) {
+    public void visit(AdditionExpression exp) {
 
     }
 
     @Override
-    public void visit(AlternativeExpression alternativeExpression) {
+    public void visit(AlternativeExpression exp) {
 
     }
 
     @Override
-    public void visit(ConjunctiveExpression conjunctiveExpression) {
+    public void visit(ConjunctiveExpression exp) {
 
     }
 
     @Override
-    public void visit(DiscreteDivisionExpression discreteDivisionExpression) {
+    public void visit(DiscreteDivisionExpression exp) {
 
     }
 
     @Override
-    public void visit(DivisionExpression divisionExpression) {
+    public void visit(DivisionExpression exp) {
 
     }
 
     @Override
-    public void visit(EqualExpression equalExpression) {
+    public void visit(EqualExpression exp) {
 
     }
 
     @Override
-    public void visit(GreaterOrEqualExpression greaterOrEqualExpression) {
+    public void visit(GreaterOrEqualExpression exp) {
 
     }
 
     @Override
-    public void visit(GreaterThanExpression greaterThanExpression) {
+    public void visit(GreaterThanExpression exp) {
 
     }
 
     @Override
-    public void visit(LessOrEqualExpression lessOrEqualExpression) {
+    public void visit(LessOrEqualExpression exp) {
 
     }
 
     @Override
-    public void visit(LessThanExpression lessThanExpression) {
+    public void visit(LessThanExpression exp) {
 
     }
 
     @Override
-    public void visit(MultiplicationExpression multiplicationExpression) {
+    public void visit(MultiplicationExpression exp) {
 
     }
 
     @Override
-    public void visit(NegatedExpression negatedExpression) {
+    public void visit(NegatedExpression exp) {
 
     }
 
     @Override
-    public void visit(NotEqualExpression notEqualExpression) {
+    public void visit(NotEqualExpression exp) {
 
     }
 
     @Override
-    public void visit(ParenthesesExpression parenthesesExpression) {
+    public void visit(ParenthesesExpression exp) {
 
     }
 
     @Override
-    public void visit(SubtractionExpression subtractionExpression) {
+    public void visit(SubtractionExpression exp) {
 
     }
 
     @Override
     public void visit(IFunctionDef func) {
-        printWithPrefix(func.getClass() + " " + func.name() + " at " + func.position().toString());
+        printWithPrefix(func.getClass() + " \"" + func.name() + "\" at " + func.position().toString());
+        increaseIntend();
+        for (IParameter p : func.parameters().values()) {
+            visit(p);
+        }
+        visit(func.functionCode());
+        decreaseIntend();
     }
 
     @Override
-    public void visit(BoolListParameter boolListParameter) {
+    public void visit(IParameter param) {
+        printWithPrefix(param.getClass() + " \"" + param.name() + "\" at " + param.position().toString());
+    }
 
+
+    // statements
+    public void visit(IStatement stmnt) {
+        if (stmnt.getClass().equals(AssignmentStatement.class)) {
+            visit((AssignmentStatement) stmnt);
+        } else if (stmnt.getClass().equals(ElseIfStatement.class)) {
+            visit((ElseIfStatement) stmnt);
+        } else if (stmnt.getClass().equals(ElseStatement.class)) {
+            visit((ElseStatement) stmnt);
+        } else if (stmnt.getClass().equals(IfStatement.class)) {
+            visit((IfStatement) stmnt);
+        } else if (stmnt.getClass().equals(ReturnStatement.class)) {
+            visit((ReturnStatement) stmnt);
+        } else if (stmnt.getClass().equals(WhileStatement.class)) {
+            visit((WhileStatement) stmnt);
+        } else {
+            visit((ObjectAccess) stmnt);
+        }
     }
 
     @Override
-    public void visit(BoolParameter boolParameter) {
-
+    public void visit(AssignmentStatement stmnt) {
+        printWithPrefix(stmnt.getClass() + " at " + stmnt.position().toString());
+        increaseIntend();
+        visit(stmnt.exp());
+        decreaseIntend();
     }
 
     @Override
-    public void visit(DoubleListParameter doubleListParameter) {
-
-    }
-
-    @Override
-    public void visit(DoubleParameter doubleParameter) {
-
-    }
-
-    @Override
-    public void visit(FigureListParameter figureListParameter) {
-
-    }
-
-    @Override
-    public void visit(FigureParameter figureParameter) {
-
-    }
-
-    @Override
-    public void visit(IntListParameter intListParameter) {
-
-    }
-
-    @Override
-    public void visit(IntParameter intParameter) {
-
-    }
-
-    @Override
-    public void visit(PointListParameter pointListParameter) {
-
-    }
-
-    @Override
-    public void visit(PointParameter pointParameter) {
-
-    }
-
-    @Override
-    public void visit(ReassignedParameter reassignedParameter) {
+    public void visit(ElseIfStatement stmnt) {
+        printWithPrefix(stmnt.getClass() + " at " + stmnt.position().toString());
+        increaseIntend();
+        visit(stmnt.exp());
+        visit(stmnt.codeBlock());
+        decreaseIntend();
 
     }
 
     @Override
-    public void visit(SceneListParameter sceneListParameter) {
+    public void visit(ElseStatement stmnt) {
+        printWithPrefix(stmnt.getClass() + " at " + stmnt.position().toString());
+        increaseIntend();
+        visit(stmnt.exp());
+        visit(stmnt.codeBlock());
+        decreaseIntend();
+    }
+
+    @Override
+    public void visit(IfStatement stmnt) {
+        printWithPrefix(stmnt.getClass() + " at " + stmnt.position().toString());
+        increaseIntend();
+        visit(stmnt.exp());
+        visit(stmnt.codeBlock());
+
+        increaseIntend();
+        for (ElseIfStatement e : stmnt.elseIfStmnts()) {
+            visit(e);
+        }
+        visit(stmnt.elseExp());
+        decreaseIntend();
+
+        decreaseIntend();
+    }
+
+    @Override
+    public void visit(ReturnStatement stmnt) {
 
     }
 
     @Override
-    public void visit(SceneParameter sceneParameter) {
+    public void visit(WhileStatement stmnt) {
 
     }
 
+    // other
     @Override
-    public void visit(SectionListParameter sectionListParameter) {
+    public void visit(CodeBlock block) {
+        printWithPrefix(block.getClass() + " at " + block.position().toString());
+        String previousPrefix = prefix;
+        increaseIntend();
 
-    }
+        for (IStatement stmnt : block.statements()) {
+            visit(stmnt);
+        }
 
-    @Override
-    public void visit(SectionParameter sectionParameter) {
-
-    }
-
-    @Override
-    public void visit(StringListParameter stringListParameter) {
-
-    }
-
-    @Override
-    public void visit(StringParameter stringParameter) {
-
-    }
-
-    @Override
-    public void visit(AssignmentStatement assignmentStatement) {
-
-    }
-
-    @Override
-    public void visit(ElseIfStatement elseIfStatement) {
-
-    }
-
-    @Override
-    public void visit(ElseStatement elseStatement) {
-
-    }
-
-    @Override
-    public void visit(IfStatement ifStatement) {
-
-    }
-
-    @Override
-    public void visit(ReturnStatement returnStatement) {
-
-    }
-
-    @Override
-    public void visit(WhileStatement whileStatement) {
-
-    }
-
-    @Override
-    public void visit(CodeBlock codeBlock) {
-
+        prefix = previousPrefix;
     }
 
     @Override
@@ -308,10 +297,19 @@ public class ProgramPrinterVisitor implements IVisitor {
     @Override
     public void visit(Program program) {
         printWithPrefix(program.getClass() + " " + program.position().toString());
-        prefix += "  ";
+        String previousPrefix = prefix;
+        increaseIntend();
         for (IFunctionDef f : program.functions().values()) {
             visit(f);
         }
+        decreaseIntend();
+    }
+
+    private void increaseIntend() {
+        prefix += "  ";
+    }
+
+    private void decreaseIntend() {
         prefix = prefix.substring(0, prefix.length() - 2);
     }
 

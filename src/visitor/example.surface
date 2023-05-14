@@ -1,4 +1,4 @@
-Int main() {
+Int main(Int a) {
 	Point a = Point(1.01, 2.20);
 	Point b = Point(3.03, 7.70);
 	Point c = Point(11.11, 19.09);
