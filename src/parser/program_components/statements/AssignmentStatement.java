@@ -4,7 +4,7 @@ import lexer.Position;
 import parser.IExpression;
 import parser.IParameter;
 import parser.IStatement;
-import parser.IVisitor;
+import visitor.IVisitor;
 
 public record AssignmentStatement(Position position, IParameter param, IExpression exp) implements IStatement {
     @Override

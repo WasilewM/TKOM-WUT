@@ -3,7 +3,7 @@ package parser.program_components.statements;
 import lexer.Position;
 import parser.IExpression;
 import parser.IStatement;
-import parser.IVisitor;
+import visitor.IVisitor;
 import parser.program_components.CodeBlock;
 
 import java.util.ArrayList;

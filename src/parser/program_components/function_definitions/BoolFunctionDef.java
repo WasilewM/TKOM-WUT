@@ -3,7 +3,7 @@ package parser.program_components.function_definitions;
 import lexer.Position;
 import parser.IFunctionDef;
 import parser.IParameter;
-import parser.IVisitor;
+import visitor.IVisitor;
 import parser.program_components.CodeBlock;
 import parser.program_components.parameters.BoolParameter;
 

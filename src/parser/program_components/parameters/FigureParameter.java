@@ -2,7 +2,7 @@ package parser.program_components.parameters;
 
 import lexer.Position;
 import parser.IParameter;
-import parser.IVisitor;
+import visitor.IVisitor;
 
 public record FigureParameter(Position position, String name) implements IParameter {
 

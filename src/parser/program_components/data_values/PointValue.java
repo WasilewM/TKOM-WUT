@@ -2,7 +2,7 @@ package parser.program_components.data_values;
 
 import lexer.Position;
 import parser.IExpression;
-import parser.IVisitor;
+import visitor.IVisitor;
 
 public record PointValue(Position position, IExpression x, IExpression y) implements IExpression {
     @Override

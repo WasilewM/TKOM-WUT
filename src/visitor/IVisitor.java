@@ -1,4 +1,4 @@
-package parser;
+package visitor;
 
 import parser.program_components.*;
 import parser.program_components.data_values.*;
