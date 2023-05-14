@@ -638,7 +638,7 @@ List[Int] mergeSort(List[Int] n) {
     }
     
     # get a list of items from List n from index 0 to index n.length() // 2 (exclusively)
-    List[Int] leftHalf = List();
+    List[Int] leftHalf = [Int];
     int l = 0;
     while (l < (n.length() // 2)) {
         leftHalf.add(n.get(l));
@@ -646,7 +646,7 @@ List[Int] mergeSort(List[Int] n) {
     }
     
     # get a list of items from List n from index n.length() // 2 (inclusively) to the last element
-    List[Int] rightHalf = List();
+    List[Int] rightHalf = [Int];
     int r = n.length() // 2;
     while (r < n.length()) {
         rightHalf.add(n.get(r));
@@ -658,7 +658,7 @@ List[Int] mergeSort(List[Int] n) {
     
     int i = 0;
     int j = 0;
-    List[Int] sortedList = List();
+    List[Int] sortedList = [Int];
     
     while (i < sortedLeftHalf.length() && j < sortedRightHalf.length()) {
         if (i == sortedLeftHalf.length() && j < sortedRightHalf.length()) {
@@ -691,12 +691,12 @@ Int main() {
 	Section l = Section(b, c);
 	Section m = Section(c, a);
 	
-	List[Section] sections = List();
+	List[Section] sections = [Section];
 	sections.add(k);
 	sections.add(l);
 	sections.add(m);
 	
-	Scene s1 = Scene()
+	Scene s1 = Scene();
 	s1.add(k);
 	s2.add(l);
 	s3.add(m);

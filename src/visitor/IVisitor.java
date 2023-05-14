@@ -1,9 +1,9 @@
 package visitor;
 
+import parser.IFunctionDef;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
 import parser.program_components.expressions.*;
-import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 
@@ -75,37 +75,39 @@ public interface IVisitor {
 
 
     // function_definitions
-    void visit(BoolFunctionDef boolFunctionDef);
+    void visit(IFunctionDef f);
 
-    void visit(BoolListFunctionDef boolListFunctionDef);
-
-    void visit(DoubleFunctionDef doubleFunctionDef);
-
-    void visit(DoubleListFunctionDef doubleListFunctionDef);
-
-    void visit(FigureFunctionDef figureFunctionDef);
-
-    void visit(FigureListFunctionDef figureListFunctionDef);
-
-    void visit(IntFunctionDef intFunctionDef);
-
-    void visit(IntListFunctionDef intListFunctionDef);
-
-    void visit(PointFunctionDef pointFunctionDef);
-
-    void visit(PointListFunctionDef pointListFunctionDef);
-
-    void visit(SceneFunctionDef sceneFunctionDef);
-
-    void visit(SceneListFunctionDef sceneListFunctionDef);
-
-    void visit(SectionFunctionDef sectionFunctionDef);
-
-    void visit(SectionListFunctionDef sectionListFunctionDef);
-
-    void visit(StringFunctionDef stringFunctionDef);
-
-    void visit(StringListFunctionDef stringListFunctionDef);
+//    void visit(BoolFunctionDef boolFunctionDef);
+//
+//    void visit(BoolListFunctionDef boolListFunctionDef);
+//
+//    void visit(DoubleFunctionDef doubleFunctionDef);
+//
+//    void visit(DoubleListFunctionDef doubleListFunctionDef);
+//
+//    void visit(FigureFunctionDef figureFunctionDef);
+//
+//    void visit(FigureListFunctionDef figureListFunctionDef);
+//
+//    void visit(IntFunctionDef intFunctionDef);
+//
+//    void visit(IntListFunctionDef intListFunctionDef);
+//
+//    void visit(PointFunctionDef pointFunctionDef);
+//
+//    void visit(PointListFunctionDef pointListFunctionDef);
+//
+//    void visit(SceneFunctionDef sceneFunctionDef);
+//
+//    void visit(SceneListFunctionDef sceneListFunctionDef);
+//
+//    void visit(SectionFunctionDef sectionFunctionDef);
+//
+//    void visit(SectionListFunctionDef sectionListFunctionDef);
+//
+//    void visit(StringFunctionDef stringFunctionDef);
+//
+//    void visit(StringListFunctionDef stringListFunctionDef);
 
 
     // parameters

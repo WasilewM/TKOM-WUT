@@ -1,0 +1,19 @@
+Int main() {
+	Point a = Point(1.01, 2.20);
+	Point b = Point(3.03, 7.70);
+	Point c = Point(11.11, 19.09);
+
+	Section k = Section(a, b);
+	Section l = Section(b, c);
+	Section m = Section(c, a);
+
+	List[Section] sections = [Section];
+	sections.add(k);
+	sections.add(l);
+	sections.add(m);
+
+	Scene s1 = Scene();
+	s1.add(k);
+	s2.add(l);
+	s3.add(m);
+}

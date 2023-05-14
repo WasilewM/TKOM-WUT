@@ -5,7 +5,11 @@ import parser.IExpOrStmnt;
 import parser.IExpression;
 import visitor.IVisitor;
 
-public record FunctionCall(Position position, IExpression identifier) implements IExpOrStmnt {
+public record FunctionCall(Position position, IExpression identifier, IExpression exp) implements IExpOrStmnt {
+
+    public FunctionCall(Position position, Identifier identifier) {
+        this(position, identifier, null);
+    }
 
     @Override
     public void accept(IVisitor visitor) {
