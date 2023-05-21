@@ -1,4 +1,21 @@
-Int main(Int a) {
+Int doSomeMath(Int n) {
+   # alternativeExp bellow could be simplified by it has been written this way on purpose,
+   # to show how logical operators will work
+   if (n < 0 || n == 0 || n == 1) {
+      return 1;
+   }
+
+   Int i = 2;
+   Int result = 0;
+   while (i < n) {
+      result = result - i * (i + n - i);
+      i = i + 3;
+   }
+
+   return result;
+}
+
+Int main() {
 	Point a = Point(1.01, 2.20);
 	Point b = Point(3.03, 7.70);
 	Point c = Point(11.11, 19.09);

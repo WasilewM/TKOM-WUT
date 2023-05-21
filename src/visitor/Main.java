@@ -20,7 +20,8 @@ public class Main {
         FileReader fr = new FileReader(filename);
         BufferedReader br = new BufferedReader(fr);
         Lexer myLexer = new Lexer(br);
-        Parser myParser = new Parser(myLexer, errorHandler);
+        CommentFilter commentFilter = new CommentFilter(myLexer);
+        Parser myParser = new Parser(commentFilter, errorHandler);
         Program program = myParser.parse();
         IVisitor visitor = new ProgramPrinterVisitor();
         program.accept(visitor);

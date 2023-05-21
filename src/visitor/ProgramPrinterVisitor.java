@@ -231,11 +231,13 @@ public class ProgramPrinterVisitor implements IVisitor {
 
     @Override
     public void visit(ElseStatement stmnt) {
-        printWithPrefix(stmnt.getClass() + " at " + stmnt.position().toString());
-        increaseIntend();
-        visit(stmnt.exp());
-        visit(stmnt.codeBlock());
-        decreaseIntend();
+        if (stmnt.position() != null && stmnt.exp() != null && stmnt.codeBlock() != null) {
+            printWithPrefix(stmnt.getClass() + " at " + stmnt.position());
+            increaseIntend();
+            visit(stmnt.exp());
+            visit(stmnt.codeBlock());
+            decreaseIntend();
+        }
     }
 
     @Override
@@ -302,7 +304,7 @@ public class ProgramPrinterVisitor implements IVisitor {
         for (IFunctionDef f : program.functions().values()) {
             visit(f);
         }
-        decreaseIntend();
+        prefix = previousPrefix;
     }
 
     private void increaseIntend() {
