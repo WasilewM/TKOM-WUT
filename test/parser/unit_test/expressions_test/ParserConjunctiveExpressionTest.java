@@ -108,6 +108,26 @@ public class ParserConjunctiveExpressionTest {
                                     put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new ConjunctiveExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident1"), new SubtractionExpression(new Position(5, 5), new MultiplicationExpression(new Position(3, 1), new Identifier(new Position(2, 15), "ident2"), new Identifier(new Position(4, 5), "ident3")), new Identifier(new Position(6, 5), "ident4"))), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new StringToken("ident1", new Position(2, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(2, 12), TokenTypeEnum.AND_OPERATOR),
+                                        new StringToken("ident2", new Position(2, 15), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(3, 1), TokenTypeEnum.MULTIPLICATION_OPERATOR),
+                                        new StringToken("ident3", new Position(4, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(5, 5), TokenTypeEnum.SUBTRACTION_OPERATOR),
+                                        new StringToken("ident4", new Position(6, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(50, 1), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(51, 1), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(52, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new ConjunctiveExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident1"), new SubtractionExpression(new Position(5, 5), new MultiplicationExpression(new Position(3, 1), new Identifier(new Position(2, 15), "ident2"), new Identifier(new Position(4, 5), "ident3")), new Identifier(new Position(6, 5), "ident4"))), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                }}
+                        )
                 )
         );
     }
