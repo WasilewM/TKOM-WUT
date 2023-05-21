@@ -3,7 +3,7 @@ package parser.program_components.statements;
 import lexer.Position;
 import parser.IExpression;
 import parser.IStatement;
-import visitor.IVisitor;
+import visitors.IVisitor;
 
 public record ReturnStatement(Position position, IExpression exp) implements IStatement {
     @Override

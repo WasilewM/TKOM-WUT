@@ -3,7 +3,7 @@ package parser.program_components;
 import lexer.Position;
 import parser.IExpOrStmnt;
 import parser.IExpression;
-import visitor.IVisitor;
+import visitors.IVisitor;
 
 public record FunctionCall(Position position, IExpression identifier, IExpression exp) implements IExpOrStmnt {
 

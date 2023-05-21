@@ -1,4 +1,4 @@
-package visitor;
+package visitors;
 
 import lexer.Lexer;
 import parser.ErrorHandler;
@@ -12,10 +12,10 @@ import java.io.FileReader;
 public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
-        String filename = "src/visitor/example.surface";
+        String filename = "src/visitors/example.surface";
         ErrorHandler errorHandler = new ErrorHandler();
         if (args.length == 1) {
-            filename = "src/visitor/example.surface" + args[0];
+            filename = "src/visitors/example.surface" + args[0];
         }
         FileReader fr = new FileReader(filename);
         BufferedReader br = new BufferedReader(fr);

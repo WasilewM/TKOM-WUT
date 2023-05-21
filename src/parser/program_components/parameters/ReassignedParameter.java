@@ -2,7 +2,7 @@ package parser.program_components.parameters;
 
 import lexer.Position;
 import parser.IParameter;
-import visitor.IVisitor;
+import visitors.IVisitor;
 import parser.program_components.Identifier;
 
 public record ReassignedParameter(Position position, String name) implements IParameter {

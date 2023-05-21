@@ -1,4 +1,4 @@
-package visitor;
+package visitors;
 
 import parser.IFunctionDef;
 import parser.IParameter;

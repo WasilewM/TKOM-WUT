@@ -2,7 +2,7 @@ package parser.program_components.expressions;
 
 import lexer.Position;
 import parser.IExpression;
-import visitor.IVisitor;
+import visitors.IVisitor;
 
 public record MultiplicationExpression(Position position, IExpression leftExp,
                                        IExpression rightExp) implements IExpression {
