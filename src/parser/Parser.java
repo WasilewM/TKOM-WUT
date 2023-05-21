@@ -239,11 +239,7 @@ public class Parser implements IParser {
     private ElseStatement parseElseStatement() {
         Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
-            parseLeftBracketWithoutReturningIt();
-            IExpression exp = parseAlternativeExpression();
-            registerErrorIfExpIsMissing(exp);
-            parseRightBracketWithoutReturningIt();
-
+            IExpression exp = parseConditionExpression();
             CodeBlock elseCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseCodeBlock);
 
@@ -259,11 +255,7 @@ public class Parser implements IParser {
             return null;
         }
 
-        parseLeftBracketWithoutReturningIt();
-        IExpression exp = parseAlternativeExpression();
-        registerErrorIfExpIsMissing(exp);
-        parseRightBracketWithoutReturningIt();
-
+        IExpression exp = parseConditionExpression();
         CodeBlock codeBlock = parseCodeBlock();
         registerErrorIfCodeBlockIsMissing(codeBlock);
         return new WhileStatement(position, exp, codeBlock);
