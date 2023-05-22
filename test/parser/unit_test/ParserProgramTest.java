@@ -15,7 +15,7 @@ import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.DoubleParameter;
 import parser.program_components.parameters.IntParameter;
 import parser.program_components.parameters.StringParameter;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
@@ -373,7 +373,7 @@ public class ParserProgramTest {
     @Test
     void parserInit() {
         ArrayList<Token> tokens = new ArrayList<>();
-        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
+        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitParserErrorHandler());
 
         assertNotNull(parser);
     }
@@ -382,7 +382,7 @@ public class ParserProgramTest {
     @MethodSource("getTestProgramData")
     void parseProgram(ParserSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
-        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
+        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitParserErrorHandler());
         Program program = parser.parse();
 
         assertEquals(testParams.expectedFunctions(), program.functions());

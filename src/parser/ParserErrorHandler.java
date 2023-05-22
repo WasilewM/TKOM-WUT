@@ -4,10 +4,10 @@ import parser.exceptions.*;
 
 import java.util.ArrayList;
 
-public class ErrorHandler {
+public class ParserErrorHandler implements IErrorHandler {
     private final ArrayList<Exception> errorLogs;
 
-    public ErrorHandler() {
+    public ParserErrorHandler() {
         errorLogs = new ArrayList<>();
     }
 
@@ -35,10 +35,12 @@ public class ErrorHandler {
                 || MissingCommaException.class.equals(e.getClass());
     }
 
+    @Override
     public ArrayList<Exception> getErrorLog() {
         return errorLogs;
     }
 
+    @Override
     public void handle(Exception e) {
         if (isErrorCritical(e)) {
             errorLogs.add(e);

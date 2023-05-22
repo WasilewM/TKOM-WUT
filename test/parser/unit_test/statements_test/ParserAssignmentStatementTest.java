@@ -17,7 +17,7 @@ import parser.program_components.data_values.*;
 import parser.program_components.function_definitions.BoolFunctionDef;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
@@ -335,7 +335,7 @@ public class ParserAssignmentStatementTest {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalTestParams.tokens());
 
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         Program program = parser.parse();
 

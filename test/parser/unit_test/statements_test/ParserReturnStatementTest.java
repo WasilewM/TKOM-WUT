@@ -15,7 +15,7 @@ import parser.program_components.Program;
 import parser.program_components.data_values.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.statements.ReturnStatement;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
@@ -241,7 +241,7 @@ public class ParserReturnStatementTest {
     @MethodSource("getReturnExpressionProgramData")
     void parseReturnExpression(ParserSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
-        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
+        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitParserErrorHandler());
         Program program = parser.parse();
 
         assertEquals(testParams.expectedFunctions(), program.functions());

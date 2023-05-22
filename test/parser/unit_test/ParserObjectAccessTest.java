@@ -15,7 +15,7 @@ import parser.program_components.data_values.IntValue;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.IfStatement;
 import parser.program_components.statements.ReturnStatement;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
@@ -161,7 +161,7 @@ public class ParserObjectAccessTest {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalTestParams.tokens());
 
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         Program program = parser.parse();
 

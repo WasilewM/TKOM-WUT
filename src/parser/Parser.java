@@ -17,10 +17,10 @@ import java.util.HashMap;
 
 public class Parser implements IParser {
     private final ILexer lexer;
-    private final ErrorHandler errorHandler;
+    private final IErrorHandler errorHandler;
     private Token currentToken;
 
-    public Parser(ILexer lexer, ErrorHandler errorHandler) {
+    public Parser(ILexer lexer, ParserErrorHandler errorHandler) {
         this.lexer = lexer;
         this.errorHandler = errorHandler;
         currentToken = null;

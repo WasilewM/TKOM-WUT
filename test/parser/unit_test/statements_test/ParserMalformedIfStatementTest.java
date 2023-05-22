@@ -13,7 +13,7 @@ import parser.exceptions.MissingCodeBlockException;
 import parser.exceptions.MissingExpressionException;
 import parser.exceptions.MissingLeftBracketException;
 import parser.exceptions.MissingRightBracketException;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserMalformedSingleTestParams;
 
@@ -290,7 +290,7 @@ public class ParserMalformedIfStatementTest {
     void parseMalformedIfStatement_withHandleableExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         parser.parse();
 
@@ -307,7 +307,7 @@ public class ParserMalformedIfStatementTest {
     void parseMalformedIfStatement_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         boolean wasExceptionCaught = false;
 

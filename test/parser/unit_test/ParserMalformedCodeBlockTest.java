@@ -11,7 +11,7 @@ import parser.Parser;
 import parser.exceptions.MissingLeftCurlyBracketException;
 import parser.exceptions.MissingRightCurlyBracketException;
 import parser.exceptions.MissingSemicolonException;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserMalformedSingleTestParams;
 
@@ -81,7 +81,7 @@ public class ParserMalformedCodeBlockTest {
     @MethodSource("getMalformedTestCodeBlockData_withHandleableExceptions")
     void parseMalformedFunctionDefProgram_withHandleableExceptions(ParserMalformedSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(tokens), errorHandler);
         parser.parse();
 
@@ -97,7 +97,7 @@ public class ParserMalformedCodeBlockTest {
     @MethodSource("getMalformedTestCodeBlockData_withCriticalExceptions")
     void parseMalformedFunctionDefProgram_withCriticalExceptions(ParserMalformedSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(tokens), errorHandler);
         boolean wasExceptionCaught = false;
 

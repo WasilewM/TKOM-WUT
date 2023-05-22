@@ -17,7 +17,7 @@ import parser.program_components.expressions.MultiplicationExpression;
 import parser.program_components.expressions.SubtractionExpression;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.IfStatement;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
@@ -153,7 +153,7 @@ public class ParserConjunctiveExpressionTest {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalTestParams.tokens());
 
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         Program program = parser.parse();
 

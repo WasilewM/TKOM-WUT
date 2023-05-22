@@ -1,7 +1,7 @@
 package visitors;
 
 import lexer.Lexer;
-import parser.ErrorHandler;
+import parser.ParserErrorHandler;
 import parser.Parser;
 import parser.program_components.Program;
 
@@ -13,7 +13,7 @@ public class Main {
 
     public static void main(String[] args) throws FileNotFoundException {
         String filename = "src/visitors/example.surface";
-        ErrorHandler errorHandler = new ErrorHandler();
+        ParserErrorHandler errorHandler = new ParserErrorHandler();
         if (args.length == 1) {
             filename = "src/visitors/example.surface" + args[0];
         }

@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.exceptions.MissingExpressionException;
 import parser.exceptions.MissingRightBracketException;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserMalformedSingleTestParams;
 
@@ -83,7 +83,7 @@ public class ParserMalformedObjectAccessTest {
     void getMalformedObjectAccess_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         boolean wasExceptionCaught = false;
 
@@ -107,7 +107,7 @@ public class ParserMalformedObjectAccessTest {
     void parseMalformedFunctionDefProgram_withHandleableExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         parser.parse();
 
