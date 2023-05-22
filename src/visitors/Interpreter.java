@@ -3,6 +3,7 @@ package visitors;
 import parser.IErrorHandler;
 import parser.IFunctionDef;
 import parser.IParameter;
+import parser.IStatement;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
 import parser.program_components.expressions.*;
@@ -11,11 +12,23 @@ import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 import visitors.exceptions.MissingMainFunctionException;
 
+import java.util.Map;
+import java.util.Stack;
+
 public class Interpreter implements IVisitor {
     private final IErrorHandler errorHandler;
+    private final Stack<Context> contexts;
 
     public Interpreter(IErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
+        contexts = new Stack<>();
+    }
+
+    public Context getLastContext() {
+        if (contexts.isEmpty()) {
+            return null;
+        }
+        return contexts.peek();
     }
 
     @Override
@@ -23,6 +36,154 @@ public class Interpreter implements IVisitor {
         if (!program.functions().containsKey("main")) {
             errorHandler.handle(new MissingMainFunctionException(program.functions()));
         }
+
+        IFunctionDef mainFunction = program.functions().get("main");
+        visit(mainFunction);
+        program.functions().remove("main");
+
+        for (Map.Entry<String, IFunctionDef> f : program.functions().entrySet()) {
+            visit(f.getValue());
+        }
+    }
+
+    @Override
+    public void visit(IFunctionDef f) {
+        createNewContext();
+
+        if (f.getClass().equals(IntFunctionDef.class)) {
+            visit((IntFunctionDef) f);
+        }
+
+        deleteLastContext();
+    }
+
+    @Override
+    public void visit(BoolFunctionDef boolFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(BoolListFunctionDef boolListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(DoubleFunctionDef doubleFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(DoubleListFunctionDef doubleListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(FigureFunctionDef figureFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(FigureListFunctionDef figureListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(IntFunctionDef f) {
+        visit(f.functionCode());
+    }
+
+    @Override
+    public void visit(IntListFunctionDef intListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(PointFunctionDef pointFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(PointListFunctionDef pointListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(SceneFunctionDef sceneFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(SceneListFunctionDef sceneListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(SectionFunctionDef sectionFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(SectionListFunctionDef sectionListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(StringFunctionDef stringFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(StringListFunctionDef stringListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(CodeBlock codeBlock) {
+        createNewContext();
+
+        for (IStatement s : codeBlock.statements()) {
+            visit(s);
+        }
+
+        deleteLastContext();
+    }
+
+    private void visit(IStatement stmnt) {
+        if (stmnt.getClass().equals(AssignmentStatement.class)) {
+            visit((AssignmentStatement) stmnt);
+        }
+    }
+
+
+    // statements
+    @Override
+    public void visit(AssignmentStatement stmnt) {
+        this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+    }
+
+    @Override
+    public void visit(ElseIfStatement elseIfStatement) {
+
+    }
+
+    @Override
+    public void visit(ElseStatement elseStatement) {
+
+    }
+
+    @Override
+    public void visit(IfStatement ifStatement) {
+
+    }
+
+    @Override
+    public void visit(ReturnStatement returnStatement) {
+
+    }
+
+    @Override
+    public void visit(WhileStatement whileStatement) {
+
     }
 
     // values
@@ -182,92 +343,6 @@ public class Interpreter implements IVisitor {
 
     }
 
-    // function definitions
-    @Override
-    public void visit(IFunctionDef f) {
-
-    }
-
-    @Override
-    public void visit(BoolFunctionDef boolFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(BoolListFunctionDef boolListFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(DoubleFunctionDef doubleFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(DoubleListFunctionDef doubleListFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(FigureFunctionDef figureFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(FigureListFunctionDef figureListFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(IntFunctionDef intFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(IntListFunctionDef intListFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(PointFunctionDef pointFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(PointListFunctionDef pointListFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(SceneFunctionDef sceneFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(SceneListFunctionDef sceneListFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(SectionFunctionDef sectionFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(SectionListFunctionDef sectionListFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(StringFunctionDef stringFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(StringListFunctionDef stringListFunctionDef) {
-
-    }
-
     // parameters
     @Override
     public void visit(IParameter p) {
@@ -359,43 +434,7 @@ public class Interpreter implements IVisitor {
 
     }
 
-    // statements
-    @Override
-    public void visit(AssignmentStatement assignmentStatement) {
-
-    }
-
-    @Override
-    public void visit(ElseIfStatement elseIfStatement) {
-
-    }
-
-    @Override
-    public void visit(ElseStatement elseStatement) {
-
-    }
-
-    @Override
-    public void visit(IfStatement ifStatement) {
-
-    }
-
-    @Override
-    public void visit(ReturnStatement returnStatement) {
-
-    }
-
-    @Override
-    public void visit(WhileStatement whileStatement) {
-
-    }
-
     // other components
-    @Override
-    public void visit(CodeBlock codeBlock) {
-
-    }
-
     @Override
     public void visit(FunctionCall functionCall) {
 
@@ -409,5 +448,14 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(ObjectAccess objectAccess) {
 
+    }
+
+    //
+    protected void createNewContext() {
+        contexts.add(new Context());
+    }
+
+    protected void deleteLastContext() {
+        contexts.pop();
     }
 }
