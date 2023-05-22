@@ -6,7 +6,7 @@ import visitors.IVisitor;
 
 import java.util.ArrayList;
 
-public record PointListValue(Position position, ArrayList<Integer> value) implements IExpression {
+public record PointListValue(Position position, ArrayList<PointValue> value) implements IExpression {
     public PointListValue(Position position) {
         this(position, new ArrayList<>());
     }

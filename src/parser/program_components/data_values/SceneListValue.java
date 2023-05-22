@@ -6,7 +6,7 @@ import visitors.IVisitor;
 
 import java.util.ArrayList;
 
-public record SceneListValue(Position position, ArrayList<Integer> value) implements IExpression {
+public record SceneListValue(Position position, ArrayList<SceneValue> value) implements IExpression {
     public SceneListValue(Position position) {
         this(position, new ArrayList<>());
     }

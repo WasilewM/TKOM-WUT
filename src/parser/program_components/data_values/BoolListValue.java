@@ -6,7 +6,7 @@ import visitors.IVisitor;
 
 import java.util.ArrayList;
 
-public record BoolListValue(Position position, ArrayList<Integer> value) implements IExpression {
+public record BoolListValue(Position position, ArrayList<BoolValue> value) implements IExpression {
     public BoolListValue(Position position) {
         this(position, new ArrayList<>());
     }

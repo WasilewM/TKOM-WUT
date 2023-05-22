@@ -6,7 +6,7 @@ import visitors.IVisitor;
 
 import java.util.ArrayList;
 
-public record DoubleListValue(Position position, ArrayList<Integer> value) implements IExpression {
+public record DoubleListValue(Position position, ArrayList<DoubleValue> value) implements IExpression {
     public DoubleListValue(Position position) {
         this(position, new ArrayList<>());
     }

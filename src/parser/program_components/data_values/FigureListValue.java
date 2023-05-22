@@ -6,7 +6,7 @@ import visitors.IVisitor;
 
 import java.util.ArrayList;
 
-public record FigureListValue(Position position, ArrayList<Integer> value) implements IExpression {
+public record FigureListValue(Position position, ArrayList<FigureValue> value) implements IExpression {
     public FigureListValue(Position position) {
         this(position, new ArrayList<>());
     }
