@@ -50,7 +50,6 @@ public class ParserErrorHandler implements IErrorHandler {
         } else {
             exit();
         }
-
     }
 
     protected void exit() {

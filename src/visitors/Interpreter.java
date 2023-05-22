@@ -1,5 +1,6 @@
 package visitors;
 
+import parser.IErrorHandler;
 import parser.IFunctionDef;
 import parser.IParameter;
 import parser.program_components.*;
@@ -8,11 +9,26 @@ import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
+import visitors.exceptions.MissingMainFunctionException;
 
 public class Interpreter implements IVisitor {
+    private final IErrorHandler errorHandler;
+
+    public Interpreter(IErrorHandler errorHandler) {
+        this.errorHandler = errorHandler;
+    }
+
+    @Override
+    public void visit(Program program) {
+        if (!program.functions().containsKey("main")) {
+            errorHandler.handle(new MissingMainFunctionException(program.functions()));
+        }
+    }
+
+    // values
     @Override
     public void visit(BoolListValue boolListValue) {
-        
+
     }
 
     @Override
@@ -90,6 +106,7 @@ public class Interpreter implements IVisitor {
 
     }
 
+    // expressions
     @Override
     public void visit(AdditionExpression additionExpression) {
 
@@ -165,6 +182,7 @@ public class Interpreter implements IVisitor {
 
     }
 
+    // function definitions
     @Override
     public void visit(IFunctionDef f) {
 
@@ -250,6 +268,7 @@ public class Interpreter implements IVisitor {
 
     }
 
+    // parameters
     @Override
     public void visit(IParameter p) {
 
@@ -340,6 +359,7 @@ public class Interpreter implements IVisitor {
 
     }
 
+    // statements
     @Override
     public void visit(AssignmentStatement assignmentStatement) {
 
@@ -370,6 +390,7 @@ public class Interpreter implements IVisitor {
 
     }
 
+    // other components
     @Override
     public void visit(CodeBlock codeBlock) {
 
@@ -387,11 +408,6 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(ObjectAccess objectAccess) {
-
-    }
-
-    @Override
-    public void visit(Program program) {
 
     }
 }
