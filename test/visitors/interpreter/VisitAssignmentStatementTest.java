@@ -198,4 +198,34 @@ public class VisitAssignmentStatementTest {
         expected.add("m", new SectionValue(new Position(15, 20), new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new IntValue(new Position(15, 25), 11)), new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 30), 23.0), new IntValue(new Position(15, 35), 21))));
         assertEquals(expected, interpreter.getLastContext());
     }
+
+    @Test
+    void givenAssignmentStmnt_whenFigureParamAndFigureValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new FigureParameter(new Position(15, 15), "m"), new FigureValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new FigureValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenSceneParamAndSceneValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new SceneParameter(new Position(15, 15), "m"), new SceneValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new SceneValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
 }

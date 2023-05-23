@@ -201,6 +201,18 @@ public class Interpreter implements IVisitor {
             } else {
                 errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
             }
+        } else if (stmnt.param().getClass().equals(FigureParameter.class)) {
+            if (stmnt.exp().getClass().equals(FigureValue.class)) {
+                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+            } else {
+                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            }
+        } else if (stmnt.param().getClass().equals(SceneParameter.class)) {
+            if (stmnt.exp().getClass().equals(SceneValue.class)) {
+                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+            } else {
+                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            }
         } else {
             errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
         }

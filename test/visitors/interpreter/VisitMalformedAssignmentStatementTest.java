@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import parser.IFunctionDef;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
+import parser.program_components.data_values.BoolValue;
 import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.function_definitions.IntFunctionDef;
@@ -123,6 +124,36 @@ public class VisitMalformedAssignmentStatementTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypesException(new SectionParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenFigureAndBoolValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new FigureParameter(new Position(15, 15), "m"), new BoolValue(new Position(15, 20), true))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypesException(new FigureParameter(new Position(15, 15), "m"), new BoolValue(new Position(15, 20), true))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenSceneAndBoolValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new SceneParameter(new Position(15, 15), "m"), new BoolValue(new Position(15, 20), true))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypesException(new SceneParameter(new Position(15, 15), "m"), new BoolValue(new Position(15, 20), true))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
