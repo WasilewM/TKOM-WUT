@@ -178,41 +178,41 @@ public class Interpreter implements IVisitor {
                 errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
             }
         } else if (stmnt.param().getClass().equals(StringParameter.class)) {
-            if (stmnt.exp().getClass().equals(StringValue.class)) {
-                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-            } else {
-                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
-            }
+            handleParamValueAssignment(stmnt.exp().getClass().equals(StringValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(BoolParameter.class)) {
-            if (stmnt.exp().getClass().equals(BoolValue.class)) {
-                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-            } else {
-                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
-            }
+            handleParamValueAssignment(stmnt.exp().getClass().equals(BoolValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(PointParameter.class)) {
-            if (stmnt.exp().getClass().equals(PointValue.class)) {
-                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-            } else {
-                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
-            }
+            handleParamValueAssignment(stmnt.exp().getClass().equals(PointValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(SectionParameter.class)) {
-            if (stmnt.exp().getClass().equals(SectionValue.class)) {
-                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-            } else {
-                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
-            }
+            handleParamValueAssignment(stmnt.exp().getClass().equals(SectionValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(FigureParameter.class)) {
-            if (stmnt.exp().getClass().equals(FigureValue.class)) {
-                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-            } else {
-                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
-            }
+            handleParamValueAssignment(stmnt.exp().getClass().equals(FigureValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(SceneParameter.class)) {
-            if (stmnt.exp().getClass().equals(SceneValue.class)) {
-                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-            } else {
-                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
-            }
+            handleParamValueAssignment(stmnt.exp().getClass().equals(SceneValue.class), stmnt);
+        } else if (stmnt.param().getClass().equals(IntListParameter.class)) {
+            handleParamValueAssignment(stmnt.exp().getClass().equals(IntListValue.class), stmnt);
+        } else if (stmnt.param().getClass().equals(DoubleListParameter.class)) {
+            handleParamValueAssignment(stmnt.exp().getClass().equals(DoubleListValue.class), stmnt);
+        } else if (stmnt.param().getClass().equals(StringListParameter.class)) {
+            handleParamValueAssignment(stmnt.exp().getClass().equals(StringListValue.class), stmnt);
+        } else if (stmnt.param().getClass().equals(BoolListParameter.class)) {
+            handleParamValueAssignment(stmnt.exp().getClass().equals(BoolListValue.class), stmnt);
+        } else if (stmnt.param().getClass().equals(PointListParameter.class)) {
+            handleParamValueAssignment(stmnt.exp().getClass().equals(PointListValue.class), stmnt);
+        } else if (stmnt.param().getClass().equals(SectionListParameter.class)) {
+            handleParamValueAssignment(stmnt.exp().getClass().equals(SectionListValue.class), stmnt);
+        } else if (stmnt.param().getClass().equals(FigureListParameter.class)) {
+            handleParamValueAssignment(stmnt.exp().getClass().equals(FigureListValue.class), stmnt);
+        } else if (stmnt.param().getClass().equals(SceneListParameter.class)) {
+            handleParamValueAssignment(stmnt.exp().getClass().equals(SceneListValue.class), stmnt);
+        } else {
+            errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+        }
+    }
+
+    private void handleParamValueAssignment(boolean assignmentCondition, AssignmentStatement stmnt) {
+        if (assignmentCondition) {
+            this.getLastContext().add(stmnt.param().name(), stmnt.exp());
         } else {
             errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
         }

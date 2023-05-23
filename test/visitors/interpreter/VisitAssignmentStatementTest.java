@@ -228,4 +228,124 @@ public class VisitAssignmentStatementTest {
         expected.add("m", new SceneValue(new Position(15, 20)));
         assertEquals(expected, interpreter.getLastContext());
     }
+
+    @Test
+    void givenAssignmentStmnt_whenIntListParamAndIntListValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new IntListParameter(new Position(15, 15), "m"), new IntListValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new IntListValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenDoubleListParamAndDoubleListValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new DoubleListParameter(new Position(15, 15), "m"), new DoubleListValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new DoubleListValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenStringListParamAndStringListValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new StringListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new StringListValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenBoolListParamAndBoolListValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new BoolListParameter(new Position(15, 15), "m"), new BoolListValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new BoolListValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenPointListParamAndPointListValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new PointListParameter(new Position(15, 15), "m"), new PointListValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new PointListValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenSectionListParamAndSectionListValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new SectionListParameter(new Position(15, 15), "m"), new SectionListValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new SectionListValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenFigureListParamAndFigureListValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new FigureListParameter(new Position(15, 15), "m"), new FigureListValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new FigureListValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenAssignmentStmnt_whenSceneListParamAndSceneListValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new SceneListParameter(new Position(15, 15), "m"), new SceneListValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new SceneListValue(new Position(15, 20)));
+        assertEquals(expected, interpreter.getLastContext());
+    }
 }
