@@ -177,6 +177,32 @@ public class Interpreter implements IVisitor {
             } else {
                 errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
             }
+        } else if (stmnt.param().getClass().equals(StringParameter.class)) {
+            if (stmnt.exp().getClass().equals(StringValue.class)) {
+                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+            } else {
+                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            }
+        } else if (stmnt.param().getClass().equals(BoolParameter.class)) {
+            if (stmnt.exp().getClass().equals(BoolValue.class)) {
+                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+            } else {
+                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            }
+        } else if (stmnt.param().getClass().equals(PointParameter.class)) {
+            if (stmnt.exp().getClass().equals(PointValue.class)) {
+                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+            } else {
+                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            }
+        } else if (stmnt.param().getClass().equals(SectionParameter.class)) {
+            if (stmnt.exp().getClass().equals(SectionValue.class)) {
+                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+            } else {
+                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            }
+        } else {
+            errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
         }
     }
 
