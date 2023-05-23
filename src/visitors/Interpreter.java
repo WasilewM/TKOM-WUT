@@ -1,9 +1,6 @@
 package visitors;
 
-import parser.IErrorHandler;
-import parser.IFunctionDef;
-import parser.IParameter;
-import parser.IStatement;
+import parser.*;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
 import parser.program_components.expressions.*;
@@ -12,6 +9,7 @@ import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 import visitors.exceptions.IncompatibleDataTypesException;
 import visitors.exceptions.MissingMainFunctionException;
+import visitors.exceptions.ParameterNotFoundExceptionException;
 
 import java.util.Map;
 import java.util.Stack;
@@ -140,13 +138,9 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(CodeBlock codeBlock) {
-        createNewContext();
-
         for (IStatement s : codeBlock.statements()) {
             visit(s);
         }
-
-        deleteLastContext();
     }
 
     private void visit(IStatement stmnt) {
@@ -160,23 +154,9 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(AssignmentStatement stmnt) {
         if (stmnt.param().getClass().equals(IntParameter.class)) {
-            if (stmnt.exp().getClass().equals(IntValue.class)) {
-                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-            } else if (stmnt.exp().getClass().equals(DoubleValue.class)) {
-                IntValue castedValue = new IntValue(stmnt.exp().position(), ((DoubleValue) stmnt.exp()).value().intValue());
-                this.getLastContext().add(stmnt.param().name(), castedValue);
-            } else {
-                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
-            }
+            handleIntValueAssignment(stmnt, new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
         } else if (stmnt.param().getClass().equals(DoubleParameter.class)) {
-            if (stmnt.exp().getClass().equals(DoubleValue.class)) {
-                this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-            } else if (stmnt.exp().getClass().equals(IntValue.class)) {
-                DoubleValue castedValue = new DoubleValue(stmnt.exp().position(), ((IntValue) stmnt.exp()).value().doubleValue());
-                this.getLastContext().add(stmnt.param().name(), castedValue);
-            } else {
-                errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
-            }
+            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
         } else if (stmnt.param().getClass().equals(StringParameter.class)) {
             handleParamValueAssignment(stmnt.exp().getClass().equals(StringValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(BoolParameter.class)) {
@@ -205,6 +185,8 @@ public class Interpreter implements IVisitor {
             handleParamValueAssignment(stmnt.exp().getClass().equals(FigureListValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(SceneListParameter.class)) {
             handleParamValueAssignment(stmnt.exp().getClass().equals(SceneListValue.class), stmnt);
+        } else if (stmnt.param().getClass().equals(ReassignedParameter.class)) {
+            handleValueReassignment(stmnt);
         } else {
             errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
         }
@@ -215,6 +197,45 @@ public class Interpreter implements IVisitor {
             this.getLastContext().add(stmnt.param().name(), stmnt.exp());
         } else {
             errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+        }
+    }
+
+    private void handleValueReassignment(AssignmentStatement stmnt) {
+        if (!this.getLastContext().containsKey(stmnt.param().name())) {
+            errorHandler.handle(new ParameterNotFoundExceptionException(stmnt.param(), stmnt.exp()));
+        }
+
+        IExpression value = this.getLastContext().get(stmnt.param().name());
+        if (value.getClass().equals(IntValue.class)) {
+            handleIntValueAssignment(stmnt, new IncompatibleDataTypesException(value, stmnt.exp()));
+        } else if (value.getClass().equals(DoubleValue.class)) {
+            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypesException(value, stmnt.exp()));
+        } else if (!value.getClass().equals(stmnt.exp().getClass())) {
+            errorHandler.handle(new IncompatibleDataTypesException(value, stmnt.exp()));
+        } else {
+            this.getLastContext().update(stmnt.param().name(), stmnt.exp());
+        }
+    }
+
+    private void handleIntValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypesException exception) {
+        if (stmnt.exp().getClass().equals(IntValue.class)) {
+            this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+        } else if (stmnt.exp().getClass().equals(DoubleValue.class)) {
+            IntValue castedValue = new IntValue(stmnt.exp().position(), ((DoubleValue) stmnt.exp()).value().intValue());
+            this.getLastContext().add(stmnt.param().name(), castedValue);
+        } else {
+            errorHandler.handle(exception);
+        }
+    }
+
+    private void handleDoubleValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypesException exception) {
+        if (stmnt.exp().getClass().equals(DoubleValue.class)) {
+            this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+        } else if (stmnt.exp().getClass().equals(IntValue.class)) {
+            DoubleValue castedValue = new DoubleValue(stmnt.exp().position(), ((IntValue) stmnt.exp()).value().doubleValue());
+            this.getLastContext().add(stmnt.param().name(), castedValue);
+        } else {
+            errorHandler.handle(exception);
         }
     }
 

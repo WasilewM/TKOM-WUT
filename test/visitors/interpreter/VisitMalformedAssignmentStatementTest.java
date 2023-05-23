@@ -10,6 +10,7 @@ import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;
 import visitors.exceptions.IncompatibleDataTypesException;
+import visitors.exceptions.ParameterNotFoundExceptionException;
 import visitors.utils.MockedContextDeletionInterpreter;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
@@ -272,6 +273,39 @@ public class VisitMalformedAssignmentStatementTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypesException(new SceneListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenReassignedParam_whenParamNameNotPresentInContext_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new ReassignedParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new ParameterNotFoundExceptionException(new ReassignedParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenIntParam_whenReassigningStringListValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new IntParameter(new Position(15, 15), "m"), new IntValue(new Position(15, 20), 2)),
+                    new AssignmentStatement(new Position(18, 15), new ReassignedParameter(new Position(18, 15), "m"), new StringListValue(new Position(18, 20)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypesException(new IntValue(new Position(15, 20), 2), new StringListValue(new Position(18, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

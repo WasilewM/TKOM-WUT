@@ -15,6 +15,18 @@ public class Context {
         context.put(parameterName, value);
     }
 
+    public boolean containsKey(String parameterName) {
+        return context.containsKey(parameterName);
+    }
+
+    public IExpression get(String parameterName) {
+        return context.get(parameterName);
+    }
+
+    public void update(String parameterName, IExpression newValue) {
+        context.replace(parameterName, newValue);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (!other.getClass().equals(Context.class)) {

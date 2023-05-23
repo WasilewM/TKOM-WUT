@@ -3,6 +3,7 @@ package visitors;
 import parser.IErrorHandler;
 import visitors.exceptions.IncompatibleDataTypesException;
 import visitors.exceptions.MissingMainFunctionException;
+import visitors.exceptions.ParameterNotFoundExceptionException;
 
 import java.util.ArrayList;
 
@@ -15,23 +16,17 @@ public class InterpreterErrorHandler implements IErrorHandler {
 
     private static boolean isErrorCritical(Exception e) {
         return MissingMainFunctionException.class.equals(e.getClass())
-                || IncompatibleDataTypesException.class.equals(e.getClass());
-    }
-
-    private static boolean isErrorHandleable(Exception e) {
-        return false;
+                || IncompatibleDataTypesException.class.equals(e.getClass())
+                || ParameterNotFoundExceptionException.class.equals(e.getClass());
     }
 
     @Override
     public void handle(Exception e) {
         if (isErrorCritical(e)) {
             errorLogs.add(e);
-            exit();
-        } else if (isErrorHandleable(e)) {
-            errorLogs.add(e);
-        } else {
-            exit();
         }
+
+        exit();
     }
 
     @Override

@@ -1,10 +1,10 @@
 package visitors.exceptions;
 
 import parser.IExpression;
-import parser.IParameter;
+import parser.IVisitable;
 
 public class IncompatibleDataTypesException extends Exception {
-    public IncompatibleDataTypesException(IParameter expectedParam, IExpression actualExp) {
-        super("MissingMainFunctionException: Expected value for parameter: " + expectedParam.getClass() + " but received: " + actualExp.getClass());
+    public IncompatibleDataTypesException(IVisitable expected, IExpression actual) {
+        super("IncompatibleDataTypesException: Expected value: " + expected.getClass() + " but received: " + actual.getClass());
     }
 }

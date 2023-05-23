@@ -348,4 +348,58 @@ public class VisitAssignmentStatementTest {
         expected.add("m", new SceneListValue(new Position(15, 20)));
         assertEquals(expected, interpreter.getLastContext());
     }
+
+    @Test
+    void givenIntParam_whenReassigningIntValue_thenValueIsReassigned() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new IntParameter(new Position(15, 15), "m"), new IntValue(new Position(15, 20), 2)),
+                    new AssignmentStatement(new Position(18, 15), new ReassignedParameter(new Position(18, 15), "m"), new IntValue(new Position(18, 20), 41))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new IntValue(new Position(18, 20), 41));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenIntParam_whenReassigningDoubleValue_thenValueIsReassignedWithImplicitCast() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new IntParameter(new Position(15, 15), "m"), new IntValue(new Position(15, 20), 2)),
+                    new AssignmentStatement(new Position(18, 15), new ReassignedParameter(new Position(18, 15), "m"), new DoubleValue(new Position(18, 20), 51.602))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new IntValue(new Position(18, 20), 51));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenDoubleParam_whenReassigningIntValue_thenValueIsReassignedWithImplicitCast() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new DoubleParameter(new Position(15, 15), "m"), new DoubleValue(new Position(15, 20), 202.12)),
+                    new AssignmentStatement(new Position(18, 15), new ReassignedParameter(new Position(18, 15), "m"), new IntValue(new Position(18, 20), 45))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new DoubleValue(new Position(18, 20), 45.0));
+        assertEquals(expected, interpreter.getLastContext());
+    }
 }
