@@ -3,9 +3,9 @@ package parser.program_components.function_definitions;
 import lexer.Position;
 import parser.IFunctionDef;
 import parser.IParameter;
-import visitors.IVisitor;
 import parser.program_components.CodeBlock;
 import parser.program_components.parameters.StringListParameter;
+import visitors.IVisitor;
 
 import java.util.HashMap;
 

@@ -3,8 +3,8 @@ package parser.program_components.statements;
 import lexer.Position;
 import parser.IExpression;
 import parser.IStatement;
-import visitors.IVisitor;
 import parser.program_components.CodeBlock;
+import visitors.IVisitor;
 
 import java.util.ArrayList;
 import java.util.List;

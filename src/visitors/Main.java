@@ -1,8 +1,8 @@
 package visitors;
 
 import lexer.Lexer;
-import parser.ParserErrorHandler;
 import parser.Parser;
+import parser.ParserErrorHandler;
 import parser.program_components.Program;
 
 import java.io.BufferedReader;
