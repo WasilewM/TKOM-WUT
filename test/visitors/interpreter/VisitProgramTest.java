@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VisitProgramTest {
     @Test
-    void visitProgramWithMainFunction() {
+    void givenProgram_whenNoStatementExists_thenErrorLogIsEmpty() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         Interpreter interpreter = new Interpreter(errorHandler);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{

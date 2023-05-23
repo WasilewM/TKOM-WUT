@@ -1,6 +1,7 @@
 package visitors;
 
 import parser.IErrorHandler;
+import visitors.exceptions.IncompatibleDataTypesException;
 import visitors.exceptions.MissingMainFunctionException;
 
 import java.util.ArrayList;
@@ -13,7 +14,8 @@ public class InterpreterErrorHandler implements IErrorHandler {
     }
 
     private static boolean isErrorCritical(Exception e) {
-        return MissingMainFunctionException.class.equals(e.getClass());
+        return MissingMainFunctionException.class.equals(e.getClass())
+                || IncompatibleDataTypesException.class.equals(e.getClass());
     }
 
     private static boolean isErrorHandleable(Exception e) {

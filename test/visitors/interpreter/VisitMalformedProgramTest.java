@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VisitMalformedProgramTest {
     @Test
-    void visitProgramWithoutMainFunction() {
+    void givenProgram_whenNoMainFunctionExists_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         Interpreter interpreter = new Interpreter(errorHandler);
         Program program = new Program(new Position(1, 1), new HashMap<>());
