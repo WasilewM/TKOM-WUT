@@ -37,6 +37,10 @@ public class Interpreter implements IVisitor {
         return contexts.peek();
     }
 
+    public IExpression getLastResult() {
+        return lastResult;
+    }
+
     @Override
     public void visit(Program program) {
         if (!program.functions().containsKey("main")) {
@@ -58,38 +62,45 @@ public class Interpreter implements IVisitor {
 
         if (f.getClass().equals(IntFunctionDef.class)) {
             visit((IntFunctionDef) f);
+        } else if (f.getClass().equals(DoubleFunctionDef.class)) {
+            visit((DoubleFunctionDef) f);
         }
 
         deleteLastContext();
     }
 
     @Override
-    public void visit(BoolFunctionDef boolFunctionDef) {
+    public void visit(BoolFunctionDef f) {
 
     }
 
     @Override
-    public void visit(BoolListFunctionDef boolListFunctionDef) {
+    public void visit(BoolListFunctionDef f) {
 
     }
 
     @Override
-    public void visit(DoubleFunctionDef doubleFunctionDef) {
+    public void visit(DoubleFunctionDef f) {
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(DoubleValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
+    }
+
+    @Override
+    public void visit(DoubleListFunctionDef f) {
 
     }
 
     @Override
-    public void visit(DoubleListFunctionDef doubleListFunctionDef) {
+    public void visit(FigureFunctionDef f) {
 
     }
 
     @Override
-    public void visit(FigureFunctionDef figureFunctionDef) {
-
-    }
-
-    @Override
-    public void visit(FigureListFunctionDef figureListFunctionDef) {
+    public void visit(FigureListFunctionDef f) {
 
     }
 
@@ -104,47 +115,47 @@ public class Interpreter implements IVisitor {
     }
 
     @Override
-    public void visit(IntListFunctionDef intListFunctionDef) {
+    public void visit(IntListFunctionDef f) {
 
     }
 
     @Override
-    public void visit(PointFunctionDef pointFunctionDef) {
+    public void visit(PointFunctionDef f) {
 
     }
 
     @Override
-    public void visit(PointListFunctionDef pointListFunctionDef) {
+    public void visit(PointListFunctionDef f) {
 
     }
 
     @Override
-    public void visit(SceneFunctionDef sceneFunctionDef) {
+    public void visit(SceneFunctionDef f) {
 
     }
 
     @Override
-    public void visit(SceneListFunctionDef sceneListFunctionDef) {
+    public void visit(SceneListFunctionDef f) {
 
     }
 
     @Override
-    public void visit(SectionFunctionDef sectionFunctionDef) {
+    public void visit(SectionFunctionDef f) {
 
     }
 
     @Override
-    public void visit(SectionListFunctionDef sectionListFunctionDef) {
+    public void visit(SectionListFunctionDef f) {
 
     }
 
     @Override
-    public void visit(StringFunctionDef stringFunctionDef) {
+    public void visit(StringFunctionDef f) {
 
     }
 
     @Override
-    public void visit(StringListFunctionDef stringListFunctionDef) {
+    public void visit(StringListFunctionDef f) {
 
     }
 
@@ -166,7 +177,6 @@ public class Interpreter implements IVisitor {
             visit((ReturnStatement) stmnt);
         }
     }
-
 
     // statements
     @Override
@@ -289,6 +299,8 @@ public class Interpreter implements IVisitor {
             lastResult = null;
         } else if (exp.getClass().equals(IntValue.class)) {
             visit((IntValue) exp);
+        } else if (exp.getClass().equals(DoubleValue.class)) {
+            visit((DoubleValue) exp);
         } else if (exp.getClass().equals(StringValue.class)) {
             visit((StringValue) exp);
         }
