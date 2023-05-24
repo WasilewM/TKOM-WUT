@@ -1,48 +1,16 @@
 package visitors;
 
+import parser.IDataValue;
 import parser.IFunctionDef;
 import parser.IParameter;
 import parser.program_components.*;
-import parser.program_components.data_values.*;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 
 public interface IVisitor {
-    // data values
-    void visit(BoolListValue boolListValue);
-
-    void visit(BoolValue boolValue);
-
-    void visit(DoubleListValue doubleListValue);
-
-    void visit(DoubleValue doubleValue);
-
-    void visit(FigureListValue figureListValue);
-
-    void visit(FigureValue figureValue);
-
-    void visit(IntListValue intListValue);
-
-    void visit(IntValue intValue);
-
-    void visit(PointListValue pointListValue);
-
-    void visit(PointValue pointValue);
-
-    void visit(SceneListValue sceneListValue);
-
-    void visit(SceneValue sceneValue);
-
-    void visit(SectionListValue sectionListValue);
-
-    void visit(SectionValue sectionValue);
-
-    void visit(StringListValue stringListValue);
-
-    void visit(StringValue stringValue);
-
+    void visit(IDataValue val);
 
     // expressions
     void visit(AdditionExpression additionExpression);

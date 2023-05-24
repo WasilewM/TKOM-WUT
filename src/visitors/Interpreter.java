@@ -295,159 +295,84 @@ public class Interpreter implements IVisitor {
     }
 
     @Override
-    public void visit(AdditionExpression additionExpression) {
+    public void visit(AdditionExpression exp) {
 
     }
 
     @Override
-    public void visit(AlternativeExpression alternativeExpression) {
+    public void visit(AlternativeExpression exp) {
 
     }
 
     @Override
-    public void visit(ConjunctiveExpression conjunctiveExpression) {
+    public void visit(ConjunctiveExpression exp) {
 
     }
 
     @Override
-    public void visit(DiscreteDivisionExpression discreteDivisionExpression) {
+    public void visit(DiscreteDivisionExpression exp) {
 
     }
 
     @Override
-    public void visit(DivisionExpression divisionExpression) {
+    public void visit(DivisionExpression exp) {
 
     }
 
     @Override
-    public void visit(EqualExpression equalExpression) {
+    public void visit(EqualExpression exp) {
 
     }
 
     @Override
-    public void visit(GreaterOrEqualExpression greaterOrEqualExpression) {
+    public void visit(GreaterOrEqualExpression exp) {
 
     }
 
     @Override
-    public void visit(GreaterThanExpression greaterThanExpression) {
+    public void visit(GreaterThanExpression exp) {
 
     }
 
     @Override
-    public void visit(LessOrEqualExpression lessOrEqualExpression) {
+    public void visit(LessOrEqualExpression exp) {
 
     }
 
     @Override
-    public void visit(LessThanExpression lessThanExpression) {
+    public void visit(LessThanExpression exp) {
 
     }
 
     @Override
-    public void visit(MultiplicationExpression multiplicationExpression) {
+    public void visit(MultiplicationExpression exp) {
 
     }
 
     @Override
-    public void visit(NegatedExpression negatedExpression) {
+    public void visit(NegatedExpression exp) {
 
     }
 
     @Override
-    public void visit(NotEqualExpression notEqualExpression) {
+    public void visit(NotEqualExpression exp) {
 
     }
 
     @Override
-    public void visit(ParenthesesExpression parenthesesExpression) {
+    public void visit(ParenthesesExpression exp) {
 
     }
 
     @Override
-    public void visit(SubtractionExpression subtractionExpression) {
+    public void visit(SubtractionExpression exp) {
 
     }
 
     // values
     @Override
-    public void visit(BoolListValue boolListValue) {
-
-    }
-
-    @Override
-    public void visit(BoolValue boolValue) {
-
-    }
-
-    @Override
-    public void visit(DoubleListValue doubleListValue) {
-
-    }
-
-    @Override
-    public void visit(DoubleValue doubleValue) {
-
-    }
-
-    @Override
-    public void visit(FigureListValue figureListValue) {
-
-    }
-
-    @Override
-    public void visit(FigureValue figureValue) {
-
-    }
-
-    @Override
-    public void visit(IntListValue intListValue) {
-
-    }
-
-    @Override
-    public void visit(IntValue val) {
+    public void visit(IDataValue val) {
         lastResult = val;
-    }
-
-    @Override
-    public void visit(PointListValue pointListValue) {
-
-    }
-
-    @Override
-    public void visit(PointValue pointValue) {
-
-    }
-
-    @Override
-    public void visit(SceneListValue sceneListValue) {
-
-    }
-
-    @Override
-    public void visit(SceneValue sceneValue) {
-
-    }
-
-    @Override
-    public void visit(SectionListValue sectionListValue) {
-
-    }
-
-    @Override
-    public void visit(SectionValue sectionValue) {
-
-    }
-
-    @Override
-    public void visit(StringListValue stringListValue) {
-
-    }
-
-    @Override
-    public void visit(StringValue stringValue) {
-        lastResult = stringValue;
     }
 
     // parameters

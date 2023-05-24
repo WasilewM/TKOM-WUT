@@ -1,12 +1,12 @@
 package parser.program_components.data_values;
 
 import lexer.Position;
-import parser.IExpression;
+import parser.IDataValue;
 import visitors.IVisitor;
 
 import java.util.ArrayList;
 
-public record BoolListValue(Position position, ArrayList<BoolValue> value) implements IExpression {
+public record BoolListValue(Position position, ArrayList<BoolValue> value) implements IDataValue {
     public BoolListValue(Position position) {
         this(position, new ArrayList<>());
     }

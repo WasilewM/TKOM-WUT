@@ -1,12 +1,12 @@
 package parser.program_components.data_values;
 
 import lexer.Position;
-import parser.IExpression;
+import parser.IDataValue;
 import visitors.IVisitor;
 
 import java.util.ArrayList;
 
-public record SceneListValue(Position position, ArrayList<SceneValue> value) implements IExpression {
+public record SceneListValue(Position position, ArrayList<SceneValue> value) implements IDataValue {
     public SceneListValue(Position position) {
         this(position, new ArrayList<>());
     }

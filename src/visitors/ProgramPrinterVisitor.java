@@ -1,11 +1,7 @@
 package visitors;
 
-import parser.IExpression;
-import parser.IFunctionDef;
-import parser.IParameter;
-import parser.IStatement;
+import parser.*;
 import parser.program_components.*;
-import parser.program_components.data_values.*;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;
@@ -17,82 +13,7 @@ public class ProgramPrinterVisitor implements IVisitor {
 
     // values
     @Override
-    public void visit(BoolListValue val) {
-
-    }
-
-    @Override
-    public void visit(BoolValue val) {
-
-    }
-
-    @Override
-    public void visit(DoubleListValue val) {
-
-    }
-
-    @Override
-    public void visit(DoubleValue val) {
-
-    }
-
-    @Override
-    public void visit(FigureListValue val) {
-
-    }
-
-    @Override
-    public void visit(FigureValue val) {
-
-    }
-
-    @Override
-    public void visit(IntListValue val) {
-
-    }
-
-    @Override
-    public void visit(IntValue val) {
-
-    }
-
-    @Override
-    public void visit(PointListValue val) {
-
-    }
-
-    @Override
-    public void visit(PointValue val) {
-
-    }
-
-    @Override
-    public void visit(SceneListValue val) {
-
-    }
-
-    @Override
-    public void visit(SceneValue val) {
-
-    }
-
-    @Override
-    public void visit(SectionListValue val) {
-
-    }
-
-    @Override
-    public void visit(SectionValue val) {
-
-    }
-
-    @Override
-    public void visit(StringListValue val) {
-
-    }
-
-    @Override
-    public void visit(StringValue val) {
+    public void visit(IDataValue val) {
 
     }
 
