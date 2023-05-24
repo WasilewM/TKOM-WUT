@@ -84,6 +84,10 @@ public class Interpreter implements IVisitor {
             visit((SceneFunctionDef) f);
         } else if (f.getClass().equals(SceneListFunctionDef.class)) {
             visit((SceneListFunctionDef) f);
+        } else if (f.getClass().equals(SectionFunctionDef.class)) {
+            visit((SectionFunctionDef) f);
+        } else if (f.getClass().equals(SectionListFunctionDef.class)) {
+            visit((SectionListFunctionDef) f);
         } else if (f.getClass().equals(StringFunctionDef.class)) {
             visit((StringFunctionDef) f);
         } else if (f.getClass().equals(StringListFunctionDef.class)) {
@@ -221,12 +225,22 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(SectionFunctionDef f) {
-
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(SectionValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
     public void visit(SectionListFunctionDef f) {
-
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(SectionListValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
@@ -415,6 +429,10 @@ public class Interpreter implements IVisitor {
             visit((SceneValue) exp);
         } else if (exp.getClass().equals(SceneListValue.class)) {
             visit((SceneListValue) exp);
+        } else if (exp.getClass().equals(SectionValue.class)) {
+            visit((SectionValue) exp);
+        } else if (exp.getClass().equals(SectionListValue.class)) {
+            visit((SectionListValue) exp);
         }
     }
 

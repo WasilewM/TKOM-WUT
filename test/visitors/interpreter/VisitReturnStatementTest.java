@@ -181,7 +181,7 @@ public class VisitReturnStatementTest {
     void givenPointFunc_whenPointValueReturned_thenLastResultIsPointValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
-        PointValue expectedLastResult = new PointValue(new Position(30, 40), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0));
+        PointValue expectedLastResult = new PointValue(new Position(30, 40), new DoubleValue(new Position(35, 20), 10.0), new DoubleValue(new Position(35, 25), 11.0));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
@@ -232,6 +232,38 @@ public class VisitReturnStatementTest {
         SceneListValue expectedLastResult = new SceneListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenSectionFunc_whenSectionValueReturned_thenLastResultIsSectionValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        SectionValue expectedLastResult = new SectionValue(new Position(30, 40), new PointValue(new Position(30, 40), new DoubleValue(new Position(35, 20), 10.0), new DoubleValue(new Position(35, 25), 11.0)), new PointValue(new Position(40, 40), new DoubleValue(new Position(45, 20), 10.0), new DoubleValue(new Position(45, 25), 11.0)));
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenSectionListFunc_whenSectionListValueReturned_thenLastResultIsSectionListValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        SectionListValue expectedLastResult = new SectionListValue(new Position(30, 40));
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
