@@ -9,6 +9,7 @@ import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 import visitors.exceptions.IncompatibleDataTypesException;
 import visitors.exceptions.MissingMainFunctionException;
+import visitors.exceptions.MissingReturnValueException;
 import visitors.exceptions.ParameterNotFoundExceptionException;
 
 import java.util.Map;
@@ -18,9 +19,15 @@ public class Interpreter implements IVisitor {
     private final IErrorHandler errorHandler;
     private final Stack<Context> contexts;
 
+    private IExpression lastResult;
+
+    private boolean returnFound;
+
     public Interpreter(IErrorHandler errorHandler) {
         this.errorHandler = errorHandler;
         contexts = new Stack<>();
+        lastResult = null;
+        returnFound = false;
     }
 
     public Context getLastContext() {
@@ -89,6 +96,11 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(IntFunctionDef f) {
         visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(IntValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
@@ -139,13 +151,19 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(CodeBlock codeBlock) {
         for (IStatement s : codeBlock.statements()) {
-            visit(s);
+            if (!returnFound) {
+                visit(s);
+            } else {
+                break;
+            }
         }
     }
 
     private void visit(IStatement stmnt) {
         if (stmnt.getClass().equals(AssignmentStatement.class)) {
             visit((AssignmentStatement) stmnt);
+        } else if (stmnt.getClass().equals(ReturnStatement.class)) {
+            visit((ReturnStatement) stmnt);
         }
     }
 
@@ -240,112 +258,42 @@ public class Interpreter implements IVisitor {
     }
 
     @Override
-    public void visit(ElseIfStatement elseIfStatement) {
+    public void visit(ElseIfStatement stmnt) {
 
     }
 
     @Override
-    public void visit(ElseStatement elseStatement) {
+    public void visit(ElseStatement stmnt) {
 
     }
 
     @Override
-    public void visit(IfStatement ifStatement) {
+    public void visit(IfStatement stmnt) {
 
     }
 
     @Override
-    public void visit(ReturnStatement returnStatement) {
-
+    public void visit(ReturnStatement stmnt) {
+        visit(stmnt.exp());
+        returnFound = true;
     }
 
     @Override
-    public void visit(WhileStatement whileStatement) {
-
-    }
-
-    // values
-    @Override
-    public void visit(BoolListValue boolListValue) {
-
-    }
-
-    @Override
-    public void visit(BoolValue boolValue) {
-
-    }
-
-    @Override
-    public void visit(DoubleListValue doubleListValue) {
-
-    }
-
-    @Override
-    public void visit(DoubleValue doubleValue) {
-
-    }
-
-    @Override
-    public void visit(FigureListValue figureListValue) {
-
-    }
-
-    @Override
-    public void visit(FigureValue figureValue) {
-
-    }
-
-    @Override
-    public void visit(IntListValue intListValue) {
-
-    }
-
-    @Override
-    public void visit(IntValue intValue) {
-
-    }
-
-    @Override
-    public void visit(PointListValue pointListValue) {
-
-    }
-
-    @Override
-    public void visit(PointValue pointValue) {
-
-    }
-
-    @Override
-    public void visit(SceneListValue sceneListValue) {
-
-    }
-
-    @Override
-    public void visit(SceneValue sceneValue) {
-
-    }
-
-    @Override
-    public void visit(SectionListValue sectionListValue) {
-
-    }
-
-    @Override
-    public void visit(SectionValue sectionValue) {
-
-    }
-
-    @Override
-    public void visit(StringListValue stringListValue) {
-
-    }
-
-    @Override
-    public void visit(StringValue stringValue) {
+    public void visit(WhileStatement stmnt) {
 
     }
 
     // expressions
+    public void visit(IExpression exp) {
+        if (exp == null) {
+            lastResult = null;
+        } else if (exp.getClass().equals(IntValue.class)) {
+            visit((IntValue) exp);
+        } else if (exp.getClass().equals(StringValue.class)) {
+            visit((StringValue) exp);
+        }
+    }
+
     @Override
     public void visit(AdditionExpression additionExpression) {
 
@@ -419,6 +367,87 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(SubtractionExpression subtractionExpression) {
 
+    }
+
+    // values
+    @Override
+    public void visit(BoolListValue boolListValue) {
+
+    }
+
+    @Override
+    public void visit(BoolValue boolValue) {
+
+    }
+
+    @Override
+    public void visit(DoubleListValue doubleListValue) {
+
+    }
+
+    @Override
+    public void visit(DoubleValue doubleValue) {
+
+    }
+
+    @Override
+    public void visit(FigureListValue figureListValue) {
+
+    }
+
+    @Override
+    public void visit(FigureValue figureValue) {
+
+    }
+
+    @Override
+    public void visit(IntListValue intListValue) {
+
+    }
+
+    @Override
+    public void visit(IntValue val) {
+        lastResult = val;
+    }
+
+    @Override
+    public void visit(PointListValue pointListValue) {
+
+    }
+
+    @Override
+    public void visit(PointValue pointValue) {
+
+    }
+
+    @Override
+    public void visit(SceneListValue sceneListValue) {
+
+    }
+
+    @Override
+    public void visit(SceneValue sceneValue) {
+
+    }
+
+    @Override
+    public void visit(SectionListValue sectionListValue) {
+
+    }
+
+    @Override
+    public void visit(SectionValue sectionValue) {
+
+    }
+
+    @Override
+    public void visit(StringListValue stringListValue) {
+
+    }
+
+    @Override
+    public void visit(StringValue stringValue) {
+        lastResult = stringValue;
     }
 
     // parameters

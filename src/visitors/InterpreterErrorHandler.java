@@ -3,6 +3,7 @@ package visitors;
 import parser.IErrorHandler;
 import visitors.exceptions.IncompatibleDataTypesException;
 import visitors.exceptions.MissingMainFunctionException;
+import visitors.exceptions.MissingReturnValueException;
 import visitors.exceptions.ParameterNotFoundExceptionException;
 
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ public class InterpreterErrorHandler implements IErrorHandler {
     private static boolean isErrorCritical(Exception e) {
         return MissingMainFunctionException.class.equals(e.getClass())
                 || IncompatibleDataTypesException.class.equals(e.getClass())
-                || ParameterNotFoundExceptionException.class.equals(e.getClass());
+                || ParameterNotFoundExceptionException.class.equals(e.getClass())
+                || MissingReturnValueException.class.equals(e.getClass());
     }
 
     @Override
