@@ -72,6 +72,10 @@ public class Interpreter implements IVisitor {
             visit((BoolFunctionDef) f);
         } else if (f.getClass().equals(BoolListFunctionDef.class)) {
             visit((BoolListFunctionDef) f);
+        } else if (f.getClass().equals(FigureFunctionDef.class)) {
+            visit((FigureFunctionDef) f);
+        } else if (f.getClass().equals(FigureListFunctionDef.class)) {
+            visit((FigureListFunctionDef) f);
         }
 
         deleteLastContext();
@@ -122,12 +126,22 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(FigureFunctionDef f) {
-
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(FigureValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
     public void visit(FigureListFunctionDef f) {
-
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(FigureListValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
@@ -345,6 +359,10 @@ public class Interpreter implements IVisitor {
             visit((BoolValue) exp);
         } else if (exp.getClass().equals(BoolListValue.class)) {
             visit((BoolListValue) exp);
+        } else if (exp.getClass().equals(FigureValue.class)) {
+            visit((FigureValue) exp);
+        } else if (exp.getClass().equals(FigureListValue.class)) {
+            visit((FigureListValue) exp);
         }
     }
 

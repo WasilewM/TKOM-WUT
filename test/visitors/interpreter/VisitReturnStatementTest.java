@@ -144,4 +144,36 @@ public class VisitReturnStatementTest {
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
+
+    @Test
+    void givenFigureFunc_whenFigureValueReturned_thenLastResultIsDoubleValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        FigureValue expectedLastResult = new FigureValue(new Position(30, 40));
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenFigureListFunc_whenFigureListValueReturned_thenLastResultIsDoubleValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        FigureListValue expectedLastResult = new FigureListValue(new Position(30, 40));
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
 }
