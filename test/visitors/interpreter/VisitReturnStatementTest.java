@@ -36,6 +36,22 @@ public class VisitReturnStatementTest {
     }
 
     @Test
+    void givenIntFunc_whenDoubleValueReturned_thenLastResultIsImplicitlyCastedIntValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        IntValue expectedLastResult = new IntValue(new Position(30, 40), 7);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DoubleValue(new Position(30, 40), 7.20))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
     void givenDoubleFunc_whenDoubleValueReturned_thenLastResultIsDoubleValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
@@ -43,6 +59,22 @@ public class VisitReturnStatementTest {
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenDoubleFunc_whenIntValueReturned_thenLastResultIsImplicitlyCastedDoubleValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 4.0);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 4))
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);

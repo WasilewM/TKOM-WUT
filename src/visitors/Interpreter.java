@@ -84,6 +84,9 @@ public class Interpreter implements IVisitor {
         visit(f.functionCode());
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
+        } else if (lastResult.getClass().equals(IntValue.class)) {
+            IntValue value = (IntValue) lastResult;
+            lastResult = new DoubleValue(value.position(), value.value().doubleValue());
         } else if (!lastResult.getClass().equals(DoubleValue.class)) {
             errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
         }
@@ -109,6 +112,9 @@ public class Interpreter implements IVisitor {
         visit(f.functionCode());
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
+        } else if (lastResult.getClass().equals(DoubleValue.class)) {
+            DoubleValue value = (DoubleValue) lastResult;
+            lastResult = new IntValue(value.position(), value.value().intValue());
         } else if (!lastResult.getClass().equals(IntValue.class)) {
             errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
         }
