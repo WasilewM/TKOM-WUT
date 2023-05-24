@@ -84,6 +84,10 @@ public class Interpreter implements IVisitor {
             visit((SceneFunctionDef) f);
         } else if (f.getClass().equals(SceneListFunctionDef.class)) {
             visit((SceneListFunctionDef) f);
+        } else if (f.getClass().equals(StringFunctionDef.class)) {
+            visit((StringFunctionDef) f);
+        } else if (f.getClass().equals(StringListFunctionDef.class)) {
+            visit((StringListFunctionDef) f);
         }
 
         deleteLastContext();
@@ -227,12 +231,22 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(StringFunctionDef f) {
-
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(StringValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
     public void visit(StringListFunctionDef f) {
-
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(StringListValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
@@ -383,6 +397,8 @@ public class Interpreter implements IVisitor {
             visit((DoubleListValue) exp);
         } else if (exp.getClass().equals(StringValue.class)) {
             visit((StringValue) exp);
+        } else if (exp.getClass().equals(StringListValue.class)) {
+            visit((StringListValue) exp);
         } else if (exp.getClass().equals(BoolValue.class)) {
             visit((BoolValue) exp);
         } else if (exp.getClass().equals(BoolListValue.class)) {
