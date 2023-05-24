@@ -80,6 +80,10 @@ public class Interpreter implements IVisitor {
             visit((PointFunctionDef) f);
         } else if (f.getClass().equals(PointListFunctionDef.class)) {
             visit((PointListFunctionDef) f);
+        } else if (f.getClass().equals(SceneFunctionDef.class)) {
+            visit((SceneFunctionDef) f);
+        } else if (f.getClass().equals(SceneListFunctionDef.class)) {
+            visit((SceneListFunctionDef) f);
         }
 
         deleteLastContext();
@@ -193,12 +197,22 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(SceneFunctionDef f) {
-
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(SceneValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
     public void visit(SceneListFunctionDef f) {
-
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(SceneListValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
@@ -381,6 +395,10 @@ public class Interpreter implements IVisitor {
             visit((PointValue) exp);
         } else if (exp.getClass().equals(PointListValue.class)) {
             visit((PointListValue) exp);
+        } else if (exp.getClass().equals(SceneValue.class)) {
+            visit((SceneValue) exp);
+        } else if (exp.getClass().equals(SceneListValue.class)) {
+            visit((SceneListValue) exp);
         }
     }
 

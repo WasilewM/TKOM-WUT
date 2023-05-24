@@ -208,4 +208,36 @@ public class VisitReturnStatementTest {
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
+
+    @Test
+    void givenSceneFunc_whenSceneValueReturned_thenLastResultIsSceneValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        SceneValue expectedLastResult = new SceneValue(new Position(30, 40));
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenSceneListFunc_whenSceneListValueReturned_thenLastResultIsSceneListValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        SceneListValue expectedLastResult = new SceneListValue(new Position(30, 40));
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
 }
