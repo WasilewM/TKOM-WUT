@@ -76,6 +76,10 @@ public class Interpreter implements IVisitor {
             visit((FigureFunctionDef) f);
         } else if (f.getClass().equals(FigureListFunctionDef.class)) {
             visit((FigureListFunctionDef) f);
+        } else if (f.getClass().equals(PointFunctionDef.class)) {
+            visit((PointFunctionDef) f);
+        } else if (f.getClass().equals(PointListFunctionDef.class)) {
+            visit((PointListFunctionDef) f);
         }
 
         deleteLastContext();
@@ -169,12 +173,22 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(PointFunctionDef f) {
-
+        visit((f.functionCode()));
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(PointValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
     public void visit(PointListFunctionDef f) {
-
+        visit((f.functionCode()));
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(PointListValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
@@ -363,6 +377,10 @@ public class Interpreter implements IVisitor {
             visit((FigureValue) exp);
         } else if (exp.getClass().equals(FigureListValue.class)) {
             visit((FigureListValue) exp);
+        } else if (exp.getClass().equals(PointValue.class)) {
+            visit((PointValue) exp);
+        } else if (exp.getClass().equals(PointListValue.class)) {
+            visit((PointListValue) exp);
         }
     }
 

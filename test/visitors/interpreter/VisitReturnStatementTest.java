@@ -50,7 +50,7 @@ public class VisitReturnStatementTest {
     }
 
     @Test
-    void givenIntListFunc_whenIntListValueReturned_thenLastResultIsIntValue() {
+    void givenIntListFunc_whenIntListValueReturned_thenLastResultIsIntListValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
         IntListValue expectedLastResult = new IntListValue(new Position(30, 40));
@@ -114,7 +114,7 @@ public class VisitReturnStatementTest {
     }
 
     @Test
-    void givenBoolFunc_whenBoolValueReturned_thenLastResultIsDoubleValue() {
+    void givenBoolFunc_whenBoolValueReturned_thenLastResultIsBoolValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
@@ -130,7 +130,7 @@ public class VisitReturnStatementTest {
     }
 
     @Test
-    void givenBoolListFunc_whenBoolListValueReturned_thenLastResultIsDoubleValue() {
+    void givenBoolListFunc_whenBoolListValueReturned_thenLastResultIsBoolListValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
         BoolListValue expectedLastResult = new BoolListValue(new Position(30, 40));
@@ -146,7 +146,7 @@ public class VisitReturnStatementTest {
     }
 
     @Test
-    void givenFigureFunc_whenFigureValueReturned_thenLastResultIsDoubleValue() {
+    void givenFigureFunc_whenFigureValueReturned_thenLastResultIsFigureValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
         FigureValue expectedLastResult = new FigureValue(new Position(30, 40));
@@ -162,12 +162,44 @@ public class VisitReturnStatementTest {
     }
 
     @Test
-    void givenFigureListFunc_whenFigureListValueReturned_thenLastResultIsDoubleValue() {
+    void givenFigureListFunc_whenFigureListValueReturned_thenLastResultIsFigureListValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
         FigureListValue expectedLastResult = new FigureListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenPointFunc_whenPointValueReturned_thenLastResultIsPointValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        PointValue expectedLastResult = new PointValue(new Position(30, 40), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0));
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenPointListFunc_whenPointListValueReturned_thenLastResultIsPointListValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        PointListValue expectedLastResult = new PointListValue(new Position(30, 40));
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
