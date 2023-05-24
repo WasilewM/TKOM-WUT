@@ -1,5 +1,6 @@
 package visitors;
 
+import lexer.Position;
 import parser.*;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
@@ -457,17 +458,14 @@ public class Interpreter implements IVisitor {
             visit((AlternativeExpression) exp);
         } else if (exp.getClass().equals(ConjunctiveExpression.class)) {
             visit((ConjunctiveExpression) exp);
+        } else if (exp.getClass().equals(AdditionExpression.class)) {
+            visit((AdditionExpression) exp);
         }
     }
 
     @Override
     public void visit(IDataValue val) {
         lastResult = val;
-    }
-
-    @Override
-    public void visit(AdditionExpression exp) {
-
     }
 
     @Override
@@ -486,16 +484,7 @@ public class Interpreter implements IVisitor {
         }
     }
 
-    @Override
-    public void visit(DiscreteDivisionExpression exp) {
-
-    }
-
-    @Override
-    public void visit(DivisionExpression exp) {
-
-    }
-
+    // comparison expressions
     @Override
     public void visit(EqualExpression exp) {
 
@@ -522,11 +511,6 @@ public class Interpreter implements IVisitor {
     }
 
     @Override
-    public void visit(MultiplicationExpression exp) {
-
-    }
-
-    @Override
     public void visit(NegatedExpression exp) {
 
     }
@@ -536,9 +520,14 @@ public class Interpreter implements IVisitor {
 
     }
 
+    // arithmetic expressions
     @Override
-    public void visit(ParenthesesExpression exp) {
+    public void visit(AdditionExpression exp) {
+        visit(exp.leftExp());
+        IExpression leftExp = lastResult;
+        visit(exp.rightExp());
 
+        tryToAddExpressions(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -546,9 +535,49 @@ public class Interpreter implements IVisitor {
 
     }
 
+    @Override
+    public void visit(DiscreteDivisionExpression exp) {
+
+    }
+
+    @Override
+    public void visit(DivisionExpression exp) {
+
+    }
+
+    @Override
+    public void visit(MultiplicationExpression exp) {
+
+    }
+
+    @Override
+    public void visit(ParenthesesExpression exp) {
+
+    }
+
+    private void tryToAddExpressions(Position position, IExpression leftExp, IExpression rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            IntValue leftCastedValue = (IntValue) leftExp;
+            IntValue rightCastedValue = (IntValue) rightExp;
+            lastResult = new IntValue(position, leftCastedValue.value() + rightCastedValue.value());
+        } else if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
+            IntValue leftCastedValue = (IntValue) leftExp;
+            IntValue rightCastedValue = new IntValue(rightExp.position(), ((DoubleValue) rightExp).value().intValue());
+            lastResult = new IntValue(position, leftCastedValue.value() + rightCastedValue.value());
+        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            IntValue leftCastedValue = new IntValue(leftExp.position(), ((DoubleValue) leftExp).value().intValue());
+            IntValue rightCastedValue = (IntValue) rightExp;
+            lastResult = new IntValue(position, leftCastedValue.value() + rightCastedValue.value());
+        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
+            IntValue leftCastedValue = new IntValue(leftExp.position(), ((DoubleValue) leftExp).value().intValue());
+            IntValue rightCastedValue = new IntValue(rightExp.position(), ((DoubleValue) rightExp).value().intValue());
+            lastResult = new IntValue(position, leftCastedValue.value() + rightCastedValue.value());
+        }
+    }
+
     // parameters
     @Override
-    public void visit(IParameter p) {
+    public void visit(IParameter param) {
 
     }
 
@@ -653,7 +682,7 @@ public class Interpreter implements IVisitor {
 
     }
 
-    //
+    // utils
     protected void createNewContext() {
         contexts.add(new Context());
     }
