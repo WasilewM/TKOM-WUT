@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test;
 import parser.IFunctionDef;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
+import parser.program_components.data_values.BoolListValue;
 import parser.program_components.data_values.BoolValue;
 import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.function_definitions.BoolFunctionDef;
+import parser.program_components.function_definitions.BoolListFunctionDef;
 import parser.program_components.function_definitions.DoubleFunctionDef;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.ReturnStatement;
@@ -92,6 +94,22 @@ public class VisitReturnStatementTest {
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenBoolListFunc_whenBoolListValueReturned_thenLastResultIsDoubleValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        BoolListValue expectedLastResult = new BoolListValue(new Position(30, 40));
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};

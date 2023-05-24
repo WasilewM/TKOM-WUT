@@ -66,6 +66,8 @@ public class Interpreter implements IVisitor {
             visit((DoubleFunctionDef) f);
         } else if (f.getClass().equals(BoolFunctionDef.class)) {
             visit((BoolFunctionDef) f);
+        } else if (f.getClass().equals(BoolListFunctionDef.class)) {
+            visit((BoolListFunctionDef) f);
         }
 
         deleteLastContext();
@@ -83,7 +85,12 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(BoolListFunctionDef f) {
-
+        visit(f.functionCode());
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(BoolListValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
@@ -318,6 +325,8 @@ public class Interpreter implements IVisitor {
             visit((StringValue) exp);
         } else if (exp.getClass().equals(BoolValue.class)) {
             visit((BoolValue) exp);
+        } else if (exp.getClass().equals(BoolListValue.class)) {
+            visit((BoolListValue) exp);
         }
     }
 

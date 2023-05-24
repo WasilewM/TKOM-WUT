@@ -7,6 +7,7 @@ import parser.program_components.CodeBlock;
 import parser.program_components.Program;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.function_definitions.BoolFunctionDef;
+import parser.program_components.function_definitions.BoolListFunctionDef;
 import parser.program_components.function_definitions.DoubleFunctionDef;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.ReturnStatement;
@@ -124,6 +125,36 @@ public class VisitMalformedReturnStatementTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypesException(new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenBoolListFunc_whenNullReturned_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new MissingReturnValueException(new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenBoolListFunc_whenStringValueReturned_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypesException(new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
