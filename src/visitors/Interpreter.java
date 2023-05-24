@@ -453,6 +453,10 @@ public class Interpreter implements IVisitor {
             visit((SectionValue) exp);
         } else if (exp.getClass().equals(SectionListValue.class)) {
             visit((SectionListValue) exp);
+        } else if (exp.getClass().equals(AlternativeExpression.class)) {
+            visit((AlternativeExpression) exp);
+        } else if (exp.getClass().equals(ConjunctiveExpression.class)) {
+            visit((ConjunctiveExpression) exp);
         }
     }
 
@@ -468,12 +472,18 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(AlternativeExpression exp) {
-
+        visit(exp.leftExp());
+        if (!isConditionTrue()) {
+            visit(exp.rightExp());
+        }
     }
 
     @Override
     public void visit(ConjunctiveExpression exp) {
-
+        visit(exp.leftExp());
+        if (isConditionTrue()) {
+            visit(exp.rightExp());
+        }
     }
 
     @Override
