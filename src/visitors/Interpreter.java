@@ -62,6 +62,8 @@ public class Interpreter implements IVisitor {
 
         if (f.getClass().equals(IntFunctionDef.class)) {
             visit((IntFunctionDef) f);
+        } else if (f.getClass().equals(IntListFunctionDef.class)) {
+            visit((IntListFunctionDef) f);
         } else if (f.getClass().equals(DoubleFunctionDef.class)) {
             visit((DoubleFunctionDef) f);
         } else if (f.getClass().equals(DoubleListFunctionDef.class)) {
@@ -143,7 +145,12 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(IntListFunctionDef f) {
-
+        visit((f.functionCode()));
+        if (lastResult == null) {
+            errorHandler.handle(new MissingReturnValueException(f));
+        } else if (!lastResult.getClass().equals(IntListValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+        }
     }
 
     @Override
@@ -326,6 +333,8 @@ public class Interpreter implements IVisitor {
             lastResult = null;
         } else if (exp.getClass().equals(IntValue.class)) {
             visit((IntValue) exp);
+        } else if (exp.getClass().equals(IntListValue.class)) {
+            visit((IntListValue) exp);
         } else if (exp.getClass().equals(DoubleValue.class)) {
             visit((DoubleValue) exp);
         } else if (exp.getClass().equals(DoubleListValue.class)) {
