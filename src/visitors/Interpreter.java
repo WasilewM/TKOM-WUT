@@ -406,6 +406,12 @@ public class Interpreter implements IVisitor {
         if (lastResult.getClass().equals(IntValue.class)) {
             IntValue val = (IntValue) lastResult;
             return val.value() > 0;
+        } else if (lastResult.getClass().equals(DoubleValue.class)) {
+            DoubleValue val = (DoubleValue) lastResult;
+            return val.value() > 0;
+        } else if (lastResult.getClass().equals(BoolValue.class)) {
+            BoolValue val = (BoolValue) lastResult;
+            return val.value();
         }
 
         return false;
