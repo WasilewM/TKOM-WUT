@@ -9,7 +9,7 @@ import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.function_definitions.*;
 import parser.program_components.statements.ReturnStatement;
-import visitors.exceptions.IncompatibleDataTypesException;
+import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.exceptions.MissingReturnValueException;
 import visitors.utils.MockedContextDeletionInterpreter;
 import visitors.utils.MockedExitInterpreterErrorHandler;
@@ -62,7 +62,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -92,7 +92,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new IntListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new IntListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -122,7 +122,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -152,7 +152,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new DoubleListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new DoubleListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -182,7 +182,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -212,7 +212,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -242,7 +242,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -272,7 +272,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -302,7 +302,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -332,7 +332,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -362,7 +362,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -392,7 +392,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -422,7 +422,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -452,7 +452,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -482,7 +482,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new StringFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))), new IntValue(new Position(20, 20), 5))
+                new IncompatibleDataTypeException(new StringFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))), new IntValue(new Position(20, 20), 5))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -512,7 +512,7 @@ public class VisitMalformedReturnStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new StringListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))), new IntValue(new Position(20, 20), 5))
+                new IncompatibleDataTypeException(new StringListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))), new IntValue(new Position(20, 20), 5))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

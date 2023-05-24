@@ -9,7 +9,7 @@ import parser.program_components.data_values.*;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;
-import visitors.exceptions.IncompatibleDataTypesException;
+import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.exceptions.ParameterNotFoundExceptionException;
 import visitors.utils.MockedContextDeletionInterpreter;
 import visitors.utils.MockedExitInterpreterErrorHandler;
@@ -47,7 +47,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new IntParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "2"))
+                new IncompatibleDataTypeException(new IntParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "2"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -62,7 +62,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new DoubleParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "2"))
+                new IncompatibleDataTypeException(new DoubleParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "2"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -77,7 +77,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new StringParameter(new Position(15, 15), "m"), new DoubleValue(new Position(15, 20), 2.01))
+                new IncompatibleDataTypeException(new StringParameter(new Position(15, 15), "m"), new DoubleValue(new Position(15, 20), 2.01))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -92,7 +92,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new BoolParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))
+                new IncompatibleDataTypeException(new BoolParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -107,7 +107,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new PointParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))
+                new IncompatibleDataTypeException(new PointParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -122,7 +122,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new SectionParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))
+                new IncompatibleDataTypeException(new SectionParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -137,7 +137,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new FigureParameter(new Position(15, 15), "m"), new BoolValue(new Position(15, 20), true))
+                new IncompatibleDataTypeException(new FigureParameter(new Position(15, 15), "m"), new BoolValue(new Position(15, 20), true))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -152,7 +152,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new SceneParameter(new Position(15, 15), "m"), new BoolValue(new Position(15, 20), true))
+                new IncompatibleDataTypeException(new SceneParameter(new Position(15, 15), "m"), new BoolValue(new Position(15, 20), true))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -167,7 +167,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new IntListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+                new IncompatibleDataTypeException(new IntListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -182,7 +182,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new DoubleListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+                new IncompatibleDataTypeException(new DoubleListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -197,7 +197,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new StringListParameter(new Position(15, 15), "m"), new BoolListValue(new Position(15, 20)))
+                new IncompatibleDataTypeException(new StringListParameter(new Position(15, 15), "m"), new BoolListValue(new Position(15, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -212,7 +212,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new BoolListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+                new IncompatibleDataTypeException(new BoolListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -227,7 +227,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new PointListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+                new IncompatibleDataTypeException(new PointListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -242,7 +242,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new SectionListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+                new IncompatibleDataTypeException(new SectionListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -257,7 +257,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new FigureListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+                new IncompatibleDataTypeException(new FigureListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -272,7 +272,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new SceneListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+                new IncompatibleDataTypeException(new SceneListParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -305,7 +305,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypesException(new IntValue(new Position(15, 20), 2), new StringListValue(new Position(18, 20)))
+                new IncompatibleDataTypeException(new IntValue(new Position(15, 20), 2), new StringListValue(new Position(18, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

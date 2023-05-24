@@ -7,10 +7,7 @@ import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
-import visitors.exceptions.IncompatibleDataTypesException;
-import visitors.exceptions.MissingMainFunctionException;
-import visitors.exceptions.MissingReturnValueException;
-import visitors.exceptions.ParameterNotFoundExceptionException;
+import visitors.exceptions.*;
 
 import java.util.Map;
 import java.util.Stack;
@@ -103,7 +100,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(BoolValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -113,7 +110,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(BoolListValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -126,7 +123,7 @@ public class Interpreter implements IVisitor {
             IntValue value = (IntValue) lastResult;
             lastResult = new DoubleValue(value.position(), value.value().doubleValue());
         } else if (!lastResult.getClass().equals(DoubleValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -136,7 +133,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(DoubleListValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -146,7 +143,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(FigureValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -156,7 +153,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(FigureListValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -169,7 +166,7 @@ public class Interpreter implements IVisitor {
             DoubleValue value = (DoubleValue) lastResult;
             lastResult = new IntValue(value.position(), value.value().intValue());
         } else if (!lastResult.getClass().equals(IntValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -179,7 +176,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(IntListValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -189,7 +186,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(PointValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -199,7 +196,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(PointListValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -209,7 +206,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(SceneValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -219,7 +216,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(SceneListValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -229,7 +226,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(SectionValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -239,7 +236,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(SectionListValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -249,7 +246,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(StringValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -259,7 +256,7 @@ public class Interpreter implements IVisitor {
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(StringListValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypesException(f, lastResult));
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
     }
 
@@ -277,6 +274,8 @@ public class Interpreter implements IVisitor {
     private void visit(IStatement stmnt) {
         if (stmnt.getClass().equals(AssignmentStatement.class)) {
             visit((AssignmentStatement) stmnt);
+        } else if (stmnt.getClass().equals(IfStatement.class)) {
+            visit((IfStatement) stmnt);
         } else if (stmnt.getClass().equals(ReturnStatement.class)) {
             visit((ReturnStatement) stmnt);
         }
@@ -286,9 +285,9 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(AssignmentStatement stmnt) {
         if (stmnt.param().getClass().equals(IntParameter.class)) {
-            handleIntValueAssignment(stmnt, new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            handleIntValueAssignment(stmnt, new IncompatibleDataTypeException(stmnt.param(), stmnt.exp()));
         } else if (stmnt.param().getClass().equals(DoubleParameter.class)) {
-            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypeException(stmnt.param(), stmnt.exp()));
         } else if (stmnt.param().getClass().equals(StringParameter.class)) {
             handleParamValueAssignment(stmnt.exp().getClass().equals(StringValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(BoolParameter.class)) {
@@ -320,7 +319,7 @@ public class Interpreter implements IVisitor {
         } else if (stmnt.param().getClass().equals(ReassignedParameter.class)) {
             handleValueReassignment(stmnt);
         } else {
-            errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), stmnt.exp()));
         }
     }
 
@@ -328,7 +327,7 @@ public class Interpreter implements IVisitor {
         if (assignmentCondition) {
             this.getLastContext().add(stmnt.param().name(), stmnt.exp());
         } else {
-            errorHandler.handle(new IncompatibleDataTypesException(stmnt.param(), stmnt.exp()));
+            errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), stmnt.exp()));
         }
     }
 
@@ -339,17 +338,17 @@ public class Interpreter implements IVisitor {
 
         IExpression value = this.getLastContext().get(stmnt.param().name());
         if (value.getClass().equals(IntValue.class)) {
-            handleIntValueAssignment(stmnt, new IncompatibleDataTypesException(value, stmnt.exp()));
+            handleIntValueAssignment(stmnt, new IncompatibleDataTypeException(value, stmnt.exp()));
         } else if (value.getClass().equals(DoubleValue.class)) {
-            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypesException(value, stmnt.exp()));
+            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypeException(value, stmnt.exp()));
         } else if (!value.getClass().equals(stmnt.exp().getClass())) {
-            errorHandler.handle(new IncompatibleDataTypesException(value, stmnt.exp()));
+            errorHandler.handle(new IncompatibleDataTypeException(value, stmnt.exp()));
         } else {
             this.getLastContext().update(stmnt.param().name(), stmnt.exp());
         }
     }
 
-    private void handleIntValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypesException exception) {
+    private void handleIntValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypeException exception) {
         if (stmnt.exp().getClass().equals(IntValue.class)) {
             this.getLastContext().add(stmnt.param().name(), stmnt.exp());
         } else if (stmnt.exp().getClass().equals(DoubleValue.class)) {
@@ -360,7 +359,7 @@ public class Interpreter implements IVisitor {
         }
     }
 
-    private void handleDoubleValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypesException exception) {
+    private void handleDoubleValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypeException exception) {
         if (stmnt.exp().getClass().equals(DoubleValue.class)) {
             this.getLastContext().add(stmnt.param().name(), stmnt.exp());
         } else if (stmnt.exp().getClass().equals(IntValue.class)) {
@@ -368,6 +367,17 @@ public class Interpreter implements IVisitor {
             this.getLastContext().add(stmnt.param().name(), castedValue);
         } else {
             errorHandler.handle(exception);
+        }
+    }
+
+    @Override
+    public void visit(IfStatement stmnt) {
+        visit(stmnt.exp());
+        if (lastResult == null) {
+            errorHandler.handle(new NullExpressionException(stmnt));
+        }
+        if (isConditionTrue()) {
+            visit(stmnt.codeBlock());
         }
     }
 
@@ -382,11 +392,6 @@ public class Interpreter implements IVisitor {
     }
 
     @Override
-    public void visit(IfStatement stmnt) {
-
-    }
-
-    @Override
     public void visit(ReturnStatement stmnt) {
         visit(stmnt.exp());
         returnFound = true;
@@ -395,6 +400,15 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(WhileStatement stmnt) {
 
+    }
+
+    private boolean isConditionTrue() {
+        if (lastResult.getClass().equals(IntValue.class)) {
+            IntValue val = (IntValue) lastResult;
+            return val.value() > 0;
+        }
+
+        return false;
     }
 
     // expressions
@@ -434,6 +448,11 @@ public class Interpreter implements IVisitor {
         } else if (exp.getClass().equals(SectionListValue.class)) {
             visit((SectionListValue) exp);
         }
+    }
+
+    @Override
+    public void visit(IDataValue val) {
+        lastResult = val;
     }
 
     @Override
@@ -511,12 +530,6 @@ public class Interpreter implements IVisitor {
 
     }
 
-    // values
-    @Override
-    public void visit(IDataValue val) {
-        lastResult = val;
-    }
-
     // parameters
     @Override
     public void visit(IParameter p) {
@@ -524,87 +537,87 @@ public class Interpreter implements IVisitor {
     }
 
     @Override
-    public void visit(BoolListParameter boolListParameter) {
+    public void visit(BoolListParameter param) {
 
     }
 
     @Override
-    public void visit(BoolParameter boolParameter) {
+    public void visit(BoolParameter param) {
 
     }
 
     @Override
-    public void visit(DoubleListParameter doubleListParameter) {
+    public void visit(DoubleListParameter param) {
 
     }
 
     @Override
-    public void visit(DoubleParameter doubleParameter) {
+    public void visit(DoubleParameter param) {
 
     }
 
     @Override
-    public void visit(FigureListParameter figureListParameter) {
+    public void visit(FigureListParameter param) {
 
     }
 
     @Override
-    public void visit(FigureParameter figureParameter) {
+    public void visit(FigureParameter param) {
 
     }
 
     @Override
-    public void visit(IntListParameter intListParameter) {
+    public void visit(IntListParameter param) {
 
     }
 
     @Override
-    public void visit(IntParameter intParameter) {
+    public void visit(IntParameter param) {
 
     }
 
     @Override
-    public void visit(PointListParameter pointListParameter) {
+    public void visit(PointListParameter param) {
 
     }
 
     @Override
-    public void visit(PointParameter pointParameter) {
+    public void visit(PointParameter param) {
 
     }
 
     @Override
-    public void visit(ReassignedParameter reassignedParameter) {
+    public void visit(ReassignedParameter param) {
 
     }
 
     @Override
-    public void visit(SceneListParameter sceneListParameter) {
+    public void visit(SceneListParameter param) {
 
     }
 
     @Override
-    public void visit(SceneParameter sceneParameter) {
+    public void visit(SceneParameter param) {
 
     }
 
     @Override
-    public void visit(SectionListParameter sectionListParameter) {
+    public void visit(SectionListParameter param) {
 
     }
 
     @Override
-    public void visit(SectionParameter sectionParameter) {
+    public void visit(SectionParameter param) {
 
     }
 
     @Override
-    public void visit(StringListParameter stringListParameter) {
+    public void visit(StringListParameter param) {
 
     }
 
     @Override
-    public void visit(StringParameter stringParameter) {
+    public void visit(StringParameter param) {
 
     }
 
