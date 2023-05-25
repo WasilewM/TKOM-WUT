@@ -285,42 +285,43 @@ public class Interpreter implements IVisitor {
     // statements
     @Override
     public void visit(AssignmentStatement stmnt) {
+        visit(stmnt.exp());
         if (stmnt.param().getClass().equals(IntParameter.class)) {
-            handleIntValueAssignment(stmnt, new IncompatibleDataTypeException(stmnt.param(), stmnt.exp()));
+            handleIntValueAssignment(stmnt, new IncompatibleDataTypeException(stmnt.param(), lastResult));
         } else if (stmnt.param().getClass().equals(DoubleParameter.class)) {
-            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypeException(stmnt.param(), stmnt.exp()));
+            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypeException(stmnt.param(), lastResult));
         } else if (stmnt.param().getClass().equals(StringParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(StringValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(StringValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(BoolParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(BoolValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(BoolValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(PointParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(PointValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(PointValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(SectionParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(SectionValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(SectionValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(FigureParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(FigureValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(FigureValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(SceneParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(SceneValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(SceneValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(IntListParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(IntListValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(IntListValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(DoubleListParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(DoubleListValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(DoubleListValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(StringListParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(StringListValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(StringListValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(BoolListParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(BoolListValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(BoolListValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(PointListParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(PointListValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(PointListValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(SectionListParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(SectionListValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(SectionListValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(FigureListParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(FigureListValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(FigureListValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(SceneListParameter.class)) {
-            handleParamValueAssignment(stmnt.exp().getClass().equals(SceneListValue.class), stmnt);
+            handleParamValueAssignment(lastResult.getClass().equals(SceneListValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(ReassignedParameter.class)) {
             handleValueReassignment(stmnt);
         } else {
-            errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), stmnt.exp()));
+            errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), lastResult));
         }
     }
 
