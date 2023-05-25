@@ -279,6 +279,8 @@ public class Interpreter implements IVisitor {
             visit((IfStatement) stmnt);
         } else if (stmnt.getClass().equals(ReturnStatement.class)) {
             visit((ReturnStatement) stmnt);
+        } else if (stmnt.getClass().equals(WhileStatement.class)) {
+            visit((WhileStatement) stmnt);
         }
     }
 
@@ -375,9 +377,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(IfStatement stmnt) {
         visit(stmnt.exp());
-        if (lastResult == null) {
-            errorHandler.handle(new NullExpressionException(stmnt));
-        }
+        registerErrorIfLastResultIsNull(stmnt);
         if (isConditionTrue()) {
             visit(stmnt.codeBlock());
         }
@@ -401,7 +401,11 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(WhileStatement stmnt) {
-
+        visit(stmnt.exp());
+        registerErrorIfLastResultIsNull(stmnt);
+        if (isConditionTrue()) {
+            visit(stmnt.codeBlock());
+        }
     }
 
     private boolean isConditionTrue() {
@@ -690,5 +694,11 @@ public class Interpreter implements IVisitor {
 
     protected void deleteLastContext() {
         contexts.pop();
+    }
+
+    private void registerErrorIfLastResultIsNull(IStatement stmnt) {
+        if (lastResult == null) {
+            errorHandler.handle(new NullExpressionException(stmnt));
+        }
     }
 }
