@@ -6,6 +6,9 @@ import parser.IFunctionDef;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
 import parser.program_components.data_values.*;
+import parser.program_components.expressions.AdditionExpression;
+import parser.program_components.expressions.AlternativeExpression;
+import parser.program_components.expressions.ConjunctiveExpression;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;
@@ -470,6 +473,78 @@ public class VisitAssignmentStatementTest {
 
         Context expected = new Context();
         expected.add("m", new DoubleValue(new Position(18, 20), 45.0));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenDoubleParam_whenArithmeticExp_thenVisitExpAndAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new DoubleParameter(new Position(15, 15), "m"), new AdditionExpression(new Position(15, 20), new DoubleValue(new Position(15, 20), 3.14), new DoubleValue(new Position(15, 25), 7.18))),
+                    new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 0))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new DoubleValue(new Position(15, 20), 10.32));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenIntParam_whenArithmeticExp_thenVisitExpAndAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new IntParameter(new Position(15, 15), "m"), new AdditionExpression(new Position(15, 20), new DoubleValue(new Position(15, 20), 3.14), new DoubleValue(new Position(15, 25), 7.18))),
+                    new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 0))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new IntValue(new Position(15, 20), 10));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenBoolParam_whenAlternativeExp_thenVisitExpAndAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new BoolParameter(new Position(15, 15), "m"), new AlternativeExpression(new Position(15, 20), new BoolValue(new Position(15, 20), false), new BoolValue(new Position(15, 25), true))),
+                    new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 0))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new BoolValue(new Position(15, 20), true));
+        assertEquals(expected, interpreter.getLastContext());
+    }
+
+    @Test
+    void givenBoolParam_whenConjunctiveExp_thenVisitExpAndAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new BoolParameter(new Position(15, 15), "m"), new ConjunctiveExpression(new Position(15, 20), new BoolValue(new Position(15, 20), true), new BoolValue(new Position(15, 25), false))),
+                    new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 0))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        Context expected = new Context();
+        expected.add("m", new BoolValue(new Position(15, 20), false));
         assertEquals(expected, interpreter.getLastContext());
     }
 }

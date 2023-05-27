@@ -329,9 +329,9 @@ public class Interpreter implements IVisitor {
 
     private void handleParamValueAssignment(boolean assignmentCondition, AssignmentStatement stmnt) {
         if (assignmentCondition) {
-            this.getLastContext().add(stmnt.param().name(), stmnt.exp());
+            this.getLastContext().add(stmnt.param().name(), lastResult);
         } else {
-            errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), stmnt.exp()));
+            errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), lastResult));
         }
     }
 
@@ -353,10 +353,10 @@ public class Interpreter implements IVisitor {
     }
 
     private void handleIntValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypeException exception) {
-        if (stmnt.exp().getClass().equals(IntValue.class)) {
-            this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-        } else if (stmnt.exp().getClass().equals(DoubleValue.class)) {
-            IntValue castedValue = new IntValue(stmnt.exp().position(), ((DoubleValue) stmnt.exp()).value().intValue());
+        if (lastResult.getClass().equals(IntValue.class)) {
+            this.getLastContext().add(stmnt.param().name(), lastResult);
+        } else if (lastResult.getClass().equals(DoubleValue.class)) {
+            IntValue castedValue = new IntValue(lastResult.position(), ((DoubleValue) lastResult).value().intValue());
             this.getLastContext().add(stmnt.param().name(), castedValue);
         } else {
             errorHandler.handle(exception);
@@ -364,10 +364,10 @@ public class Interpreter implements IVisitor {
     }
 
     private void handleDoubleValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypeException exception) {
-        if (stmnt.exp().getClass().equals(DoubleValue.class)) {
-            this.getLastContext().add(stmnt.param().name(), stmnt.exp());
-        } else if (stmnt.exp().getClass().equals(IntValue.class)) {
-            DoubleValue castedValue = new DoubleValue(stmnt.exp().position(), ((IntValue) stmnt.exp()).value().doubleValue());
+        if (lastResult.getClass().equals(DoubleValue.class)) {
+            this.getLastContext().add(stmnt.param().name(), lastResult);
+        } else if (lastResult.getClass().equals(IntValue.class)) {
+            DoubleValue castedValue = new DoubleValue(lastResult.position(), ((IntValue) lastResult).value().doubleValue());
             this.getLastContext().add(stmnt.param().name(), castedValue);
         } else {
             errorHandler.handle(exception);
@@ -479,6 +479,8 @@ public class Interpreter implements IVisitor {
         if (!isConditionTrue()) {
             visit(exp.rightExp());
         }
+
+        saveExpressionBoolResult(exp);
     }
 
     @Override
@@ -487,6 +489,8 @@ public class Interpreter implements IVisitor {
         if (isConditionTrue()) {
             visit(exp.rightExp());
         }
+
+        saveExpressionBoolResult(exp);
     }
 
     // comparison expressions
@@ -694,6 +698,13 @@ public class Interpreter implements IVisitor {
 
     protected void deleteLastContext() {
         contexts.pop();
+    }
+
+    private void saveExpressionBoolResult(IExpression exp) {
+        if (lastResult.getClass().equals(BoolValue.class)) {
+            BoolValue castedValue = (BoolValue) lastResult;
+            lastResult = new BoolValue(exp.position(), castedValue.value());
+        }
     }
 
     private void registerErrorIfLastResultIsNull(IStatement stmnt) {
