@@ -9,6 +9,7 @@ import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.expressions.AdditionExpression;
 import parser.program_components.expressions.DiscreteDivisionExpression;
+import parser.program_components.expressions.DivisionExpression;
 import parser.program_components.expressions.SubtractionExpression;
 import parser.program_components.function_definitions.DoubleFunctionDef;
 import parser.program_components.function_definitions.IntFunctionDef;
@@ -334,6 +335,134 @@ public class VisitArithmeticExpressionsTest {
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.001)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIntFuncAndDivisionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 3)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIntFuncAndDivisionExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 6), new DoubleValue(new Position(30, 50), 3.99)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIntFuncAndDivisionExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        IntValue expectedLastResult = new IntValue(new Position(30, 40), 3);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new IntValue(new Position(30, 50), 2)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIntFuncAndDivisionExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.001)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenDoubleFuncAndDivisionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.25);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 5), new IntValue(new Position(30, 50), 4)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenDoubleFuncAndDivisionExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.50);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 6), new DoubleValue(new Position(30, 50), 4.00)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenDoubleFuncAndDivisionExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 3.33);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.66), new IntValue(new Position(30, 50), 2)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenDoubleFuncAndDivisionExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.3);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.50), new DoubleValue(new Position(30, 50), 5.00)))
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);

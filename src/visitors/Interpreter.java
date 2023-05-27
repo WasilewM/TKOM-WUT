@@ -469,6 +469,8 @@ public class Interpreter implements IVisitor {
             visit((SubtractionExpression) exp);
         } else if (exp.getClass().equals(DiscreteDivisionExpression.class)) {
             visit((DiscreteDivisionExpression) exp);
+        } else if (exp.getClass().equals(DivisionExpression.class)) {
+            visit((DivisionExpression) exp);
         } else if (exp.getClass().equals(Identifier.class)) {
             visit((Identifier) exp);
         } else {
@@ -567,6 +569,11 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(DivisionExpression exp) {
+        visit(exp.leftExp());
+        IExpression leftExp = lastResult;
+        visit(exp.rightExp());
+
+        tryToDivide(exp.position(), leftExp, lastResult);
 
     }
 
@@ -645,6 +652,28 @@ public class Interpreter implements IVisitor {
             IntValue rightCastedValue = new IntValue(rightExp.position(), ((DoubleValue) rightExp).value().intValue());
             int operationResult = leftCastedValue.value() / rightCastedValue.value();
             lastResult = new IntValue(position, operationResult);
+        } else {
+            errorHandler.handle(new OperationDataTypeException(position, leftExp, rightExp));
+        }
+    }
+
+    private void tryToDivide(Position position, IExpression leftExp, IExpression rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
+            DoubleValue rightCastedValue = new DoubleValue(rightExp.position(), ((IntValue) rightExp).value().doubleValue());
+            lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
+        } else if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
+            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
+            DoubleValue rightCastedValue = (DoubleValue) rightExp;
+            lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
+        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            DoubleValue leftCastedValue = (DoubleValue) leftExp;
+            DoubleValue rightCastedValue = new DoubleValue(leftExp.position(), ((IntValue) rightExp).value().doubleValue());
+            lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
+        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
+            DoubleValue leftCastedValue = (DoubleValue) leftExp;
+            DoubleValue rightCastedValue = (DoubleValue) rightExp;
+            lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
         } else {
             errorHandler.handle(new OperationDataTypeException(position, leftExp, rightExp));
         }
