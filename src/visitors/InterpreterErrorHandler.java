@@ -18,7 +18,8 @@ public class InterpreterErrorHandler implements IErrorHandler {
                 || ParameterNotFoundException.class.equals(e.getClass())
                 || MissingReturnValueException.class.equals(e.getClass())
                 || NullExpressionException.class.equals(e.getClass())
-                || IdentifierNotFoundException.class.equals(e.getClass());
+                || IdentifierNotFoundException.class.equals(e.getClass())
+                || OperationDataTypeException.class.equals(e.getClass());
     }
 
     @Override

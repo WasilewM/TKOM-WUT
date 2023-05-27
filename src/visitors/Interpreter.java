@@ -591,6 +591,8 @@ public class Interpreter implements IVisitor {
             DoubleValue leftCastedValue = (DoubleValue) leftExp;
             DoubleValue rightCastedValue = (DoubleValue) rightExp;
             lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
+        } else {
+            errorHandler.handle(new OperationDataTypeException(position, leftExp, rightExp));
         }
     }
 
@@ -611,6 +613,8 @@ public class Interpreter implements IVisitor {
             DoubleValue leftCastedValue = (DoubleValue) leftExp;
             DoubleValue rightCastedValue = (DoubleValue) rightExp;
             lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
+        } else {
+            errorHandler.handle(new OperationDataTypeException(position, leftExp, rightExp));
         }
     }
 
