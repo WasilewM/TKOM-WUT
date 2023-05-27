@@ -465,6 +465,8 @@ public class Interpreter implements IVisitor {
             visit((ConjunctiveExpression) exp);
         } else if (exp.getClass().equals(AdditionExpression.class)) {
             visit((AdditionExpression) exp);
+        } else if (exp.getClass().equals(SubtractionExpression.class)) {
+            visit((SubtractionExpression) exp);
         } else if (exp.getClass().equals(Identifier.class)) {
             visit((Identifier) exp);
         } else {
@@ -545,7 +547,11 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(SubtractionExpression exp) {
+        visit(exp.leftExp());
+        IExpression leftExp = lastResult;
+        visit(exp.rightExp());
 
+        tryToSubtractExpressions(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -585,6 +591,26 @@ public class Interpreter implements IVisitor {
             DoubleValue leftCastedValue = (DoubleValue) leftExp;
             DoubleValue rightCastedValue = (DoubleValue) rightExp;
             lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
+        }
+    }
+
+    private void tryToSubtractExpressions(Position position, IExpression leftExp, IExpression rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
+            DoubleValue rightCastedValue = new DoubleValue(rightExp.position(), ((IntValue) rightExp).value().doubleValue());
+            lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
+        } else if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
+            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
+            DoubleValue rightCastedValue = (DoubleValue) rightExp;
+            lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
+        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            DoubleValue leftCastedValue = (DoubleValue) leftExp;
+            DoubleValue rightCastedValue = new DoubleValue(leftExp.position(), ((IntValue) rightExp).value().doubleValue());
+            lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
+        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
+            DoubleValue leftCastedValue = (DoubleValue) leftExp;
+            DoubleValue rightCastedValue = (DoubleValue) rightExp;
+            lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
         }
     }
 
