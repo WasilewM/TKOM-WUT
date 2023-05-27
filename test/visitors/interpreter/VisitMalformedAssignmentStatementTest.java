@@ -10,7 +10,7 @@ import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;
 import visitors.exceptions.IncompatibleDataTypeException;
-import visitors.exceptions.ParameterNotFoundExceptionException;
+import visitors.exceptions.ParameterNotFoundException;
 import visitors.utils.MockedContextDeletionInterpreter;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
@@ -287,7 +287,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new ParameterNotFoundExceptionException(new ReassignedParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
+                new ParameterNotFoundException(new ReassignedParameter(new Position(15, 15), "m"), new StringListValue(new Position(15, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

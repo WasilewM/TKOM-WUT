@@ -15,9 +15,10 @@ public class InterpreterErrorHandler implements IErrorHandler {
     private static boolean isErrorCritical(Exception e) {
         return MissingMainFunctionException.class.equals(e.getClass())
                 || IncompatibleDataTypeException.class.equals(e.getClass())
-                || ParameterNotFoundExceptionException.class.equals(e.getClass())
+                || ParameterNotFoundException.class.equals(e.getClass())
                 || MissingReturnValueException.class.equals(e.getClass())
-                || NullExpressionException.class.equals(e.getClass());
+                || NullExpressionException.class.equals(e.getClass())
+                || IdentifierNotFoundException.class.equals(e.getClass());
     }
 
     @Override

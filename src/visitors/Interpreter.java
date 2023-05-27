@@ -337,7 +337,7 @@ public class Interpreter implements IVisitor {
 
     private void handleValueReassignment(AssignmentStatement stmnt) {
         if (!this.getLastContext().containsKey(stmnt.param().name())) {
-            errorHandler.handle(new ParameterNotFoundExceptionException(stmnt.param(), stmnt.exp()));
+            errorHandler.handle(new ParameterNotFoundException(stmnt.param(), stmnt.exp()));
         }
 
         IExpression value = this.getLastContext().get(stmnt.param().name());
@@ -465,6 +465,10 @@ public class Interpreter implements IVisitor {
             visit((ConjunctiveExpression) exp);
         } else if (exp.getClass().equals(AdditionExpression.class)) {
             visit((AdditionExpression) exp);
+        } else if (exp.getClass().equals(Identifier.class)) {
+            visit((Identifier) exp);
+        } else {
+            lastResult = null;
         }
     }
 
@@ -683,7 +687,11 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(Identifier identifier) {
+        if (!this.getLastContext().containsKey(identifier.name())) {
+            errorHandler.handle(new IdentifierNotFoundException(identifier));
+        }
 
+        lastResult = this.getLastContext().get(identifier.name());
     }
 
     @Override

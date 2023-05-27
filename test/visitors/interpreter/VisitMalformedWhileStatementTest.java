@@ -4,11 +4,16 @@ import lexer.Position;
 import org.junit.jupiter.api.Test;
 import parser.IFunctionDef;
 import parser.program_components.CodeBlock;
+import parser.program_components.Identifier;
 import parser.program_components.Program;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.function_definitions.IntFunctionDef;
+import parser.program_components.parameters.IntParameter;
+import parser.program_components.parameters.ReassignedParameter;
+import parser.program_components.statements.AssignmentStatement;
 import parser.program_components.statements.ReturnStatement;
 import parser.program_components.statements.WhileStatement;
+import visitors.exceptions.IdentifierNotFoundException;
 import visitors.exceptions.NullExpressionException;
 import visitors.utils.MockedContextDeletionInterpreter;
 import visitors.utils.MockedExitInterpreterErrorHandler;
@@ -51,6 +56,28 @@ public class VisitMalformedWhileStatementTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new NullExpressionException(new WhileStatement(new Position(20, 20), null, new CodeBlock(new Position(25, 25), new ArrayList<>())))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+
+    @Test
+    void givenWhileStmnt_whenUnknownIdentifierInCondition_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new IntParameter(new Position(15, 15), "a"), new IntValue(new Position(15, 20), 1)),
+                    new WhileStatement(new Position(20, 20), new Identifier(new Position(20, 25), "b"), new CodeBlock(new Position(21, 21), List.of(
+                            new AssignmentStatement(new Position(25, 25), new ReassignedParameter(new Position(25, 25), "a"), new IntValue(new Position(25, 30), 0))
+                    ))),
+                    new ReturnStatement(new Position(30, 30), new Identifier(new Position(32, 40), "a"))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IdentifierNotFoundException(new Identifier(new Position(20, 25), "b"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
