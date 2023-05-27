@@ -16,4 +16,9 @@ public record SceneValue(Position position, ArrayList<IExpression> values) imple
     public void accept(IVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public Object value() {
+        return values;
+    }
 }

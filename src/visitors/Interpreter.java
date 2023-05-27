@@ -463,6 +463,8 @@ public class Interpreter implements IVisitor {
             visit((AlternativeExpression) exp);
         } else if (exp.getClass().equals(ConjunctiveExpression.class)) {
             visit((ConjunctiveExpression) exp);
+        } else if (exp.getClass().equals(EqualExpression.class)) {
+            visit((EqualExpression) exp);
         } else if (exp.getClass().equals(AdditionExpression.class)) {
             visit((AdditionExpression) exp);
         } else if (exp.getClass().equals(SubtractionExpression.class)) {
@@ -508,7 +510,23 @@ public class Interpreter implements IVisitor {
     // comparison expressions
     @Override
     public void visit(EqualExpression exp) {
+        visit(exp.leftExp());
+        IExpression leftExp = lastResult;
+        visit(exp.rightExp());
+        boolean comparisonResult = areValuesEqual(leftExp, lastResult);
+        lastResult = new BoolValue(exp.position(), comparisonResult);
+    }
 
+    private boolean areValuesEqual(IExpression leftExp, IExpression rightExp) {
+        try {
+            IDataValue leftValue = (IDataValue) leftExp;
+            IDataValue rightValue = (IDataValue) rightExp;
+            return leftValue.value().equals(rightValue.value());
+        } catch (Exception e) {
+            errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
+        }
+
+        return false;
     }
 
     @Override

@@ -10,4 +10,9 @@ public record PointValue(Position position, IExpression x, IExpression y) implem
     public void accept(IVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public Object value() {
+        return null;
+    }
 }

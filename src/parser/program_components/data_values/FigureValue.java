@@ -16,4 +16,9 @@ public record FigureValue(Position position, ArrayList<IExpression> values) impl
     public void accept(IVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public Object value() {
+        return values;
+    }
 }

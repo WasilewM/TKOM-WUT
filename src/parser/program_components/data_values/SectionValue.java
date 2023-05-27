@@ -10,4 +10,9 @@ public record SectionValue(Position position, IExpression first, IExpression sec
     public void accept(IVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public Object value() {
+        return null;
+    }
 }
