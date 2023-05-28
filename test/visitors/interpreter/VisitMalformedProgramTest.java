@@ -3,6 +3,7 @@ package visitors.interpreter;
 import lexer.Position;
 import org.junit.jupiter.api.Test;
 import parser.program_components.Program;
+import visitors.ContextManager;
 import visitors.Interpreter;
 import visitors.exceptions.MissingMainFunctionException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
@@ -17,7 +18,8 @@ public class VisitMalformedProgramTest {
     @Test
     void givenProgram_whenNoMainFunctionExists_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        Interpreter interpreter = new Interpreter(errorHandler);
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         Program program = new Program(new Position(1, 1), new HashMap<>());
         List<Exception> expectedErrorLog = List.of(
                 new MissingMainFunctionException(new HashMap<>())

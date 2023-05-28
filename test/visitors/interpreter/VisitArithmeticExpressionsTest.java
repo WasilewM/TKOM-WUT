@@ -11,7 +11,8 @@ import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.DoubleFunctionDef;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.ReturnStatement;
-import visitors.utils.MockedContextDeletionInterpreter;
+import visitors.Interpreter;
+import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
@@ -23,7 +24,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndAdditionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 7);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -39,7 +41,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndAdditionExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 7);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -55,7 +58,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndAdditionExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 11);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -71,7 +75,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndAdditionExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 11);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -87,7 +92,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndAdditionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 17.17);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -103,7 +109,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndAdditionExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToDoubleValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 7.99);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -119,7 +126,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndAdditionExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToDoubleValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 11.76);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -135,7 +143,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndAdditionExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToDoubleValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 11.761);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -151,7 +160,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndSubtractionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -167,7 +177,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndSubtractionExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -183,7 +194,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndSubtractionExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -199,7 +211,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndSubtractionExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -215,7 +228,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndDiscreteDivisionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -231,7 +245,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndDiscreteDivisionExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 2);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -247,7 +262,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndDiscreteDivisionExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 3);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -263,7 +279,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndDiscreteDivisionExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -279,7 +296,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndDiscreteDivisionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -295,7 +313,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndDiscreteDivisionExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 2.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -311,7 +330,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndDiscreteDivisionExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 3.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -327,7 +347,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndDiscreteDivisionExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -343,7 +364,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndDivisionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -359,7 +381,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndDivisionExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -375,7 +398,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndDivisionExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 3);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -391,7 +415,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndDivisionExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -407,7 +432,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndDivisionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.25);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -423,7 +449,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndDivisionExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.50);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -439,7 +466,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndDivisionExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 3.33);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -455,7 +483,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndDivisionExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.3);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -471,7 +500,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndMultiplicationExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 12);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -487,7 +517,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndMultiplicationExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -503,7 +534,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndMultiplicationExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -519,7 +551,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenIntFuncAndMultiplicationExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 33);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -535,7 +568,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndMultiplicationExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 20.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -551,7 +585,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndMultiplicationExpReturned_whenLeftIsIntValueAndRightIsDoubleValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 23.94);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -567,7 +602,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndMultiplicationExpReturned_whenLeftIsDoubleValueAndRightIsIntValue_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 13.32);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -583,7 +619,8 @@ public class VisitArithmeticExpressionsTest {
     @Test
     void givenDoubleFuncAndMultiplicationExpReturned_whenBothSidesAreDoubleValues_thenLastResultIsEvaluatedToIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 34.17);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(

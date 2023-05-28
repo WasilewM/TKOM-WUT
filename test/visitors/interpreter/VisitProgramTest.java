@@ -8,6 +8,7 @@ import parser.program_components.Program;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.ReturnStatement;
+import visitors.ContextManager;
 import visitors.Interpreter;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
@@ -20,7 +21,8 @@ public class VisitProgramTest {
     @Test
     void givenProgram_whenNoStatementExists_thenErrorLogIsEmpty() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        Interpreter interpreter = new Interpreter(errorHandler);
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 0))))));
         }};

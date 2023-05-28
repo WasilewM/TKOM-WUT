@@ -14,7 +14,8 @@ import parser.program_components.expressions.ConjunctiveExpression;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.IfStatement;
 import parser.program_components.statements.ReturnStatement;
-import visitors.utils.MockedContextDeletionInterpreter;
+import visitors.Interpreter;
+import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
@@ -27,7 +28,8 @@ public class VisitIfStatementTest {
     void givenIfStmnt_whenPositiveIntValueAsCondition_thenCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -47,7 +49,8 @@ public class VisitIfStatementTest {
     void givenIfStmnt_whenZeroIntValueAsCondition_thenDontCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(32, 40), 40);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -67,7 +70,8 @@ public class VisitIfStatementTest {
     void givenIfStmnt_whenPositiveDoubleValueAsCondition_thenCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -87,7 +91,8 @@ public class VisitIfStatementTest {
     void givenIfStmnt_whenZeroDoubleValueAsCondition_thenDontCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -107,7 +112,8 @@ public class VisitIfStatementTest {
     void givenIfStmnt_whenBoolTrueValueAsCondition_thenCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -127,7 +133,8 @@ public class VisitIfStatementTest {
     void givenIfStmnt_whenBoolFalseValueAsCondition_thenDontCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -147,7 +154,8 @@ public class VisitIfStatementTest {
     void givenIfStmnt_whenValueOtherThanIntOrDoubleOrBoolAsCondition_thenDontCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -167,7 +175,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithConjunctiveExpInCondition_whenBothSidesOAreTrue_thenCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -187,7 +196,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithConjunctiveExpInCondition_whenLeftSideIsFalseAndRightSideIsTrue_thenDontCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -207,7 +217,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithConjunctiveExpInCondition_whenBothSidesAreFalse_thenDontCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -227,7 +238,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithConjunctiveExpInCondition_whenRightSideOfIsFalse_thenDontCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -247,7 +259,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithAlternativeExpInCondition_whenLeftSideIsFalseAndRightSideIsTrue_thenCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -267,7 +280,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithAlternativeExpInCondition_whenBothSidesAreTrue_thenCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -287,7 +301,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithAlternativeExpInCondition_whenLeftSideIsTrueAndRightSideIsFalse_thenCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -307,7 +322,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithAlternativeExpInCondition_whenBothSideAreFalse_thenDontCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -327,7 +343,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithAlternativeExpInCondition_whenLeftSideIsNegativeAlternativeExpAndRightSideIsNegativeConjunctiveExp_thenDontCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(73, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
@@ -347,7 +364,8 @@ public class VisitIfStatementTest {
     void givenIfStmntWithAlternativeExpInCondition_whenLeftSideIsNegativeAlternativeExpAndRightSideIsPositiveConjunctiveExp_thenCheckIfCodeBlock() {
         // to check whether Interpreter checked if code block or not, different return values are set
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(53, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(

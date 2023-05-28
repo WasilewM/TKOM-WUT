@@ -13,9 +13,10 @@ import parser.program_components.parameters.ReassignedParameter;
 import parser.program_components.statements.AssignmentStatement;
 import parser.program_components.statements.ReturnStatement;
 import parser.program_components.statements.WhileStatement;
+import visitors.Interpreter;
 import visitors.exceptions.IdentifierNotFoundException;
 import visitors.exceptions.NullExpressionException;
-import visitors.utils.MockedContextDeletionInterpreter;
+import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VisitMalformedWhileStatementTest {
-    private static void assertErrorLogs(MockedExitInterpreterErrorHandler errorHandler, MockedContextDeletionInterpreter interpreter, Program program, List<Exception> expectedErrorLog) {
+    private static void assertErrorLogs(MockedExitInterpreterErrorHandler errorHandler, Interpreter interpreter, Program program, List<Exception> expectedErrorLog) {
         boolean wasExceptionCaught = false;
         try {
             interpreter.visit(program);
@@ -46,7 +47,8 @@ public class VisitMalformedWhileStatementTest {
     @Test
     void givenWhileStmnt_whenConditionIsNull_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new WhileStatement(new Position(20, 20), null, new CodeBlock(new Position(25, 25), new ArrayList<>())),
@@ -65,7 +67,8 @@ public class VisitMalformedWhileStatementTest {
     @Test
     void givenWhileStmnt_whenUnknownIdentifierInCondition_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new AssignmentStatement(new Position(15, 15), new IntParameter(new Position(15, 15), "a"), new IntValue(new Position(15, 20), 1)),

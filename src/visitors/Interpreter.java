@@ -11,32 +11,28 @@ import parser.program_components.statements.*;
 import visitors.exceptions.*;
 
 import java.util.Map;
-import java.util.Stack;
 
 public class Interpreter implements IVisitor {
     private final IErrorHandler errorHandler;
-    private final Stack<Context> contexts;
+    private final ContextManager contextManager;
 
     private IExpression lastResult;
 
     private boolean returnFound;
 
-    public Interpreter(IErrorHandler errorHandler) {
+    public Interpreter(IErrorHandler errorHandler, ContextManager contextManager) {
         this.errorHandler = errorHandler;
-        contexts = new Stack<>();
+        this.contextManager = contextManager;
         lastResult = null;
         returnFound = false;
     }
 
-    public Context getLastContext() {
-        if (contexts.isEmpty()) {
-            return null;
-        }
-        return contexts.peek();
-    }
-
     public IExpression getLastResult() {
         return lastResult;
+    }
+
+    public ContextManager getContextManager() {
+        return contextManager;
     }
 
     @Override
@@ -56,7 +52,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(IFunctionDef f) {
-        createNewContext();
+        contextManager.createNewContext();
 
         if (f.getClass().equals(IntFunctionDef.class)) {
             visit((IntFunctionDef) f);
@@ -92,7 +88,7 @@ public class Interpreter implements IVisitor {
             visit((StringListFunctionDef) f);
         }
 
-        deleteLastContext();
+        contextManager.deleteLastContext();
     }
 
     @Override
@@ -329,18 +325,18 @@ public class Interpreter implements IVisitor {
 
     private void handleParamValueAssignment(boolean assignmentCondition, AssignmentStatement stmnt) {
         if (assignmentCondition) {
-            this.getLastContext().add(stmnt.param().name(), lastResult);
+            contextManager.getLastContext().add(stmnt.param().name(), lastResult);
         } else {
             errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), lastResult));
         }
     }
 
     private void handleValueReassignment(AssignmentStatement stmnt) {
-        if (!this.getLastContext().containsKey(stmnt.param().name())) {
+        if (!contextManager.getLastContext().containsKey(stmnt.param().name())) {
             errorHandler.handle(new ParameterNotFoundException(stmnt.param(), lastResult));
         }
 
-        IExpression value = this.getLastContext().get(stmnt.param().name());
+        IExpression value = contextManager.getLastContext().get(stmnt.param().name());
         if (value.getClass().equals(IntValue.class)) {
             handleIntValueAssignment(stmnt, new IncompatibleDataTypeException(value, lastResult));
         } else if (value.getClass().equals(DoubleValue.class)) {
@@ -348,16 +344,16 @@ public class Interpreter implements IVisitor {
         } else if (!value.getClass().equals(lastResult.getClass())) {
             errorHandler.handle(new IncompatibleDataTypeException(value, lastResult));
         } else {
-            this.getLastContext().update(stmnt.param().name(), lastResult);
+            contextManager.getLastContext().update(stmnt.param().name(), lastResult);
         }
     }
 
     private void handleIntValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypeException exception) {
         if (lastResult.getClass().equals(IntValue.class)) {
-            this.getLastContext().add(stmnt.param().name(), lastResult);
+            contextManager.getLastContext().add(stmnt.param().name(), lastResult);
         } else if (lastResult.getClass().equals(DoubleValue.class)) {
             IntValue castedValue = new IntValue(lastResult.position(), ((DoubleValue) lastResult).value().intValue());
-            this.getLastContext().add(stmnt.param().name(), castedValue);
+            contextManager.getLastContext().add(stmnt.param().name(), castedValue);
         } else {
             errorHandler.handle(exception);
         }
@@ -365,10 +361,10 @@ public class Interpreter implements IVisitor {
 
     private void handleDoubleValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypeException exception) {
         if (lastResult.getClass().equals(DoubleValue.class)) {
-            this.getLastContext().add(stmnt.param().name(), lastResult);
+            contextManager.getLastContext().add(stmnt.param().name(), lastResult);
         } else if (lastResult.getClass().equals(IntValue.class)) {
             DoubleValue castedValue = new DoubleValue(lastResult.position(), ((IntValue) lastResult).value().doubleValue());
-            this.getLastContext().add(stmnt.param().name(), castedValue);
+            contextManager.getLastContext().add(stmnt.param().name(), castedValue);
         } else {
             errorHandler.handle(exception);
         }
@@ -885,25 +881,16 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(Identifier identifier) {
-        if (!this.getLastContext().containsKey(identifier.name())) {
+        if (!contextManager.getLastContext().containsKey(identifier.name())) {
             errorHandler.handle(new IdentifierNotFoundException(identifier));
         }
 
-        lastResult = this.getLastContext().get(identifier.name());
+        lastResult = contextManager.getLastContext().get(identifier.name());
     }
 
     @Override
     public void visit(ObjectAccess objectAccess) {
 
-    }
-
-    // utils
-    protected void createNewContext() {
-        contexts.add(new Context());
-    }
-
-    protected void deleteLastContext() {
-        contexts.pop();
     }
 
     private void saveExpressionBoolResult(IExpression exp) {

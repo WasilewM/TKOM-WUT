@@ -2,6 +2,7 @@ package visitors.interpreter;
 
 import lexer.Position;
 import org.junit.jupiter.api.Test;
+import parser.IErrorHandler;
 import parser.IFunctionDef;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
@@ -9,9 +10,10 @@ import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.function_definitions.*;
 import parser.program_components.statements.ReturnStatement;
+import visitors.Interpreter;
 import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.exceptions.MissingReturnValueException;
-import visitors.utils.MockedContextDeletionInterpreter;
+import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
@@ -21,7 +23,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VisitMalformedReturnStatementTest {
-    private static void assertErrorLogs(MockedExitInterpreterErrorHandler errorHandler, MockedContextDeletionInterpreter interpreter, Program program, List<Exception> expectedErrorLog) {
+    private static void assertErrorLogs(IErrorHandler errorHandler, Interpreter interpreter, Program program, List<Exception> expectedErrorLog) {
         boolean wasExceptionCaught = false;
         try {
             interpreter.visit(program);
@@ -41,7 +43,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenIntFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -56,7 +59,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenIntFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -71,7 +75,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenIntListFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -86,7 +91,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenIntListFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -101,7 +107,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenDoubleFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -116,7 +123,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenDoubleFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -131,7 +139,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenDoubleListFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -146,7 +155,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenDoubleListFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -161,7 +171,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenBoolFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -176,7 +187,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenBoolFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -191,7 +203,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenBoolListFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -206,7 +219,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenBoolListFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -221,7 +235,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenFigureFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -236,7 +251,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenFigureFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -251,7 +267,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenFigureListFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -266,7 +283,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenFigureListFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -281,7 +299,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenPointFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -296,7 +315,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenPointFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -311,7 +331,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenPointListFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -326,7 +347,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenPointListFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -341,7 +363,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenSceneFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -356,7 +379,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenSceneFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -371,7 +395,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenSceneListFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -386,7 +411,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenSceneListFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -401,7 +427,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenSectionFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -416,7 +443,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenSectionFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -431,7 +459,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenSectionListFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -446,7 +475,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenSectionListFunc_whenStringValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
@@ -461,7 +491,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenStringFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new StringFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -476,7 +507,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenStringFunc_whenIntValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new StringFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))));
         }};
@@ -491,7 +523,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenStringListFunc_whenNullReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new StringListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
@@ -506,7 +539,8 @@ public class VisitMalformedReturnStatementTest {
     @Test
     void givenStringListFunc_whenIntValueReturned_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new StringListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))));
         }};
