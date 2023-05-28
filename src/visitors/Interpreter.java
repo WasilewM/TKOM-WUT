@@ -465,6 +465,8 @@ public class Interpreter implements IVisitor {
             visit((ConjunctiveExpression) exp);
         } else if (exp.getClass().equals(EqualExpression.class)) {
             visit((EqualExpression) exp);
+        } else if (exp.getClass().equals(GreaterThanExpression.class)) {
+            visit((GreaterThanExpression) exp);
         } else if (exp.getClass().equals(NotEqualExpression.class)) {
             visit((NotEqualExpression) exp);
         } else if (exp.getClass().equals(AdditionExpression.class)) {
@@ -526,7 +528,11 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(GreaterThanExpression exp) {
-
+        visit(exp.leftExp());
+        IExpression leftExp = lastResult;
+        visit(exp.rightExp());
+        boolean comparisonResult = ifLeftExpGreaterThanRightExp(leftExp, lastResult);
+        lastResult = new BoolValue(exp.position(), comparisonResult);
     }
 
     @Override
@@ -558,6 +564,23 @@ public class Interpreter implements IVisitor {
             IDataValue leftValue = (IDataValue) leftExp;
             IDataValue rightValue = (IDataValue) rightExp;
             return leftValue.value().equals(rightValue.value());
+        } catch (Exception e) {
+            errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
+        }
+
+        return false;
+    }
+
+    private boolean ifLeftExpGreaterThanRightExp(IExpression leftExp, IExpression rightExp) {
+        try {
+            IDataValue leftValue = (IDataValue) leftExp;
+            IDataValue rightValue = (IDataValue) rightExp;
+            if (leftValue.getClass().equals(IntValue.class) && rightValue.getClass().equals(IntValue.class)) {
+                return ((IntValue) leftValue).value() > ((IntValue) rightValue).value();
+            } else if (leftValue.getClass().equals(DoubleValue.class) && rightValue.getClass().equals(DoubleValue.class)) {
+                return ((DoubleValue) leftValue).value() > ((DoubleValue) rightValue).value();
+            }
+            return false;
         } catch (Exception e) {
             errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
         }
