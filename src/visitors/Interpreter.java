@@ -337,18 +337,18 @@ public class Interpreter implements IVisitor {
 
     private void handleValueReassignment(AssignmentStatement stmnt) {
         if (!this.getLastContext().containsKey(stmnt.param().name())) {
-            errorHandler.handle(new ParameterNotFoundException(stmnt.param(), stmnt.exp()));
+            errorHandler.handle(new ParameterNotFoundException(stmnt.param(), lastResult));
         }
 
         IExpression value = this.getLastContext().get(stmnt.param().name());
         if (value.getClass().equals(IntValue.class)) {
-            handleIntValueAssignment(stmnt, new IncompatibleDataTypeException(value, stmnt.exp()));
+            handleIntValueAssignment(stmnt, new IncompatibleDataTypeException(value, lastResult));
         } else if (value.getClass().equals(DoubleValue.class)) {
-            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypeException(value, stmnt.exp()));
-        } else if (!value.getClass().equals(stmnt.exp().getClass())) {
-            errorHandler.handle(new IncompatibleDataTypeException(value, stmnt.exp()));
+            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypeException(value, lastResult));
+        } else if (!value.getClass().equals(lastResult.getClass())) {
+            errorHandler.handle(new IncompatibleDataTypeException(value, lastResult));
         } else {
-            this.getLastContext().update(stmnt.param().name(), stmnt.exp());
+            this.getLastContext().update(stmnt.param().name(), lastResult);
         }
     }
 
@@ -403,8 +403,11 @@ public class Interpreter implements IVisitor {
     public void visit(WhileStatement stmnt) {
         visit(stmnt.exp());
         registerErrorIfLastResultIsNull(stmnt);
-        if (isConditionTrue()) {
+        while (isConditionTrue() && !returnFound) {
             visit(stmnt.codeBlock());
+            if (!returnFound) {
+                visit(stmnt.exp());
+            }
         }
     }
 
