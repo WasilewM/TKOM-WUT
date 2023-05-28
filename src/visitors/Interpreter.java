@@ -465,6 +465,8 @@ public class Interpreter implements IVisitor {
             visit((ConjunctiveExpression) exp);
         } else if (exp.getClass().equals(EqualExpression.class)) {
             visit((EqualExpression) exp);
+        } else if (exp.getClass().equals(NotEqualExpression.class)) {
+            visit((NotEqualExpression) exp);
         } else if (exp.getClass().equals(AdditionExpression.class)) {
             visit((AdditionExpression) exp);
         } else if (exp.getClass().equals(SubtractionExpression.class)) {
@@ -517,18 +519,6 @@ public class Interpreter implements IVisitor {
         lastResult = new BoolValue(exp.position(), comparisonResult);
     }
 
-    private boolean areValuesEqual(IExpression leftExp, IExpression rightExp) {
-        try {
-            IDataValue leftValue = (IDataValue) leftExp;
-            IDataValue rightValue = (IDataValue) rightExp;
-            return leftValue.value().equals(rightValue.value());
-        } catch (Exception e) {
-            errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
-        }
-
-        return false;
-    }
-
     @Override
     public void visit(GreaterOrEqualExpression exp) {
 
@@ -556,7 +546,23 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(NotEqualExpression exp) {
+        visit(exp.leftExp());
+        IExpression leftExp = lastResult;
+        visit(exp.rightExp());
+        boolean comparisonResult = !(areValuesEqual(leftExp, lastResult));
+        lastResult = new BoolValue(exp.position(), comparisonResult);
+    }
 
+    private boolean areValuesEqual(IExpression leftExp, IExpression rightExp) {
+        try {
+            IDataValue leftValue = (IDataValue) leftExp;
+            IDataValue rightValue = (IDataValue) rightExp;
+            return leftValue.value().equals(rightValue.value());
+        } catch (Exception e) {
+            errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
+        }
+
+        return false;
     }
 
     // arithmetic expressions
