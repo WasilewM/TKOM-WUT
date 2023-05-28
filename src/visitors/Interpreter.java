@@ -471,6 +471,8 @@ public class Interpreter implements IVisitor {
             visit((GreaterThanExpression) exp);
         } else if (exp.getClass().equals(NotEqualExpression.class)) {
             visit((NotEqualExpression) exp);
+        } else if (exp.getClass().equals(LessOrEqualExpression.class)) {
+            visit((LessOrEqualExpression) exp);
         } else if (exp.getClass().equals(LessThanExpression.class)) {
             visit((LessThanExpression) exp);
         } else if (exp.getClass().equals(AdditionExpression.class)) {
@@ -546,6 +548,12 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(LessOrEqualExpression exp) {
+        visit(exp.leftExp());
+        IExpression leftExp = lastResult;
+        visit(exp.rightExp());
+        boolean comparisonResult = (isLeftValueLessThanRightValue(leftExp, lastResult)
+                || areValuesEqual(leftExp, lastResult));
+        lastResult = new BoolValue(exp.position(), comparisonResult);
 
     }
 
