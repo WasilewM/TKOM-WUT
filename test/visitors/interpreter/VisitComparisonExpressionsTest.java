@@ -8,10 +8,7 @@ import parser.program_components.Program;
 import parser.program_components.data_values.BoolValue;
 import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
-import parser.program_components.expressions.EqualExpression;
-import parser.program_components.expressions.GreaterOrEqualExpression;
-import parser.program_components.expressions.GreaterThanExpression;
-import parser.program_components.expressions.NotEqualExpression;
+import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.BoolFunctionDef;
 import parser.program_components.statements.ReturnStatement;
 import visitors.utils.MockedContextDeletionInterpreter;
@@ -351,6 +348,102 @@ public class VisitComparisonExpressionsTest {
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterOrEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 4.0)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenBoolFuncAndComparisonLtExpReturned_whenBothSideValuesAreEqual_thenLastResultIsEvaluatedToFalseBoolValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 4)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenBoolFuncAndComparisonLtExpReturned_whenValuesAreIntAndLeftSideIsGreater_thenLastResultIsEvaluatedToFalseBoolValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 44), new IntValue(new Position(30, 50), 6)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenBoolFuncAndComparisonLtExpReturned_whenValuesAreIntAndRightSideIsGreater_thenLastResultIsEvaluatedToTrueBoolValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 6)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenBoolFuncAndComparisonLtExpReturned_whenValuesAreDoubleAndLeftSideIsGreater_thenLastResultIsEvaluatedToFalseBoolValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 104.11), new DoubleValue(new Position(30, 50), 10.99)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenBoolFuncAndComparisonLtExpReturned_whenValuesAreDoubleAndRightSideIsGreater_thenLastResultIsEvaluatedToTrueBoolValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 54.68), new DoubleValue(new Position(30, 50), 61.13)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenBoolFuncAndComparisonLtExpReturned_whenBothSideValuesAreEqualBuOfDifferentType_thenLastResultIsEvaluatedToFalseBoolValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextDeletionInterpreter interpreter = new MockedContextDeletionInterpreter(errorHandler);
+        BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 4.0)))
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);

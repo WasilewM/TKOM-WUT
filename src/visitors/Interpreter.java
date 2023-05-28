@@ -471,6 +471,8 @@ public class Interpreter implements IVisitor {
             visit((GreaterThanExpression) exp);
         } else if (exp.getClass().equals(NotEqualExpression.class)) {
             visit((NotEqualExpression) exp);
+        } else if (exp.getClass().equals(LessThanExpression.class)) {
+            visit((LessThanExpression) exp);
         } else if (exp.getClass().equals(AdditionExpression.class)) {
             visit((AdditionExpression) exp);
         } else if (exp.getClass().equals(SubtractionExpression.class)) {
@@ -528,7 +530,7 @@ public class Interpreter implements IVisitor {
         visit(exp.leftExp());
         IExpression leftExp = lastResult;
         visit(exp.rightExp());
-        boolean comparisonResult = (ifLeftExpGreaterThanRightExp(leftExp, lastResult)
+        boolean comparisonResult = (isLeftValueGreaterThanRightValue(leftExp, lastResult)
                 || areValuesEqual(leftExp, lastResult));
         lastResult = new BoolValue(exp.position(), comparisonResult);
     }
@@ -538,7 +540,7 @@ public class Interpreter implements IVisitor {
         visit(exp.leftExp());
         IExpression leftExp = lastResult;
         visit(exp.rightExp());
-        boolean comparisonResult = ifLeftExpGreaterThanRightExp(leftExp, lastResult);
+        boolean comparisonResult = isLeftValueGreaterThanRightValue(leftExp, lastResult);
         lastResult = new BoolValue(exp.position(), comparisonResult);
     }
 
@@ -549,7 +551,11 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(LessThanExpression exp) {
-
+        visit(exp.leftExp());
+        IExpression leftExp = lastResult;
+        visit(exp.rightExp());
+        boolean comparisonResult = isLeftValueLessThanRightValue(leftExp, lastResult);
+        lastResult = new BoolValue(exp.position(), comparisonResult);
     }
 
     @Override
@@ -566,6 +572,17 @@ public class Interpreter implements IVisitor {
         lastResult = new BoolValue(exp.position(), comparisonResult);
     }
 
+    private boolean isLeftValueLessThanRightValue(IExpression leftExp, IExpression rightExp) {
+        try {
+            if (leftExp.getClass().equals(rightExp.getClass())) {
+                return (!(areValuesEqual(leftExp, rightExp)) && !(isLeftValueGreaterThanRightValue(leftExp, rightExp)));
+            }
+        } catch (Exception e) {
+            errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
+        }
+        return false;
+    }
+
     private boolean areValuesEqual(IExpression leftExp, IExpression rightExp) {
         try {
             IDataValue leftValue = (IDataValue) leftExp;
@@ -574,11 +591,10 @@ public class Interpreter implements IVisitor {
         } catch (Exception e) {
             errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
         }
-
         return false;
     }
 
-    private boolean ifLeftExpGreaterThanRightExp(IExpression leftExp, IExpression rightExp) {
+    private boolean isLeftValueGreaterThanRightValue(IExpression leftExp, IExpression rightExp) {
         try {
             IDataValue leftValue = (IDataValue) leftExp;
             IDataValue rightValue = (IDataValue) rightExp;
@@ -591,7 +607,6 @@ public class Interpreter implements IVisitor {
         } catch (Exception e) {
             errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
         }
-
         return false;
     }
 
