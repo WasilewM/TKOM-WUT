@@ -12,7 +12,7 @@ import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.ReturnStatement;
 import visitors.Interpreter;
-import visitors.exceptions.OperationDataTypeException;
+import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
@@ -52,7 +52,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new OperationDataTypeException(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new BoolValue(new Position(30, 50), false))
+                new IncompatibleDataTypeException(new DoubleValue(new Position(30, 50), null), new BoolValue(new Position(30, 50), false))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -70,7 +70,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new OperationDataTypeException(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19))
+                new IncompatibleDataTypeException(new DoubleValue(new Position(30, 50), null), new BoolValue(new Position(30, 40), false))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -88,7 +88,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new OperationDataTypeException(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new BoolValue(new Position(30, 50), false))
+                new IncompatibleDataTypeException(new DoubleValue(new Position(30, 50), null), new BoolValue(new Position(30, 50), false))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -106,7 +106,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new OperationDataTypeException(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19))
+                new IncompatibleDataTypeException(new DoubleValue(new Position(30, 50), null), new BoolValue(new Position(30, 50), false))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -124,7 +124,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new OperationDataTypeException(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19))
+                new IncompatibleDataTypeException(new IntValue(new Position(30, 50), null), new BoolValue(new Position(30, 50), false))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -142,7 +142,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new OperationDataTypeException(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19))
+                new IncompatibleDataTypeException(new DoubleValue(new Position(30, 50), null), new BoolValue(new Position(30, 50), false))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -160,7 +160,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new OperationDataTypeException(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19))
+                new IncompatibleDataTypeException(new DoubleValue(new Position(30, 50), null), new BoolValue(new Position(30, 50), false))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

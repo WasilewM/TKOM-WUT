@@ -6,9 +6,20 @@ import java.util.HashMap;
 
 public class Context {
     private final HashMap<String, IExpression> context;
+    private final boolean functionContext;
 
     public Context() {
         this.context = new HashMap<>();
+        functionContext = false;
+    }
+
+    public Context(boolean functionContext) {
+        this.context = new HashMap<>();
+        this.functionContext = functionContext;
+    }
+
+    public boolean isFunctionContext() {
+        return functionContext;
     }
 
     public void add(String parameterName, IExpression value) {

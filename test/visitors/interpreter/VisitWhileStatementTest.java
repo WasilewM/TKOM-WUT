@@ -6,6 +6,7 @@ import parser.IFunctionDef;
 import parser.program_components.CodeBlock;
 import parser.program_components.Identifier;
 import parser.program_components.Program;
+import parser.program_components.data_values.BoolValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.expressions.GreaterThanExpression;
 import parser.program_components.expressions.SubtractionExpression;
@@ -13,8 +14,10 @@ import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.parameters.IntParameter;
 import parser.program_components.parameters.ReassignedParameter;
 import parser.program_components.statements.AssignmentStatement;
+import parser.program_components.statements.IfStatement;
 import parser.program_components.statements.ReturnStatement;
 import parser.program_components.statements.WhileStatement;
+import visitors.ContextManager;
 import visitors.Interpreter;
 import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
@@ -102,6 +105,27 @@ public class VisitWhileStatementTest {
                     ))),
                     new ReturnStatement(new Position(30, 30), new Identifier(new Position(32, 40), "a"))
             ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIntFunc_whenIdentifierFromUpperContextIsBeingAccessed_thenSearchForValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(26, 15), 2);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new IntParameter(new Position(15, 20), "a"), new IntValue(new Position(15, 25), 1)),
+                    new IfStatement(new Position(25, 15), new BoolValue(new Position(25, 20), true), new CodeBlock(new Position(26, 1), List.of(
+                            new AssignmentStatement(new Position(26, 10), new ReassignedParameter(new Position(26, 10), "a"), expectedLastResult)
+                    ))),
+                    new ReturnStatement(new Position(35, 15), new Identifier(new Position(35, 25), "a")))
+            )));
         }};
         Program program = new Program(new Position(1, 1), functions);
         interpreter.visit(program);

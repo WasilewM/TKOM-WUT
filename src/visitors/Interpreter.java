@@ -52,7 +52,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(IFunctionDef f) {
-        contextManager.createNewContext();
+        contextManager.createNewFunctionContext();
 
         if (f.getClass().equals(IntFunctionDef.class)) {
             visit((IntFunctionDef) f);
@@ -259,6 +259,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(CodeBlock codeBlock) {
+        contextManager.createNewContext();
         for (IStatement s : codeBlock.statements()) {
             if (!returnFound) {
                 visit(s);
@@ -266,6 +267,7 @@ public class Interpreter implements IVisitor {
                 break;
             }
         }
+        contextManager.deleteLastContext();
     }
 
     private void visit(IStatement stmnt) {
@@ -285,9 +287,9 @@ public class Interpreter implements IVisitor {
     public void visit(AssignmentStatement stmnt) {
         visit(stmnt.exp());
         if (stmnt.param().getClass().equals(IntParameter.class)) {
-            handleIntValueAssignment(stmnt, new IncompatibleDataTypeException(stmnt.param(), lastResult));
+            handleIntValueAssignment(stmnt);
         } else if (stmnt.param().getClass().equals(DoubleParameter.class)) {
-            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypeException(stmnt.param(), lastResult));
+            handleDoubleValueAssignment(stmnt);
         } else if (stmnt.param().getClass().equals(StringParameter.class)) {
             handleParamValueAssignment(lastResult.getClass().equals(StringValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(BoolParameter.class)) {
@@ -325,49 +327,37 @@ public class Interpreter implements IVisitor {
 
     private void handleParamValueAssignment(boolean assignmentCondition, AssignmentStatement stmnt) {
         if (assignmentCondition) {
-            contextManager.getLastContext().add(stmnt.param().name(), lastResult);
+            contextManager.add(stmnt.param().name(), lastResult);
         } else {
             errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), lastResult));
         }
     }
 
     private void handleValueReassignment(AssignmentStatement stmnt) {
-        if (!contextManager.getLastContext().containsKey(stmnt.param().name())) {
+        if (!contextManager.containsKey(stmnt.param().name())) {
             errorHandler.handle(new ParameterNotFoundException(stmnt.param(), lastResult));
         }
 
-        IExpression value = contextManager.getLastContext().get(stmnt.param().name());
+        IExpression value = contextManager.get(stmnt.param().name());
         if (value.getClass().equals(IntValue.class)) {
-            handleIntValueAssignment(stmnt, new IncompatibleDataTypeException(value, lastResult));
+            IntValue castedValue = castToIntValue(lastResult);
+            contextManager.update(stmnt.param().name(), castedValue);
         } else if (value.getClass().equals(DoubleValue.class)) {
-            handleDoubleValueAssignment(stmnt, new IncompatibleDataTypeException(value, lastResult));
+            DoubleValue castedValue = castToDoubleValue(lastResult);
+            contextManager.update(stmnt.param().name(), castedValue);
         } else if (!value.getClass().equals(lastResult.getClass())) {
             errorHandler.handle(new IncompatibleDataTypeException(value, lastResult));
         } else {
-            contextManager.getLastContext().update(stmnt.param().name(), lastResult);
+            contextManager.update(stmnt.param().name(), lastResult);
         }
     }
 
-    private void handleIntValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypeException exception) {
-        if (lastResult.getClass().equals(IntValue.class)) {
-            contextManager.getLastContext().add(stmnt.param().name(), lastResult);
-        } else if (lastResult.getClass().equals(DoubleValue.class)) {
-            IntValue castedValue = new IntValue(lastResult.position(), ((DoubleValue) lastResult).value().intValue());
-            contextManager.getLastContext().add(stmnt.param().name(), castedValue);
-        } else {
-            errorHandler.handle(exception);
-        }
+    private void handleIntValueAssignment(AssignmentStatement stmnt) {
+        contextManager.add(stmnt.param().name(), castToIntValue(lastResult));
     }
 
-    private void handleDoubleValueAssignment(AssignmentStatement stmnt, IncompatibleDataTypeException exception) {
-        if (lastResult.getClass().equals(DoubleValue.class)) {
-            contextManager.getLastContext().add(stmnt.param().name(), lastResult);
-        } else if (lastResult.getClass().equals(IntValue.class)) {
-            DoubleValue castedValue = new DoubleValue(lastResult.position(), ((IntValue) lastResult).value().doubleValue());
-            contextManager.getLastContext().add(stmnt.param().name(), castedValue);
-        } else {
-            errorHandler.handle(exception);
-        }
+    private void handleDoubleValueAssignment(AssignmentStatement stmnt) {
+        contextManager.add(stmnt.param().name(), castToDoubleValue(lastResult));
     }
 
     @Override
@@ -669,117 +659,33 @@ public class Interpreter implements IVisitor {
     }
 
     private void tryToAddExpressions(Position position, IExpression leftExp, IExpression rightExp) {
-        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
-            DoubleValue rightCastedValue = new DoubleValue(rightExp.position(), ((IntValue) rightExp).value().doubleValue());
-            lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
-        } else if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
-            DoubleValue rightCastedValue = (DoubleValue) rightExp;
-            lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            DoubleValue leftCastedValue = (DoubleValue) leftExp;
-            DoubleValue rightCastedValue = new DoubleValue(leftExp.position(), ((IntValue) rightExp).value().doubleValue());
-            lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            DoubleValue leftCastedValue = (DoubleValue) leftExp;
-            DoubleValue rightCastedValue = (DoubleValue) rightExp;
-            lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
-        } else {
-            errorHandler.handle(new OperationDataTypeException(position, leftExp, rightExp));
-        }
+        DoubleValue leftCastedValue = castToDoubleValue(leftExp);
+        DoubleValue rightCastedValue = castToDoubleValue(rightExp);
+        lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
     }
 
     private void tryToSubtractExpressions(Position position, IExpression leftExp, IExpression rightExp) {
-        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
-            DoubleValue rightCastedValue = new DoubleValue(rightExp.position(), ((IntValue) rightExp).value().doubleValue());
-            lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
-        } else if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
-            DoubleValue rightCastedValue = (DoubleValue) rightExp;
-            lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            DoubleValue leftCastedValue = (DoubleValue) leftExp;
-            DoubleValue rightCastedValue = new DoubleValue(leftExp.position(), ((IntValue) rightExp).value().doubleValue());
-            lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            DoubleValue leftCastedValue = (DoubleValue) leftExp;
-            DoubleValue rightCastedValue = (DoubleValue) rightExp;
-            lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
-        } else {
-            errorHandler.handle(new OperationDataTypeException(position, leftExp, rightExp));
-        }
+        DoubleValue leftCastedValue = castToDoubleValue(leftExp);
+        DoubleValue rightCastedValue = castToDoubleValue(rightExp);
+        lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
     }
 
     private void tryToDivideDiscretely(Position position, IExpression leftExp, IExpression rightExp) {
-        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            IntValue leftCastedValue = (IntValue) leftExp;
-            IntValue rightCastedValue = (IntValue) rightExp;
-            int operationResult = leftCastedValue.value() / rightCastedValue.value();
-            lastResult = new IntValue(position, operationResult);
-        } else if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            IntValue leftCastedValue = (IntValue) leftExp;
-            IntValue rightCastedValue = new IntValue(rightExp.position(), ((DoubleValue) rightExp).value().intValue());
-            int operationResult = leftCastedValue.value() / rightCastedValue.value();
-            lastResult = new IntValue(position, operationResult);
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            IntValue leftCastedValue = new IntValue(rightExp.position(), ((DoubleValue) leftExp).value().intValue());
-            IntValue rightCastedValue = (IntValue) rightExp;
-            int operationResult = leftCastedValue.value() / rightCastedValue.value();
-            lastResult = new IntValue(position, operationResult);
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            IntValue leftCastedValue = new IntValue(rightExp.position(), ((DoubleValue) leftExp).value().intValue());
-            IntValue rightCastedValue = new IntValue(rightExp.position(), ((DoubleValue) rightExp).value().intValue());
-            int operationResult = leftCastedValue.value() / rightCastedValue.value();
-            lastResult = new IntValue(position, operationResult);
-        } else {
-            errorHandler.handle(new OperationDataTypeException(position, leftExp, rightExp));
-        }
+        IntValue leftCastedValue = castToIntValue(leftExp);
+        IntValue rightCastedValue = castToIntValue(rightExp);
+        lastResult = new IntValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
     private void tryToDivide(Position position, IExpression leftExp, IExpression rightExp) {
-        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
-            DoubleValue rightCastedValue = new DoubleValue(rightExp.position(), ((IntValue) rightExp).value().doubleValue());
-            lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
-        } else if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
-            DoubleValue rightCastedValue = (DoubleValue) rightExp;
-            lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            DoubleValue leftCastedValue = (DoubleValue) leftExp;
-            DoubleValue rightCastedValue = new DoubleValue(leftExp.position(), ((IntValue) rightExp).value().doubleValue());
-            lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            DoubleValue leftCastedValue = (DoubleValue) leftExp;
-            DoubleValue rightCastedValue = (DoubleValue) rightExp;
-            lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
-        } else {
-            errorHandler.handle(new OperationDataTypeException(position, leftExp, rightExp));
-        }
+        DoubleValue leftCastedValue = castToDoubleValue(leftExp);
+        DoubleValue rightCastedValue = castToDoubleValue(rightExp);
+        lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
     private void tryToMultiply(Position position, IExpression leftExp, IExpression rightExp) {
-        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
-            DoubleValue rightCastedValue = new DoubleValue(rightExp.position(), ((IntValue) rightExp).value().doubleValue());
-            lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
-        } else if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            DoubleValue leftCastedValue = new DoubleValue(leftExp.position(), ((IntValue) leftExp).value().doubleValue());
-            DoubleValue rightCastedValue = (DoubleValue) rightExp;
-            lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(IntValue.class)) {
-            DoubleValue leftCastedValue = (DoubleValue) leftExp;
-            DoubleValue rightCastedValue = new DoubleValue(leftExp.position(), ((IntValue) rightExp).value().doubleValue());
-            lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
-        } else if (leftExp.getClass().equals(DoubleValue.class) && rightExp.getClass().equals(DoubleValue.class)) {
-            DoubleValue leftCastedValue = (DoubleValue) leftExp;
-            DoubleValue rightCastedValue = (DoubleValue) rightExp;
-            lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
-        } else {
-            errorHandler.handle(new OperationDataTypeException(position, leftExp, rightExp));
-        }
+        DoubleValue leftCastedValue = castToDoubleValue(leftExp);
+        DoubleValue rightCastedValue = castToDoubleValue(rightExp);
+        lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
     }
 
     // parameters
@@ -881,16 +787,41 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(Identifier identifier) {
-        if (!contextManager.getLastContext().containsKey(identifier.name())) {
+        if (!contextManager.containsKey(identifier.name())) {
             errorHandler.handle(new IdentifierNotFoundException(identifier));
         }
 
-        lastResult = contextManager.getLastContext().get(identifier.name());
+        lastResult = contextManager.get(identifier.name());
     }
 
     @Override
     public void visit(ObjectAccess objectAccess) {
 
+    }
+
+    // utils
+    private IntValue castToIntValue(IExpression value) {
+        IntValue castedValue = null;
+        if (value.getClass().equals(IntValue.class)) {
+            castedValue = (IntValue) value;
+        } else if (value.getClass().equals(DoubleValue.class)) {
+            castedValue = new IntValue(value.position(), ((DoubleValue) value).value().intValue());
+        } else {
+            errorHandler.handle(new IncompatibleDataTypeException(new IntValue(value.position(), null), value));
+        }
+        return castedValue;
+    }
+
+    private DoubleValue castToDoubleValue(IExpression value) {
+        DoubleValue castedValue = null;
+        if (value.getClass().equals(IntValue.class)) {
+            castedValue = new DoubleValue(value.position(), ((IntValue) value).value().doubleValue());
+        } else if (value.getClass().equals(DoubleValue.class)) {
+            castedValue = (DoubleValue) value;
+        } else {
+            errorHandler.handle(new IncompatibleDataTypeException(new DoubleValue(value.position(), null), value));
+        }
+        return castedValue;
     }
 
     private void saveExpressionBoolResult(IExpression exp) {

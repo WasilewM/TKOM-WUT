@@ -1,5 +1,7 @@
 package visitors;
 
+import parser.IExpression;
+
 import java.util.ArrayList;
 
 public class ContextManager {
@@ -16,8 +18,52 @@ public class ContextManager {
         return contexts.get(contexts.size() - 1);
     }
 
+    public boolean containsKey(String key) {
+        for (int i = contexts.size() - 1; i >= 0; i--) {
+            if (contexts.get(i).containsKey(key)) {
+                return true;
+            }
+
+            if (contexts.get(i).isFunctionContext()) {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    public IExpression get(String parameterName) {
+        for (int i = contexts.size() - 1; i >= 0; i--) {
+            if (contexts.get(i).containsKey(parameterName)) {
+                return contexts.get(i).get(parameterName);
+            }
+
+            if (contexts.get(i).isFunctionContext()) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    public void add(String key, IExpression value) {
+        contexts.get(contexts.size() - 1).add(key, value);
+    }
+
+    public void update(String key, IExpression newValue) {
+        for (int i = contexts.size() - 1; i >= 0; i--) {
+            if (contexts.get(i).containsKey(key)) {
+                contexts.get(i).update(key, newValue);
+                break;
+            }
+        }
+    }
+
     protected void createNewContext() {
         contexts.add(new Context());
+    }
+
+    protected void createNewFunctionContext() {
+        contexts.add(new Context(true));
     }
 
     protected void deleteLastContext() {

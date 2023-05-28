@@ -49,7 +49,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new IntParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "2"))
+                new IncompatibleDataTypeException(new IntValue(new Position(15, 20), null), new StringValue(new Position(15, 20), "2"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -65,7 +65,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new DoubleParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "2"))
+                new IncompatibleDataTypeException(new DoubleValue(new Position(15, 20), null), new StringValue(new Position(15, 20), "2"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -324,7 +324,7 @@ public class VisitMalformedAssignmentStatementTest {
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new IntValue(new Position(15, 20), 2), new StringListValue(new Position(18, 20)))
+                new IncompatibleDataTypeException(new IntValue(new Position(18, 20), 2), new StringListValue(new Position(18, 20)))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
