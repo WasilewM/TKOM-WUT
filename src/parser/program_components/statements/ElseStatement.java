@@ -1,15 +1,14 @@
 package parser.program_components.statements;
 
 import lexer.Position;
-import parser.IExpression;
 import parser.IStatement;
 import parser.program_components.CodeBlock;
 import visitors.IVisitor;
 
-public record ElseStatement(Position position, IExpression exp, CodeBlock codeBlock) implements IStatement {
+public record ElseStatement(Position position, CodeBlock codeBlock) implements IStatement {
 
     public ElseStatement() {
-        this(null, null, null);
+        this(null, null);
     }
 
     @Override

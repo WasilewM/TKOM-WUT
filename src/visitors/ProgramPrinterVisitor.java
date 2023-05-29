@@ -323,7 +323,6 @@ public class ProgramPrinterVisitor implements IVisitor {
     public void visit(ElseStatement stmnt) {
         printWithPrefix(stmnt.getClass() + " at " + stmnt.position().toString());
         increaseIntend();
-        visit(stmnt.exp());
         visit(stmnt.codeBlock());
         decreaseIntend();
     }
@@ -339,7 +338,7 @@ public class ProgramPrinterVisitor implements IVisitor {
         for (ElseIfStatement e : stmnt.elseIfStmnts()) {
             visit(e);
         }
-        visit(stmnt.elseExp());
+        visit(stmnt.elseStmnt());
         decreaseIntend();
 
         decreaseIntend();

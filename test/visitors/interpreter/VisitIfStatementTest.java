@@ -13,6 +13,7 @@ import parser.program_components.expressions.AlternativeExpression;
 import parser.program_components.expressions.ConjunctiveExpression;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.ElseIfStatement;
+import parser.program_components.statements.ElseStatement;
 import parser.program_components.statements.IfStatement;
 import parser.program_components.statements.ReturnStatement;
 import visitors.Interpreter;
@@ -523,5 +524,81 @@ public class VisitIfStatementTest {
         interpreter.visit(program);
 
         assertEquals(0, interpreter.getIfStatementsDepth());
+    }
+
+    @Test
+    void givenIfStmntWithElseStatement_whenIfConditionIsTrue_thenCheckIfCodeBlock() {
+        // to check whether Interpreter checked if code block or not, different return values are set
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(23, 40), 13);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), true), new CodeBlock(new Position(21, 21), List.of(
+                            new ReturnStatement(new Position(23, 30), expectedLastResult)
+                    )),
+                            new ElseStatement(new Position(30, 1), new CodeBlock(new Position(31, 1), List.of(
+                                    new ReturnStatement(new Position(33, 30), new IntValue(new Position(33, 40), 13))
+                            )))
+                    ),
+                    new ReturnStatement(new Position(70, 30), new IntValue(new Position(73, 40), 23))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIfStmntWithElseStatement_whenIfConditionIsFalse_thenCheckElseCodeBlock() {
+        // to check whether Interpreter checked if code block or not, different return values are set
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(33, 40), 13);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(21, 21), List.of(
+                            new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
+                    )),
+                            new ElseStatement(new Position(30, 1), new CodeBlock(new Position(31, 1), List.of(
+                                    new ReturnStatement(new Position(33, 30), expectedLastResult)
+                            )))
+                    ),
+                    new ReturnStatement(new Position(70, 30), new IntValue(new Position(73, 40), 23))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIfStmntWithSingleElseIfStmntAndElseStmnt_whenIfConditionElseIfConditionAreFalse_thenCheckElseCodeBlock() {
+        // to check whether Interpreter checked if code block or not, different return values are set
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(33, 40), 13);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
+                            new ReturnStatement(new Position(53, 30), new IntValue(new Position(53, 40), 13))
+                    )), List.of(new ElseIfStatement(new Position(30, 1), new BoolValue(new Position(30, 10), false), new CodeBlock(new Position(31, 1), List.of(
+                            new ReturnStatement(new Position(31, 10), new IntValue(new Position(33, 20), 213))
+                    )))),
+                            new ElseStatement(new Position(30, 1), new CodeBlock(new Position(31, 1), List.of(
+                                    new ReturnStatement(new Position(33, 30), expectedLastResult)
+                            )))),
+                    new ReturnStatement(new Position(70, 30), new IntValue(new Position(73, 40), 23))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
     }
 }

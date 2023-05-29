@@ -214,9 +214,9 @@ public class Parser implements IParser {
         registerErrorIfCodeBlockIsMissing(ifCodeBlock);
 
         ArrayList<ElseIfStatement> elseIfStatements = parseElseIfStatements();
-        IStatement elseExp = parseElseStatement();
+        ElseStatement elseStmnt = parseElseStatement();
 
-        return new IfStatement(position, expression, ifCodeBlock, elseIfStatements, elseExp);
+        return new IfStatement(position, expression, ifCodeBlock, elseIfStatements, elseStmnt);
     }
 
     /* elseifStmnt = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}" */
@@ -239,13 +239,12 @@ public class Parser implements IParser {
     private ElseStatement parseElseStatement() {
         Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
-            IExpression exp = parseConditionExpression();
             CodeBlock elseCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseCodeBlock);
 
-            return new ElseStatement(position, exp, elseCodeBlock);
+            return new ElseStatement(position, elseCodeBlock);
         }
-        return new ElseStatement();
+        return null;
     }
 
     /* whileStmnt = "while", "(", alternativeExp, ")", "{", codeBlock, "}" */

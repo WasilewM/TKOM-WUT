@@ -368,6 +368,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(IfStatement stmnt) {
+        boolean visitedElseIfStmnt = false;
         visit(stmnt.exp());
         registerErrorIfLastResultIsNull(stmnt);
         if (isConditionTrue()) {
@@ -379,9 +380,16 @@ public class Interpreter implements IVisitor {
             for (ElseIfStatement s : stmnt.elseIfStmnts()) {
                 visit(s);
                 if (previousIfStmntsDepth != ifStatementsDepth) {
+                    visitedElseIfStmnt = true;
                     ifStatementsDepth--;
                     break;
                 }
+            }
+
+            if ((!visitedElseIfStmnt) && (stmnt.elseStmnt() != null)) {
+                ifStatementsDepth++;
+                visit(stmnt.elseStmnt());
+                ifStatementsDepth--;
             }
         }
     }
@@ -397,7 +405,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(ElseStatement stmnt) {
-
+        visit(stmnt.codeBlock());
     }
 
     @Override
