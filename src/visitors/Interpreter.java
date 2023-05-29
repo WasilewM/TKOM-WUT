@@ -16,8 +16,10 @@ public class Interpreter implements IVisitor {
     private final IErrorHandler errorHandler;
     private final ContextManager contextManager;
 
+    // attribute ifStatementsDepth is used to determine whether if or else if statement
+    // has been visited in currently analyzed if statement
+    private int ifStatementsDepth;
     private IExpression lastResult;
-
     private boolean returnFound;
 
     public Interpreter(IErrorHandler errorHandler, ContextManager contextManager) {
@@ -25,6 +27,7 @@ public class Interpreter implements IVisitor {
         this.contextManager = contextManager;
         lastResult = null;
         returnFound = false;
+        ifStatementsDepth = 0;
     }
 
     public IExpression getLastResult() {
@@ -33,6 +36,10 @@ public class Interpreter implements IVisitor {
 
     public ContextManager getContextManager() {
         return contextManager;
+    }
+
+    public int getIfStatementsDepth() {
+        return ifStatementsDepth;
     }
 
     @Override
@@ -261,9 +268,8 @@ public class Interpreter implements IVisitor {
     public void visit(CodeBlock codeBlock) {
         contextManager.createNewContext();
         for (IStatement s : codeBlock.statements()) {
-            if (!returnFound) {
-                visit(s);
-            } else {
+            visit(s);
+            if (returnFound) {
                 break;
             }
         }
@@ -365,13 +371,28 @@ public class Interpreter implements IVisitor {
         visit(stmnt.exp());
         registerErrorIfLastResultIsNull(stmnt);
         if (isConditionTrue()) {
+            ifStatementsDepth++;
             visit(stmnt.codeBlock());
+            ifStatementsDepth--;
+        } else {
+            int previousIfStmntsDepth = ifStatementsDepth;
+            for (ElseIfStatement s : stmnt.elseIfStmnts()) {
+                visit(s);
+                if (previousIfStmntsDepth != ifStatementsDepth) {
+                    ifStatementsDepth--;
+                    break;
+                }
+            }
         }
     }
 
     @Override
     public void visit(ElseIfStatement stmnt) {
-
+        visit(stmnt.exp());
+        if (isConditionTrue()) {
+            ifStatementsDepth++;
+            visit(stmnt.codeBlock());
+        }
     }
 
     @Override

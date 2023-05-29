@@ -12,6 +12,7 @@ import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.AlternativeExpression;
 import parser.program_components.expressions.ConjunctiveExpression;
 import parser.program_components.function_definitions.IntFunctionDef;
+import parser.program_components.statements.ElseIfStatement;
 import parser.program_components.statements.IfStatement;
 import parser.program_components.statements.ReturnStatement;
 import visitors.Interpreter;
@@ -379,5 +380,148 @@ public class VisitIfStatementTest {
         interpreter.visit(program);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIfStmntWithSingleElseIfStatement_whenIfConditionIsTrue_thenCheckIfCodeBlock() {
+        // to check whether Interpreter checked if code block or not, different return values are set
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(53, 40), 13);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), true), new CodeBlock(new Position(41, 21), List.of(
+                            new ReturnStatement(new Position(53, 30), expectedLastResult)
+                    )), List.of(new ElseIfStatement(new Position(30, 1), new BoolValue(new Position(30, 10), true), new CodeBlock(new Position(31, 1), List.of(
+                            new ReturnStatement(new Position(31, 10), new IntValue(new Position(33, 20), 213))
+                    ))))),
+                    new ReturnStatement(new Position(70, 30), new IntValue(new Position(73, 40), 23))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIfStmntWithSingleElseIfStmnt_whenIfConditionIsFalseButElseIfConditionIsTrue_thenCheckElseIfCodeBlock() {
+        // to check whether Interpreter checked if code block or not, different return values are set
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(33, 20), 213);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
+                            new ReturnStatement(new Position(53, 30), new IntValue(new Position(53, 40), 13))
+                    )), List.of(new ElseIfStatement(new Position(30, 1), new BoolValue(new Position(30, 10), true), new CodeBlock(new Position(31, 1), List.of(
+                            new ReturnStatement(new Position(31, 10), expectedLastResult)
+                    ))))),
+                    new ReturnStatement(new Position(70, 30), new IntValue(new Position(73, 40), 23))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIfStmntWithWithElseIfStmnts_whenBothElseIfConditionsAreTrue_thenCheckFirstElseIfCodeBlock() {
+        // to check whether Interpreter checked if code block or not, different return values are set
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(33, 20), 213);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
+                            new ReturnStatement(new Position(53, 30), new IntValue(new Position(53, 40), 13))
+                    )), List.of(
+                            new ElseIfStatement(new Position(30, 1), new BoolValue(new Position(30, 10), true), new CodeBlock(new Position(31, 1), List.of(
+                                    new ReturnStatement(new Position(31, 10), expectedLastResult)))),
+                            new ElseIfStatement(new Position(35, 1), new BoolValue(new Position(35, 10), true), new CodeBlock(new Position(35, 1), List.of(
+                                    new ReturnStatement(new Position(36, 10), new IntValue(new Position(36, 20), 81)))))
+                    )),
+                    new ReturnStatement(new Position(70, 30), new IntValue(new Position(73, 40), 23))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIfStmntWithWithElseIfStmnts_whenOnlySecondElseIfConditionIsTrue_thenCheckSecondElseIfCodeBlock() {
+        // to check whether Interpreter checked if code block or not, different return values are set
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(36, 20), 81);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
+                            new ReturnStatement(new Position(53, 30), new IntValue(new Position(53, 40), 13))
+                    )), List.of(
+                            new ElseIfStatement(new Position(30, 1), new BoolValue(new Position(30, 10), false), new CodeBlock(new Position(31, 1), List.of(
+                                    new ReturnStatement(new Position(31, 10), new IntValue(new Position(33, 20), 213))))),
+                            new ElseIfStatement(new Position(35, 1), new BoolValue(new Position(35, 10), true), new CodeBlock(new Position(35, 1), List.of(
+                                    new ReturnStatement(new Position(36, 10), expectedLastResult))))
+                    )),
+                    new ReturnStatement(new Position(70, 30), new IntValue(new Position(73, 40), 23))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIfStmntWithIfStmntInsideItsCodeBlock_whenExitingEachIfStmntDecreaseIfsDepth_thenAtTheEndDepthShouldEqualZero() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), true), new CodeBlock(new Position(41, 21), List.of(
+                            new IfStatement(new Position(30, 20), new BoolValue(new Position(30, 35), true), new CodeBlock(new Position(31, 21), List.of()))
+                    ))),
+                    new ReturnStatement(new Position(70, 30), new IntValue(new Position(73, 40), 23))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(0, interpreter.getIfStatementsDepth());
+    }
+
+    @Test
+    void givenIfStmntWithWithElseIfStmnts_whenExitingEachIfStmntDecreaseIfsDepth_thenAtTheEndDepthShouldEqualZero() {
+        // to check whether Interpreter checked if code block or not, different return values are set
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
+                            new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
+                    )), List.of(
+                            new ElseIfStatement(new Position(30, 1), new BoolValue(new Position(30, 10), true), new CodeBlock(new Position(31, 1), List.of(
+                                    new IfStatement(new Position(40, 20), new BoolValue(new Position(40, 35), true), new CodeBlock(new Position(41, 21), List.of(
+                                            new IfStatement(new Position(50, 20), new BoolValue(new Position(50, 35), true), new CodeBlock(new Position(51, 21), List.of()))
+                                    ))))
+                            )
+                            ))),
+                    new ReturnStatement(new Position(70, 30), new IntValue(new Position(73, 40), 23))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(0, interpreter.getIfStatementsDepth());
     }
 }
