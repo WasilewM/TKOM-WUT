@@ -4,7 +4,6 @@ import parser.*;
 import parser.program_components.*;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
-import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 
 public class ProgramPrinterVisitor implements IVisitor {
@@ -195,92 +194,6 @@ public class ProgramPrinterVisitor implements IVisitor {
     public void visit(IParameter param) {
         printWithPrefix(param.getClass() + " \"" + param.name() + "\" at " + param.position().toString());
     }
-
-    @Override
-    public void visit(BoolListParameter boolListParameter) {
-
-    }
-
-    @Override
-    public void visit(BoolParameter boolParameter) {
-
-    }
-
-    @Override
-    public void visit(DoubleListParameter doubleListParameter) {
-
-    }
-
-    @Override
-    public void visit(DoubleParameter doubleParameter) {
-
-    }
-
-    @Override
-    public void visit(FigureListParameter figureListParameter) {
-
-    }
-
-    @Override
-    public void visit(FigureParameter figureParameter) {
-
-    }
-
-    @Override
-    public void visit(IntListParameter intListParameter) {
-
-    }
-
-    @Override
-    public void visit(IntParameter intParameter) {
-
-    }
-
-    @Override
-    public void visit(PointListParameter pointListParameter) {
-
-    }
-
-    @Override
-    public void visit(PointParameter pointParameter) {
-
-    }
-
-    @Override
-    public void visit(ReassignedParameter reassignedParameter) {
-
-    }
-
-    @Override
-    public void visit(SceneListParameter sceneListParameter) {
-
-    }
-
-    @Override
-    public void visit(SceneParameter sceneParameter) {
-
-    }
-
-    @Override
-    public void visit(SectionListParameter sectionListParameter) {
-
-    }
-
-    @Override
-    public void visit(SectionParameter sectionParameter) {
-
-    }
-
-    @Override
-    public void visit(StringListParameter stringListParameter) {
-
-    }
-
-    @Override
-    public void visit(StringParameter stringParameter) {
-
-    }
-
 
     // statements
     public void visit(IStatement stmnt) {

@@ -6,7 +6,6 @@ import parser.IParameter;
 import parser.program_components.*;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
-import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 
 public interface IVisitor {
@@ -82,40 +81,6 @@ public interface IVisitor {
 
     // parameters
     void visit(IParameter p);
-
-    void visit(BoolListParameter boolListParameter);
-
-    void visit(BoolParameter boolParameter);
-
-    void visit(DoubleListParameter doubleListParameter);
-
-    void visit(DoubleParameter doubleParameter);
-
-    void visit(FigureListParameter figureListParameter);
-
-    void visit(FigureParameter figureParameter);
-
-    void visit(IntListParameter intListParameter);
-
-    void visit(IntParameter intParameter);
-
-    void visit(PointListParameter pointListParameter);
-
-    void visit(PointParameter pointParameter);
-
-    void visit(ReassignedParameter reassignedParameter);
-
-    void visit(SceneListParameter sceneListParameter);
-
-    void visit(SceneParameter sceneParameter);
-
-    void visit(SectionListParameter sectionListParameter);
-
-    void visit(SectionParameter sectionParameter);
-
-    void visit(StringListParameter stringListParameter);
-
-    void visit(StringParameter stringParameter);
 
 
     // statements

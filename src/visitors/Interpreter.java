@@ -61,6 +61,10 @@ public class Interpreter implements IVisitor {
     public void visit(IFunctionDef f) {
         contextManager.createNewFunctionContext();
 
+        for (Map.Entry<String, IParameter> p : f.parameters().entrySet()) {
+            visit(p.getValue());
+        }
+
         if (f.getClass().equals(IntFunctionDef.class)) {
             visit((IntFunctionDef) f);
         } else if (f.getClass().equals(IntListFunctionDef.class)) {
@@ -716,96 +720,10 @@ public class Interpreter implements IVisitor {
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
     }
-
-    // parameters
+    
     @Override
     public void visit(IParameter param) {
-
-    }
-
-    @Override
-    public void visit(BoolListParameter param) {
-
-    }
-
-    @Override
-    public void visit(BoolParameter param) {
-
-    }
-
-    @Override
-    public void visit(DoubleListParameter param) {
-
-    }
-
-    @Override
-    public void visit(DoubleParameter param) {
-
-    }
-
-    @Override
-    public void visit(FigureListParameter param) {
-
-    }
-
-    @Override
-    public void visit(FigureParameter param) {
-
-    }
-
-    @Override
-    public void visit(IntListParameter param) {
-
-    }
-
-    @Override
-    public void visit(IntParameter param) {
-
-    }
-
-    @Override
-    public void visit(PointListParameter param) {
-
-    }
-
-    @Override
-    public void visit(PointParameter param) {
-
-    }
-
-    @Override
-    public void visit(ReassignedParameter param) {
-
-    }
-
-    @Override
-    public void visit(SceneListParameter param) {
-
-    }
-
-    @Override
-    public void visit(SceneParameter param) {
-
-    }
-
-    @Override
-    public void visit(SectionListParameter param) {
-
-    }
-
-    @Override
-    public void visit(SectionParameter param) {
-
-    }
-
-    @Override
-    public void visit(StringListParameter param) {
-
-    }
-
-    @Override
-    public void visit(StringParameter param) {
-
+        contextManager.add(param.name(), param);
     }
 
     // other components
