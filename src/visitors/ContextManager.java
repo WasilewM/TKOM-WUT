@@ -1,6 +1,6 @@
 package visitors;
 
-import parser.IExpression;
+import parser.IVisitable;
 
 import java.util.ArrayList;
 
@@ -18,6 +18,10 @@ public class ContextManager {
         return contexts.get(contexts.size() - 1);
     }
 
+    public ArrayList<Context> getContexts() {
+        return contexts;
+    }
+
     public boolean containsKey(String key) {
         for (int i = contexts.size() - 1; i >= 0; i--) {
             if (contexts.get(i).containsKey(key)) {
@@ -32,7 +36,7 @@ public class ContextManager {
         return false;
     }
 
-    public IExpression get(String parameterName) {
+    public IVisitable get(String parameterName) {
         for (int i = contexts.size() - 1; i >= 0; i--) {
             if (contexts.get(i).containsKey(parameterName)) {
                 return contexts.get(i).get(parameterName);
@@ -45,11 +49,11 @@ public class ContextManager {
         return null;
     }
 
-    public void add(String key, IExpression value) {
+    public void add(String key, IVisitable value) {
         contexts.get(contexts.size() - 1).add(key, value);
     }
 
-    public void update(String key, IExpression newValue) {
+    public void update(String key, IVisitable newValue) {
         for (int i = contexts.size() - 1; i >= 0; i--) {
             if (contexts.get(i).containsKey(key)) {
                 contexts.get(i).update(key, newValue);

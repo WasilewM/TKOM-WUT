@@ -19,7 +19,7 @@ public class Interpreter implements IVisitor {
     // attribute ifStatementsDepth is used to determine whether if or else if statement
     // has been visited in currently analyzed if statement
     private int ifStatementsDepth;
-    private IExpression lastResult;
+    private IVisitable lastResult;
     private boolean returnFound;
 
     public Interpreter(IErrorHandler errorHandler, ContextManager contextManager) {
@@ -30,7 +30,7 @@ public class Interpreter implements IVisitor {
         ifStatementsDepth = 0;
     }
 
-    public IExpression getLastResult() {
+    public IVisitable getLastResult() {
         return lastResult;
     }
 
@@ -344,7 +344,7 @@ public class Interpreter implements IVisitor {
             errorHandler.handle(new ParameterNotFoundException(stmnt.param(), lastResult));
         }
 
-        IExpression value = contextManager.get(stmnt.param().name());
+        IVisitable value = contextManager.get(stmnt.param().name());
         if (value.getClass().equals(IntValue.class)) {
             IntValue castedValue = castToIntValue(lastResult);
             contextManager.update(stmnt.param().name(), castedValue);
@@ -539,7 +539,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(EqualExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
         boolean comparisonResult = areValuesEqual(leftExp, lastResult);
         lastResult = new BoolValue(exp.position(), comparisonResult);
@@ -548,7 +548,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(GreaterOrEqualExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
         boolean comparisonResult = (isLeftValueGreaterThanRightValue(leftExp, lastResult)
                 || areValuesEqual(leftExp, lastResult));
@@ -558,7 +558,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(GreaterThanExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
         boolean comparisonResult = isLeftValueGreaterThanRightValue(leftExp, lastResult);
         lastResult = new BoolValue(exp.position(), comparisonResult);
@@ -567,7 +567,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(LessOrEqualExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
         boolean comparisonResult = (isLeftValueLessThanRightValue(leftExp, lastResult)
                 || areValuesEqual(leftExp, lastResult));
@@ -578,7 +578,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(LessThanExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
         boolean comparisonResult = isLeftValueLessThanRightValue(leftExp, lastResult);
         lastResult = new BoolValue(exp.position(), comparisonResult);
@@ -592,46 +592,46 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(NotEqualExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
         boolean comparisonResult = !(areValuesEqual(leftExp, lastResult));
         lastResult = new BoolValue(exp.position(), comparisonResult);
     }
 
-    private boolean isLeftValueLessThanRightValue(IExpression leftExp, IExpression rightExp) {
+    private boolean isLeftValueLessThanRightValue(IVisitable left, IVisitable right) {
         try {
-            if (leftExp.getClass().equals(rightExp.getClass())) {
-                return (!(areValuesEqual(leftExp, rightExp)) && !(isLeftValueGreaterThanRightValue(leftExp, rightExp)));
+            if (left.getClass().equals(right.getClass())) {
+                return (!(areValuesEqual(left, right)) && !(isLeftValueGreaterThanRightValue(left, right)));
             }
         } catch (Exception e) {
-            errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
+            errorHandler.handle(new OperationDataTypeException(left, right));
         }
         return false;
     }
 
-    private boolean areValuesEqual(IExpression leftExp, IExpression rightExp) {
+    private boolean areValuesEqual(IVisitable left, IVisitable right) {
         try {
-            IDataValue leftValue = (IDataValue) leftExp;
-            IDataValue rightValue = (IDataValue) rightExp;
-            return leftValue.value().equals(rightValue.value());
+            IDataValue castedLeftValue = (IDataValue) left;
+            IDataValue castedRightValue = (IDataValue) right;
+            return castedLeftValue.value().equals(castedRightValue.value());
         } catch (Exception e) {
-            errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
+            errorHandler.handle(new OperationDataTypeException(left, right));
         }
         return false;
     }
 
-    private boolean isLeftValueGreaterThanRightValue(IExpression leftExp, IExpression rightExp) {
+    private boolean isLeftValueGreaterThanRightValue(IVisitable left, IVisitable tight) {
         try {
-            IDataValue leftValue = (IDataValue) leftExp;
-            IDataValue rightValue = (IDataValue) rightExp;
-            if (leftValue.getClass().equals(IntValue.class) && rightValue.getClass().equals(IntValue.class)) {
-                return ((IntValue) leftValue).value() > ((IntValue) rightValue).value();
-            } else if (leftValue.getClass().equals(DoubleValue.class) && rightValue.getClass().equals(DoubleValue.class)) {
-                return ((DoubleValue) leftValue).value() > ((DoubleValue) rightValue).value();
+            IDataValue castedLeftValue = (IDataValue) left;
+            IDataValue castedRightValue = (IDataValue) tight;
+            if (castedLeftValue.getClass().equals(IntValue.class) && castedRightValue.getClass().equals(IntValue.class)) {
+                return ((IntValue) castedLeftValue).value() > ((IntValue) castedRightValue).value();
+            } else if (castedLeftValue.getClass().equals(DoubleValue.class) && castedRightValue.getClass().equals(DoubleValue.class)) {
+                return ((DoubleValue) castedLeftValue).value() > ((DoubleValue) castedRightValue).value();
             }
             return false;
         } catch (Exception e) {
-            errorHandler.handle(new OperationDataTypeException(leftExp, rightExp));
+            errorHandler.handle(new OperationDataTypeException(left, tight));
         }
         return false;
     }
@@ -640,7 +640,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(AdditionExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
 
         tryToAddExpressions(exp.position(), leftExp, lastResult);
@@ -649,7 +649,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(SubtractionExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
 
         tryToSubtractExpressions(exp.position(), leftExp, lastResult);
@@ -658,7 +658,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(DiscreteDivisionExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
 
         tryToDivideDiscretely(exp.position(), leftExp, lastResult);
@@ -667,7 +667,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(DivisionExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
 
         tryToDivide(exp.position(), leftExp, lastResult);
@@ -676,7 +676,7 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(MultiplicationExpression exp) {
         visit(exp.leftExp());
-        IExpression leftExp = lastResult;
+        IVisitable leftExp = lastResult;
         visit(exp.rightExp());
 
         tryToMultiply(exp.position(), leftExp, lastResult);
@@ -687,31 +687,31 @@ public class Interpreter implements IVisitor {
 
     }
 
-    private void tryToAddExpressions(Position position, IExpression leftExp, IExpression rightExp) {
+    private void tryToAddExpressions(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
     }
 
-    private void tryToSubtractExpressions(Position position, IExpression leftExp, IExpression rightExp) {
+    private void tryToSubtractExpressions(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
     }
 
-    private void tryToDivideDiscretely(Position position, IExpression leftExp, IExpression rightExp) {
+    private void tryToDivideDiscretely(Position position, IVisitable leftExp, IVisitable rightExp) {
         IntValue leftCastedValue = castToIntValue(leftExp);
         IntValue rightCastedValue = castToIntValue(rightExp);
         lastResult = new IntValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
-    private void tryToDivide(Position position, IExpression leftExp, IExpression rightExp) {
+    private void tryToDivide(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
-    private void tryToMultiply(Position position, IExpression leftExp, IExpression rightExp) {
+    private void tryToMultiply(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
@@ -829,7 +829,7 @@ public class Interpreter implements IVisitor {
     }
 
     // utils
-    private IntValue castToIntValue(IExpression value) {
+    private IntValue castToIntValue(IVisitable value) {
         IntValue castedValue = null;
         if (value.getClass().equals(IntValue.class)) {
             castedValue = (IntValue) value;
@@ -841,7 +841,7 @@ public class Interpreter implements IVisitor {
         return castedValue;
     }
 
-    private DoubleValue castToDoubleValue(IExpression value) {
+    private DoubleValue castToDoubleValue(IVisitable value) {
         DoubleValue castedValue = null;
         if (value.getClass().equals(IntValue.class)) {
             castedValue = new DoubleValue(value.position(), ((IntValue) value).value().doubleValue());

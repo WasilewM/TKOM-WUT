@@ -1,11 +1,11 @@
 package visitors;
 
-import parser.IExpression;
+import parser.IVisitable;
 
 import java.util.HashMap;
 
 public class Context {
-    private final HashMap<String, IExpression> context;
+    private final HashMap<String, IVisitable> context;
     private final boolean functionContext;
 
     public Context() {
@@ -22,7 +22,7 @@ public class Context {
         return functionContext;
     }
 
-    public void add(String parameterName, IExpression value) {
+    public void add(String parameterName, IVisitable value) {
         context.put(parameterName, value);
     }
 
@@ -30,11 +30,11 @@ public class Context {
         return context.containsKey(parameterName);
     }
 
-    public IExpression get(String parameterName) {
+    public IVisitable get(String parameterName) {
         return context.get(parameterName);
     }
 
-    public void update(String parameterName, IExpression newValue) {
+    public void update(String parameterName, IVisitable newValue) {
         context.replace(parameterName, newValue);
     }
 
