@@ -15,7 +15,6 @@ import java.util.Map;
 public class Interpreter implements IVisitor {
     private final IErrorHandler errorHandler;
     private final ContextManager contextManager;
-
     // attribute ifStatementsDepth is used to determine whether if or else if statement
     // has been visited in currently analyzed if statement
     private int ifStatementsDepth;
@@ -48,12 +47,9 @@ public class Interpreter implements IVisitor {
             errorHandler.handle(new MissingMainFunctionException(program.functions()));
         }
 
-        IFunctionDef mainFunction = program.functions().get("main");
-        visit(mainFunction);
-        program.functions().remove("main");
-
         for (Map.Entry<String, IFunctionDef> f : program.functions().entrySet()) {
             visit(f.getValue());
+            contextManager.addFunction(f.getKey(), f.getValue());
         }
     }
 
@@ -100,6 +96,7 @@ public class Interpreter implements IVisitor {
         }
 
         contextManager.deleteLastContext();
+        returnFound = false;
     }
 
     @Override
@@ -289,6 +286,8 @@ public class Interpreter implements IVisitor {
             visit((ReturnStatement) stmnt);
         } else if (stmnt.getClass().equals(WhileStatement.class)) {
             visit((WhileStatement) stmnt);
+        } else if (stmnt.getClass().equals(FunctionCall.class)) {
+            visit((FunctionCall) stmnt);
         }
     }
 
@@ -509,6 +508,8 @@ public class Interpreter implements IVisitor {
             visit((MultiplicationExpression) exp);
         } else if (exp.getClass().equals(Identifier.class)) {
             visit((Identifier) exp);
+        } else if (exp.getClass().equals(FunctionCall.class)) {
+            visit((FunctionCall) exp);
         } else {
             lastResult = null;
         }
@@ -720,7 +721,7 @@ public class Interpreter implements IVisitor {
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
     }
-    
+
     @Override
     public void visit(IParameter param) {
         contextManager.add(param.name(), param);
@@ -729,7 +730,11 @@ public class Interpreter implements IVisitor {
     // other components
     @Override
     public void visit(FunctionCall functionCall) {
-
+        if (!contextManager.containsFunction(functionCall.identifier().name())) {
+            errorHandler.handle(new UndefinedFunctionCallException(functionCall));
+        }
+        IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
+        visit(func);
     }
 
     @Override

@@ -1,14 +1,18 @@
 package visitors;
 
+import parser.IFunctionDef;
 import parser.IVisitable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ContextManager {
     private final ArrayList<Context> contexts;
+    private final HashMap<String, IFunctionDef> functions;
 
     public ContextManager() {
         this.contexts = new ArrayList<>();
+        functions = new HashMap<>();
     }
 
     public Context getLastContext() {
@@ -60,6 +64,18 @@ public class ContextManager {
                 break;
             }
         }
+    }
+
+    public boolean containsFunction(String functionName) {
+        return functions.containsKey(functionName);
+    }
+
+    public void addFunction(String functionName, IFunctionDef functionDef) {
+        functions.put(functionName, functionDef);
+    }
+
+    public IFunctionDef getFunction(String funcName) {
+        return functions.get(funcName);
     }
 
     protected void createNewContext() {

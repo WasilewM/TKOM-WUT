@@ -14,6 +14,7 @@ import parser.program_components.statements.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Parser implements IParser {
     private final ILexer lexer;
@@ -31,7 +32,7 @@ public class Parser implements IParser {
     public Program parse() {
         nextToken();
         Position position = currentToken.getPosition();
-        HashMap<String, IFunctionDef> functions = new HashMap<>();
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         IFunctionDef newFunction = parseFunctionDef();
         while (newFunction != null) {
             if (!(functions.containsKey(newFunction.name()))) {
@@ -900,7 +901,7 @@ public class Parser implements IParser {
         }
         IExpression exp = parseAlternativeExpression();
         parseRightBracketWithoutReturningIt();
-        return new FunctionCall(position, identifier, exp);
+        return new FunctionCall(position, (Identifier) identifier, exp);
     }
 
     /* identifier = letter { digit | literal } */

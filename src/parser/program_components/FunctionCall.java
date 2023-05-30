@@ -5,7 +5,7 @@ import parser.IExpOrStmnt;
 import parser.IExpression;
 import visitors.IVisitor;
 
-public record FunctionCall(Position position, IExpression identifier, IExpression exp) implements IExpOrStmnt {
+public record FunctionCall(Position position, Identifier identifier, IExpression exp) implements IExpOrStmnt {
 
     public FunctionCall(Position position, Identifier identifier) {
         this(position, identifier, null);
