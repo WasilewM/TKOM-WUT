@@ -41,7 +41,7 @@ public class VisitMalformedObjectAccessTest {
     }
 
     @Test
-    void givenObjectAccessStmnt_whenMethodNotImplemented_thenErrorIsRegistered() {
+    void givenObjectAccessStmntWithIntList_whenMethodNotImplemented_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
@@ -59,7 +59,7 @@ public class VisitMalformedObjectAccessTest {
     }
 
     @Test
-    void givenObjectAccessStmnt_whenRightExpIsNotFunctionCall_thenErrorIsRegistered() {
+    void givenObjectAccessStmntWithIntList_whenRightExpIsNotFunctionCall_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);

@@ -761,30 +761,34 @@ public class Interpreter implements IVisitor {
             errorHandler.handle(new UndefinedMethodCallException(objectAccess));
         }
         FunctionCall funcCall = (FunctionCall) objectAccess.rightExp();
-        
-        if (lastResult.getClass().equals(IntListValue.class)) {
-            if (funcCall.identifier().name().equals("add")) {
-                try {
-                    Class<?> clazz = lastResult.getClass();
-                    Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
-                    method.invoke(lastResult, funcCall.exp());
-                } catch (Exception e) {
-                    errorHandler.handle(e);
-                }
-            } else if (funcCall.identifier().name().equals("get")) {
-                try {
-                    Class<?> clazz = lastResult.getClass();
-                    Method method = clazz.getMethod(funcCall.identifier().name(), int.class);
-                    IntValue castedArg = castToIntValue(funcCall.exp());
-                    lastResult = (IVisitable) method.invoke(lastResult, castedArg.value());
-                } catch (Exception e) {
-                    errorHandler.handle(e);
-                }
-            } else {
-                errorHandler.handle(new UndefinedMethodCallException(objectAccess));
-            }
+
+        if (funcCall.identifier().name().equals("add")) {
+            handleAddToList(funcCall);
+        } else if (funcCall.identifier().name().equals("get")) {
+            handleGetForIntList(funcCall);
         } else {
             errorHandler.handle(new UndefinedMethodCallException(objectAccess));
+        }
+    }
+
+    private void handleAddToList(FunctionCall funcCall) {
+        try {
+            Class<?> clazz = lastResult.getClass();
+            Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
+            method.invoke(lastResult, funcCall.exp());
+        } catch (Exception e) {
+            errorHandler.handle(e);
+        }
+    }
+
+    private void handleGetForIntList(FunctionCall funcCall) {
+        try {
+            Class<?> clazz = lastResult.getClass();
+            Method method = clazz.getMethod(funcCall.identifier().name(), int.class);
+            IntValue castedArg = castToIntValue(funcCall.exp());
+            lastResult = (IVisitable) method.invoke(lastResult, castedArg.value());
+        } catch (Exception e) {
+            errorHandler.handle(e);
         }
     }
 
