@@ -2,6 +2,7 @@ package visitors;
 
 import parser.IFunctionDef;
 import parser.IVisitable;
+import parser.program_components.data_values.GenericListValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,9 +11,17 @@ public class ContextManager {
     private final ArrayList<Context> contexts;
     private final HashMap<String, IFunctionDef> functions;
 
+    private final ArrayList<String> methods;
+
     public ContextManager() {
         this.contexts = new ArrayList<>();
         functions = new HashMap<>();
+        methods = new ArrayList<>();
+        initMethodsList();
+    }
+
+    private void initMethodsList() {
+        methods.addAll(GenericListValue.getImplementedMethods());
     }
 
     public Context getLastContext() {
@@ -76,6 +85,10 @@ public class ContextManager {
 
     public IFunctionDef getFunction(String funcName) {
         return functions.get(funcName);
+    }
+
+    public boolean isMethodImplemented(String methodName) {
+        return methods.contains(methodName);
     }
 
     protected void createNewContext() {

@@ -10,6 +10,7 @@ import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 import visitors.exceptions.*;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 public class Interpreter implements IVisitor {
@@ -288,6 +289,8 @@ public class Interpreter implements IVisitor {
             visit((WhileStatement) stmnt);
         } else if (stmnt.getClass().equals(FunctionCall.class)) {
             visit((FunctionCall) stmnt);
+        } else if (stmnt.getClass().equals(ObjectAccess.class)) {
+            visit((ObjectAccess) stmnt);
         }
     }
 
@@ -510,6 +513,8 @@ public class Interpreter implements IVisitor {
             visit((Identifier) exp);
         } else if (exp.getClass().equals(FunctionCall.class)) {
             visit((FunctionCall) exp);
+        } else if (exp.getClass().equals(ObjectAccess.class)) {
+            visit((ObjectAccess) exp);
         } else {
             lastResult = null;
         }
@@ -731,10 +736,13 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(FunctionCall functionCall) {
         if (!contextManager.containsFunction(functionCall.identifier().name())) {
-            errorHandler.handle(new UndefinedFunctionCallException(functionCall));
+            if (!contextManager.isMethodImplemented(functionCall.identifier().name())) {
+                errorHandler.handle(new UndefinedFunctionCallException(functionCall));
+            }
+        } else {
+            IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
+            visit(func);
         }
-        IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
-        visit(func);
     }
 
     @Override
@@ -748,7 +756,36 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(ObjectAccess objectAccess) {
-
+        visit(objectAccess.leftExp());
+        if (!objectAccess.rightExp().getClass().equals(FunctionCall.class)) {
+            errorHandler.handle(new UndefinedMethodCallException(objectAccess));
+        }
+        FunctionCall funcCall = (FunctionCall) objectAccess.rightExp();
+        
+        if (lastResult.getClass().equals(IntListValue.class)) {
+            if (funcCall.identifier().name().equals("add")) {
+                try {
+                    Class<?> clazz = lastResult.getClass();
+                    Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
+                    method.invoke(lastResult, funcCall.exp());
+                } catch (Exception e) {
+                    errorHandler.handle(e);
+                }
+            } else if (funcCall.identifier().name().equals("get")) {
+                try {
+                    Class<?> clazz = lastResult.getClass();
+                    Method method = clazz.getMethod(funcCall.identifier().name(), int.class);
+                    IntValue castedArg = castToIntValue(funcCall.exp());
+                    lastResult = (IVisitable) method.invoke(lastResult, castedArg.value());
+                } catch (Exception e) {
+                    errorHandler.handle(e);
+                }
+            } else {
+                errorHandler.handle(new UndefinedMethodCallException(objectAccess));
+            }
+        } else {
+            errorHandler.handle(new UndefinedMethodCallException(objectAccess));
+        }
     }
 
     // utils

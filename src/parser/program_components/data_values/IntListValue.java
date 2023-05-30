@@ -1,18 +1,56 @@
 package parser.program_components.data_values;
 
 import lexer.Position;
-import parser.IDataValue;
 import visitors.IVisitor;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public record IntListValue(Position position, ArrayList<Integer> value) implements IDataValue {
+public final class IntListValue extends GenericListValue {
+    private final Position position = null;
+    private final ArrayList<Integer> value = null;
+
+    public IntListValue(Position position, ArrayList<Object> value) {
+        super(position, value);
+    }
+
     public IntListValue(Position position) {
-        this(position, new ArrayList<>());
+        super(position, new ArrayList<>());
     }
 
     @Override
     public void accept(IVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public Position position() {
+        return position;
+    }
+
+    @Override
+    public ArrayList<Integer> value() {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (IntListValue) obj;
+        return Objects.equals(this.position, that.position) &&
+                Objects.equals(this.value, that.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, value);
+    }
+
+    @Override
+    public String toString() {
+        return "IntListValue[" +
+                "position=" + position + ", " +
+                "value=" + value + ']';
     }
 }
