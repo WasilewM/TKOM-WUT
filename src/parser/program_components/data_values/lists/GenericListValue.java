@@ -4,6 +4,7 @@ import lexer.Position;
 import parser.IDataValue;
 import parser.IExtendableDataValue;
 import visitors.IVisitor;
+import visitors.exceptions.IncompatibleDataTypeException;
 
 import java.util.ArrayList;
 
@@ -44,7 +45,7 @@ public class GenericListValue implements IExtendableDataValue {
     }
 
     @Override
-    public void add(IDataValue val) {
+    public void add(IDataValue val) throws IncompatibleDataTypeException {
         values.add(val);
     }
 

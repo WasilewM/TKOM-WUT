@@ -4,6 +4,7 @@ import lexer.Position;
 import parser.IDataValue;
 import parser.program_components.data_values.SectionValue;
 import visitors.IVisitor;
+import visitors.exceptions.IncompatibleDataTypeException;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -40,9 +41,11 @@ public class SectionListValue extends GenericListValue {
     }
 
     @Override
-    public void add(IDataValue val) {
+    public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(SectionValue.class)) {
             super.add(val);
+        } else {
+            throw new IncompatibleDataTypeException(this, val);
         }
     }
 }

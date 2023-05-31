@@ -773,15 +773,10 @@ public class Interpreter implements IVisitor {
     }
 
     private void handleAddToObject(FunctionCall funcCall) {
-        int listSizeBeforeAddition = ((IExtendableDataValue) lastResult).size();
         try {
             Class<?> clazz = lastResult.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
             method.invoke(lastResult, funcCall.exp());
-
-            if (listSizeBeforeAddition == ((IExtendableDataValue) lastResult).size()) {
-                errorHandler.handle(new IncompatibleDataTypeException(lastResult, funcCall.exp()));
-            }
         } catch (Exception e) {
             Throwable cause = e.getCause();
             if (cause instanceof IncompatibleDataTypeException) {
