@@ -7,7 +7,7 @@ import visitors.IVisitor;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public final class DoubleListValue extends GenericListValue {
+public class DoubleListValue extends GenericListValue {
     public DoubleListValue(Position position) {
         super(position, new ArrayList<>());
     }

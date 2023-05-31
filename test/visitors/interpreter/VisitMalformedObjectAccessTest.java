@@ -7,10 +7,7 @@ import parser.IFunctionDef;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
 import parser.program_components.function_definitions.IntFunctionDef;
-import parser.program_components.parameters.BoolListParameter;
-import parser.program_components.parameters.DoubleListParameter;
-import parser.program_components.parameters.IntListParameter;
-import parser.program_components.parameters.StringListParameter;
+import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;
 import visitors.ContextManager;
 import visitors.Interpreter;
@@ -146,6 +143,24 @@ public class VisitMalformedObjectAccessTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypeException(new StringListValue(new Position(60, 10)), new IntValue(new Position(65, 13), 3))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenObjectAccessStmntWithFigureList_whenTryingToAddIntValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new FigureListParameter(new Position(60, 1), "myList"), new FigureListValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new IntValue(new Position(65, 13), 3)))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypeException(new FigureListValue(new Position(60, 10)), new IntValue(new Position(65, 13), 3))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
