@@ -15,4 +15,13 @@ public record PointValue(Position position, IExpression x, IExpression y) implem
     public Object value() {
         return null;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof PointValue castedOther)) {
+            return false;
+        }
+
+        return ((this.x).equals(castedOther.x) && (this.y).equals(castedOther.y));
+    }
 }

@@ -764,30 +764,37 @@ public class Interpreter implements IVisitor {
         FunctionCall funcCall = (FunctionCall) objectAccess.rightExp();
 
         if (funcCall.identifier().name().equals("add")) {
-            handleAddToList(funcCall);
+            handleAddToObject(funcCall);
         } else if (funcCall.identifier().name().equals("get")) {
-            handleGetFromList(funcCall);
+            handleGetFromObject(funcCall);
         } else {
             errorHandler.handle(new UndefinedMethodCallException(objectAccess));
         }
     }
 
-    private void handleAddToList(FunctionCall funcCall) {
-        int listSizeBeforeAddition = ((GenericListValue) lastResult).size();
+    private void handleAddToObject(FunctionCall funcCall) {
+        int listSizeBeforeAddition = ((IExtendableDataValue) lastResult).size();
         try {
             Class<?> clazz = lastResult.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
             method.invoke(lastResult, funcCall.exp());
 
-            if (listSizeBeforeAddition == ((GenericListValue) lastResult).size()) {
+            if (listSizeBeforeAddition == ((IExtendableDataValue) lastResult).size()) {
                 errorHandler.handle(new IncompatibleDataTypeException(lastResult, funcCall.exp()));
             }
         } catch (Exception e) {
-            errorHandler.handle(new RuntimeException(e));
+            Throwable cause = e.getCause();
+            if (cause instanceof IncompatibleDataTypeException) {
+                errorHandler.handle((IncompatibleDataTypeException) cause);
+            } else if (cause instanceof IncompatibleMethodArgumentException) {
+                errorHandler.handle((IncompatibleMethodArgumentException) cause);
+            } else {
+                errorHandler.handle(new RuntimeException());
+            }
         }
     }
 
-    private void handleGetFromList(FunctionCall funcCall) {
+    private void handleGetFromObject(FunctionCall funcCall) {
         try {
             Class<?> clazz = lastResult.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), int.class);

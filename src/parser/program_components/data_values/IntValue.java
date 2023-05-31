@@ -9,4 +9,13 @@ public record IntValue(Position position, Integer value) implements IDataValue {
     public void accept(IVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof IntValue castedOther)) {
+            return false;
+        }
+
+        return (this.value).equals(castedOther.value);
+    }
 }

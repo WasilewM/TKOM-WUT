@@ -2,11 +2,12 @@ package parser.program_components.data_values.lists;
 
 import lexer.Position;
 import parser.IDataValue;
+import parser.IExtendableDataValue;
 import visitors.IVisitor;
 
 import java.util.ArrayList;
 
-public class GenericListValue implements IDataValue {
+public class GenericListValue implements IExtendableDataValue {
     protected final ArrayList<Object> values;
     protected final Position position;
 
@@ -37,14 +38,17 @@ public class GenericListValue implements IDataValue {
         visitor.visit(this);
     }
 
+    @Override
     public Object get(int idx) {
         return values.get(idx);
     }
 
+    @Override
     public void add(IDataValue val) {
         values.add(val);
     }
 
+    @Override
     public int size() {
         return values.size();
     }
