@@ -533,7 +533,18 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(IDataValue val) {
+        if (val.getClass().equals(SectionValue.class)) {
+            visit((SectionValue) val);
+        }
         lastResult = val;
+    }
+
+    public void visit(SectionValue val) {
+        visit(val.first());
+        IExpression firstExp = (IExpression) lastResult;
+        visit(val.second());
+        IExpression secondExp = (IExpression) lastResult;
+        lastResult = new SectionValue(val.position(), firstExp, secondExp);
     }
 
     @Override

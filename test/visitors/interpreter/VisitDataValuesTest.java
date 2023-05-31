@@ -9,7 +9,9 @@ import parser.program_components.function_definitions.FigureFunctionDef;
 import parser.program_components.function_definitions.SceneFunctionDef;
 import parser.program_components.function_definitions.SectionFunctionDef;
 import parser.program_components.parameters.FigureParameter;
+import parser.program_components.parameters.PointParameter;
 import parser.program_components.parameters.SceneParameter;
+import parser.program_components.parameters.SectionParameter;
 import parser.program_components.statements.AssignmentStatement;
 import parser.program_components.statements.ReturnStatement;
 import visitors.ContextManager;
@@ -138,5 +140,26 @@ public class VisitDataValuesTest {
         }
 
         assertEquals(scene, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenSectionDeclaration_whenFirstParamIsUnknownIdentifier_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        PointValue firstPoint = new PointValue(new Position(15, 50), new DoubleValue(new Position(15, 15), 5.0), new DoubleValue(new Position(15, 20), 51.8));
+        PointValue secondPoint = new PointValue(new Position(16, 10), new DoubleValue(new Position(16, 15), 5.0), new DoubleValue(new Position(16, 20), 51.9));
+        SectionValue expectedSection = new SectionValue(new Position(60, 10), firstPoint, secondPoint);
+        functions.put("main", new SectionFunctionDef(new Position(10, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                new AssignmentStatement(new Position(new Position(15, 10)), new PointParameter(new Position(15, 30), "a"), firstPoint),
+                new AssignmentStatement(new Position(new Position(15, 10)), new PointParameter(new Position(16, 30), "b"), secondPoint),
+                new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), new Identifier(new Position(61, 61), "a"), new Identifier(new Position(62, 62), "b"))),
+                new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedSection, interpreter.getLastResult());
     }
 }

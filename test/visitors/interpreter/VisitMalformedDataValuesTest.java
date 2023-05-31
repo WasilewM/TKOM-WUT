@@ -15,6 +15,7 @@ import parser.program_components.parameters.SectionParameter;
 import parser.program_components.statements.AssignmentStatement;
 import visitors.ContextManager;
 import visitors.Interpreter;
+import visitors.exceptions.IdentifierNotFoundException;
 import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.exceptions.IncompatibleMethodArgumentException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
@@ -171,6 +172,42 @@ public class VisitMalformedDataValuesTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypeException(new PointValue(new Position(62, 62), null, null), new BoolValue(new Position(62, 62), false))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenSectionDeclaration_whenFirstParamIsUnknownIdentifier_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        PointValue firstPoint = new PointValue(new Position(65, 10), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51));
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), firstPoint, new Identifier(new Position(62, 62), "falseIdent")))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IdentifierNotFoundException(new Identifier(new Position(62, 62), "falseIdent"))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenSectionDeclaration_whenSecondParamIsUnknownIdentifier_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        PointValue secondPoint = new PointValue(new Position(66, 10), new IntValue(new Position(66, 15), 5), new IntValue(new Position(66, 20), 51));
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), new Identifier(new Position(60, 15), "a5"), secondPoint))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IdentifierNotFoundException(new Identifier(new Position(60, 15), "a5"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
