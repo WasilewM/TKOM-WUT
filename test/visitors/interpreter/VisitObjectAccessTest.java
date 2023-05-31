@@ -173,4 +173,23 @@ public class VisitObjectAccessTest {
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
 
+    @Test
+    void givenObjectAccessStmntWithScene_whenAddingIdentifierToSceneEvaluateThisIdentifierFirst_thenExecuteMethod() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        FigureValue expectedLastResult = new FigureValue(new Position(50, 10));
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(50, 1), new FigureParameter(new Position(50, 1), "fig"), expectedLastResult),
+                new AssignmentStatement(new Position(60, 1), new SceneParameter(new Position(60, 1), "myVar"), new SceneValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myVar"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new Identifier(new Position(60, 10), "fig"))),
+                new ReturnStatement(new Position(70, 1),
+                        new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myVar"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
 }

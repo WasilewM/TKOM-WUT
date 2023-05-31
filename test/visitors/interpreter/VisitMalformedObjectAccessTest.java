@@ -6,13 +6,17 @@ import parser.IErrorHandler;
 import parser.IFunctionDef;
 import parser.program_components.*;
 import parser.program_components.data_values.DoubleValue;
+import parser.program_components.data_values.FigureValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.lists.*;
+import parser.program_components.function_definitions.FigureFunctionDef;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;
+import parser.program_components.statements.ReturnStatement;
 import visitors.ContextManager;
 import visitors.Interpreter;
+import visitors.exceptions.IdentifierNotFoundException;
 import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.exceptions.UndefinedMethodCallException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
@@ -217,6 +221,27 @@ public class VisitMalformedObjectAccessTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypeException(new SceneListValue(new Position(60, 10)), new IntValue(new Position(65, 13), 3))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenObjectAccessStmntWithScene_whenAddingValueFromUnknownIdentifier_thenExecuteMethod() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        FigureValue expectedLastResult = new FigureValue(new Position(50, 10));
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new Identifier(new Position(60, 10), "fig")),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), expectedLastResult)),
+                new ReturnStatement(new Position(70, 1),
+                        new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IdentifierNotFoundException(new Identifier(new Position(60, 10), "fig"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

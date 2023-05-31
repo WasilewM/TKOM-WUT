@@ -14,8 +14,8 @@ Int main() {
 
 	Scene s1 = Scene();
 	s1.add(k);
-	s2.add(l);
-	s3.add(m);
+	s1.add(l);
+	s1.add(m);
 
 	return 0;
 }

@@ -806,9 +806,11 @@ public class Interpreter implements IVisitor {
 
     private void handleAddToObject(FunctionCall funcCall) {
         try {
-            Class<?> clazz = lastResult.getClass();
+            IVisitable obj = lastResult;
+            Class<?> clazz = obj.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
-            method.invoke(lastResult, funcCall.exp());
+            visit(funcCall.exp());
+            method.invoke(obj, lastResult);
         } catch (Exception e) {
             Throwable cause = e.getCause();
             if (cause instanceof IncompatibleDataTypeException) {
