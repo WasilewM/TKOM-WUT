@@ -153,4 +153,23 @@ public class VisitObjectAccessTest {
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
+
+    @Test
+    void givenObjectAccessStmntWithSceneList_whenMethodImplemented_thenExecuteMethod() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        SceneValue expectedLastResult = new SceneValue(new Position(65, 10));
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), expectedLastResult)),
+                new ReturnStatement(new Position(70, 1),
+                        new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
 }

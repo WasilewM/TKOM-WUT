@@ -8,7 +8,7 @@ import visitors.IVisitor;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public final class StringListValue extends GenericListValue {
+public class StringListValue extends GenericListValue {
     public StringListValue(Position position) {
         super(position, new ArrayList<>());
     }
