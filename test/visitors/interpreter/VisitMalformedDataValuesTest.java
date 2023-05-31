@@ -9,6 +9,7 @@ import parser.program_components.data_values.*;
 import parser.program_components.function_definitions.SceneFunctionDef;
 import parser.program_components.function_definitions.SectionFunctionDef;
 import parser.program_components.parameters.FigureParameter;
+import parser.program_components.parameters.PointParameter;
 import parser.program_components.parameters.SceneParameter;
 import parser.program_components.statements.AssignmentStatement;
 import visitors.ContextManager;
@@ -99,6 +100,40 @@ public class VisitMalformedDataValuesTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypeException(scene, incompatibleValue)
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenPointDeclaration_whenFirstPointParamIsNotIntOrDoubleValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new BoolValue(new Position(60, 10), true), new BoolValue(new Position(60, 16), true)))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypeException(new DoubleValue(new Position(60, 10), null), new BoolValue(new Position(60, 10), true))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenPointDeclaration_whenSecondPointParamIsNotIntOrDoubleValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new IntValue(new Position(60, 15), 5), new BoolValue(new Position(60, 20), true)))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypeException(new DoubleValue(new Position(60, 20), null), new BoolValue(new Position(60, 20), true))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

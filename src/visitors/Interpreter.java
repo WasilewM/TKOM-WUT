@@ -308,7 +308,7 @@ public class Interpreter implements IVisitor {
         } else if (stmnt.param().getClass().equals(BoolParameter.class)) {
             handleParamValueAssignment(lastResult.getClass().equals(BoolValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(PointParameter.class)) {
-            handleParamValueAssignment(lastResult.getClass().equals(PointValue.class), stmnt);
+            handlePointValueAssignment(stmnt);
         } else if (stmnt.param().getClass().equals(SectionParameter.class)) {
             handleParamValueAssignment(lastResult.getClass().equals(SectionValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(FigureParameter.class)) {
@@ -344,6 +344,18 @@ public class Interpreter implements IVisitor {
         } else {
             errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), lastResult));
         }
+    }
+
+    private void handlePointValueAssignment(AssignmentStatement stmnt) {
+        if (!lastResult.getClass().equals(PointValue.class)) {
+            errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), lastResult));
+        }
+
+        PointValue castedLastResult = (PointValue) lastResult;
+        DoubleValue xValue = castToDoubleValue(castedLastResult.x());
+        DoubleValue yValue = castToDoubleValue(castedLastResult.y());
+        PointValue castedValue = new PointValue(castedLastResult.position(), xValue, yValue);
+        contextManager.add(stmnt.param().name(), castedValue);
     }
 
     private void handleValueReassignment(AssignmentStatement stmnt) {

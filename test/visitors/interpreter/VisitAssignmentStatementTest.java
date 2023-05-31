@@ -211,7 +211,7 @@ public class VisitAssignmentStatementTest {
         interpreter.visit(program);
 
         Context expected = new Context();
-        expected.add("m", new PointValue(new Position(15, 20), new IntValue(new Position(15, 20), 10), new IntValue(new Position(15, 25), 11)));
+        expected.add("m", new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0)));
         assertEquals(expected, interpreter.getContextManager().getLastContext());
     }
 
@@ -230,7 +230,7 @@ public class VisitAssignmentStatementTest {
         interpreter.visit(program);
 
         Context expected = new Context();
-        expected.add("m", new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new IntValue(new Position(15, 25), 11)));
+        expected.add("m", new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0)));
         assertEquals(expected, interpreter.getContextManager().getLastContext());
     }
 
