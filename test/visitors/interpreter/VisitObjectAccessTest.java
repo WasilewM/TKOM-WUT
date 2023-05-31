@@ -8,9 +8,11 @@ import parser.program_components.data_values.*;
 import parser.program_components.function_definitions.BoolFunctionDef;
 import parser.program_components.function_definitions.DoubleFunctionDef;
 import parser.program_components.function_definitions.IntFunctionDef;
+import parser.program_components.function_definitions.StringFunctionDef;
 import parser.program_components.parameters.BoolListParameter;
 import parser.program_components.parameters.DoubleListParameter;
 import parser.program_components.parameters.IntListParameter;
+import parser.program_components.parameters.StringListParameter;
 import parser.program_components.statements.AssignmentStatement;
 import parser.program_components.statements.ReturnStatement;
 import visitors.ContextManager;
@@ -71,6 +73,25 @@ public class VisitObjectAccessTest {
         BoolValue expectedLastResult = new BoolValue(new Position(65, 10), true);
         functions.put("main", new BoolFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new BoolListParameter(new Position(60, 1), "myList"), new BoolListValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), expectedLastResult)),
+                new ReturnStatement(new Position(70, 1),
+                        new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenObjectAccessStmntWithStringList_whenMethodImplemented_thenExecuteMethod() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        StringValue expectedLastResult = new StringValue(new Position(65, 10), "-xs");
+        functions.put("main", new StringFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new StringListParameter(new Position(60, 1), "myList"), new StringListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), expectedLastResult)),
                 new ReturnStatement(new Position(70, 1),
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
