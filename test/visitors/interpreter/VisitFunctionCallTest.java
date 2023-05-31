@@ -38,7 +38,7 @@ public class VisitFunctionCallTest {
                 new ReturnStatement(new Position(70, 1), new FunctionCall(new Position(70, 10), new Identifier(new Position(60, 10), "getTwo")))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -58,7 +58,7 @@ public class VisitFunctionCallTest {
                 new ReturnStatement(new Position(70, 1), new AdditionExpression(new Position(70, 10), new Identifier(new Position(70, 10), "x"), new IntValue(new Position(70, 15), 4))))
         )));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }

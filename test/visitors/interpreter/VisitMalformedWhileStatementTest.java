@@ -30,7 +30,7 @@ public class VisitMalformedWhileStatementTest {
     private static void assertErrorLogs(MockedExitInterpreterErrorHandler errorHandler, Interpreter interpreter, Program program, List<Exception> expectedErrorLog) {
         boolean wasExceptionCaught = false;
         try {
-            interpreter.visit(program);
+            program.accept(interpreter);
         } catch (RuntimeException e) {
             wasExceptionCaught = true;
             Iterator<Exception> expected = expectedErrorLog.iterator();

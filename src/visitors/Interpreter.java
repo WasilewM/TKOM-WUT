@@ -50,80 +50,39 @@ public class Interpreter implements IVisitor {
         }
 
         for (Map.Entry<String, IFunctionDef> f : program.functions().entrySet()) {
-            visit(f.getValue());
+            f.getValue().accept(this);
             contextManager.addFunction(f.getKey(), f.getValue());
         }
     }
 
     @Override
-    public void visit(IFunctionDef f) {
-        contextManager.createNewFunctionContext();
-
-        for (Map.Entry<String, IParameter> p : f.parameters().entrySet()) {
-            visit(p.getValue());
-        }
-
-        if (f.getClass().equals(IntFunctionDef.class)) {
-            visit((IntFunctionDef) f);
-        } else if (f.getClass().equals(IntListFunctionDef.class)) {
-            visit((IntListFunctionDef) f);
-        } else if (f.getClass().equals(DoubleFunctionDef.class)) {
-            visit((DoubleFunctionDef) f);
-        } else if (f.getClass().equals(DoubleListFunctionDef.class)) {
-            visit((DoubleListFunctionDef) f);
-        } else if (f.getClass().equals(BoolFunctionDef.class)) {
-            visit((BoolFunctionDef) f);
-        } else if (f.getClass().equals(BoolListFunctionDef.class)) {
-            visit((BoolListFunctionDef) f);
-        } else if (f.getClass().equals(FigureFunctionDef.class)) {
-            visit((FigureFunctionDef) f);
-        } else if (f.getClass().equals(FigureListFunctionDef.class)) {
-            visit((FigureListFunctionDef) f);
-        } else if (f.getClass().equals(PointFunctionDef.class)) {
-            visit((PointFunctionDef) f);
-        } else if (f.getClass().equals(PointListFunctionDef.class)) {
-            visit((PointListFunctionDef) f);
-        } else if (f.getClass().equals(SceneFunctionDef.class)) {
-            visit((SceneFunctionDef) f);
-        } else if (f.getClass().equals(SceneListFunctionDef.class)) {
-            visit((SceneListFunctionDef) f);
-        } else if (f.getClass().equals(SectionFunctionDef.class)) {
-            visit((SectionFunctionDef) f);
-        } else if (f.getClass().equals(SectionListFunctionDef.class)) {
-            visit((SectionListFunctionDef) f);
-        } else if (f.getClass().equals(StringFunctionDef.class)) {
-            visit((StringFunctionDef) f);
-        } else if (f.getClass().equals(StringListFunctionDef.class)) {
-            visit((StringListFunctionDef) f);
-        }
-
-        contextManager.deleteLastContext();
-        returnFound = false;
-    }
-
-    @Override
     public void visit(BoolFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(BoolValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(BoolListFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(BoolListValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(DoubleFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (lastResult.getClass().equals(IntValue.class)) {
@@ -132,41 +91,49 @@ public class Interpreter implements IVisitor {
         } else if (!lastResult.getClass().equals(DoubleValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(DoubleListFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(DoubleListValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(FigureFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(FigureValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(FigureListFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(FigureListValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(IntFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (lastResult.getClass().equals(DoubleValue.class)) {
@@ -175,103 +142,134 @@ public class Interpreter implements IVisitor {
         } else if (!lastResult.getClass().equals(IntValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(IntListFunctionDef f) {
+        preFunctionVisit(f);
         visit((f.functionCode()));
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(IntListValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(PointFunctionDef f) {
+        preFunctionVisit(f);
         visit((f.functionCode()));
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(PointValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(PointListFunctionDef f) {
+        preFunctionVisit(f);
         visit((f.functionCode()));
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(PointListValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(SceneFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(SceneValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(SceneListFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(SceneListValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(SectionFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(SectionValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(SectionListFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(SectionListValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(StringFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(StringValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
     }
 
     @Override
     public void visit(StringListFunctionDef f) {
-        visit(f.functionCode());
+        preFunctionVisit(f);
+        f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (!lastResult.getClass().equals(StringListValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
+        postFunctionVisit();
+    }
+
+    private void preFunctionVisit(IFunctionDef f) {
+        contextManager.createNewFunctionContext();
+        for (Map.Entry<String, IParameter> p : f.parameters().entrySet()) {
+            p.getValue().accept(this);
+        }
+    }
+
+    private void postFunctionVisit() {
+        contextManager.deleteLastContext();
+        returnFound = false;
     }
 
     @Override
     public void visit(CodeBlock codeBlock) {
         contextManager.createNewContext();
         for (IStatement s : codeBlock.statements()) {
-            visit(s);
+            s.accept(this);
             if (returnFound) {
                 break;
             }
@@ -279,26 +277,10 @@ public class Interpreter implements IVisitor {
         contextManager.deleteLastContext();
     }
 
-    private void visit(IStatement stmnt) {
-        if (stmnt.getClass().equals(AssignmentStatement.class)) {
-            visit((AssignmentStatement) stmnt);
-        } else if (stmnt.getClass().equals(IfStatement.class)) {
-            visit((IfStatement) stmnt);
-        } else if (stmnt.getClass().equals(ReturnStatement.class)) {
-            visit((ReturnStatement) stmnt);
-        } else if (stmnt.getClass().equals(WhileStatement.class)) {
-            visit((WhileStatement) stmnt);
-        } else if (stmnt.getClass().equals(FunctionCall.class)) {
-            visit((FunctionCall) stmnt);
-        } else if (stmnt.getClass().equals(ObjectAccess.class)) {
-            visit((ObjectAccess) stmnt);
-        }
-    }
-
     // statements
     @Override
     public void visit(AssignmentStatement stmnt) {
-        visit(stmnt.exp());
+        stmnt.exp().accept(this);
         if (stmnt.param().getClass().equals(IntParameter.class)) {
             handleIntValueAssignment(stmnt);
         } else if (stmnt.param().getClass().equals(DoubleParameter.class)) {
@@ -386,16 +368,16 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(IfStatement stmnt) {
         boolean visitedElseIfStmnt = false;
-        visit(stmnt.exp());
-        registerErrorIfLastResultIsNull(stmnt);
+        registerErrorIsExpIsNull(stmnt, stmnt.exp());
+        stmnt.exp().accept(this);
         if (isConditionTrue()) {
             ifStatementsDepth++;
-            visit(stmnt.codeBlock());
+            stmnt.codeBlock().accept(this);
             ifStatementsDepth--;
         } else {
             int previousIfStmntsDepth = ifStatementsDepth;
             for (ElseIfStatement s : stmnt.elseIfStmnts()) {
-                visit(s);
+                s.accept(this);
                 if (previousIfStmntsDepth != ifStatementsDepth) {
                     visitedElseIfStmnt = true;
                     ifStatementsDepth--;
@@ -413,32 +395,35 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(ElseIfStatement stmnt) {
-        visit(stmnt.exp());
+        registerErrorIsExpIsNull(stmnt, stmnt.exp());
+        stmnt.exp().accept(this);
         if (isConditionTrue()) {
             ifStatementsDepth++;
-            visit(stmnt.codeBlock());
+            stmnt.codeBlock().accept(this);
         }
     }
 
     @Override
     public void visit(ElseStatement stmnt) {
-        visit(stmnt.codeBlock());
+        stmnt.codeBlock().accept(this);
     }
 
     @Override
     public void visit(ReturnStatement stmnt) {
-        visit(stmnt.exp());
+        if (stmnt.exp() != null) {
+            stmnt.exp().accept(this);
+        }
         returnFound = true;
     }
 
     @Override
     public void visit(WhileStatement stmnt) {
-        visit(stmnt.exp());
-        registerErrorIfLastResultIsNull(stmnt);
+        registerErrorIsExpIsNull(stmnt, stmnt.exp());
+        stmnt.exp().accept(this);
         while (isConditionTrue() && !returnFound) {
-            visit(stmnt.codeBlock());
+            stmnt.codeBlock().accept(this);
             if (!returnFound) {
-                visit(stmnt.exp());
+                stmnt.exp().accept(this);
             }
         }
     }
@@ -462,107 +447,43 @@ public class Interpreter implements IVisitor {
     public void visit(IExpression exp) {
         if (exp == null) {
             lastResult = null;
-        } else if (exp.getClass().equals(IntValue.class)) {
-            visit((IntValue) exp);
-        } else if (exp.getClass().equals(IntListValue.class)) {
-            visit((IntListValue) exp);
-        } else if (exp.getClass().equals(DoubleValue.class)) {
-            visit((DoubleValue) exp);
-        } else if (exp.getClass().equals(DoubleListValue.class)) {
-            visit((DoubleListValue) exp);
-        } else if (exp.getClass().equals(StringValue.class)) {
-            visit((StringValue) exp);
-        } else if (exp.getClass().equals(StringListValue.class)) {
-            visit((StringListValue) exp);
-        } else if (exp.getClass().equals(BoolValue.class)) {
-            visit((BoolValue) exp);
-        } else if (exp.getClass().equals(BoolListValue.class)) {
-            visit((BoolListValue) exp);
-        } else if (exp.getClass().equals(FigureValue.class)) {
-            visit((FigureValue) exp);
-        } else if (exp.getClass().equals(FigureListValue.class)) {
-            visit((FigureListValue) exp);
-        } else if (exp.getClass().equals(PointValue.class)) {
-            visit((PointValue) exp);
-        } else if (exp.getClass().equals(PointListValue.class)) {
-            visit((PointListValue) exp);
-        } else if (exp.getClass().equals(SceneValue.class)) {
-            visit((SceneValue) exp);
-        } else if (exp.getClass().equals(SceneListValue.class)) {
-            visit((SceneListValue) exp);
-        } else if (exp.getClass().equals(SectionValue.class)) {
-            visit((SectionValue) exp);
-        } else if (exp.getClass().equals(SectionListValue.class)) {
-            visit((SectionListValue) exp);
-        } else if (exp.getClass().equals(AlternativeExpression.class)) {
-            visit((AlternativeExpression) exp);
-        } else if (exp.getClass().equals(ConjunctiveExpression.class)) {
-            visit((ConjunctiveExpression) exp);
-        } else if (exp.getClass().equals(EqualExpression.class)) {
-            visit((EqualExpression) exp);
-        } else if (exp.getClass().equals(GreaterOrEqualExpression.class)) {
-            visit((GreaterOrEqualExpression) exp);
-        } else if (exp.getClass().equals(GreaterThanExpression.class)) {
-            visit((GreaterThanExpression) exp);
-        } else if (exp.getClass().equals(NotEqualExpression.class)) {
-            visit((NotEqualExpression) exp);
-        } else if (exp.getClass().equals(LessOrEqualExpression.class)) {
-            visit((LessOrEqualExpression) exp);
-        } else if (exp.getClass().equals(LessThanExpression.class)) {
-            visit((LessThanExpression) exp);
-        } else if (exp.getClass().equals(AdditionExpression.class)) {
-            visit((AdditionExpression) exp);
-        } else if (exp.getClass().equals(SubtractionExpression.class)) {
-            visit((SubtractionExpression) exp);
-        } else if (exp.getClass().equals(DiscreteDivisionExpression.class)) {
-            visit((DiscreteDivisionExpression) exp);
-        } else if (exp.getClass().equals(DivisionExpression.class)) {
-            visit((DivisionExpression) exp);
-        } else if (exp.getClass().equals(MultiplicationExpression.class)) {
-            visit((MultiplicationExpression) exp);
-        } else if (exp.getClass().equals(Identifier.class)) {
-            visit((Identifier) exp);
-        } else if (exp.getClass().equals(FunctionCall.class)) {
-            visit((FunctionCall) exp);
-        } else if (exp.getClass().equals(ObjectAccess.class)) {
-            visit((ObjectAccess) exp);
         } else {
-            lastResult = null;
+            exp.accept(this);
         }
     }
 
     @Override
     public void visit(IDataValue val) {
         if (val.getClass().equals(PointValue.class)) {
-            visit(val);
+            visitPointValue((PointValue) val);
         } else if (val.getClass().equals(SectionValue.class)) {
-            visit((SectionValue) val);
+            visitSectionValue((SectionValue) val);
         } else {
             lastResult = val;
         }
     }
 
-    public void visit(PointValue val) {
-        visit(val.x());
+    public void visitPointValue(PointValue val) {
+        val.x().accept(this);
         IExpression x = (IExpression) lastResult;
-        visit(val.y());
+        val.y().accept(this);
         IExpression y = (IExpression) lastResult;
         lastResult = new PointValue(val.position(), x, y);
     }
 
-    public void visit(SectionValue val) {
-        visit(val.first());
+    public void visitSectionValue(SectionValue val) {
+        val.first().accept(this);
         IExpression firstExp = (IExpression) lastResult;
-        visit(val.second());
+        val.second().accept(this);
         IExpression secondExp = (IExpression) lastResult;
         lastResult = new SectionValue(val.position(), firstExp, secondExp);
     }
 
     @Override
     public void visit(AlternativeExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         if (!isConditionTrue()) {
-            visit(exp.rightExp());
+            exp.rightExp().accept(this);
         }
 
         saveExpressionBoolResult(exp);
@@ -570,9 +491,9 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(ConjunctiveExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         if (isConditionTrue()) {
-            visit(exp.rightExp());
+            exp.rightExp().accept(this);
         }
 
         saveExpressionBoolResult(exp);
@@ -581,18 +502,18 @@ public class Interpreter implements IVisitor {
     // comparison expressions
     @Override
     public void visit(EqualExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
         boolean comparisonResult = areValuesEqual(leftExp, lastResult);
         lastResult = new BoolValue(exp.position(), comparisonResult);
     }
 
     @Override
     public void visit(GreaterOrEqualExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
         boolean comparisonResult = (isLeftValueGreaterThanRightValue(leftExp, lastResult)
                 || areValuesEqual(leftExp, lastResult));
         lastResult = new BoolValue(exp.position(), comparisonResult);
@@ -600,18 +521,18 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(GreaterThanExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
         boolean comparisonResult = isLeftValueGreaterThanRightValue(leftExp, lastResult);
         lastResult = new BoolValue(exp.position(), comparisonResult);
     }
 
     @Override
     public void visit(LessOrEqualExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
         boolean comparisonResult = (isLeftValueLessThanRightValue(leftExp, lastResult)
                 || areValuesEqual(leftExp, lastResult));
         lastResult = new BoolValue(exp.position(), comparisonResult);
@@ -620,9 +541,9 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(LessThanExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
         boolean comparisonResult = isLeftValueLessThanRightValue(leftExp, lastResult);
         lastResult = new BoolValue(exp.position(), comparisonResult);
     }
@@ -634,9 +555,9 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(NotEqualExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
         boolean comparisonResult = !(areValuesEqual(leftExp, lastResult));
         lastResult = new BoolValue(exp.position(), comparisonResult);
     }
@@ -682,45 +603,45 @@ public class Interpreter implements IVisitor {
     // arithmetic expressions
     @Override
     public void visit(AdditionExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
 
         tryToAddExpressions(exp.position(), leftExp, lastResult);
     }
 
     @Override
     public void visit(SubtractionExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
 
         tryToSubtractExpressions(exp.position(), leftExp, lastResult);
     }
 
     @Override
     public void visit(DiscreteDivisionExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
 
         tryToDivideDiscretely(exp.position(), leftExp, lastResult);
     }
 
     @Override
     public void visit(DivisionExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
 
         tryToDivide(exp.position(), leftExp, lastResult);
     }
 
     @Override
     public void visit(MultiplicationExpression exp) {
-        visit(exp.leftExp());
+        exp.leftExp().accept(this);
         IVisitable leftExp = lastResult;
-        visit(exp.rightExp());
+        exp.rightExp().accept(this);
 
         tryToMultiply(exp.position(), leftExp, lastResult);
     }
@@ -774,7 +695,7 @@ public class Interpreter implements IVisitor {
             }
         } else {
             IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
-            visit(func);
+            func.accept(this);
         }
     }
 
@@ -789,7 +710,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(ObjectAccess objectAccess) {
-        visit(objectAccess.leftExp());
+        objectAccess.leftExp().accept(this);
         if (!objectAccess.rightExp().getClass().equals(FunctionCall.class)) {
             errorHandler.handle(new UndefinedMethodCallException(objectAccess));
         }
@@ -809,7 +730,7 @@ public class Interpreter implements IVisitor {
             IVisitable obj = lastResult;
             Class<?> clazz = obj.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
-            visit(funcCall.exp());
+            funcCall.exp().accept(this);
             method.invoke(obj, lastResult);
         } catch (Exception e) {
             Throwable cause = e.getCause();
@@ -892,8 +813,8 @@ public class Interpreter implements IVisitor {
         }
     }
 
-    private void registerErrorIfLastResultIsNull(IStatement stmnt) {
-        if (lastResult == null) {
+    private void registerErrorIsExpIsNull(IStatement stmnt, IExpression exp) {
+        if (exp == null) {
             errorHandler.handle(new NullExpressionException(stmnt));
         }
     }

@@ -31,7 +31,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -48,7 +48,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -65,7 +65,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -82,7 +82,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -99,7 +99,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -116,7 +116,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -133,7 +133,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -150,7 +150,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -167,7 +167,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -184,7 +184,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -201,7 +201,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -218,7 +218,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -235,7 +235,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -252,7 +252,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -269,7 +269,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -286,7 +286,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -303,7 +303,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -320,7 +320,7 @@ public class VisitReturnStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }

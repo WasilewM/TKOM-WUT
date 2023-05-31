@@ -1,7 +1,6 @@
 package visitors;
 
 import parser.IDataValue;
-import parser.IFunctionDef;
 import parser.IParameter;
 import parser.program_components.*;
 import parser.program_components.expressions.*;
@@ -44,8 +43,6 @@ public interface IVisitor {
 
 
     // function_definitions
-    void visit(IFunctionDef f);
-
     void visit(BoolFunctionDef boolFunctionDef);
 
     void visit(BoolListFunctionDef boolListFunctionDef);

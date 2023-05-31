@@ -44,7 +44,7 @@ public class VisitWhileStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -65,7 +65,7 @@ public class VisitWhileStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -86,7 +86,7 @@ public class VisitWhileStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -107,7 +107,7 @@ public class VisitWhileStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -128,7 +128,7 @@ public class VisitWhileStatementTest {
             )));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }

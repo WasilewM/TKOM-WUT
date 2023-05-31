@@ -34,7 +34,7 @@ public class VisitProgramTest {
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 0))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(0, errorHandler.getErrorLog().size());
     }
@@ -55,7 +55,7 @@ public class VisitProgramTest {
             );
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context mainFuncContext = new Context();
         mainFuncContext.add("a", new IntParameter(new Position(5, 1), "a"));
@@ -84,7 +84,7 @@ public class VisitProgramTest {
             );
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context mainFuncContext = new Context();
         mainFuncContext.add("a", new IntParameter(new Position(5, 1), "a"));

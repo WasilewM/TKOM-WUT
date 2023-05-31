@@ -32,7 +32,7 @@ public class VisitMalformedObjectAccessTest {
     private static void assertErrorLogs(IErrorHandler errorHandler, Interpreter interpreter, Program program, List<Exception> expectedErrorLog) {
         boolean wasExceptionCaught = false;
         try {
-            interpreter.visit(program);
+            program.accept(interpreter);
         } catch (RuntimeException e) {
             wasExceptionCaught = true;
             Iterator<Exception> expected = expectedErrorLog.iterator();
