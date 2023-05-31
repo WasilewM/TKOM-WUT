@@ -11,6 +11,7 @@ import parser.program_components.function_definitions.SectionFunctionDef;
 import parser.program_components.parameters.FigureParameter;
 import parser.program_components.parameters.PointParameter;
 import parser.program_components.parameters.SceneParameter;
+import parser.program_components.parameters.SectionParameter;
 import parser.program_components.statements.AssignmentStatement;
 import visitors.ContextManager;
 import visitors.Interpreter;
@@ -134,6 +135,42 @@ public class VisitMalformedDataValuesTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypeException(new DoubleValue(new Position(60, 20), null), new BoolValue(new Position(60, 20), true))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenSectionDeclaration_whenFirstParamIsNotPointValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        PointValue secondPoint = new PointValue(new Position(66, 10), new IntValue(new Position(66, 15), 5), new IntValue(new Position(66, 20), 51));
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), new IntValue(new Position(60, 15), 5), secondPoint))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypeException(new PointValue(new Position(60, 15), null, null), new IntValue(new Position(60, 15), 5))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenSectionDeclaration_whenSecondParamIsNotPointValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        PointValue firstPoint = new PointValue(new Position(65, 10), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51));
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), firstPoint, new BoolValue(new Position(62, 62), false)))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypeException(new PointValue(new Position(62, 62), null, null), new BoolValue(new Position(62, 62), false))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

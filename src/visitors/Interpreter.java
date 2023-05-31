@@ -310,7 +310,7 @@ public class Interpreter implements IVisitor {
         } else if (stmnt.param().getClass().equals(PointParameter.class)) {
             handlePointValueAssignment(stmnt);
         } else if (stmnt.param().getClass().equals(SectionParameter.class)) {
-            handleParamValueAssignment(lastResult.getClass().equals(SectionValue.class), stmnt);
+            handleSectionValueAssignment(stmnt);
         } else if (stmnt.param().getClass().equals(FigureParameter.class)) {
             handleParamValueAssignment(lastResult.getClass().equals(FigureValue.class), stmnt);
         } else if (stmnt.param().getClass().equals(SceneParameter.class)) {
@@ -347,14 +347,12 @@ public class Interpreter implements IVisitor {
     }
 
     private void handlePointValueAssignment(AssignmentStatement stmnt) {
-        if (!lastResult.getClass().equals(PointValue.class)) {
-            errorHandler.handle(new IncompatibleDataTypeException(stmnt.param(), lastResult));
-        }
+        PointValue castedValue = castToPointValue(lastResult);
+        contextManager.add(stmnt.param().name(), castedValue);
+    }
 
-        PointValue castedLastResult = (PointValue) lastResult;
-        DoubleValue xValue = castToDoubleValue(castedLastResult.x());
-        DoubleValue yValue = castToDoubleValue(castedLastResult.y());
-        PointValue castedValue = new PointValue(castedLastResult.position(), xValue, yValue);
+    private void handleSectionValueAssignment(AssignmentStatement stmnt) {
+        SectionValue castedValue = castToSectionValue(lastResult);
         contextManager.add(stmnt.param().name(), castedValue);
     }
 
@@ -813,6 +811,32 @@ public class Interpreter implements IVisitor {
     }
 
     // utils
+    private SectionValue castToSectionValue(IVisitable value) {
+        SectionValue castedValue = null;
+        if (value.getClass().equals(SectionValue.class)) {
+            castedValue = (SectionValue) value;
+            PointValue firstPoint = castToPointValue(((SectionValue) value).first());
+            PointValue secondPoint = castToPointValue(((SectionValue) value).second());
+            castedValue = new SectionValue(castedValue.position(), firstPoint, secondPoint);
+        } else {
+            errorHandler.handle(new IncompatibleDataTypeException(new SectionValue(value.position(), null, null), value));
+        }
+        return castedValue;
+    }
+
+    private PointValue castToPointValue(IVisitable value) {
+        PointValue castedValue = null;
+        if (value.getClass().equals(PointValue.class)) {
+            castedValue = (PointValue) value;
+            DoubleValue xValue = castToDoubleValue(castedValue.x());
+            DoubleValue yValue = castToDoubleValue(castedValue.y());
+            castedValue = new PointValue(castedValue.position(), xValue, yValue);
+        } else {
+            errorHandler.handle(new IncompatibleDataTypeException(new PointValue(value.position(), null, null), value));
+        }
+        return castedValue;
+    }
+
     private IntValue castToIntValue(IVisitable value) {
         IntValue castedValue = null;
         if (value.getClass().equals(IntValue.class)) {

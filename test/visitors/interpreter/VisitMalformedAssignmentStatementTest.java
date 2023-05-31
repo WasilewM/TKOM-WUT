@@ -109,38 +109,6 @@ public class VisitMalformedAssignmentStatementTest {
     }
 
     @Test
-    void givenAssignmentStmnt_whenPointParamAndStringValue_thenErrorIsRegistered() {
-        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextManager contextManager = new MockedContextManager();
-        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
-        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new PointParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))))));
-        }};
-        Program program = new Program(new Position(1, 1), functions);
-        List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new PointParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))
-        );
-
-        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
-    }
-
-    @Test
-    void givenAssignmentStmnt_whenSectionParamAndStringValue_thenErrorIsRegistered() {
-        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
-        MockedContextManager contextManager = new MockedContextManager();
-        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
-        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new AssignmentStatement(new Position(15, 15), new SectionParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))))));
-        }};
-        Program program = new Program(new Position(1, 1), functions);
-        List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new SectionParameter(new Position(15, 15), "m"), new StringValue(new Position(15, 20), "true"))
-        );
-
-        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
-    }
-
-    @Test
     void givenAssignmentStmnt_whenFigureAndBoolValue_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextManager contextManager = new MockedContextManager();
