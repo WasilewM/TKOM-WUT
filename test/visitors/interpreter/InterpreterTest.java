@@ -36,7 +36,7 @@ public class InterpreterTest {
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(12, 12), new IntValue(new Position(12, 20), 0))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
         assertNotNull(interpreter.getContextManager().getLastContext());
     }
 }

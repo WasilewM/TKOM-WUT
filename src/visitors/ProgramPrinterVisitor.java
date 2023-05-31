@@ -98,7 +98,7 @@ public class ProgramPrinterVisitor implements IVisitor {
     }
 
     // function definitions
-    @Override
+//    @Override
     public void visit(IFunctionDef func) {
         printWithPrefix(func.getClass() + " \"" + func.name() + "\" at " + func.position().toString());
         increaseIntend();

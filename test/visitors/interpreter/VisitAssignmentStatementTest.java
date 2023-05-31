@@ -37,7 +37,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new IntValue(new Position(15, 20), 2));
@@ -56,7 +56,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new IntValue(new Position(15, 20), 2));
@@ -75,7 +75,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new IntValue(new Position(15, 20), 2));
@@ -94,7 +94,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new DoubleValue(new Position(15, 20), 2.21));
@@ -113,7 +113,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new DoubleValue(new Position(15, 20), 5.0));
@@ -132,7 +132,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new StringValue(new Position(15, 20), "a-2.21_b"));
@@ -151,7 +151,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new BoolValue(new Position(15, 20), true));
@@ -170,7 +170,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new BoolValue(new Position(15, 20), false));
@@ -189,7 +189,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0)));
@@ -208,7 +208,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0)));
@@ -227,7 +227,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0)));
@@ -246,7 +246,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new SectionValue(new Position(15, 20), new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0)), new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 30), 23.0), new DoubleValue(new Position(15, 35), 21.0))));
@@ -265,7 +265,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new FigureValue(new Position(15, 20)));
@@ -284,7 +284,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new SceneValue(new Position(15, 20)));
@@ -303,7 +303,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new IntListValue(new Position(15, 20)));
@@ -322,7 +322,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new DoubleListValue(new Position(15, 20)));
@@ -341,7 +341,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new StringListValue(new Position(15, 20)));
@@ -360,7 +360,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new BoolListValue(new Position(15, 20)));
@@ -379,7 +379,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new PointListValue(new Position(15, 20)));
@@ -398,7 +398,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new SectionListValue(new Position(15, 20)));
@@ -417,7 +417,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new FigureListValue(new Position(15, 20)));
@@ -436,7 +436,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new SceneListValue(new Position(15, 20)));
@@ -456,7 +456,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new IntValue(new Position(18, 20), 41));
@@ -476,7 +476,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new IntValue(new Position(18, 20), 51));
@@ -496,7 +496,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new DoubleValue(new Position(18, 20), 45.0));
@@ -515,7 +515,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new DoubleValue(new Position(15, 20), 10.32));
@@ -534,7 +534,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new IntValue(new Position(15, 20), 10));
@@ -553,7 +553,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new BoolValue(new Position(15, 20), true));
@@ -572,7 +572,7 @@ public class VisitAssignmentStatementTest {
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         Context expected = new Context();
         expected.add("m", new BoolValue(new Position(15, 20), false));

@@ -39,7 +39,7 @@ public class VisitDataValuesTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
         figureValue.add(expectedLastResult);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
@@ -61,7 +61,7 @@ public class VisitDataValuesTest {
                 new ReturnStatement(new Position(70, 1), new Identifier(new Position(75, 1), "myList"))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
         figureValue.add(firstSection);
         figureValue.add(secondSection);
 
@@ -82,7 +82,7 @@ public class VisitDataValuesTest {
                 new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
         try {
             scene.add(figure);
         } catch (IncompatibleDataTypeException e) {
@@ -106,7 +106,7 @@ public class VisitDataValuesTest {
                 new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
         try {
             scene.add(point);
         } catch (IncompatibleDataTypeException e) {
@@ -130,7 +130,7 @@ public class VisitDataValuesTest {
                 new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
         try {
             scene.add(section);
         } catch (IncompatibleDataTypeException e) {
@@ -156,7 +156,7 @@ public class VisitDataValuesTest {
                 new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedSection, interpreter.getLastResult());
     }
@@ -177,7 +177,7 @@ public class VisitDataValuesTest {
                 new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedPoint, interpreter.getLastResult());
     }

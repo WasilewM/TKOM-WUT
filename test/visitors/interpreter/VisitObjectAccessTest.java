@@ -35,7 +35,7 @@ public class VisitObjectAccessTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(65, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -54,7 +54,7 @@ public class VisitObjectAccessTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -73,7 +73,7 @@ public class VisitObjectAccessTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -92,7 +92,7 @@ public class VisitObjectAccessTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -111,7 +111,7 @@ public class VisitObjectAccessTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -130,7 +130,7 @@ public class VisitObjectAccessTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -149,7 +149,7 @@ public class VisitObjectAccessTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -168,7 +168,7 @@ public class VisitObjectAccessTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
@@ -188,7 +188,7 @@ public class VisitObjectAccessTest {
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myVar"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
         Program program = new Program(new Position(1, 1), functions);
-        interpreter.visit(program);
+        program.accept(interpreter);
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }

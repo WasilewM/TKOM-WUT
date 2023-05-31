@@ -27,7 +27,7 @@ public class VisitMalformedProgramTest {
         boolean wasExceptionCaught = false;
 
         try {
-            interpreter.visit(program);
+            program.accept(interpreter);
         } catch (RuntimeException e) {
             wasExceptionCaught = true;
             Iterator<Exception> expected = expectedErrorLog.iterator();
