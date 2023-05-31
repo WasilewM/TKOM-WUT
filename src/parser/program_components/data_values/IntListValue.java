@@ -1,15 +1,13 @@
 package parser.program_components.data_values;
 
 import lexer.Position;
+import parser.IDataValue;
 import visitors.IVisitor;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public final class IntListValue extends GenericListValue {
-    private final Position position = null;
-    private final ArrayList<Integer> value = null;
-
     public IntListValue(Position position, ArrayList<Object> value) {
         super(position, value);
     }
@@ -21,16 +19,6 @@ public final class IntListValue extends GenericListValue {
     @Override
     public void accept(IVisitor visitor) {
         visitor.visit(this);
-    }
-
-    @Override
-    public Position position() {
-        return position;
-    }
-
-    @Override
-    public ArrayList<Integer> value() {
-        return value;
     }
 
     @Override
@@ -52,5 +40,12 @@ public final class IntListValue extends GenericListValue {
         return "IntListValue[" +
                 "position=" + position + ", " +
                 "value=" + value + ']';
+    }
+
+    @Override
+    public void add(IDataValue val) {
+        if (val.getClass().equals(IntValue.class)) {
+            super.add(val);
+        }
     }
 }

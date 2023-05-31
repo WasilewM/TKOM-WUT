@@ -5,13 +5,17 @@ import org.junit.jupiter.api.Test;
 import parser.IErrorHandler;
 import parser.IFunctionDef;
 import parser.program_components.*;
+import parser.program_components.data_values.DoubleListValue;
+import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntListValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.function_definitions.IntFunctionDef;
+import parser.program_components.parameters.DoubleListParameter;
 import parser.program_components.parameters.IntListParameter;
 import parser.program_components.statements.AssignmentStatement;
 import visitors.ContextManager;
 import visitors.Interpreter;
+import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.exceptions.UndefinedMethodCallException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
@@ -71,6 +75,42 @@ public class VisitMalformedObjectAccessTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new UndefinedMethodCallException(new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new Identifier(new Position(65, 8), "put")))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenObjectAccessStmntWithIntList_whenTryingToAddDoubleValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new IntListParameter(new Position(60, 1), "myList"), new IntListValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new DoubleValue(new Position(65, 13), 3.1)))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypeException(new IntListValue(new Position(60, 10)), new DoubleValue(new Position(65, 13), 3.1))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenObjectAccessStmntWithDoubleList_whenTryingToAddIntValue_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new DoubleListParameter(new Position(60, 1), "myList"), new DoubleListValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new IntValue(new Position(65, 13), 3)))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypeException(new DoubleListValue(new Position(60, 10)), new IntValue(new Position(65, 13), 3))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

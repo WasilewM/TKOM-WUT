@@ -765,23 +765,28 @@ public class Interpreter implements IVisitor {
         if (funcCall.identifier().name().equals("add")) {
             handleAddToList(funcCall);
         } else if (funcCall.identifier().name().equals("get")) {
-            handleGetForIntList(funcCall);
+            handleGetFromList(funcCall);
         } else {
             errorHandler.handle(new UndefinedMethodCallException(objectAccess));
         }
     }
 
     private void handleAddToList(FunctionCall funcCall) {
+        int listSizeBeforeAddition = ((GenericListValue) lastResult).size();
         try {
             Class<?> clazz = lastResult.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
             method.invoke(lastResult, funcCall.exp());
+
+            if (listSizeBeforeAddition == ((GenericListValue) lastResult).size()) {
+                errorHandler.handle(new IncompatibleDataTypeException(lastResult, funcCall.exp()));
+            }
         } catch (Exception e) {
-            errorHandler.handle(e);
+            errorHandler.handle(new RuntimeException(e));
         }
     }
 
-    private void handleGetForIntList(FunctionCall funcCall) {
+    private void handleGetFromList(FunctionCall funcCall) {
         try {
             Class<?> clazz = lastResult.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), int.class);
