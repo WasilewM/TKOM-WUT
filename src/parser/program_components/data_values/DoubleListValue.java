@@ -35,7 +35,7 @@ public class DoubleListValue extends GenericListValue {
     public String toString() {
         return "DoubleListValue[" +
                 "position=" + position + ", " +
-                "value=" + values + ']';
+                "values=" + values + ']';
     }
 
     @Override

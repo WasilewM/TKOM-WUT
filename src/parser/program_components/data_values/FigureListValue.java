@@ -35,7 +35,7 @@ public class FigureListValue extends GenericListValue {
     public String toString() {
         return "FigureListValue[" +
                 "position=" + position + ", " +
-                "value=" + values + ']';
+                "values=" + values + ']';
     }
 
     @Override

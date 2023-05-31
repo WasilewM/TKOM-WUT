@@ -35,7 +35,7 @@ public class IntListValue extends GenericListValue {
     public String toString() {
         return "IntListValue[" +
                 "position=" + position + ", " +
-                "value=" + values + ']';
+                "values=" + values + ']';
     }
 
     @Override

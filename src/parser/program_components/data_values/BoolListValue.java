@@ -7,7 +7,7 @@ import visitors.IVisitor;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public final class BoolListValue extends GenericListValue {
+public class BoolListValue extends GenericListValue {
     public BoolListValue(Position position) {
         super(position, new ArrayList<>());
     }
@@ -35,7 +35,7 @@ public final class BoolListValue extends GenericListValue {
     public String toString() {
         return "BoolListValue[" +
                 "position=" + position + ", " +
-                "value=" + values + ']';
+                "values=" + values + ']';
     }
 
     @Override
