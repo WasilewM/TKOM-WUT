@@ -533,10 +533,21 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(IDataValue val) {
-        if (val.getClass().equals(SectionValue.class)) {
+        if (val.getClass().equals(PointValue.class)) {
+            visit(val);
+        } else if (val.getClass().equals(SectionValue.class)) {
             visit((SectionValue) val);
+        } else {
+            lastResult = val;
         }
-        lastResult = val;
+    }
+
+    public void visit(PointValue val) {
+        visit(val.x());
+        IExpression x = (IExpression) lastResult;
+        visit(val.y());
+        IExpression y = (IExpression) lastResult;
+        lastResult = new PointValue(val.position(), x, y);
     }
 
     public void visit(SectionValue val) {

@@ -142,6 +142,40 @@ public class VisitMalformedDataValuesTest {
     }
 
     @Test
+    void givenPointDeclaration_whenFirstPointParamIsUnknownIdentifier_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new Identifier(new Position(60, 10), "aSomeVar"), new BoolValue(new Position(60, 26), true)))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IdentifierNotFoundException(new Identifier(new Position(60, 10), "aSomeVar"))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenPointDeclaration_whenSecondPointParamIsUnknownIdentifier_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new IntValue(new Position(60, 15), 5), new Identifier(new Position(60, 20), "aTrue")))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IdentifierNotFoundException(new Identifier(new Position(60, 20), "aTrue"))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
     void givenSectionDeclaration_whenFirstParamIsNotPointValue_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         ContextManager contextManager = new ContextManager();

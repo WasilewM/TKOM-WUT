@@ -6,12 +6,10 @@ import parser.IFunctionDef;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
 import parser.program_components.function_definitions.FigureFunctionDef;
+import parser.program_components.function_definitions.PointFunctionDef;
 import parser.program_components.function_definitions.SceneFunctionDef;
 import parser.program_components.function_definitions.SectionFunctionDef;
-import parser.program_components.parameters.FigureParameter;
-import parser.program_components.parameters.PointParameter;
-import parser.program_components.parameters.SceneParameter;
-import parser.program_components.parameters.SectionParameter;
+import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;
 import parser.program_components.statements.ReturnStatement;
 import visitors.ContextManager;
@@ -143,7 +141,7 @@ public class VisitDataValuesTest {
     }
 
     @Test
-    void givenSectionDeclaration_whenFirstParamIsUnknownIdentifier_thenErrorIsRegistered() {
+    void givenSectionDeclaration_whenIdentifierParamsAreKnown_thenSectionIsSavedToContextManager() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
@@ -161,5 +159,26 @@ public class VisitDataValuesTest {
         interpreter.visit(program);
 
         assertEquals(expectedSection, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenPointDeclaration_whenIdentifierParamsAreKnown_thenPointIsSavedToContextManager() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        DoubleValue xPoint = new DoubleValue(new Position(15, 50), 5.03);
+        DoubleValue yPoint = new DoubleValue(new Position(16, 50), 51.02);
+        PointValue expectedPoint = new PointValue(new Position(60, 10), xPoint, yPoint);
+        functions.put("main", new PointFunctionDef(new Position(10, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                new AssignmentStatement(new Position(new Position(15, 10)), new DoubleParameter(new Position(15, 30), "a"), xPoint),
+                new AssignmentStatement(new Position(new Position(15, 10)), new DoubleParameter(new Position(16, 30), "b"), yPoint),
+                new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new Identifier(new Position(61, 61), "a"), new Identifier(new Position(62, 62), "b"))),
+                new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        interpreter.visit(program);
+
+        assertEquals(expectedPoint, interpreter.getLastResult());
     }
 }
