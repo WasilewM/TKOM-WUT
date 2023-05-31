@@ -7,11 +7,11 @@ import visitors.IVisitor;
 import java.util.ArrayList;
 
 public class GenericListValue implements IDataValue {
-    protected final ArrayList<Object> value;
+    protected final ArrayList<Object> values;
     protected final Position position;
 
-    public GenericListValue(Position position, ArrayList<Object> value) {
-        this.value = value;
+    public GenericListValue(Position position, ArrayList<Object> values) {
+        this.values = values;
         this.position = position;
     }
 
@@ -24,7 +24,7 @@ public class GenericListValue implements IDataValue {
 
     @Override
     public Object value() {
-        return value;
+        return values;
     }
 
     @Override
@@ -38,14 +38,14 @@ public class GenericListValue implements IDataValue {
     }
 
     public Object get(int idx) {
-        return value.get(idx);
+        return values.get(idx);
     }
 
     public void add(IDataValue val) {
-        value.add(val);
+        values.add(val);
     }
 
     public int size() {
-        return value.size();
+        return values.size();
     }
 }

@@ -8,10 +8,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public final class IntListValue extends GenericListValue {
-    public IntListValue(Position position, ArrayList<Object> value) {
-        super(position, value);
-    }
-
     public IntListValue(Position position) {
         super(position, new ArrayList<>());
     }
@@ -27,19 +23,19 @@ public final class IntListValue extends GenericListValue {
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (IntListValue) obj;
         return Objects.equals(this.position, that.position) &&
-                Objects.equals(this.value, that.value);
+                Objects.equals(this.values, that.values);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(position, value);
+        return Objects.hash(position, values);
     }
 
     @Override
     public String toString() {
         return "IntListValue[" +
                 "position=" + position + ", " +
-                "value=" + value + ']';
+                "value=" + values + ']';
     }
 
     @Override
