@@ -16,4 +16,6 @@ Int main() {
 	s1.add(k);
 	s2.add(l);
 	s3.add(m);
+
+	return 0;
 }
