@@ -1,4 +1,4 @@
-package parser.program_components.data_values;
+package parser.program_components.data_values.lists;
 
 import lexer.Position;
 import parser.IDataValue;

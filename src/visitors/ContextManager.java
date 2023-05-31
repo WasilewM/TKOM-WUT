@@ -2,7 +2,7 @@ package visitors;
 
 import parser.IFunctionDef;
 import parser.IVisitable;
-import parser.program_components.data_values.GenericListValue;
+import parser.program_components.data_values.lists.GenericListValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;

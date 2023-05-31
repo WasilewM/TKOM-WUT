@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import parser.IFunctionDef;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
+import parser.program_components.data_values.lists.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;

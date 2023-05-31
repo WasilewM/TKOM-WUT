@@ -6,6 +6,7 @@ import parser.IFunctionDef;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
 import parser.program_components.data_values.*;
+import parser.program_components.data_values.lists.*;
 import parser.program_components.expressions.AdditionExpression;
 import parser.program_components.expressions.AlternativeExpression;
 import parser.program_components.expressions.ConjunctiveExpression;

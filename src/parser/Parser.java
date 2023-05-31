@@ -7,6 +7,7 @@ import lexer.tokens.Token;
 import parser.exceptions.*;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
+import parser.program_components.data_values.lists.*;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;

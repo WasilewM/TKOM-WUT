@@ -1,15 +1,15 @@
-package parser.program_components.data_values;
+package parser.program_components.data_values.lists;
 
 import lexer.Position;
 import parser.IDataValue;
+import parser.program_components.data_values.StringValue;
 import visitors.IVisitor;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class PointListValue extends GenericListValue {
-
-    public PointListValue(Position position) {
+public final class StringListValue extends GenericListValue {
+    public StringListValue(Position position) {
         super(position, new ArrayList<>());
     }
 
@@ -22,7 +22,7 @@ public class PointListValue extends GenericListValue {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (PointListValue) obj;
+        var that = (StringListValue) obj;
         return Objects.equals(this.position, that.position) &&
                 Objects.equals(this.values, that.values);
     }
@@ -34,14 +34,14 @@ public class PointListValue extends GenericListValue {
 
     @Override
     public String toString() {
-        return "PointListValue[" +
+        return "StringListValue[" +
                 "position=" + position + ", " +
-                "values=" + values + ']';
+                "value=" + values + ']';
     }
 
     @Override
     public void add(IDataValue val) {
-        if (val.getClass().equals(PointValue.class)) {
+        if (val.getClass().equals(StringValue.class)) {
             super.add(val);
         }
     }

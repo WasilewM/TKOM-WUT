@@ -14,6 +14,7 @@ import parser.Parser;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
 import parser.program_components.data_values.*;
+import parser.program_components.data_values.lists.*;
 import parser.program_components.function_definitions.BoolFunctionDef;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.AssignmentStatement;

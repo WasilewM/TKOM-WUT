@@ -1,14 +1,15 @@
-package parser.program_components.data_values;
+package parser.program_components.data_values.lists;
 
 import lexer.Position;
 import parser.IDataValue;
+import parser.program_components.data_values.BoolValue;
 import visitors.IVisitor;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class IntListValue extends GenericListValue {
-    public IntListValue(Position position) {
+public class BoolListValue extends GenericListValue {
+    public BoolListValue(Position position) {
         super(position, new ArrayList<>());
     }
 
@@ -21,7 +22,7 @@ public class IntListValue extends GenericListValue {
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (IntListValue) obj;
+        var that = (BoolListValue) obj;
         return Objects.equals(this.position, that.position) &&
                 Objects.equals(this.values, that.values);
     }
@@ -33,15 +34,16 @@ public class IntListValue extends GenericListValue {
 
     @Override
     public String toString() {
-        return "IntListValue[" +
+        return "BoolListValue[" +
                 "position=" + position + ", " +
                 "values=" + values + ']';
     }
 
     @Override
     public void add(IDataValue val) {
-        if (val.getClass().equals(IntValue.class)) {
+        if (val.getClass().equals(BoolValue.class)) {
             super.add(val);
         }
     }
+
 }
