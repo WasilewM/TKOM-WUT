@@ -12,6 +12,7 @@ import parser.program_components.statements.*;
 import visitors.exceptions.*;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Interpreter implements IVisitor {
@@ -689,6 +690,11 @@ public class Interpreter implements IVisitor {
         if (contextManager.containsFunction(functionCall.identifier().name())) {
             IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
             if (functionCall.exp() != null) {
+                if (!func.areArgumentsTypesValid(functionCall.exp())) {
+                    ArrayList<IVisitable> expectedArgs = new ArrayList<>(func.parameters().values());
+                    ArrayList<IVisitable> receivedArgs = new ArrayList<>(functionCall.exp());
+                    errorHandler.handle(new IncompatibleArgumentsListException(functionCall, expectedArgs, receivedArgs));
+                }
                 for (IExpression e : functionCall.exp()) {
                     e.accept(this);
                     contextManager.addParameter("a", lastResult);

@@ -14,7 +14,7 @@ public interface IFunctionDef extends IVisitable {
 
     HashMap<String, IParameter> parameters();
 
-    default Boolean areParametersTypesValid(List<IDataValue> args) {
+    default Boolean areArgumentsTypesValid(List<IExpression> args) {
         if (args.size() != this.parameters().size()) {
             return false;
         }
