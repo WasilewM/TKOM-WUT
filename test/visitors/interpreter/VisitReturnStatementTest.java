@@ -7,6 +7,7 @@ import parser.program_components.CodeBlock;
 import parser.program_components.Program;
 import parser.program_components.data_values.*;
 import parser.program_components.data_values.lists.*;
+import parser.program_components.expressions.NegatedExpression;
 import parser.program_components.function_definitions.*;
 import parser.program_components.statements.ReturnStatement;
 import visitors.Interpreter;
@@ -130,6 +131,23 @@ public class VisitReturnStatementTest {
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenBoolFunc_whenNegatedExpIsReturned_thenEvaluateExpAndReturnValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new NegatedExpression(new Position(30, 40), new BoolValue(new Position(30, 45), false)))
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);

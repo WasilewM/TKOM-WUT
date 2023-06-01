@@ -548,7 +548,9 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(NegatedExpression exp) {
-
+        exp.exp().accept(this);
+        BoolValue castedLastResult = castToBoolValue(lastResult);
+        lastResult = new BoolValue(exp.position(), !castedLastResult.value());
     }
 
     @Override
@@ -821,6 +823,16 @@ public class Interpreter implements IVisitor {
             castedValue = (DoubleValue) value;
         } else {
             errorHandler.handle(new IncompatibleDataTypeException(new DoubleValue(value.position(), null), value));
+        }
+        return castedValue;
+    }
+
+    private BoolValue castToBoolValue(IVisitable value) {
+        BoolValue castedValue = null;
+        if (value.getClass().equals(BoolValue.class)) {
+            castedValue = (BoolValue) lastResult;
+        } else {
+            errorHandler.handle(new IncompatibleDataTypeException(new BoolValue(value.position(), null), value));
         }
         return castedValue;
     }

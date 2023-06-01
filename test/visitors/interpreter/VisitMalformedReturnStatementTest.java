@@ -6,8 +6,10 @@ import parser.IErrorHandler;
 import parser.IFunctionDef;
 import parser.program_components.CodeBlock;
 import parser.program_components.Program;
+import parser.program_components.data_values.BoolValue;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
+import parser.program_components.expressions.NegatedExpression;
 import parser.program_components.function_definitions.*;
 import parser.program_components.statements.ReturnStatement;
 import visitors.Interpreter;
@@ -195,6 +197,24 @@ public class VisitMalformedReturnStatementTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypeException(new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenBoolFunc_whenInvalidNegatedExpIsReturned_thenEvaluateExpAndReturnValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new NegatedExpression(new Position(30, 40), new StringValue(new Position(30, 45), "false")))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypeException(new BoolValue(new Position(30, 45), null), new StringValue(new Position(30, 45), "false"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
