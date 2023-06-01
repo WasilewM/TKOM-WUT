@@ -1,0 +1,5 @@
+site_name: TKOM 23L
+
+nav:
+  - Projekt: index.md
+  - Parser: parser.md
