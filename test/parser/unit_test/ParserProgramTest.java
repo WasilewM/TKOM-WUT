@@ -366,6 +366,21 @@ public class ParserProgramTest {
                                     }}, new CodeBlock(new Position(1, 29), new ArrayList<>())));
                                 }}
                         )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.VOID_KEYWORD),
+                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(1, 12), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("main", new VoidFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), new ArrayList<>())));
+                                }}
+                        )
                 )
 
         );

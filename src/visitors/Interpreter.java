@@ -251,6 +251,11 @@ public class Interpreter implements IVisitor {
         postFunctionVisit();
     }
 
+    @Override
+    public void visit(VoidFunctionDef voidFunctionDef) {
+
+    }
+
     private void preFunctionVisit() {
         contextManager.createNewFunctionContext();
         for (Map.Entry<String, IVisitable> p : contextManager.consumeParameters().entrySet()) {

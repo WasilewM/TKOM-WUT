@@ -189,6 +189,11 @@ public class ProgramPrinterVisitor implements IVisitor {
 
     }
 
+    @Override
+    public void visit(VoidFunctionDef voidFunctionDef) {
+
+    }
+
     // parameters
     @Override
     public void visit(IParameter param) {

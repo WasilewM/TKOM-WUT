@@ -98,6 +98,8 @@ public class Parser implements IParser {
             return new FigureListFunctionDef((FigureListParameter) functionType, parameters, codeBlock);
         } else if (functionType.getClass().equals(SceneListParameter.class)) {
             return new SceneListFunctionDef((SceneListParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(VoidParameter.class)) {
+            return new VoidFunctionDef((VoidParameter) functionType, parameters, codeBlock);
         } else {
             errorHandler.handle(new RuntimeException(currentToken.toString()));
             return null;
@@ -263,6 +265,12 @@ public class Parser implements IParser {
 
     /* functionType = parameter | ( "void", identifier ) */
     private IParameter parseFunctionType() {
+        Position position = currentToken.getPosition();
+        if (consumeIf(TokenTypeEnum.VOID_KEYWORD)) {
+            String paramName = parseIdentifierName();
+            return new VoidParameter(position, paramName);
+        }
+
         return parseParameter();
     }
 

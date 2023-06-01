@@ -75,6 +75,8 @@ public interface IVisitor {
 
     void visit(StringListFunctionDef stringListFunctionDef);
 
+    void visit(VoidFunctionDef voidFunctionDef);
+
 
     // parameters
     void visit(IParameter p);
