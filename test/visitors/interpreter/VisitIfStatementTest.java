@@ -21,6 +21,7 @@ import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +35,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new IntValue(new Position(20, 25), 1), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), expectedLastResult)
                     ))),
@@ -55,7 +56,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(32, 40), 40);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new IntValue(new Position(20, 25), 0), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     ))),
@@ -76,7 +77,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new DoubleValue(new Position(20, 25), 0.34), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), expectedLastResult)
                     ))),
@@ -97,7 +98,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new DoubleValue(new Position(20, 25), 0.0), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     ))),
@@ -118,7 +119,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 25), true), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), expectedLastResult)
                     ))),
@@ -139,7 +140,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 25), false), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     ))),
@@ -160,7 +161,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new StringValue(new Position(20, 25), "false"), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     ))),
@@ -181,7 +182,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new ConjunctiveExpression(new Position(20, 25), new BoolValue(new Position(20, 25), true), new BoolValue(new Position(20, 35), true)), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), expectedLastResult)
                     ))),
@@ -202,7 +203,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new ConjunctiveExpression(new Position(20, 25), new BoolValue(new Position(20, 25), false), new BoolValue(new Position(20, 35), true)), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     ))),
@@ -223,7 +224,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new ConjunctiveExpression(new Position(20, 25), new BoolValue(new Position(20, 25), false), new BoolValue(new Position(20, 35), false)), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     ))),
@@ -244,7 +245,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new ConjunctiveExpression(new Position(20, 25), new BoolValue(new Position(20, 25), true), new BoolValue(new Position(20, 35), false)), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     ))),
@@ -265,7 +266,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new AlternativeExpression(new Position(20, 25), new BoolValue(new Position(20, 25), false), new BoolValue(new Position(20, 35), true)), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), expectedLastResult)
                     ))),
@@ -286,7 +287,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new AlternativeExpression(new Position(20, 25), new BoolValue(new Position(20, 25), true), new BoolValue(new Position(20, 35), true)), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), expectedLastResult)
                     ))),
@@ -307,7 +308,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new AlternativeExpression(new Position(20, 25), new BoolValue(new Position(20, 25), true), new BoolValue(new Position(20, 35), false)), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), expectedLastResult)
                     ))),
@@ -328,7 +329,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new AlternativeExpression(new Position(20, 25), new BoolValue(new Position(20, 25), false), new BoolValue(new Position(20, 35), false)), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     ))),
@@ -349,7 +350,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(73, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new AlternativeExpression(new Position(20, 25), new AlternativeExpression(new Position(20, 25), new BoolValue(new Position(20, 25), false), new BoolValue(new Position(20, 35), false)), new ConjunctiveExpression(new Position(30, 25), new BoolValue(new Position(30, 25), false), new BoolValue(new Position(30, 35), false))), new CodeBlock(new Position(41, 21), List.of(
                             new ReturnStatement(new Position(53, 30), new IntValue(new Position(53, 40), 13))
                     ))),
@@ -370,7 +371,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(53, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new AlternativeExpression(new Position(20, 25), new AlternativeExpression(new Position(20, 25), new BoolValue(new Position(20, 25), false), new BoolValue(new Position(20, 35), false)), new ConjunctiveExpression(new Position(30, 25), new BoolValue(new Position(30, 25), true), new BoolValue(new Position(30, 35), true))), new CodeBlock(new Position(41, 21), List.of(
                             new ReturnStatement(new Position(53, 30), expectedLastResult)
                     ))),
@@ -391,7 +392,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(53, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), true), new CodeBlock(new Position(41, 21), List.of(
                             new ReturnStatement(new Position(53, 30), expectedLastResult)
                     )), List.of(new ElseIfStatement(new Position(30, 1), new BoolValue(new Position(30, 10), true), new CodeBlock(new Position(31, 1), List.of(
@@ -414,7 +415,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(33, 20), 213);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
                             new ReturnStatement(new Position(53, 30), new IntValue(new Position(53, 40), 13))
                     )), List.of(new ElseIfStatement(new Position(30, 1), new BoolValue(new Position(30, 10), true), new CodeBlock(new Position(31, 1), List.of(
@@ -437,7 +438,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(33, 20), 213);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
                             new ReturnStatement(new Position(53, 30), new IntValue(new Position(53, 40), 13))
                     )), List.of(
@@ -463,7 +464,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(36, 20), 81);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
                             new ReturnStatement(new Position(53, 30), new IntValue(new Position(53, 40), 13))
                     )), List.of(
@@ -487,7 +488,7 @@ public class VisitIfStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), true), new CodeBlock(new Position(41, 21), List.of(
                             new IfStatement(new Position(30, 20), new BoolValue(new Position(30, 35), true), new CodeBlock(new Position(31, 21), List.of()))
                     ))),
@@ -507,7 +508,7 @@ public class VisitIfStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     )), List.of(
@@ -534,7 +535,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(23, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), true), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), expectedLastResult)
                     )),
@@ -559,7 +560,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(33, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), new IntValue(new Position(23, 40), 13))
                     )),
@@ -584,7 +585,7 @@ public class VisitIfStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(33, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 35), false), new CodeBlock(new Position(41, 21), List.of(
                             new ReturnStatement(new Position(53, 30), new IntValue(new Position(53, 40), 13))
                     )), List.of(new ElseIfStatement(new Position(30, 1), new BoolValue(new Position(30, 10), false), new CodeBlock(new Position(31, 1), List.of(

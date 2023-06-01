@@ -50,7 +50,7 @@ public class VisitMalformedFunctionCallTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new FunctionCall(new Position(10, 10), new Identifier(new Position(10, 10), "mySqrt")),
                     new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 0))
             ))));
@@ -69,9 +69,9 @@ public class VisitMalformedFunctionCallTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        HashMap<String, IParameter> params = new HashMap<>();
+        LinkedHashMap<String, IParameter> params = new LinkedHashMap<>();
         params.put("a", new IntParameter(new Position(5, 5), "a"));
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new ReturnStatement(new Position(70, 1), new FunctionCall(new Position(70, 10), new Identifier(new Position(60, 10), "getTwice"), new BoolValue(new Position(60, 20), true)))
         ))));
         functions.put("getTwice", new IntFunctionDef(new Position(1, 1), "getTwice", params, new CodeBlock(new Position(10, 10), List.of(

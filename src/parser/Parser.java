@@ -14,7 +14,6 @@ import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class Parser implements IParser {
@@ -59,7 +58,7 @@ public class Parser implements IParser {
         }
 
         parseLeftBracketWithoutReturningIt();
-        HashMap<String, IParameter> parameters = parseParameters();
+        LinkedHashMap<String, IParameter> parameters = parseParameters();
         parseRightBracketWithoutReturningIt();
 
         CodeBlock codeBlock = parseCodeBlock();
@@ -268,8 +267,8 @@ public class Parser implements IParser {
     }
 
     /* parameters = parameter, ",", { parameter } */
-    private HashMap<String, IParameter> parseParameters() {
-        HashMap<String, IParameter> params = new HashMap<>();
+    private LinkedHashMap<String, IParameter> parseParameters() {
+        LinkedHashMap<String, IParameter> params = new LinkedHashMap<>();
 
         IParameter firstParam = parseParameter();
         if (firstParam == null) {

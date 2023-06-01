@@ -7,12 +7,12 @@ import parser.program_components.CodeBlock;
 import parser.program_components.parameters.DoubleListParameter;
 import visitors.IVisitor;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-public record DoubleListFunctionDef(Position position, String name, HashMap<String, IParameter> parameters,
+public record DoubleListFunctionDef(Position position, String name, LinkedHashMap<String, IParameter> parameters,
                                     CodeBlock functionCode) implements IFunctionDef {
 
-    public DoubleListFunctionDef(DoubleListParameter functionType, HashMap<String, IParameter> parameters, CodeBlock codeBlock) {
+    public DoubleListFunctionDef(DoubleListParameter functionType, LinkedHashMap<String, IParameter> parameters, CodeBlock codeBlock) {
         this(functionType.position(), functionType.name(), parameters, codeBlock);
     }
 

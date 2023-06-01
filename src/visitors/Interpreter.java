@@ -689,7 +689,6 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(IParameter param) {
-        contextManager.add(param.name(), param);
     }
 
     // other components
@@ -703,9 +702,11 @@ public class Interpreter implements IVisitor {
                     ArrayList<IVisitable> receivedArgs = new ArrayList<>(functionCall.exp());
                     errorHandler.handle(new IncompatibleArgumentsListException(functionCall, expectedArgs, receivedArgs));
                 }
-                for (IExpression e : functionCall.exp()) {
-                    e.accept(this);
-                    contextManager.addParameter("a", lastResult);
+                int argumentIdx = 0;
+                for (Map.Entry<String, IParameter> p : func.parameters().entrySet()) {
+                    functionCall.exp().get(argumentIdx).accept(this);
+                    contextManager.addParameter(p.getKey(), lastResult);
+                    argumentIdx += 1;
                 }
             }
             func.accept(this);

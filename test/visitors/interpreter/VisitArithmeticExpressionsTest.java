@@ -16,6 +16,7 @@ import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +29,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 7);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 3)))
             ))));
         }};
@@ -45,7 +46,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 7);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 3.99)))
             ))));
         }};
@@ -62,7 +63,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 11);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new IntValue(new Position(30, 50), 5)))
             ))));
         }};
@@ -79,7 +80,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 11);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.001)))
             ))));
         }};
@@ -96,7 +97,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 17.17);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 0.0), new DoubleValue(new Position(30, 50), 17.17)))
             ))));
         }};
@@ -113,7 +114,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 7.99);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 3.99)))
             ))));
         }};
@@ -130,7 +131,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 11.76);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new IntValue(new Position(30, 50), 5)))
             ))));
         }};
@@ -147,7 +148,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 11.761);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.001)))
             ))));
         }};
@@ -164,7 +165,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new SubtractionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 3)))
             ))));
         }};
@@ -181,7 +182,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new SubtractionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 3.99)))
             ))));
         }};
@@ -198,7 +199,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new SubtractionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new IntValue(new Position(30, 50), 5)))
             ))));
         }};
@@ -215,7 +216,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new SubtractionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.001)))
             ))));
         }};
@@ -232,7 +233,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 3)))
             ))));
         }};
@@ -249,7 +250,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 2);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 6), new DoubleValue(new Position(30, 50), 3.99)))
             ))));
         }};
@@ -266,7 +267,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 3);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new IntValue(new Position(30, 50), 2)))
             ))));
         }};
@@ -283,7 +284,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.001)))
             ))));
         }};
@@ -300,7 +301,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 3)))
             ))));
         }};
@@ -317,7 +318,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 2.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 6), new DoubleValue(new Position(30, 50), 3.99)))
             ))));
         }};
@@ -334,7 +335,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 3.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new IntValue(new Position(30, 50), 2)))
             ))));
         }};
@@ -351,7 +352,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.001)))
             ))));
         }};
@@ -368,7 +369,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 3)))
             ))));
         }};
@@ -385,7 +386,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 6), new DoubleValue(new Position(30, 50), 3.99)))
             ))));
         }};
@@ -402,7 +403,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 3);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new IntValue(new Position(30, 50), 2)))
             ))));
         }};
@@ -419,7 +420,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 1);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.001)))
             ))));
         }};
@@ -436,7 +437,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.25);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 5), new IntValue(new Position(30, 50), 4)))
             ))));
         }};
@@ -453,7 +454,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.50);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 6), new DoubleValue(new Position(30, 50), 4.00)))
             ))));
         }};
@@ -470,7 +471,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 3.33);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.66), new IntValue(new Position(30, 50), 2)))
             ))));
         }};
@@ -487,7 +488,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.3);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.50), new DoubleValue(new Position(30, 50), 5.00)))
             ))));
         }};
@@ -504,7 +505,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 12);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 3)))
             ))));
         }};
@@ -521,7 +522,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 23);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new IntValue(new Position(30, 40), 6), new DoubleValue(new Position(30, 50), 3.99)))
             ))));
         }};
@@ -538,7 +539,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 13);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new IntValue(new Position(30, 50), 2)))
             ))));
         }};
@@ -555,7 +556,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 33);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.001)))
             ))));
         }};
@@ -572,7 +573,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 20.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new IntValue(new Position(30, 40), 5), new IntValue(new Position(30, 50), 4)))
             ))));
         }};
@@ -589,7 +590,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 23.94);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new IntValue(new Position(30, 40), 6), new DoubleValue(new Position(30, 50), 3.99)))
             ))));
         }};
@@ -606,7 +607,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 13.32);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.66), new IntValue(new Position(30, 50), 2)))
             ))));
         }};
@@ -623,7 +624,7 @@ public class VisitArithmeticExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 34.17);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.7), new DoubleValue(new Position(30, 50), 5.1)))
             ))));
         }};

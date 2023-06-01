@@ -16,6 +16,7 @@ import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +29,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new EqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 4)))
             ))));
         }};
@@ -45,7 +46,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new EqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -62,7 +63,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new EqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 4.0)))
             ))));
         }};
@@ -79,7 +80,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new EqualExpression(new Position(30, 40), new BoolValue(new Position(30, 40), false), new DoubleValue(new Position(30, 50), 4.69)))
             ))));
         }};
@@ -96,7 +97,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new NotEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 4)))
             ))));
         }};
@@ -113,7 +114,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new NotEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -130,7 +131,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new NotEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 4.0)))
             ))));
         }};
@@ -147,7 +148,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new NotEqualExpression(new Position(30, 40), new BoolValue(new Position(30, 40), false), new DoubleValue(new Position(30, 50), 4.69)))
             ))));
         }};
@@ -164,7 +165,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 4)))
             ))));
         }};
@@ -181,7 +182,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 44), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -198,7 +199,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -215,7 +216,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterThanExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 104.11), new DoubleValue(new Position(30, 50), 10.99)))
             ))));
         }};
@@ -232,7 +233,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterThanExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 54.68), new DoubleValue(new Position(30, 50), 61.13)))
             ))));
         }};
@@ -249,7 +250,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 4.0)))
             ))));
         }};
@@ -266,7 +267,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterOrEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 4)))
             ))));
         }};
@@ -283,7 +284,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterOrEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 44), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -300,7 +301,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterOrEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -317,7 +318,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterOrEqualExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 4.0), new DoubleValue(new Position(30, 50), 4.0)))
             ))));
         }};
@@ -334,7 +335,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterOrEqualExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 104.11), new DoubleValue(new Position(30, 50), 10.99)))
             ))));
         }};
@@ -351,7 +352,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterOrEqualExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 54.68), new DoubleValue(new Position(30, 50), 61.13)))
             ))));
         }};
@@ -368,7 +369,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new GreaterOrEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 4.0)))
             ))));
         }};
@@ -385,7 +386,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 4)))
             ))));
         }};
@@ -402,7 +403,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 44), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -419,7 +420,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -436,7 +437,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 104.11), new DoubleValue(new Position(30, 50), 10.99)))
             ))));
         }};
@@ -453,7 +454,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 54.68), new DoubleValue(new Position(30, 50), 61.13)))
             ))));
         }};
@@ -470,7 +471,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessThanExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 4.0)))
             ))));
         }};
@@ -487,7 +488,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessOrEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 4)))
             ))));
         }};
@@ -504,7 +505,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessOrEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 44), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -521,7 +522,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessOrEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new IntValue(new Position(30, 50), 6)))
             ))));
         }};
@@ -538,7 +539,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessOrEqualExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 4.0), new DoubleValue(new Position(30, 50), 4.0)))
             ))));
         }};
@@ -555,7 +556,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessOrEqualExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 104.11), new DoubleValue(new Position(30, 50), 10.99)))
             ))));
         }};
@@ -572,7 +573,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessOrEqualExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 54.68), new DoubleValue(new Position(30, 50), 61.13)))
             ))));
         }};
@@ -589,7 +590,7 @@ public class VisitComparisonExpressionsTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), false);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new LessOrEqualExpression(new Position(30, 40), new IntValue(new Position(30, 40), 4), new DoubleValue(new Position(30, 50), 4.0)))
             ))));
         }};

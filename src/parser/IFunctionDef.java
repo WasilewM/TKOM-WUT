@@ -5,14 +5,14 @@ import parser.program_components.data_values.*;
 import parser.program_components.data_values.lists.*;
 import parser.program_components.parameters.*;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 public interface IFunctionDef extends IVisitable {
     String name();
 
-    HashMap<String, IParameter> parameters();
+    LinkedHashMap<String, IParameter> parameters();
 
     default Boolean areArgumentsTypesValid(List<IExpression> args) {
         if (args.size() != this.parameters().size()) {

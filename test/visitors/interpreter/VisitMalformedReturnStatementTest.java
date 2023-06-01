@@ -20,6 +20,7 @@ import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,11 +49,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -64,11 +65,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -80,11 +81,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new IntListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new IntListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new IntListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -96,11 +97,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new IntListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new IntListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new IntListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -112,11 +113,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -128,11 +129,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -144,11 +145,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new DoubleListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new DoubleListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new DoubleListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -160,11 +161,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new DoubleListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new DoubleListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new DoubleListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -176,11 +177,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -192,11 +193,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -208,7 +209,7 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new NegatedExpression(new Position(30, 40), new StringValue(new Position(30, 45), "false")))
             ))));
         }};
@@ -226,11 +227,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new BoolListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new BoolListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -242,11 +243,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new BoolListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new BoolListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -258,11 +259,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new FigureFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new FigureFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -274,11 +275,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new FigureFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new FigureFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -290,11 +291,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new FigureListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new FigureListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -306,11 +307,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new FigureListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new FigureListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -322,11 +323,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new PointFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new PointFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -338,11 +339,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new PointFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new PointFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -354,11 +355,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new PointListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new PointListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -370,11 +371,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new PointListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new PointListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -386,11 +387,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new SceneFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new SceneFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -402,11 +403,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new SceneFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new SceneFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -418,11 +419,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new SceneListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new SceneListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -434,11 +435,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new SceneListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new SceneListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -450,11 +451,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new SectionFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new SectionFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -466,11 +467,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new SectionFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new SectionFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -482,11 +483,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new SectionListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new SectionListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -498,11 +499,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
+            put("main", new SectionListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
+                new IncompatibleDataTypeException(new SectionListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new StringValue(new Position(20, 20), "a"))))), new StringValue(new Position(20, 20), "a"))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -514,11 +515,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new StringFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new StringFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new StringFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new StringFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -530,11 +531,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new StringFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))));
+            put("main", new StringFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new StringFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))), new IntValue(new Position(20, 20), 5))
+                new IncompatibleDataTypeException(new StringFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))), new IntValue(new Position(20, 20), 5))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -546,11 +547,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new StringListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
+            put("main", new StringListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new MissingReturnValueException(new StringListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
+                new MissingReturnValueException(new StringListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), null)))))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -562,11 +563,11 @@ public class VisitMalformedReturnStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new StringListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))));
+            put("main", new StringListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new IncompatibleDataTypeException(new StringListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))), new IntValue(new Position(20, 20), 5))
+                new IncompatibleDataTypeException(new StringListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))), new IntValue(new Position(20, 20), 5))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

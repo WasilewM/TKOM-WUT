@@ -14,6 +14,7 @@ import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -33,7 +34,7 @@ public class InterpreterTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(12, 12), new IntValue(new Position(12, 20), 0))))));
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(12, 12), new IntValue(new Position(12, 20), 0))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);

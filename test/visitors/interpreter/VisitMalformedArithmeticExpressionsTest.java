@@ -19,6 +19,7 @@ import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,7 +48,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new BoolValue(new Position(30, 50), false)))
             ))));
         }};
@@ -65,7 +66,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19)))
             ))));
         }};
@@ -83,7 +84,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new SubtractionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new BoolValue(new Position(30, 50), false)))
             ))));
         }};
@@ -101,7 +102,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new SubtractionExpression(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19)))
             ))));
         }};
@@ -119,7 +120,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19)))
             ))));
         }};
@@ -137,7 +138,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 19), new IntValue(new Position(30, 40), 0)))
             ))));
         }};
@@ -155,7 +156,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19)))
             ))));
         }};
@@ -173,7 +174,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 19), new IntValue(new Position(30, 40), 0)))
             ))));
         }};
@@ -191,7 +192,7 @@ public class VisitMalformedArithmeticExpressionsTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new BoolValue(new Position(30, 50), false), new IntValue(new Position(30, 40), 19)))
             ))));
         }};

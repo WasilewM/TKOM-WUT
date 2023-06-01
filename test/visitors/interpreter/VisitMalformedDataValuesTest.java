@@ -20,7 +20,6 @@ import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.exceptions.IncompatibleMethodArgumentException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -53,7 +52,7 @@ public class VisitMalformedDataValuesTest {
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         FigureValue figure = new FigureValue(new Position(65, 10));
         PointValue point = new PointValue(new Position(65, 10), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51));
-        functions.put("main", new SectionFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SectionFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new FigureParameter(new Position(60, 1), "myList"), figure),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), point))
         ))));
@@ -74,7 +73,7 @@ public class VisitMalformedDataValuesTest {
         FigureValue figure = new FigureValue(new Position(65, 10));
         SectionValue firstSection = new SectionValue(new Position(65, 10), new PointValue(new Position(65, 15), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51)), new PointValue(new Position(65, 35), new IntValue(new Position(65, 35), 5), new IntValue(new Position(65, 40), 51)));
         SectionValue secondSection = new SectionValue(new Position(75, 10), new PointValue(new Position(75, 15), new IntValue(new Position(75, 15), 15), new IntValue(new Position(75, 20), 51)), new PointValue(new Position(75, 35), new IntValue(new Position(75, 35), 7), new IntValue(new Position(75, 40), 251)));
-        functions.put("main", new SectionFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SectionFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new FigureParameter(new Position(60, 1), "myList"), figure),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), firstSection)),
                 new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "add"), secondSection))
@@ -95,7 +94,7 @@ public class VisitMalformedDataValuesTest {
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         SceneValue scene = new SceneValue(new Position(65, 10));
         BoolValue incompatibleValue = new BoolValue(new Position(65, 10), true);
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneParameter(new Position(60, 1), "myVar"), scene),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myVar"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), incompatibleValue))
         ))));
@@ -113,7 +112,7 @@ public class VisitMalformedDataValuesTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new BoolValue(new Position(60, 10), true), new BoolValue(new Position(60, 16), true)))
         ))));
         Program program = new Program(new Position(1, 1), functions);
@@ -130,7 +129,7 @@ public class VisitMalformedDataValuesTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new IntValue(new Position(60, 15), 5), new BoolValue(new Position(60, 20), true)))
         ))));
         Program program = new Program(new Position(1, 1), functions);
@@ -147,7 +146,7 @@ public class VisitMalformedDataValuesTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new Identifier(new Position(60, 10), "aSomeVar"), new BoolValue(new Position(60, 26), true)))
         ))));
         Program program = new Program(new Position(1, 1), functions);
@@ -164,7 +163,7 @@ public class VisitMalformedDataValuesTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new IntValue(new Position(60, 15), 5), new Identifier(new Position(60, 20), "aTrue")))
         ))));
         Program program = new Program(new Position(1, 1), functions);
@@ -182,7 +181,7 @@ public class VisitMalformedDataValuesTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         PointValue secondPoint = new PointValue(new Position(66, 10), new IntValue(new Position(66, 15), 5), new IntValue(new Position(66, 20), 51));
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), new IntValue(new Position(60, 15), 5), secondPoint))
         ))));
         Program program = new Program(new Position(1, 1), functions);
@@ -200,7 +199,7 @@ public class VisitMalformedDataValuesTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         PointValue firstPoint = new PointValue(new Position(65, 10), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51));
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), firstPoint, new BoolValue(new Position(62, 62), false)))
         ))));
         Program program = new Program(new Position(1, 1), functions);
@@ -218,7 +217,7 @@ public class VisitMalformedDataValuesTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         PointValue firstPoint = new PointValue(new Position(65, 10), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51));
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), firstPoint, new Identifier(new Position(62, 62), "falseIdent")))
         ))));
         Program program = new Program(new Position(1, 1), functions);
@@ -236,7 +235,7 @@ public class VisitMalformedDataValuesTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         PointValue secondPoint = new PointValue(new Position(66, 10), new IntValue(new Position(66, 15), 5), new IntValue(new Position(66, 20), 51));
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), new Identifier(new Position(60, 15), "a5"), secondPoint))
         ))));
         Program program = new Program(new Position(1, 1), functions);

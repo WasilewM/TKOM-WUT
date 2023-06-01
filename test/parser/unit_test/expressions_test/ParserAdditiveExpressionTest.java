@@ -20,10 +20,7 @@ import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,7 +43,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AdditionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AdditionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -66,7 +63,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AdditionExpression(new Position(4, 12), new AdditionExpression(new Position(3, 12), new AdditionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "cube"), new Identifier(new Position(2, 15), "sqrt")), new Identifier(new Position(3, 15), "path")), new Identifier(new Position(4, 15), "then")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AdditionExpression(new Position(4, 12), new AdditionExpression(new Position(3, 12), new AdditionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "cube"), new Identifier(new Position(2, 15), "sqrt")), new Identifier(new Position(3, 15), "path")), new Identifier(new Position(4, 15), "then")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -82,7 +79,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new SubtractionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new SubtractionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -102,7 +99,7 @@ public class ParserAdditiveExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new SubtractionExpression(new Position(4, 12), new AdditionExpression(new Position(3, 12), new SubtractionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "cube"), new Identifier(new Position(2, 15), "sqrt")), new Identifier(new Position(3, 15), "path")), new Identifier(new Position(4, 15), "then")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new SubtractionExpression(new Position(4, 12), new AdditionExpression(new Position(3, 12), new SubtractionExpression(new Position(2, 12), new Identifier(new Position(2, 5), "cube"), new Identifier(new Position(2, 15), "sqrt")), new Identifier(new Position(3, 15), "path")), new Identifier(new Position(4, 15), "then")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 )

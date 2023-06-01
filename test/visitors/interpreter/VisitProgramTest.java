@@ -20,6 +20,7 @@ import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,7 +32,7 @@ public class VisitProgramTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 0))))));
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 0))))));
         }};
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
@@ -45,12 +46,12 @@ public class VisitProgramTest {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
-        HashMap<String, IParameter> params = new HashMap<>() {{
+        LinkedHashMap<String, IParameter> params = new LinkedHashMap<>() {{
             put("a", new IntParameter(new Position(5, 1), "a"));
         }};
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main",
-                    new HashMap<>(),
+                    new LinkedHashMap<>(),
                     new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(30, 30), new FunctionCall(new Position(30, 40), new Identifier(new Position(30, 40), "func"), new IntValue(new Position(30, 50), 6))))))
             );
             put("func", new IntFunctionDef(new Position(40, 1), "func",

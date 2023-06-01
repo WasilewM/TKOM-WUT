@@ -20,10 +20,7 @@ import visitors.exceptions.NullExpressionException;
 import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -51,7 +48,7 @@ public class VisitMalformedIfStatementTest {
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), null, new CodeBlock(new Position(21, 21), new ArrayList<>()))
             ))));
         }};
@@ -69,7 +66,7 @@ public class VisitMalformedIfStatementTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(15, 15), new BoolValue(new Position(15, 20), true), new CodeBlock(new Position(16, 1), List.of(new AssignmentStatement(new Position(16, 10), new IntParameter(new Position(16, 10), "a"), new IntValue(new Position(16, 15), 1))))),
                     new ReturnStatement(new Position(25, 15), new Identifier(new Position(25, 25), "a")))
             )));

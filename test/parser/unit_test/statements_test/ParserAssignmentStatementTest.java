@@ -22,10 +22,7 @@ import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,7 +44,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntParameter(new Position(5, 7), "A"), new IntValue(new Position(8, 14), 1))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntParameter(new Position(5, 7), "A"), new IntValue(new Position(8, 14), 1))))));
                                 }}
                         )
                 ),
@@ -66,7 +63,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(13, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntParameter(new Position(5, 7), "A"), new IntValue(new Position(8, 14), 1)), new AssignmentStatement(new Position(9, 10), new ReassignedParameter(new Position(9, 10), "A"), new IntValue(new Position(10, 14), 11))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntParameter(new Position(5, 7), "A"), new IntValue(new Position(8, 14), 1)), new AssignmentStatement(new Position(9, 10), new ReassignedParameter(new Position(9, 10), "A"), new IntValue(new Position(10, 14), 11))))));
                                 }}
                         )
                 ),
@@ -86,7 +83,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new PointParameter(new Position(5, 7), "A"), new PointValue(new Position(8, 14), new DoubleValue(new Position(8, 24), 2.0), new DoubleValue(new Position(8, 34), 2.0)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new PointParameter(new Position(5, 7), "A"), new PointValue(new Position(8, 14), new DoubleValue(new Position(8, 24), 2.0), new DoubleValue(new Position(8, 34), 2.0)))))));
                                 }}
                         )
                 ),
@@ -116,7 +113,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(39, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new SectionParameter(new Position(5, 7), "A"), new SectionValue(new Position(8, 14), new PointValue(new Position(9, 14), new DoubleValue(new Position(9, 24), 2.0), new DoubleValue(new Position(9, 34), 2.0)), new PointValue(new Position(19, 14), new DoubleValue(new Position(19, 24), 2.0), new DoubleValue(new Position(19, 34), 2.0))))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new SectionParameter(new Position(5, 7), "A"), new SectionValue(new Position(8, 14), new PointValue(new Position(9, 14), new DoubleValue(new Position(9, 24), 2.0), new DoubleValue(new Position(9, 34), 2.0)), new PointValue(new Position(19, 14), new DoubleValue(new Position(19, 24), 2.0), new DoubleValue(new Position(19, 34), 2.0))))))));
                                 }}
                         )
                 ),
@@ -133,7 +130,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new FigureParameter(new Position(5, 7), "A"), new FigureValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new FigureParameter(new Position(5, 7), "A"), new FigureValue(new Position(8, 14)))))));
                                 }}
                         )
                 ),
@@ -150,7 +147,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new SceneParameter(new Position(5, 7), "A"), new SceneValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new SceneParameter(new Position(5, 7), "A"), new SceneValue(new Position(8, 14)))))));
                                 }}
                         )
                 ),
@@ -170,7 +167,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new IntListValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new IntListValue(new Position(8, 14)))))));
                                 }}
                         )
                 ),
@@ -190,7 +187,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new DoubleListValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new DoubleListValue(new Position(8, 14)))))));
                                 }}
                         )
                 ),
@@ -210,7 +207,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new BoolListValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new BoolListValue(new Position(8, 14)))))));
                                 }}
                         )
                 ),
@@ -230,7 +227,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new StringListValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new StringListValue(new Position(8, 14)))))));
                                 }}
                         )
                 ),
@@ -250,7 +247,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new PointListValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new PointListValue(new Position(8, 14)))))));
                                 }}
                         )
                 ),
@@ -270,7 +267,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new SectionListValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new SectionListValue(new Position(8, 14)))))));
                                 }}
                         )
                 ),
@@ -290,7 +287,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new FigureListValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new FigureListValue(new Position(8, 14)))))));
                                 }}
                         )
                 ),
@@ -310,7 +307,7 @@ public class ParserAssignmentStatementTest {
                                         new Token(new Position(9, 4), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new SceneListValue(new Position(8, 14)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new AssignmentStatement(new Position(5, 7), new IntListParameter(new Position(5, 7), "A"), new SceneListValue(new Position(8, 14)))))));
                                 }}
                         )
                 )

@@ -19,10 +19,7 @@ import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,7 +40,7 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(10, 5), new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new Identifier(new Position(12, 5), "func2")))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(10, 5), new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new Identifier(new Position(12, 5), "func2")))))));
                                 }}
                         )
 
@@ -59,7 +56,7 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(10, 5), new FunctionCall(new Position(10, 5), new Identifier(new Position(10, 5), "func1")))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(10, 5), new FunctionCall(new Position(10, 5), new Identifier(new Position(10, 5), "func1")))))));
                                 }}
                         )
 
@@ -76,7 +73,7 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2")))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2")))))));
                                 }}
                         )
 
@@ -95,7 +92,7 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(12, 6), new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new Identifier(new Position(12, 5), "a")), new FunctionCall(new Position(12, 7), new Identifier(new Position(12, 7), "b")))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(12, 6), new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new Identifier(new Position(12, 5), "a")), new FunctionCall(new Position(12, 7), new Identifier(new Position(12, 7), "b")))))));
                                 }}
                         )
 
@@ -113,7 +110,7 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2"), new IntValue(new Position(12, 19), 4)))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2"), new IntValue(new Position(12, 19), 4)))))));
                                 }}
                         )
 
@@ -133,7 +130,7 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2"), new ArrayList<>(List.of(new IntValue(new Position(12, 19), 4), new IntValue(new Position(12, 20), 35)))))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2"), new ArrayList<>(List.of(new IntValue(new Position(12, 19), 4), new IntValue(new Position(12, 20), 35)))))))));
                                 }}
                         )
 
@@ -154,7 +151,7 @@ public class ParserObjectAccessTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new IfStatement(new Position(8, 5), new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2"))), new CodeBlock(new Position(14, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new IfStatement(new Position(8, 5), new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2"))), new CodeBlock(new Position(14, 1), new ArrayList<>()))))));
                                 }}
                         )
 

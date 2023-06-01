@@ -17,7 +17,6 @@ import visitors.Interpreter;
 import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class VisitDataValuesTest {
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         FigureValue figureValue = new FigureValue(new Position(65, 10));
         SectionValue expectedLastResult = new SectionValue(new Position(65, 10), new PointValue(new Position(65, 15), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51)), new PointValue(new Position(65, 35), new IntValue(new Position(65, 35), 5), new IntValue(new Position(65, 40), 51)));
-        functions.put("main", new SectionFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SectionFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new FigureParameter(new Position(60, 1), "myList"), figureValue),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), expectedLastResult)),
                 new ReturnStatement(new Position(70, 1),
@@ -54,7 +53,7 @@ public class VisitDataValuesTest {
         FigureValue figureValue = new FigureValue(new Position(65, 10));
         SectionValue firstSection = new SectionValue(new Position(65, 10), new PointValue(new Position(65, 15), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51)), new PointValue(new Position(65, 35), new IntValue(new Position(65, 35), 5), new IntValue(new Position(65, 40), 51)));
         SectionValue secondSection = new SectionValue(new Position(75, 10), new PointValue(new Position(75, 15), new IntValue(new Position(75, 15), 5), new IntValue(new Position(75, 20), 51)), new PointValue(new Position(75, 35), new IntValue(new Position(75, 35), 7), new IntValue(new Position(75, 40), 251)));
-        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new FigureParameter(new Position(60, 1), "myList"), figureValue),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), firstSection)),
                 new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "add"), secondSection)),
@@ -76,7 +75,7 @@ public class VisitDataValuesTest {
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         SceneValue scene = new SceneValue(new Position(65, 10));
         FigureValue figure = new FigureValue(new Position(65, 10));
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneParameter(new Position(60, 1), "myVar"), scene),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myVar"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), figure)),
                 new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
@@ -100,7 +99,7 @@ public class VisitDataValuesTest {
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         SceneValue scene = new SceneValue(new Position(65, 10));
         PointValue point = new PointValue(new Position(65, 10), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51));
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneParameter(new Position(60, 1), "myVar"), scene),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myVar"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), point)),
                 new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
@@ -124,7 +123,7 @@ public class VisitDataValuesTest {
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         SceneValue scene = new SceneValue(new Position(65, 10));
         SectionValue section = new SectionValue(new Position(65, 10), new PointValue(new Position(65, 15), new IntValue(new Position(65, 15), 5), new IntValue(new Position(65, 20), 51)), new PointValue(new Position(65, 35), new IntValue(new Position(65, 35), 5), new IntValue(new Position(65, 40), 51)));
-        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new SceneFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneParameter(new Position(60, 1), "myVar"), scene),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myVar"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), section)),
                 new ReturnStatement(new Position(70, 1), new Identifier(new Position(70, 10), "myVar"))
@@ -149,7 +148,7 @@ public class VisitDataValuesTest {
         PointValue firstPoint = new PointValue(new Position(15, 50), new DoubleValue(new Position(15, 15), 5.0), new DoubleValue(new Position(15, 20), 51.8));
         PointValue secondPoint = new PointValue(new Position(16, 10), new DoubleValue(new Position(16, 15), 5.0), new DoubleValue(new Position(16, 20), 51.9));
         SectionValue expectedSection = new SectionValue(new Position(60, 10), firstPoint, secondPoint);
-        functions.put("main", new SectionFunctionDef(new Position(10, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+        functions.put("main", new SectionFunctionDef(new Position(10, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                 new AssignmentStatement(new Position(new Position(15, 10)), new PointParameter(new Position(15, 30), "a"), firstPoint),
                 new AssignmentStatement(new Position(new Position(15, 10)), new PointParameter(new Position(16, 30), "b"), secondPoint),
                 new AssignmentStatement(new Position(60, 1), new SectionParameter(new Position(60, 1), "myVar"), new SectionValue(new Position(60, 10), new Identifier(new Position(61, 61), "a"), new Identifier(new Position(62, 62), "b"))),
@@ -170,7 +169,7 @@ public class VisitDataValuesTest {
         DoubleValue xPoint = new DoubleValue(new Position(15, 50), 5.03);
         DoubleValue yPoint = new DoubleValue(new Position(16, 50), 51.02);
         PointValue expectedPoint = new PointValue(new Position(60, 10), xPoint, yPoint);
-        functions.put("main", new PointFunctionDef(new Position(10, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+        functions.put("main", new PointFunctionDef(new Position(10, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                 new AssignmentStatement(new Position(new Position(15, 10)), new DoubleParameter(new Position(15, 30), "a"), xPoint),
                 new AssignmentStatement(new Position(new Position(15, 10)), new DoubleParameter(new Position(16, 30), "b"), yPoint),
                 new AssignmentStatement(new Position(60, 1), new PointParameter(new Position(60, 1), "myVar"), new PointValue(new Position(60, 10), new Identifier(new Position(61, 61), "a"), new Identifier(new Position(62, 62), "b"))),

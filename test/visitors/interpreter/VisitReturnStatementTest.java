@@ -17,6 +17,7 @@ import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +30,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -46,7 +47,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 7);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DoubleValue(new Position(30, 40), 7.20))
             ))));
         }};
@@ -63,7 +64,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 7);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new ParenthesesExpression(new Position(30, 39), new DoubleValue(new Position(30, 40), 7.20)))
             ))));
         }};
@@ -80,7 +81,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntValue expectedLastResult = new IntValue(new Position(30, 40), 727);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new ParenthesesExpression(new Position(30, 39), new AdditionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 7.20), new IntValue(new Position(30, 45), 720))))
             ))));
         }};
@@ -97,7 +98,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         IntListValue expectedLastResult = new IntListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new IntListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new IntListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -114,7 +115,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 3.14);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -131,7 +132,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 4.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new IntValue(new Position(30, 40), 4))
             ))));
         }};
@@ -148,7 +149,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         DoubleListValue expectedLastResult = new DoubleListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new DoubleListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new DoubleListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -165,7 +166,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -182,7 +183,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolValue expectedLastResult = new BoolValue(new Position(30, 40), true);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new NegatedExpression(new Position(30, 40), new BoolValue(new Position(30, 45), false)))
             ))));
         }};
@@ -199,7 +200,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         BoolListValue expectedLastResult = new BoolListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new BoolListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new BoolListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -216,7 +217,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         FigureValue expectedLastResult = new FigureValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new FigureFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new FigureFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -233,7 +234,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         FigureListValue expectedLastResult = new FigureListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new FigureListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new FigureListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -250,7 +251,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         PointValue expectedLastResult = new PointValue(new Position(30, 40), new DoubleValue(new Position(35, 20), 10.0), new DoubleValue(new Position(35, 25), 11.0));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new PointFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new PointFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -267,7 +268,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         PointListValue expectedLastResult = new PointListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new PointListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new PointListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -284,7 +285,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         SceneValue expectedLastResult = new SceneValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SceneFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new SceneFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -301,7 +302,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         SceneListValue expectedLastResult = new SceneListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SceneListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new SceneListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -318,7 +319,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         SectionValue expectedLastResult = new SectionValue(new Position(30, 40), new PointValue(new Position(30, 40), new DoubleValue(new Position(35, 20), 10.0), new DoubleValue(new Position(35, 25), 11.0)), new PointValue(new Position(40, 40), new DoubleValue(new Position(45, 20), 10.0), new DoubleValue(new Position(45, 25), 11.0)));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SectionFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new SectionFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -335,7 +336,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         SectionListValue expectedLastResult = new SectionListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new SectionListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new SectionListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -352,7 +353,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         StringValue expectedLastResult = new StringValue(new Position(30, 40), "abc");
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new StringFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new StringFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};
@@ -369,7 +370,7 @@ public class VisitReturnStatementTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         StringListValue expectedLastResult = new StringListValue(new Position(30, 40));
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
-            put("main", new StringListFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+            put("main", new StringListFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), expectedLastResult)
             ))));
         }};

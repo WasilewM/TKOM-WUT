@@ -22,10 +22,7 @@ import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,7 +43,7 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new ParenthesesExpression(new Position(3, 1), new Identifier(new Position(4, 7), "abv")))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new ParenthesesExpression(new Position(3, 1), new Identifier(new Position(4, 7), "abv")))))));
                                 }}
                         )
                 ),
@@ -59,7 +56,7 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new BoolValue(new Position(4, 27), true)))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new BoolValue(new Position(4, 27), true)))))));
                                 }}
                         )
                 ),
@@ -76,7 +73,7 @@ public class ParserFactorTest {
                                         new Token(new Position(7, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new ParenthesesExpression(new Position(5, 1), new ConjunctiveExpression(new Position(5, 20), new Identifier(new Position(5, 10), "a1"), new Identifier(new Position(5, 30), "a11")))))))));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ReturnStatement(new Position(2, 1), new NegatedExpression(new Position(4, 7), new ParenthesesExpression(new Position(5, 1), new ConjunctiveExpression(new Position(5, 20), new Identifier(new Position(5, 10), "a1"), new Identifier(new Position(5, 30), "a11")))))))));
                                 }}
                         )
                 )

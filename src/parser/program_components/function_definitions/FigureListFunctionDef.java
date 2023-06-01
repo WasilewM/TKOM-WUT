@@ -7,12 +7,12 @@ import parser.program_components.CodeBlock;
 import parser.program_components.parameters.FigureListParameter;
 import visitors.IVisitor;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
-public record FigureListFunctionDef(Position position, String name, HashMap<String, IParameter> parameters,
+public record FigureListFunctionDef(Position position, String name, LinkedHashMap<String, IParameter> parameters,
                                     CodeBlock functionCode) implements IFunctionDef {
 
-    public FigureListFunctionDef(FigureListParameter functionType, HashMap<String, IParameter> parameters, CodeBlock codeBlock) {
+    public FigureListFunctionDef(FigureListParameter functionType, LinkedHashMap<String, IParameter> parameters, CodeBlock codeBlock) {
         this(functionType.position(), functionType.name(), parameters, codeBlock);
     }
 

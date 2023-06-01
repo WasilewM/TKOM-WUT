@@ -23,7 +23,10 @@ import visitors.exceptions.InvalidNumberOfArgumentsException;
 import visitors.exceptions.UndefinedMethodCallException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -51,7 +54,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new IntListParameter(new Position(60, 1), "myList"), new IntListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "put"), new IntValue(new Position(65, 10), 57)))
         ))));
@@ -69,7 +72,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new IntListParameter(new Position(60, 1), "myList"), new IntListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new Identifier(new Position(65, 8), "put"))
         ))));
@@ -87,7 +90,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new IntListParameter(new Position(60, 1), "myList"), new IntListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new DoubleValue(new Position(65, 13), 3.1)))
         ))));
@@ -105,7 +108,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new DoubleListParameter(new Position(60, 1), "myList"), new DoubleListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new IntValue(new Position(65, 13), 3)))
         ))));
@@ -123,7 +126,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new BoolListParameter(new Position(60, 1), "myList"), new BoolListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new IntValue(new Position(65, 13), 3)))
         ))));
@@ -141,7 +144,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new StringListParameter(new Position(60, 1), "myList"), new StringListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new IntValue(new Position(65, 13), 3)))
         ))));
@@ -159,7 +162,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new FigureListParameter(new Position(60, 1), "myList"), new FigureListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new IntValue(new Position(65, 13), 3)))
         ))));
@@ -177,7 +180,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new PointListParameter(new Position(60, 1), "myList"), new PointListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new IntValue(new Position(65, 13), 3)))
         ))));
@@ -195,7 +198,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SectionListParameter(new Position(60, 1), "myList"), new SectionListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new IntValue(new Position(65, 13), 3)))
         ))));
@@ -213,7 +216,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), new IntValue(new Position(65, 13), 3)))
         ))));
@@ -232,7 +235,7 @@ public class VisitMalformedObjectAccessTest {
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         FigureValue figure = new FigureValue(new Position(50, 10));
-        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new Identifier(new Position(60, 10), "fig")),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), figure)),
                 new ReturnStatement(new Position(70, 1),
@@ -252,7 +255,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add")))
         ))));
@@ -273,7 +276,7 @@ public class VisitMalformedObjectAccessTest {
         ArrayList<IExpression> args = new ArrayList<>();
         args.add(new IntValue(new Position(65, 18), 11));
         args.add(new IntValue(new Position(65, 25), 11));
-        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), args))
         ))));
@@ -291,7 +294,7 @@ public class VisitMalformedObjectAccessTest {
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get")))
         ))));
@@ -312,7 +315,7 @@ public class VisitMalformedObjectAccessTest {
         ArrayList<IExpression> args = new ArrayList<>();
         args.add(new IntValue(new Position(65, 18), 11));
         args.add(new IntValue(new Position(65, 25), 11));
-        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
                 new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get"), args))
         ))));
