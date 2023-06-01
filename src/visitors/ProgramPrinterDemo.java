@@ -1,21 +1,21 @@
-package visitor;
+package visitors;
 
 import lexer.Lexer;
-import parser.ErrorHandler;
 import parser.Parser;
+import parser.ParserErrorHandler;
 import parser.program_components.Program;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-public class Main {
+public class ProgramPrinterDemo {
 
     public static void main(String[] args) throws FileNotFoundException {
-        String filename = "src/visitor/example.surface";
-        ErrorHandler errorHandler = new ErrorHandler();
+        String filename = "src/visitors/example.surface";
+        ParserErrorHandler errorHandler = new ParserErrorHandler();
         if (args.length == 1) {
-            filename = "src/visitor/example.surface" + args[0];
+            filename = "src/visitors/example.surface" + args[0];
         }
         FileReader fr = new FileReader(filename);
         BufferedReader br = new BufferedReader(fr);

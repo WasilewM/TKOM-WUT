@@ -1,12 +1,21 @@
 package parser.program_components.data_values;
 
 import lexer.Position;
-import parser.IExpression;
-import visitor.IVisitor;
+import parser.IDataValue;
+import visitors.IVisitor;
 
-public record DoubleValue(Position position, Double value) implements IExpression {
+public record DoubleValue(Position position, Double value) implements IDataValue {
     @Override
     public void accept(IVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof DoubleValue castedOther)) {
+            return false;
+        }
+
+        return (this.value).equals(castedOther.value);
     }
 }

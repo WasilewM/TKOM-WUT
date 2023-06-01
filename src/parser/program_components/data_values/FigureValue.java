@@ -1,12 +1,100 @@
 package parser.program_components.data_values;
 
 import lexer.Position;
-import parser.IExpression;
-import visitor.IVisitor;
+import parser.IDataValue;
+import parser.IExtendableDataValue;
+import visitors.IVisitor;
+import visitors.exceptions.IncompatibleDataTypeException;
+import visitors.exceptions.IncompatibleMethodArgumentException;
 
-public record FigureValue(Position position) implements IExpression {
+import java.util.ArrayList;
+import java.util.Objects;
+
+public class FigureValue implements IExtendableDataValue {
+    private final Position position;
+    private final ArrayList<SectionValue> values;
+
+    public FigureValue(Position position, ArrayList<SectionValue> values) {
+        this.position = position;
+        this.values = values;
+    }
+
+    public FigureValue(Position position) {
+        this(position, new ArrayList<>());
+    }
+
+    private static boolean areSectionsConnected(SectionValue previousSection, SectionValue newSection) {
+        return previousSection.first().equals(newSection.first()) || previousSection.first().equals(newSection.second())
+                || previousSection.second().equals(newSection.first()) || previousSection.second().equals(newSection.second());
+    }
+
     @Override
     public void accept(IVisitor visitor) {
         visitor.visit(this);
+    }
+
+    @Override
+    public Object value() {
+        return values;
+    }
+
+    public void add(SectionValue section) {
+        values.add(section);
+    }
+
+    @Override
+    public Position position() {
+        return position;
+    }
+
+    public ArrayList<SectionValue> values() {
+        return values;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
+        var that = (FigureValue) obj;
+        return Objects.equals(this.position, that.position) &&
+                Objects.equals(this.values, that.values);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(position, values);
+    }
+
+    @Override
+    public String toString() {
+        return "FigureValue[" +
+                "position=" + position + ", " +
+                "values=" + values + ']';
+    }
+
+    @Override
+    public void add(IDataValue value) throws IncompatibleMethodArgumentException, IncompatibleDataTypeException {
+        if (value.getClass().equals(SectionValue.class)) {
+            if (values.size() > 0) {
+                SectionValue previousSection = values.get(values.size() - 1);
+                SectionValue newSection = (SectionValue) value;
+                if (!areSectionsConnected(previousSection, newSection)) {
+                    throw new IncompatibleMethodArgumentException(this, newSection);
+                }
+            }
+            values.add((SectionValue) value);
+        } else {
+            throw new IncompatibleDataTypeException(this, value);
+        }
+    }
+
+    @Override
+    public int size() {
+        return values.size();
+    }
+
+    @Override
+    public SectionValue get(int idx) {
+        return values.get(idx);
     }
 }

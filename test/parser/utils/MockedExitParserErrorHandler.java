@@ -1,8 +1,8 @@
 package parser.utils;
 
-import parser.ErrorHandler;
+import parser.ParserErrorHandler;
 
-public class MockedExitErrorHandler extends ErrorHandler {
+public class MockedExitParserErrorHandler extends ParserErrorHandler {
 
     @Override
     protected void exit() throws RuntimeException {

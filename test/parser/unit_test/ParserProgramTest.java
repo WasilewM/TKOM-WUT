@@ -15,13 +15,14 @@ import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.DoubleParameter;
 import parser.program_components.parameters.IntParameter;
 import parser.program_components.parameters.StringParameter;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,7 +49,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 12), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(1, 11), new ArrayList<>())));
+                                    put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -63,7 +64,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 15), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new DoubleFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), new ArrayList<>())));
+                                    put("func", new DoubleFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -78,7 +79,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 15), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new StringFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), new ArrayList<>())));
+                                    put("func", new StringFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -93,7 +94,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 13), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 12), new ArrayList<>())));
+                                    put("func", new BoolFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 12), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -108,7 +109,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new PointFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 13), new ArrayList<>())));
+                                    put("func", new PointFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -123,7 +124,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 16), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new SectionFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 15), new ArrayList<>())));
+                                    put("func", new SectionFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 15), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -138,7 +139,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 15), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FigureFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), new ArrayList<>())));
+                                    put("func", new FigureFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 14), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -153,7 +154,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new SceneFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 13), new ArrayList<>())));
+                                    put("func", new SceneFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -171,7 +172,7 @@ public class ParserProgramTest {
                                         new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                    put("func", new IntListFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -189,7 +190,7 @@ public class ParserProgramTest {
                                         new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new DoubleListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                    put("func", new DoubleListFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -207,7 +208,7 @@ public class ParserProgramTest {
                                         new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new BoolListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                    put("func", new BoolListFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -225,7 +226,7 @@ public class ParserProgramTest {
                                         new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new StringListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                    put("func", new StringListFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -243,7 +244,7 @@ public class ParserProgramTest {
                                         new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new PointListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                    put("func", new PointListFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -261,7 +262,7 @@ public class ParserProgramTest {
                                         new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new SectionListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                    put("func", new SectionListFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -279,7 +280,7 @@ public class ParserProgramTest {
                                         new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new FigureListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                    put("func", new FigureListFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -297,7 +298,7 @@ public class ParserProgramTest {
                                         new Token(new Position(2, 14), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new SceneListFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
+                                    put("func", new SceneListFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(2, 13), new ArrayList<>())));
                                 }}
                         )
                 ),
@@ -314,7 +315,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 18), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("cube", new IntFunctionDef(new Position(1, 1), "cube", new HashMap<>() {{
+                                    put("cube", new IntFunctionDef(new Position(1, 1), "cube", new LinkedHashMap<>() {{
                                         put("a", new IntParameter(new Position(1, 10), "a"));
                                     }}, new CodeBlock(new Position(1, 17), new ArrayList<>())));
                                 }}
@@ -336,7 +337,7 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 24), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("cube", new IntFunctionDef(new Position(1, 1), "cube", new HashMap<>() {{
+                                    put("cube", new IntFunctionDef(new Position(1, 1), "cube", new LinkedHashMap<>() {{
                                         put("a", new IntParameter(new Position(1, 10), "a"));
                                         put("b", new IntParameter(new Position(1, 17), "b"));
                                     }}, new CodeBlock(new Position(1, 23), new ArrayList<>())));
@@ -359,10 +360,25 @@ public class ParserProgramTest {
                                         new Token(new Position(1, 30), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("cube", new IntFunctionDef(new Position(1, 1), "cube", new HashMap<>() {{
+                                    put("cube", new IntFunctionDef(new Position(1, 1), "cube", new LinkedHashMap<>() {{
                                         put("a", new DoubleParameter(new Position(1, 10), "a"));
                                         put("b", new StringParameter(new Position(1, 17), "b"));
                                     }}, new CodeBlock(new Position(1, 29), new ArrayList<>())));
+                                }}
+                        )
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
+                                        new Token(new Position(1, 1), TokenTypeEnum.VOID_KEYWORD),
+                                        new StringToken("main", new Position(1, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(1, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new Token(new Position(1, 10), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(1, 11), TokenTypeEnum.LEFT_CURLY_BRACKET),
+                                        new Token(new Position(1, 12), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("main", new VoidFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), new ArrayList<>())));
                                 }}
                         )
                 )
@@ -373,7 +389,7 @@ public class ParserProgramTest {
     @Test
     void parserInit() {
         ArrayList<Token> tokens = new ArrayList<>();
-        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
+        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitParserErrorHandler());
 
         assertNotNull(parser);
     }
@@ -382,7 +398,7 @@ public class ParserProgramTest {
     @MethodSource("getTestProgramData")
     void parseProgram(ParserSingleTestParams testParams) {
         ArrayList<Token> tokens = new ArrayList<>(testParams.tokens());
-        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitErrorHandler());
+        Parser parser = new Parser(new MockedLexer(tokens), new MockedExitParserErrorHandler());
         Program program = parser.parse();
 
         assertEquals(testParams.expectedFunctions(), program.functions());

@@ -1,12 +1,9 @@
-package visitor;
+package visitors;
 
-import parser.IExpression;
-import parser.IFunctionDef;
-import parser.IParameter;
-import parser.IStatement;
+import parser.*;
 import parser.program_components.*;
-import parser.program_components.data_values.*;
 import parser.program_components.expressions.*;
+import parser.program_components.function_definitions.*;
 import parser.program_components.statements.*;
 
 public class ProgramPrinterVisitor implements IVisitor {
@@ -15,82 +12,7 @@ public class ProgramPrinterVisitor implements IVisitor {
 
     // values
     @Override
-    public void visit(BoolListValue val) {
-
-    }
-
-    @Override
-    public void visit(BoolValue val) {
-
-    }
-
-    @Override
-    public void visit(DoubleListValue val) {
-
-    }
-
-    @Override
-    public void visit(DoubleValue val) {
-
-    }
-
-    @Override
-    public void visit(FigureListValue val) {
-
-    }
-
-    @Override
-    public void visit(FigureValue val) {
-
-    }
-
-    @Override
-    public void visit(IntListValue val) {
-
-    }
-
-    @Override
-    public void visit(IntValue val) {
-
-    }
-
-    @Override
-    public void visit(PointListValue val) {
-
-    }
-
-    @Override
-    public void visit(PointValue val) {
-
-    }
-
-    @Override
-    public void visit(SceneListValue val) {
-
-    }
-
-    @Override
-    public void visit(SceneValue val) {
-
-    }
-
-    @Override
-    public void visit(SectionListValue val) {
-
-    }
-
-    @Override
-    public void visit(SectionValue val) {
-
-    }
-
-    @Override
-    public void visit(StringListValue val) {
-
-    }
-
-    @Override
-    public void visit(StringValue val) {
+    public void visit(IDataValue val) {
 
     }
 
@@ -175,7 +97,8 @@ public class ProgramPrinterVisitor implements IVisitor {
 
     }
 
-    @Override
+    // function definitions
+//    @Override
     public void visit(IFunctionDef func) {
         printWithPrefix(func.getClass() + " \"" + func.name() + "\" at " + func.position().toString());
         increaseIntend();
@@ -187,10 +110,95 @@ public class ProgramPrinterVisitor implements IVisitor {
     }
 
     @Override
+    public void visit(BoolFunctionDef boolFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(BoolListFunctionDef boolListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(DoubleFunctionDef doubleFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(DoubleListFunctionDef doubleListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(FigureFunctionDef figureFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(FigureListFunctionDef figureListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(IntFunctionDef intFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(IntListFunctionDef intListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(PointFunctionDef pointFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(PointListFunctionDef pointListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(SceneFunctionDef sceneFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(SceneListFunctionDef sceneListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(SectionFunctionDef sectionFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(SectionListFunctionDef sectionListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(StringFunctionDef stringFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(StringListFunctionDef stringListFunctionDef) {
+
+    }
+
+    @Override
+    public void visit(VoidFunctionDef voidFunctionDef) {
+
+    }
+
+    // parameters
+    @Override
     public void visit(IParameter param) {
         printWithPrefix(param.getClass() + " \"" + param.name() + "\" at " + param.position().toString());
     }
-
 
     // statements
     public void visit(IStatement stmnt) {
@@ -233,7 +241,6 @@ public class ProgramPrinterVisitor implements IVisitor {
     public void visit(ElseStatement stmnt) {
         printWithPrefix(stmnt.getClass() + " at " + stmnt.position().toString());
         increaseIntend();
-        visit(stmnt.exp());
         visit(stmnt.codeBlock());
         decreaseIntend();
     }
@@ -249,7 +256,7 @@ public class ProgramPrinterVisitor implements IVisitor {
         for (ElseIfStatement e : stmnt.elseIfStmnts()) {
             visit(e);
         }
-        visit(stmnt.elseExp());
+        visit(stmnt.elseStmnt());
         decreaseIntend();
 
         decreaseIntend();

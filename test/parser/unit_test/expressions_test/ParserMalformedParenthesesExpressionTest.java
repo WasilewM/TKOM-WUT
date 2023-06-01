@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import parser.Parser;
 import parser.exceptions.MissingExpressionException;
 import parser.exceptions.UnclosedParenthesesException;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserMalformedSingleTestParams;
 
@@ -74,7 +74,7 @@ public class ParserMalformedParenthesesExpressionTest {
     void parseMalformedParenthesesExpression_withCriticalExceptions(ParserMalformedSingleTestParams additionalParams) {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalParams.tokens());
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         boolean wasExceptionCaught = false;
 

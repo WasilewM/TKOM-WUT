@@ -615,20 +615,24 @@ ifStmnt: "if", "(", alternativeExp, "), "{", codeBlock, "}":
 ### Przykład kodu
 
 ```
+Int main() {
+	doSomeMath(1)
+
+	return 0;
+}
+
 Int doSomeMath(Int n) {
-   # alternativeExp bellow could be simplified by it has been written this way on purpose,
-   # to show how logical operators will work
-   if (n < 0 || n == 0 || n == 1) {
-      return -1;         
+   if ((n < 0) || (n == 0) || (n == 1)) {
+      return 11;
    }
-    
+
    Int i = 2;
    Int result = 0;
    while (i < n) {
       result = result - i * (i + n - i);
       i = i + 3;
    }
-   
+
    return result;
 }
 
@@ -636,70 +640,48 @@ List[Int] mergeSort(List[Int] n) {
     if (n.length() == 1) {
         return n;
     }
-    
-    # get a list of items from List n from index 0 to index n.length() // 2 (exclusively)
+
     List[Int] leftHalf = [Int];
-    int l = 0;
+    Int l = 0;
     while (l < (n.length() // 2)) {
         leftHalf.add(n.get(l));
-        l += 1;
+        l = l + 1;
     }
-    
-    # get a list of items from List n from index n.length() // 2 (inclusively) to the last element
+
     List[Int] rightHalf = [Int];
-    int r = n.length() // 2;
+    Int r = n.length() // 2;
     while (r < n.length()) {
         rightHalf.add(n.get(r));
-        r += 1;
+        r = r + 1;
     }
-    
+
     List[Int] sortedLeftHalf = mergeSort(leftHalf);
     List[Int] sortedRightHalf = mergeSort(rightHalf);
-    
-    int i = 0;
-    int j = 0;
+
+    Int i = 0;
+    Int j = 0;
     List[Int] sortedList = [Int];
-    
+
     while (i < sortedLeftHalf.length() && j < sortedRightHalf.length()) {
         if (i == sortedLeftHalf.length() && j < sortedRightHalf.length()) {
             sortedList.add(sortedRightHalf.get(j));
-            j += 1;
+            j = j + 1;
         }
         elseif (i < sortedLeftHalf.length() && j == sortedRightHalf.length()) {
             sortedList.add(sortedLeftHalf.get(i));
-            i += 1;
+            i = i + 1;
         }
         elseif (sortedLeftHalf.get(i) < sortedRightHalf.get(j)) {
             sortedList.add(sortedLeftHalf.get(i));
-            i += 1;
+            i = i + 1;
         }
         else {
             sortedList.add(sortedRightHalf.get(j));
-            j += 1;
+            j = j + 1;
         }
     }
-    
-    return sortedList;
-}
 
-Int main() {
-	Point a = Point(1.01, 2.20);
-	Point b = Point(3.03, 7.70);
-	Point c = Point(11.11, 19.09);
-	
-	Section k = Section(a, b);
-	Section l = Section(b, c);
-	Section m = Section(c, a);
-	
-	List[Section] sections = [Section];
-	sections.add(k);
-	sections.add(l);
-	sections.add(m);
-	
-	Scene s1 = Scene();
-	s1.add(k);
-	s2.add(l);
-	s3.add(m);
+    return sortedList;
 }
 ```
 
