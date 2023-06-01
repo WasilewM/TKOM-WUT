@@ -252,7 +252,13 @@ public class Interpreter implements IVisitor {
     }
 
     @Override
-    public void visit(VoidFunctionDef voidFunctionDef) {
+    public void visit(VoidFunctionDef f) {
+        preFunctionVisit();
+        f.functionCode().accept(this);
+        if (lastResult != null) {
+            errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
+        }
+        postFunctionVisit();
 
     }
 
@@ -278,6 +284,7 @@ public class Interpreter implements IVisitor {
             }
         }
         contextManager.deleteLastContext();
+        clearLastResult();
     }
 
     // statements
@@ -838,6 +845,12 @@ public class Interpreter implements IVisitor {
         if (lastResult.getClass().equals(BoolValue.class)) {
             BoolValue castedValue = (BoolValue) lastResult;
             lastResult = new BoolValue(exp.position(), castedValue.value());
+        }
+    }
+
+    private void clearLastResult() {
+        if (!returnFound) {
+            lastResult = null;
         }
     }
 

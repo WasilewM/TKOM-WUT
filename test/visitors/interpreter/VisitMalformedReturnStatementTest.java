@@ -572,4 +572,20 @@ public class VisitMalformedReturnStatementTest {
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
     }
+
+    @Test
+    void givenVoidFunc_whenAnythingReturned_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new VoidFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new IncompatibleDataTypeException(new VoidFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(new ReturnStatement(new Position(15, 15), new IntValue(new Position(20, 20), 5))))), new IntValue(new Position(20, 20), 5))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
 }
