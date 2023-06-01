@@ -18,6 +18,8 @@ import parser.program_components.parameters.IntParameter;
 import parser.program_components.statements.ReturnStatement;
 import visitors.ContextManager;
 import visitors.Interpreter;
+import visitors.exceptions.ExceededFunctionCallStackSizeException;
+import visitors.exceptions.ExceededMaxRecursionDepthException;
 import visitors.exceptions.IncompatibleArgumentsListException;
 import visitors.exceptions.UndefinedFunctionCallException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
@@ -84,6 +86,49 @@ public class VisitMalformedFunctionCallTest {
         receivedArgs.add(new BoolValue(new Position(60, 20), true));
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleArgumentsListException(new FunctionCall(new Position(70, 10), new Identifier(new Position(60, 10), "getTwice"), new BoolValue(new Position(60, 20), true)), expectedArgs, receivedArgs)
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenUserDeclaredFunction_whenItConstantlyCallsItself_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new ReturnStatement(new Position(70, 1), new FunctionCall(new Position(70, 10), new Identifier(new Position(60, 10), "getTwice")))
+        ))));
+        functions.put("getTwice", new IntFunctionDef(new Position(1, 1), "getTwice", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                new ReturnStatement(new Position(30, 30), new FunctionCall(new Position(30, 40), new Identifier(new Position(30, 40), "getTwice")))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new ExceededMaxRecursionDepthException(new FunctionCall(new Position(30, 40), new Identifier(new Position(30, 40), "getTwice")), 10)
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenTwoUserDeclaredFunction_whenTheseTwoFunctionsCallOneAnotherAndExceedFunctionStack_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new ReturnStatement(new Position(70, 1), new FunctionCall(new Position(70, 10), new Identifier(new Position(60, 10), "getTwice")))
+        ))));
+        functions.put("getTwice", new IntFunctionDef(new Position(1, 1), "getTwice", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                new ReturnStatement(new Position(30, 30), new FunctionCall(new Position(30, 40), new Identifier(new Position(30, 40), "getTriple")))
+        ))));
+        functions.put("getTriple", new IntFunctionDef(new Position(1, 1), "getTriple", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                new ReturnStatement(new Position(30, 30), new FunctionCall(new Position(30, 40), new Identifier(new Position(30, 40), "getTwice")))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new ExceededFunctionCallStackSizeException(new FunctionCall(new Position(30, 40), new Identifier(new Position(30, 40), "getTwice")), 100)
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
