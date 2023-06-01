@@ -2,6 +2,7 @@ package parser.unit_test;
 
 import lexer.Position;
 import lexer.TokenTypeEnum;
+import lexer.tokens.IntegerToken;
 import lexer.tokens.StringToken;
 import lexer.tokens.Token;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,6 +40,22 @@ public class ParserMalformedObjectAccessTest {
                                 ),
                                 List.of(
                                         new MissingExpressionException(new Token(new Position(10, 100), TokenTypeEnum.SEMICOLON).toString())
+                                )
+                        )
+                ),
+                Arguments.of(
+                        new ParserMalformedSingleTestParams(
+                                Arrays.asList(
+                                        new StringToken("func1", new Position(10, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(10, 10), TokenTypeEnum.DOT),
+                                        new StringToken("func2", new Position(12, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(12, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new IntegerToken(4, new Position(12, 19)),
+                                        new Token(new Position(12, 20), TokenTypeEnum.COMMA),
+                                        new Token(new Position(13, 10), TokenTypeEnum.RIGHT_BRACKET)
+                                ),
+                                List.of(
+                                        new MissingExpressionException(new Token(new Position(13, 10), TokenTypeEnum.RIGHT_BRACKET).toString())
                                 )
                         )
                 )

@@ -689,8 +689,10 @@ public class Interpreter implements IVisitor {
         if (contextManager.containsFunction(functionCall.identifier().name())) {
             IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
             if (functionCall.exp() != null) {
-                functionCall.exp().accept(this);
-                contextManager.addParameter("a", lastResult);
+                for (IExpression e : functionCall.exp()) {
+                    e.accept(this);
+                    contextManager.addParameter("a", lastResult);
+                }
             }
             func.accept(this);
         } else if (contextManager.isMethodImplemented(functionCall.identifier().name())) {
@@ -733,7 +735,7 @@ public class Interpreter implements IVisitor {
             IVisitable obj = lastResult;
             Class<?> clazz = obj.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
-            funcCall.exp().accept(this);
+            funcCall.exp().get(0).accept(this);
             method.invoke(obj, lastResult);
         } catch (Exception e) {
             Throwable cause = e.getCause();
@@ -751,7 +753,7 @@ public class Interpreter implements IVisitor {
         try {
             Class<?> clazz = lastResult.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), int.class);
-            IntValue castedArg = castToIntValue(funcCall.exp());
+            IntValue castedArg = castToIntValue(funcCall.exp().get(0));
             lastResult = (IVisitable) method.invoke(lastResult, castedArg.value());
         } catch (Exception e) {
             errorHandler.handle(e);

@@ -121,6 +121,26 @@ public class ParserObjectAccessTest {
                 Arguments.of(
                         new ParserSingleTestParams(
                                 Arrays.asList(
+                                        new StringToken("func1", new Position(10, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(10, 10), TokenTypeEnum.DOT),
+                                        new StringToken("func2", new Position(12, 5), TokenTypeEnum.IDENTIFIER),
+                                        new Token(new Position(12, 9), TokenTypeEnum.LEFT_BRACKET),
+                                        new IntegerToken(4, new Position(12, 19)),
+                                        new Token(new Position(12, 20), TokenTypeEnum.COMMA),
+                                        new IntegerToken(35, new Position(12, 29)),
+                                        new Token(new Position(13, 10), TokenTypeEnum.RIGHT_BRACKET),
+                                        new Token(new Position(14, 7), TokenTypeEnum.SEMICOLON),
+                                        new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
+                                ),
+                                new HashMap<>() {{
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 14), List.of(new ObjectAccess(new Position(10, 5), new Identifier(new Position(10, 5), "func1"), new FunctionCall(new Position(12, 5), new Identifier(new Position(12, 5), "func2"), new ArrayList<>(List.of(new IntValue(new Position(12, 19), 4), new IntValue(new Position(12, 20), 35)))))))));
+                                }}
+                        )
+
+                ),
+                Arguments.of(
+                        new ParserSingleTestParams(
+                                Arrays.asList(
                                         new Token(new Position(8, 5), TokenTypeEnum.IF_KEYWORD),
                                         new Token(new Position(8, 15), TokenTypeEnum.LEFT_BRACKET),
                                         new StringToken("func1", new Position(10, 5), TokenTypeEnum.IDENTIFIER),

@@ -900,9 +900,19 @@ public class Parser implements IParser {
         if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
             return identifier;
         }
+        ArrayList<IExpression> arguments = new ArrayList<>();
         IExpression exp = parseAlternativeExpression();
+        if (exp != null) {
+            arguments.add(exp);
+
+            while (consumeIf(TokenTypeEnum.COMMA)) {
+                IExpression anotherExp = parseAlternativeExpression();
+                registerErrorIfExpIsMissing(anotherExp);
+                arguments.add(anotherExp);
+            }
+        }
         parseRightBracketWithoutReturningIt();
-        return new FunctionCall(position, (Identifier) identifier, exp);
+        return new FunctionCall(position, (Identifier) identifier, arguments);
     }
 
     /* identifier = letter { digit | literal } */
