@@ -13,6 +13,7 @@ import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.ReturnStatement;
 import visitors.Interpreter;
 import visitors.exceptions.IncompatibleDataTypeException;
+import visitors.exceptions.ZeroDivisionException;
 import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
@@ -131,6 +132,24 @@ public class VisitMalformedArithmeticExpressionsTest {
     }
 
     @Test
+    void givenIntFuncAndDiscreteDivisionExpReturned_whenRightSideIsZero_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DiscreteDivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 19), new IntValue(new Position(30, 40), 0)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new ZeroDivisionException(new Position(30, 40))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
     void givenIntFuncAndDivisionExpReturned_whenLeftIsIsBoolValueAndRightIsIntValue_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextManager contextManager = new MockedContextManager();
@@ -143,6 +162,24 @@ public class VisitMalformedArithmeticExpressionsTest {
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
                 new IncompatibleDataTypeException(new DoubleValue(new Position(30, 50), null), new BoolValue(new Position(30, 50), false))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenIntFuncAndDivisionExpReturned_whenRightSideIsZero_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 19), new IntValue(new Position(30, 40), 0)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new ZeroDivisionException(new Position(30, 40))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

@@ -664,12 +664,18 @@ public class Interpreter implements IVisitor {
     private void tryToDivideDiscretely(Position position, IVisitable leftExp, IVisitable rightExp) {
         IntValue leftCastedValue = castToIntValue(leftExp);
         IntValue rightCastedValue = castToIntValue(rightExp);
+        if (rightCastedValue.value().equals(0)) {
+            errorHandler.handle(new ZeroDivisionException(position));
+        }
         lastResult = new IntValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
     private void tryToDivide(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
+        if (rightCastedValue.value().equals(0.0)) {
+            errorHandler.handle(new ZeroDivisionException(position));
+        }
         lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
