@@ -49,15 +49,14 @@ public class Interpreter implements IVisitor {
             errorHandler.handle(new MissingMainFunctionException(program.functions()));
         }
 
-        for (Map.Entry<String, IFunctionDef> f : program.functions().entrySet()) {
-            f.getValue().accept(this);
-            contextManager.addFunction(f.getKey(), f.getValue());
-        }
+        contextManager.addFunctions(program.functions());
+        IFunctionDef main = program.functions().get("main");
+        main.accept(this);
     }
 
     @Override
     public void visit(BoolFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -69,7 +68,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(BoolListFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -81,13 +80,12 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(DoubleFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (lastResult.getClass().equals(IntValue.class)) {
-            IntValue value = (IntValue) lastResult;
-            lastResult = new DoubleValue(value.position(), value.value().doubleValue());
+            lastResult = castToDoubleValue(lastResult);
         } else if (!lastResult.getClass().equals(DoubleValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
@@ -96,7 +94,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(DoubleListFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -108,7 +106,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(FigureFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -120,7 +118,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(FigureListFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -132,13 +130,12 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(IntFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
         } else if (lastResult.getClass().equals(DoubleValue.class)) {
-            DoubleValue value = (DoubleValue) lastResult;
-            lastResult = new IntValue(value.position(), value.value().intValue());
+            lastResult = castToIntValue(lastResult);
         } else if (!lastResult.getClass().equals(IntValue.class)) {
             errorHandler.handle(new IncompatibleDataTypeException(f, lastResult));
         }
@@ -147,7 +144,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(IntListFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         visit((f.functionCode()));
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -159,7 +156,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(PointFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         visit((f.functionCode()));
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -171,7 +168,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(PointListFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         visit((f.functionCode()));
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -183,7 +180,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(SceneFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -195,7 +192,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(SceneListFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -207,7 +204,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(SectionFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -219,7 +216,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(SectionListFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -231,7 +228,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(StringFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -243,7 +240,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(StringListFunctionDef f) {
-        preFunctionVisit(f);
+        preFunctionVisit();
         f.functionCode().accept(this);
         if (lastResult == null) {
             errorHandler.handle(new MissingReturnValueException(f));
@@ -253,10 +250,10 @@ public class Interpreter implements IVisitor {
         postFunctionVisit();
     }
 
-    private void preFunctionVisit(IFunctionDef f) {
+    private void preFunctionVisit() {
         contextManager.createNewFunctionContext();
-        for (Map.Entry<String, IParameter> p : f.parameters().entrySet()) {
-            p.getValue().accept(this);
+        for (Map.Entry<String, IVisitable> p : contextManager.consumeParameters().entrySet()) {
+            contextManager.add(p.getKey(), p.getValue());
         }
     }
 
@@ -689,13 +686,18 @@ public class Interpreter implements IVisitor {
     // other components
     @Override
     public void visit(FunctionCall functionCall) {
-        if (!contextManager.containsFunction(functionCall.identifier().name())) {
-            if (!contextManager.isMethodImplemented(functionCall.identifier().name())) {
-                errorHandler.handle(new UndefinedFunctionCallException(functionCall));
+        if (contextManager.containsFunction(functionCall.identifier().name())) {
+            IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
+            if (functionCall.exp() != null) {
+                functionCall.exp().accept(this);
+                contextManager.addParameter("a", lastResult);
             }
-        } else {
+            func.accept(this);
+        } else if (contextManager.isMethodImplemented(functionCall.identifier().name())) {
             IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
             func.accept(this);
+        } else {
+            errorHandler.handle(new UndefinedFunctionCallException(functionCall));
         }
     }
 
@@ -713,15 +715,16 @@ public class Interpreter implements IVisitor {
         objectAccess.leftExp().accept(this);
         if (!objectAccess.rightExp().getClass().equals(FunctionCall.class)) {
             errorHandler.handle(new UndefinedMethodCallException(objectAccess));
-        }
-        FunctionCall funcCall = (FunctionCall) objectAccess.rightExp();
-
-        if (funcCall.identifier().name().equals("add")) {
-            handleAddToObject(funcCall);
-        } else if (funcCall.identifier().name().equals("get")) {
-            handleGetFromObject(funcCall);
         } else {
-            errorHandler.handle(new UndefinedMethodCallException(objectAccess));
+            FunctionCall funcCall = (FunctionCall) objectAccess.rightExp();
+
+            if (funcCall.identifier().name().equals("add")) {
+                handleAddToObject(funcCall);
+            } else if (funcCall.identifier().name().equals("get")) {
+                handleGetFromObject(funcCall);
+            } else {
+                errorHandler.handle(new UndefinedMethodCallException(objectAccess));
+            }
         }
     }
 

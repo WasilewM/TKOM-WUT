@@ -3,12 +3,14 @@ package visitors.interpreter;
 import lexer.Position;
 import org.junit.jupiter.api.Test;
 import parser.IFunctionDef;
+import parser.IParameter;
 import parser.program_components.CodeBlock;
 import parser.program_components.FunctionCall;
 import parser.program_components.Identifier;
 import parser.program_components.Program;
 import parser.program_components.data_values.IntValue;
 import parser.program_components.expressions.AdditionExpression;
+import parser.program_components.expressions.MultiplicationExpression;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.parameters.IntParameter;
 import parser.program_components.statements.AssignmentStatement;
@@ -56,6 +58,27 @@ public class VisitFunctionCallTest {
         functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 60), new IntParameter(new Position(60, 60), "x"), new FunctionCall(new Position(70, 10), new Identifier(new Position(60, 10), "getTwo"))),
                 new ReturnStatement(new Position(70, 1), new AdditionExpression(new Position(70, 10), new Identifier(new Position(70, 10), "x"), new IntValue(new Position(70, 15), 4))))
+        )));
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenProgramWithTwoFunction_whenFunctionOperatesOnGivenParam_thenAnalyzeTheFuncFullyOnlyWhenTheParamIsPassed() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        IntValue expectedLastResult = new IntValue(new Position(30, 50), 10);
+        HashMap<String, IParameter> params = new HashMap<>();
+        params.put("a", new IntParameter(new Position(5, 5), "a"));
+        functions.put("main", new IntFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new ReturnStatement(new Position(70, 1), new FunctionCall(new Position(70, 10), new Identifier(new Position(60, 10), "getTwice"), new IntValue(new Position(60, 20), 5)))
+        ))));
+        functions.put("getTwice", new IntFunctionDef(new Position(1, 1), "getTwice", params, new CodeBlock(new Position(10, 10), List.of(
+                new ReturnStatement(new Position(30, 30), new MultiplicationExpression(new Position(30, 40), new Identifier(new Position(30, 40), "a"), new IntValue(new Position(30, 45), 2))))
         )));
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);

@@ -10,12 +10,14 @@ import java.util.HashMap;
 public class ContextManager {
     private final ArrayList<Context> contexts;
     private final HashMap<String, IFunctionDef> functions;
+    private final HashMap<String, IVisitable> parameters;
 
     private final ArrayList<String> methods;
 
     public ContextManager() {
         this.contexts = new ArrayList<>();
         functions = new HashMap<>();
+        parameters = new HashMap<>();
         methods = new ArrayList<>();
         initMethodsList();
     }
@@ -79,8 +81,8 @@ public class ContextManager {
         return functions.containsKey(functionName);
     }
 
-    public void addFunction(String functionName, IFunctionDef functionDef) {
-        functions.put(functionName, functionDef);
+    public void addFunctions(HashMap<String, IFunctionDef> f) {
+        functions.putAll(f);
     }
 
     public IFunctionDef getFunction(String funcName) {
@@ -89,6 +91,16 @@ public class ContextManager {
 
     public boolean isMethodImplemented(String methodName) {
         return methods.contains(methodName);
+    }
+
+    public void addParameter(String paramName, IVisitable val) {
+        parameters.put(paramName, val);
+    }
+
+    public HashMap<String, IVisitable> consumeParameters() {
+        HashMap<String, IVisitable> params = new HashMap<>(parameters);
+        parameters.clear();
+        return params;
     }
 
     protected void createNewContext() {
