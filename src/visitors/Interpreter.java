@@ -441,15 +441,6 @@ public class Interpreter implements IVisitor {
         return false;
     }
 
-    // expressions
-    public void visit(IExpression exp) {
-        if (exp == null) {
-            lastResult = null;
-        } else {
-            exp.accept(this);
-        }
-    }
-
     @Override
     public void visit(IDataValue val) {
         if (val.getClass().equals(PointValue.class)) {
