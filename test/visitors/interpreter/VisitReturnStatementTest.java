@@ -7,7 +7,9 @@ import parser.program_components.CodeBlock;
 import parser.program_components.Program;
 import parser.program_components.data_values.*;
 import parser.program_components.data_values.lists.*;
+import parser.program_components.expressions.AdditionExpression;
 import parser.program_components.expressions.NegatedExpression;
+import parser.program_components.expressions.ParenthesesExpression;
 import parser.program_components.function_definitions.*;
 import parser.program_components.statements.ReturnStatement;
 import visitors.Interpreter;
@@ -46,6 +48,40 @@ public class VisitReturnStatementTest {
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DoubleValue(new Position(30, 40), 7.20))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIntFunc_whenParenthesesExpReturned_thenEvaluateExpAndReturnResult() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(30, 40), 7);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new ParenthesesExpression(new Position(30, 39), new DoubleValue(new Position(30, 40), 7.20)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIntFunc_whenAdditionExpInParenthesesExpReturned_thenEvaluateExpAndReturnResult() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(30, 40), 727);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new HashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new ParenthesesExpression(new Position(30, 39), new AdditionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 7.20), new IntValue(new Position(30, 45), 720))))
             ))));
         }};
         Program program = new Program(new Position(1, 1), functions);

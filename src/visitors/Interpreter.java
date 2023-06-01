@@ -648,7 +648,7 @@ public class Interpreter implements IVisitor {
 
     @Override
     public void visit(ParenthesesExpression exp) {
-
+        exp.exp().accept(this);
     }
 
     private void tryToAddExpressions(Position position, IVisitable leftExp, IVisitable rightExp) {
