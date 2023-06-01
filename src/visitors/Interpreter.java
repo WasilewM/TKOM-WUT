@@ -735,6 +735,7 @@ public class Interpreter implements IVisitor {
             IVisitable obj = lastResult;
             Class<?> clazz = obj.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
+            registerErrorIfNumberOfArgsDifferentThanOne(funcCall);
             funcCall.exp().get(0).accept(this);
             method.invoke(obj, lastResult);
         } catch (Exception e) {
@@ -753,6 +754,7 @@ public class Interpreter implements IVisitor {
         try {
             Class<?> clazz = lastResult.getClass();
             Method method = clazz.getMethod(funcCall.identifier().name(), int.class);
+            registerErrorIfNumberOfArgsDifferentThanOne(funcCall);
             IntValue castedArg = castToIntValue(funcCall.exp().get(0));
             lastResult = (IVisitable) method.invoke(lastResult, castedArg.value());
         } catch (Exception e) {
@@ -815,6 +817,12 @@ public class Interpreter implements IVisitor {
         if (lastResult.getClass().equals(BoolValue.class)) {
             BoolValue castedValue = (BoolValue) lastResult;
             lastResult = new BoolValue(exp.position(), castedValue.value());
+        }
+    }
+
+    private void registerErrorIfNumberOfArgsDifferentThanOne(FunctionCall funcCall) {
+        if (funcCall.exp().size() != 1) {
+            errorHandler.handle(new InvalidNumberOfArgumentsException(funcCall));
         }
     }
 

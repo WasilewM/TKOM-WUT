@@ -3,6 +3,7 @@ package visitors.interpreter;
 import lexer.Position;
 import org.junit.jupiter.api.Test;
 import parser.IErrorHandler;
+import parser.IExpression;
 import parser.IFunctionDef;
 import parser.program_components.*;
 import parser.program_components.data_values.DoubleValue;
@@ -18,13 +19,11 @@ import visitors.ContextManager;
 import visitors.Interpreter;
 import visitors.exceptions.IdentifierNotFoundException;
 import visitors.exceptions.IncompatibleDataTypeException;
+import visitors.exceptions.InvalidNumberOfArgumentsException;
 import visitors.exceptions.UndefinedMethodCallException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -227,15 +226,15 @@ public class VisitMalformedObjectAccessTest {
     }
 
     @Test
-    void givenObjectAccessStmntWithScene_whenAddingValueFromUnknownIdentifier_thenExecuteMethod() {
+    void givenObjectAccessStmntWithScene_whenAddingValueFromUnknownIdentifier_thenErrorIsRegistered() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         ContextManager contextManager = new ContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
         LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
-        FigureValue expectedLastResult = new FigureValue(new Position(50, 10));
+        FigureValue figure = new FigureValue(new Position(50, 10));
         functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
                 new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new Identifier(new Position(60, 10), "fig")),
-                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), expectedLastResult)),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), figure)),
                 new ReturnStatement(new Position(70, 1),
                         new ObjectAccess(new Position(75, 1), new Identifier(new Position(75, 1), "myList"), new FunctionCall(new Position(75, 8), new Identifier(new Position(75, 8), "get"), new IntValue(new Position(75, 10), 0))))
         ))));
@@ -247,4 +246,81 @@ public class VisitMalformedObjectAccessTest {
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
     }
 
+    @Test
+    void givenObjectAccessStmnt_whenTryingToCallAddWithoutArgs_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add")))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new InvalidNumberOfArgumentsException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add")))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenObjectAccessStmnt_whenTryingToCallAddWithTwoArgs_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        ArrayList<IExpression> args = new ArrayList<>();
+        args.add(new IntValue(new Position(65, 18), 11));
+        args.add(new IntValue(new Position(65, 25), 11));
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add"), args))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new InvalidNumberOfArgumentsException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add")))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenObjectAccessStmnt_whenTryingToCallGetWithoutArgs_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get")))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new InvalidNumberOfArgumentsException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get")))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
+
+    @Test
+    void givenObjectAccessStmnt_whenTryingToCallGetWithTwoArgs_thenErrorIsRegistered() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        ArrayList<IExpression> args = new ArrayList<>();
+        args.add(new IntValue(new Position(65, 18), 11));
+        args.add(new IntValue(new Position(65, 25), 11));
+        functions.put("main", new FigureFunctionDef(new Position(50, 1), "main", new HashMap<>(), new CodeBlock(new Position(50, 10), List.of(
+                new AssignmentStatement(new Position(60, 1), new SceneListParameter(new Position(60, 1), "myList"), new SceneListValue(new Position(60, 10))),
+                new ObjectAccess(new Position(65, 1), new Identifier(new Position(65, 1), "myList"), new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get"), args))
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        List<Exception> expectedErrorLog = List.of(
+                new InvalidNumberOfArgumentsException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get")))
+        );
+
+        assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
+    }
 }

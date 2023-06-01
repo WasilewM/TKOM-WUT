@@ -22,7 +22,8 @@ public class InterpreterErrorHandler implements IErrorHandler {
                 || OperationDataTypeException.class.equals(e.getClass())
                 || UndefinedFunctionCallException.class.equals(e.getClass())
                 || UndefinedMethodCallException.class.equals(e.getClass())
-                || IncompatibleMethodArgumentException.class.equals(e.getClass());
+                || IncompatibleMethodArgumentException.class.equals(e.getClass())
+                || InvalidNumberOfArgumentsException.class.equals(e.getClass());
     }
 
     @Override
