@@ -4,6 +4,7 @@ import lexer.Position;
 import org.junit.jupiter.api.Test;
 import parser.IFunctionDef;
 import parser.program_components.CodeBlock;
+import parser.program_components.Identifier;
 import parser.program_components.Program;
 import parser.program_components.data_values.BoolValue;
 import parser.program_components.data_values.DoubleValue;
@@ -12,10 +13,8 @@ import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.AlternativeExpression;
 import parser.program_components.expressions.ConjunctiveExpression;
 import parser.program_components.function_definitions.IntFunctionDef;
-import parser.program_components.statements.ElseIfStatement;
-import parser.program_components.statements.ElseStatement;
-import parser.program_components.statements.IfStatement;
-import parser.program_components.statements.ReturnStatement;
+import parser.program_components.parameters.IntParameter;
+import parser.program_components.statements.*;
 import visitors.Interpreter;
 import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
@@ -122,6 +121,29 @@ public class VisitIfStatementTest {
             put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 25), true), new CodeBlock(new Position(21, 21), List.of(
                             new ReturnStatement(new Position(23, 30), expectedLastResult)
+                    ))),
+                    new ReturnStatement(new Position(30, 30), new IntValue(new Position(32, 40), 40))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenIfStmnt_whenConditionIsTrueAndVariableFromIfCodeBlockShadowsValueAssignedEarlier_thenVariableFromInsideIfCodeBlockIsReturned() {
+        // to check whether Interpreter checked if code block or not, different return values are set
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(16, 40), 13);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new IntParameter(new Position(15, 15), "m"), new IntValue(new Position(15, 20), 2)),
+                    new IfStatement(new Position(20, 20), new BoolValue(new Position(20, 25), true), new CodeBlock(new Position(21, 21), List.of(
+                            new AssignmentStatement(new Position(15, 15), new IntParameter(new Position(15, 15), "m"), expectedLastResult),
+                            new ReturnStatement(new Position(23, 30), new Identifier(new Position(23, 40), "m"))
                     ))),
                     new ReturnStatement(new Position(30, 30), new IntValue(new Position(32, 40), 40))
             ))));
