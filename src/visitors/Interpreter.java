@@ -770,34 +770,37 @@ public class Interpreter implements IVisitor {
     @Override
     public void visit(FunctionCall functionCall) {
         if (contextManager.containsFunction(functionCall.identifier().name())) {
-            IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
-            if (functionCall.exp() != null) {
-                if (!func.areArgumentsTypesValid(functionCall.exp())) {
-                    ArrayList<IVisitable> expectedArgs = new ArrayList<>(func.parameters().values());
-                    ArrayList<IVisitable> receivedArgs = new ArrayList<>(functionCall.exp());
-                    errorHandler.handle(new IncompatibleArgumentsListException(functionCall, expectedArgs, receivedArgs));
+            IFunctionDef functionDef = contextManager.getFunction(functionCall.identifier().name());
+            ArrayList<IExpression> evaluatedArgs = evaluateFunctionCallParameters(functionCall);
+            FunctionCall evaluatedFunctionCall = new FunctionCall(functionCall.position(), functionCall.identifier(), evaluatedArgs);
+
+            if (evaluatedFunctionCall.exp() != null) {
+                if (!functionDef.areArgumentsTypesValid(evaluatedFunctionCall.exp())) {
+                    ArrayList<IVisitable> expectedArgs = new ArrayList<>(functionDef.parameters().values());
+                    ArrayList<IVisitable> receivedArgs = new ArrayList<>(evaluatedFunctionCall.exp());
+                    errorHandler.handle(new IncompatibleArgumentsListException(evaluatedFunctionCall, expectedArgs, receivedArgs));
                 }
                 int argumentIdx = 0;
-                for (Map.Entry<String, IParameter> p : func.parameters().entrySet()) {
-                    functionCall.exp().get(argumentIdx).accept(this);
+                for (Map.Entry<String, IParameter> p : functionDef.parameters().entrySet()) {
+                    evaluatedFunctionCall.exp().get(argumentIdx).accept(this);
                     contextManager.addParameter(p.getKey(), lastResult);
                     argumentIdx += 1;
                 }
             }
 
             if (functionCallStack.size() + 1 > maxFunctionCallStackSize) {
-                errorHandler.handle(new ExceededFunctionCallStackSizeException(functionCall, maxFunctionCallStackSize));
+                errorHandler.handle(new ExceededFunctionCallStackSizeException(evaluatedFunctionCall, maxFunctionCallStackSize));
             }
-            functionCallStack.push(functionCall.identifier().name());
-            if (currentFunctionName.equals(func.name())) {
+            functionCallStack.push(evaluatedFunctionCall.identifier().name());
+            if (currentFunctionName.equals(functionDef.name())) {
                 if (recursionDepth + 1 > maxRecursionDepth) {
-                    errorHandler.handle(new ExceededMaxRecursionDepthException(functionCall, maxRecursionDepth));
+                    errorHandler.handle(new ExceededMaxRecursionDepthException(evaluatedFunctionCall, maxRecursionDepth));
                 }
                 recursionDepth += 1;
-                func.accept(this);
+                functionDef.accept(this);
                 recursionDepth -= 1;
             } else {
-                func.accept(this);
+                functionDef.accept(this);
             }
             functionCallStack.pop();
         } else if (contextManager.isMethodImplemented(functionCall.identifier().name())) {
@@ -806,6 +809,15 @@ public class Interpreter implements IVisitor {
         } else {
             errorHandler.handle(new UndefinedFunctionCallException(functionCall));
         }
+    }
+
+    private ArrayList<IExpression> evaluateFunctionCallParameters(FunctionCall functionCall) {
+        ArrayList<IExpression> evaluatedArgs = new ArrayList<>();
+        for (IExpression arg : functionCall.exp()) {
+            arg.accept(this);
+            evaluatedArgs.add((IExpression) lastResult);
+        }
+        return evaluatedArgs;
     }
 
     @Override
