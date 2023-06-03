@@ -794,11 +794,58 @@ public class Interpreter implements IVisitor {
         IFunctionDef functionDef = contextManager.getFunction(functionCall.identifier().name());
         ArrayList<IExpression> evaluatedArgs = evaluateFunctionCallParameters(functionCall);
         FunctionCall evaluatedFunctionCall = new FunctionCall(functionCall.position(), functionCall.identifier(), evaluatedArgs);
-        addFunctionCallParametersToContextManager(functionDef, evaluatedFunctionCall);
+        addFunctionCallArgumentsToContextManager(functionDef, evaluatedFunctionCall);
         handleFunctionCall(functionDef, evaluatedFunctionCall);
     }
 
-    private void addFunctionCallParametersToContextManager(IFunctionDef functionDef, FunctionCall evaluatedFunctionCall) {
+    private void handleBuiltInFunctionCall(FunctionCall functionCall) {
+        ArrayList<IExpression> evaluatedArgs = evaluateFunctionCallParameters(functionCall);
+        Object[] args = getArgumentsObjectList(evaluatedArgs);
+        Class[] argumentsTypes = getArgumentsTypes(evaluatedArgs);
+        if (contextManager.isVoidMethod(functionCall.identifier().name())) {
+            handleBuiltInVoidMethod(functionCall, args, argumentsTypes);
+        } else if (contextManager.isValueReturningMethod(functionCall.identifier().name())) {
+            handleBuiltInValueReturningMethod(functionCall, args, argumentsTypes);
+        } else {
+            handleUndefinedFunctionCall(functionCall);
+        }
+
+        if (contextManager.getCurrentObject() != null) {
+            contextManager.unSetCurrentObject();
+        }
+    }
+
+    private Object[] getArgumentsObjectList(ArrayList<IExpression> evaluatedArgs) {
+        Object[] args = new Object[evaluatedArgs.size()];
+        for (int i = 0; i < evaluatedArgs.size(); i++) {
+            args[i] = evaluatedArgs.get(i);
+        }
+        return args;
+    }
+
+    private Class[] getArgumentsTypes(ArrayList<IExpression> evaluatedArgs) {
+        Class[] argumentsTypes = new Class[evaluatedArgs.size()];
+        for (int i = 0; i < evaluatedArgs.size(); i++) {
+            if (implementsIDataValue(evaluatedArgs.get(i))) {
+                argumentsTypes[i] = IDataValue.class;
+            } else {
+                argumentsTypes[i] = evaluatedArgs.get(i).getClass();
+            }
+        }
+        return argumentsTypes;
+    }
+
+    private boolean implementsIDataValue(IExpression exp) {
+        Class<?>[] interfaces = exp.getClass().getInterfaces();
+        for (var i : interfaces) {
+            if (IDataValue.class.isAssignableFrom(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addFunctionCallArgumentsToContextManager(IFunctionDef functionDef, FunctionCall evaluatedFunctionCall) {
         if (evaluatedFunctionCall.exp() != null) {
             if (!functionDef.areArgumentsTypesValid(evaluatedFunctionCall.exp())) {
                 ArrayList<IVisitable> expectedArgs = new ArrayList<>(functionDef.parameters().values());
@@ -841,49 +888,37 @@ public class Interpreter implements IVisitor {
         functionCallStack.pop();
     }
 
-    private void handleBuiltInFunctionCall(FunctionCall functionCall) {
-        if (contextManager.isVoidMethod(functionCall.identifier().name())) {
-            handleBuiltInVoidMethod(functionCall);
-        } else if (contextManager.isValueReturningMethod(functionCall.identifier().name())) {
-            handleBuiltIntValueReturningMethod(functionCall);
-        } else {
-            handleUndefinedFunctionCall(functionCall);
-        }
-
-        if (contextManager.getCurrentObject() != null) {
-            contextManager.unSetCurrentObject();
-        }
-    }
-
-    private void handleBuiltInVoidMethod(FunctionCall functionCall) {
+    private void handleBuiltInVoidMethod(FunctionCall functionCall, Object[] args, Class[] argumentsTypes) {
         try {
             IVisitable obj = contextManager.getCurrentObject();
             Class<?> clazz = obj.getClass();
-            Method method = clazz.getMethod(functionCall.identifier().name(), IDataValue.class);
-            registerErrorIfNumberOfArgsDifferentThanOne(functionCall);
-            functionCall.exp().get(0).accept(this);
-            method.invoke(obj, lastResult);
+            Method method = clazz.getMethod(functionCall.identifier().name(), argumentsTypes);
+            method.invoke(obj, args);
         } catch (Exception e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof IncompatibleDataTypeException) {
-                errorHandler.handle((IncompatibleDataTypeException) cause);
-            } else if (cause instanceof IncompatibleMethodArgumentException) {
-                errorHandler.handle((IncompatibleMethodArgumentException) cause);
-            } else {
-                errorHandler.handle(new RuntimeException());
-            }
+            handleExceptionCausedByBuiltInMethod(functionCall, e);
         }
     }
 
-    private void handleBuiltIntValueReturningMethod(FunctionCall functionCall) {
+    private void handleBuiltInValueReturningMethod(FunctionCall functionCall, Object[] args, Class[] argumentsTypes) {
         try {
-            Class<?> clazz = lastResult.getClass();
-            Method method = clazz.getMethod(functionCall.identifier().name(), int.class);
-            registerErrorIfNumberOfArgsDifferentThanOne(functionCall);
-            IntValue castedArg = castToIntValue(functionCall.exp().get(0));
-            lastResult = (IVisitable) method.invoke(lastResult, castedArg.value());
+            Class<?> clazz = contextManager.getCurrentObject().getClass();
+            Method method = clazz.getMethod(functionCall.identifier().name(), argumentsTypes);
+            lastResult = (IVisitable) method.invoke(contextManager.getCurrentObject(), args);
         } catch (Exception e) {
-            errorHandler.handle(e);
+            handleExceptionCausedByBuiltInMethod(functionCall, e);
+        }
+    }
+
+    private void handleExceptionCausedByBuiltInMethod(FunctionCall functionCall, Exception e) {
+        Throwable cause = e.getCause();
+        if (cause instanceof IncompatibleDataTypeException) {
+            errorHandler.handle((IncompatibleDataTypeException) cause);
+        } else if (cause instanceof IncompatibleMethodArgumentException) {
+            errorHandler.handle((IncompatibleMethodArgumentException) cause);
+        } else if (e instanceof NoSuchMethodException) {
+            errorHandler.handle(new UndefinedFunctionCallException(functionCall));
+        } else {
+            errorHandler.handle(new RuntimeException());
         }
     }
 
@@ -971,12 +1006,6 @@ public class Interpreter implements IVisitor {
     private void clearLastResult() {
         if (!returnFound) {
             lastResult = null;
-        }
-    }
-
-    private void registerErrorIfNumberOfArgsDifferentThanOne(FunctionCall funcCall) {
-        if (funcCall.exp().size() != 1) {
-            errorHandler.handle(new InvalidNumberOfArgumentsException(funcCall));
         }
     }
 

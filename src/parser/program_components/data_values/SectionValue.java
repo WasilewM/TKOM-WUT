@@ -15,4 +15,14 @@ public record SectionValue(Position position, IExpression first, IExpression sec
     public Object value() {
         return null;
     }
+
+    @Override
+    public String getPrinting() {
+        return "Section[" + ((IDataValue) first).getPrinting() + ", " + ((IDataValue) second).getPrinting() + "]";
+    }
+
+    @Override
+    public void print() {
+        System.out.print(getPrinting());
+    }
 }

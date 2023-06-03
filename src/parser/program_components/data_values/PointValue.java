@@ -24,4 +24,14 @@ public record PointValue(Position position, IExpression x, IExpression y) implem
 
         return ((this.x).equals(castedOther.x) && (this.y).equals(castedOther.y));
     }
+
+    @Override
+    public String getPrinting() {
+        return "Point(" + ((DoubleValue) x).getPrinting() + ", " + ((DoubleValue) y).getPrinting() + ")";
+    }
+
+    @Override
+    public void print() {
+        System.out.print(getPrinting());
+    }
 }

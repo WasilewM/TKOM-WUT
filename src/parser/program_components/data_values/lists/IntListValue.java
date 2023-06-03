@@ -41,8 +41,8 @@ public class IntListValue extends GenericListValue {
     }
 
     @Override
-    public IntValue get(int idx) {
-        return (IntValue) values.get(idx);
+    public IntValue get(IntValue idx) {
+        return (IntValue) values.get(idx.value());
     }
 
     @Override
@@ -52,5 +52,10 @@ public class IntListValue extends GenericListValue {
         } else {
             throw new IncompatibleDataTypeException(this, val);
         }
+    }
+
+    @Override
+    public String getPrinting() {
+        return "IntListValue" + super.getPrinting();
     }
 }

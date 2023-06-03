@@ -32,6 +32,7 @@ public class ContextManager {
 
     private void initVoidMethodsLists() {
         voidMethods.add("add");
+        voidMethods.add("print");
     }
 
     public Context getLastContext() {

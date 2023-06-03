@@ -17,7 +17,10 @@ import parser.program_components.statements.AssignmentStatement;
 import parser.program_components.statements.ReturnStatement;
 import visitors.ContextManager;
 import visitors.Interpreter;
-import visitors.exceptions.*;
+import visitors.exceptions.IdentifierNotFoundException;
+import visitors.exceptions.IncompatibleDataTypeException;
+import visitors.exceptions.UndefinedFunctionCallException;
+import visitors.exceptions.UndefinedMethodCallException;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.ArrayList;
@@ -258,7 +261,7 @@ public class VisitMalformedObjectAccessTest {
         ))));
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new InvalidNumberOfArgumentsException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add")))
+                new UndefinedFunctionCallException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add")))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -279,7 +282,7 @@ public class VisitMalformedObjectAccessTest {
         ))));
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new InvalidNumberOfArgumentsException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add")))
+                new UndefinedFunctionCallException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "add")))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -297,7 +300,7 @@ public class VisitMalformedObjectAccessTest {
         ))));
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new InvalidNumberOfArgumentsException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get")))
+                new UndefinedFunctionCallException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get")))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);
@@ -318,7 +321,7 @@ public class VisitMalformedObjectAccessTest {
         ))));
         Program program = new Program(new Position(1, 1), functions);
         List<Exception> expectedErrorLog = List.of(
-                new InvalidNumberOfArgumentsException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get")))
+                new UndefinedFunctionCallException(new FunctionCall(new Position(65, 8), new Identifier(new Position(65, 8), "get")))
         );
 
         assertErrorLogs(errorHandler, interpreter, program, expectedErrorLog);

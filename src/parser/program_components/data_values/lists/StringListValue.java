@@ -2,6 +2,7 @@ package parser.program_components.data_values.lists;
 
 import lexer.Position;
 import parser.IDataValue;
+import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.StringValue;
 import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
@@ -41,8 +42,8 @@ public class StringListValue extends GenericListValue {
     }
 
     @Override
-    public StringValue get(int idx) {
-        return (StringValue) values.get(idx);
+    public StringValue get(IntValue idx) {
+        return (StringValue) values.get(idx.value());
     }
 
     @Override
@@ -52,5 +53,10 @@ public class StringListValue extends GenericListValue {
         } else {
             throw new IncompatibleDataTypeException(this, val);
         }
+    }
+
+    @Override
+    public String getPrinting() {
+        return "StringListValue" + super.getPrinting();
     }
 }
