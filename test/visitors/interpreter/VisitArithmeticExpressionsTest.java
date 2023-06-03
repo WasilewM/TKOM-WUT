@@ -91,6 +91,23 @@ public class VisitArithmeticExpressionsTest {
     }
 
     @Test
+    void givenIntFuncAndAdditionExpOfDoubleValuesReturned_whenDoubleValuesSumIsDifferentThanSumOfValuesCastedToIntBeforeExpEvaluation_thenCastToIntIsDoneAfterExpEvaluation() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(30, 40), 12);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new ReturnStatement(new Position(30, 30), new AdditionExpression(new Position(30, 40), new DoubleValue(new Position(30, 40), 6.76), new DoubleValue(new Position(30, 50), 5.401)))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
     void givenDoubleFuncAndAdditionExpReturned_whenBothSidesAreIntValues_thenLastResultIsEvaluatedIntValue() {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextManager contextManager = new MockedContextManager();
