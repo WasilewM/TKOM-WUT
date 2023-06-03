@@ -452,7 +452,7 @@ public class VisitArithmeticExpressionsTest {
         MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
         MockedContextManager contextManager = new MockedContextManager();
         Interpreter interpreter = new Interpreter(errorHandler, contextManager);
-        DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.25);
+        DoubleValue expectedLastResult = new DoubleValue(new Position(30, 40), 1.0);
         HashMap<String, IFunctionDef> functions = new HashMap<>() {{
             put("main", new DoubleFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
                     new ReturnStatement(new Position(30, 30), new DivisionExpression(new Position(30, 40), new IntValue(new Position(30, 40), 5), new IntValue(new Position(30, 50), 4)))

@@ -623,7 +623,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToAddExpressions(exp.position(), leftExp, lastResult);
+        tryToEvaluateAdditionExpression(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -632,7 +632,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToSubtractExpressions(exp.position(), leftExp, lastResult);
+        tryToEvaluateSubtractionExpressions(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -641,7 +641,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToDivideDiscretely(exp.position(), leftExp, lastResult);
+        tryToEvaluateDiscreteDivisionExpression(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -650,7 +650,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToDivide(exp.position(), leftExp, lastResult);
+        tryToEvaluateDivisionExpression(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -659,7 +659,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToMultiply(exp.position(), leftExp, lastResult);
+        tryToEvaluateMultiplicationExpression(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -667,19 +667,47 @@ public class Interpreter implements IVisitor {
         exp.exp().accept(this);
     }
 
-    private void tryToAddExpressions(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateAdditionExpression(Position position, IVisitable leftExp, IVisitable rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            tryToAddIntValues(position, leftExp, rightExp);
+        } else {
+            tryToAddDoubleValues(position, leftExp, rightExp);
+        }
+    }
+
+    private void tryToAddIntValues(Position position, IVisitable leftExp, IVisitable rightExp) {
+        IntValue leftCastedValue = castToIntValue(leftExp);
+        IntValue rightCastedValue = castToIntValue(rightExp);
+        lastResult = new IntValue(position, leftCastedValue.value() + rightCastedValue.value());
+    }
+
+    private void tryToAddDoubleValues(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
     }
 
-    private void tryToSubtractExpressions(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateSubtractionExpressions(Position position, IVisitable leftExp, IVisitable rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            tryToSubtractIntValues(position, leftExp, rightExp);
+        } else {
+            tryToSubtractDoubleValues(position, leftExp, rightExp);
+        }
+    }
+
+    private void tryToSubtractIntValues(Position position, IVisitable leftExp, IVisitable rightExp) {
+        IntValue leftCastedValue = castToIntValue(leftExp);
+        IntValue rightCastedValue = castToIntValue(rightExp);
+        lastResult = new IntValue(position, leftCastedValue.value() - rightCastedValue.value());
+    }
+
+    private void tryToSubtractDoubleValues(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
     }
 
-    private void tryToDivideDiscretely(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateDiscreteDivisionExpression(Position position, IVisitable leftExp, IVisitable rightExp) {
         IntValue leftCastedValue = castToIntValue(leftExp);
         IntValue rightCastedValue = castToIntValue(rightExp);
         if (rightCastedValue.value().equals(0)) {
@@ -688,7 +716,24 @@ public class Interpreter implements IVisitor {
         lastResult = new IntValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
-    private void tryToDivide(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateDivisionExpression(Position position, IVisitable leftExp, IVisitable rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            tryToDivideIntValues(position, leftExp, rightExp);
+        } else {
+            tryToDivideDoubleValues(position, leftExp, rightExp);
+        }
+    }
+
+    private void tryToDivideIntValues(Position position, IVisitable leftExp, IVisitable rightExp) {
+        IntValue leftCastedValue = castToIntValue(leftExp);
+        IntValue rightCastedValue = castToIntValue(rightExp);
+        if (rightCastedValue.value().equals(0)) {
+            errorHandler.handle(new ZeroDivisionException(position));
+        }
+        lastResult = new IntValue(position, leftCastedValue.value() / rightCastedValue.value());
+    }
+
+    private void tryToDivideDoubleValues(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         if (rightCastedValue.value().equals(0.0)) {
@@ -697,7 +742,21 @@ public class Interpreter implements IVisitor {
         lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
-    private void tryToMultiply(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateMultiplicationExpression(Position position, IVisitable leftExp, IVisitable rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            tryToMultiplyIntValues(position, leftExp, rightExp);
+        } else {
+            tryToMultiplyDoubleValues(position, leftExp, rightExp);
+        }
+    }
+
+    private void tryToMultiplyIntValues(Position position, IVisitable leftExp, IVisitable rightExp) {
+        IntValue leftCastedValue = castToIntValue(leftExp);
+        IntValue rightCastedValue = castToIntValue(rightExp);
+        lastResult = new IntValue(position, leftCastedValue.value() * rightCastedValue.value());
+    }
+
+    private void tryToMultiplyDoubleValues(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
