@@ -17,13 +17,6 @@ public class GenericListValue implements IExtendableDataValue {
         this.position = position;
     }
 
-    public static ArrayList<String> getImplementedMethods() {
-        ArrayList<String> implementedMethods = new ArrayList<>();
-        implementedMethods.add("get");
-        implementedMethods.add("add");
-        return implementedMethods;
-    }
-
     @Override
     public ArrayList<IDataValue> value() {
         return values;

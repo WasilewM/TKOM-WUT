@@ -768,46 +768,49 @@ public class Interpreter implements IVisitor {
 
     // other components
     @Override
+    public void visit(ObjectAccess objectAccess) {
+        objectAccess.leftExp().accept(this);
+        if (!objectAccess.rightExp().getClass().equals(FunctionCall.class)) {
+            errorHandler.handle(new UndefinedMethodCallException(objectAccess));
+        } else {
+            FunctionCall functionCall = (FunctionCall) objectAccess.rightExp();
+            contextManager.setCurrentObject(lastResult);
+            functionCall.accept(this);
+        }
+    }
+
+    @Override
     public void visit(FunctionCall functionCall) {
         if (contextManager.containsFunction(functionCall.identifier().name())) {
-            IFunctionDef functionDef = contextManager.getFunction(functionCall.identifier().name());
-            ArrayList<IExpression> evaluatedArgs = evaluateFunctionCallParameters(functionCall);
-            FunctionCall evaluatedFunctionCall = new FunctionCall(functionCall.position(), functionCall.identifier(), evaluatedArgs);
-
-            if (evaluatedFunctionCall.exp() != null) {
-                if (!functionDef.areArgumentsTypesValid(evaluatedFunctionCall.exp())) {
-                    ArrayList<IVisitable> expectedArgs = new ArrayList<>(functionDef.parameters().values());
-                    ArrayList<IVisitable> receivedArgs = new ArrayList<>(evaluatedFunctionCall.exp());
-                    errorHandler.handle(new IncompatibleArgumentsListException(evaluatedFunctionCall, expectedArgs, receivedArgs));
-                }
-                int argumentIdx = 0;
-                for (Map.Entry<String, IParameter> p : functionDef.parameters().entrySet()) {
-                    evaluatedFunctionCall.exp().get(argumentIdx).accept(this);
-                    contextManager.addParameter(p.getKey(), lastResult);
-                    argumentIdx += 1;
-                }
-            }
-
-            if (functionCallStack.size() + 1 > maxFunctionCallStackSize) {
-                errorHandler.handle(new ExceededFunctionCallStackSizeException(evaluatedFunctionCall, maxFunctionCallStackSize));
-            }
-            functionCallStack.push(evaluatedFunctionCall.identifier().name());
-            if (currentFunctionName.equals(functionDef.name())) {
-                if (recursionDepth + 1 > maxRecursionDepth) {
-                    errorHandler.handle(new ExceededMaxRecursionDepthException(evaluatedFunctionCall, maxRecursionDepth));
-                }
-                recursionDepth += 1;
-                functionDef.accept(this);
-                recursionDepth -= 1;
-            } else {
-                functionDef.accept(this);
-            }
-            functionCallStack.pop();
+            handleUserDefinedFunctionCall(functionCall);
         } else if (contextManager.isMethodImplemented(functionCall.identifier().name())) {
-            IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
-            func.accept(this);
+            handleBuiltInFunctionCall(functionCall);
         } else {
-            errorHandler.handle(new UndefinedFunctionCallException(functionCall));
+            handleUndefinedFunctionCall(functionCall);
+        }
+    }
+
+    private void handleUserDefinedFunctionCall(FunctionCall functionCall) {
+        IFunctionDef functionDef = contextManager.getFunction(functionCall.identifier().name());
+        ArrayList<IExpression> evaluatedArgs = evaluateFunctionCallParameters(functionCall);
+        FunctionCall evaluatedFunctionCall = new FunctionCall(functionCall.position(), functionCall.identifier(), evaluatedArgs);
+        addFunctionCallParametersToContextManager(functionDef, evaluatedFunctionCall);
+        handleFunctionCall(functionDef, evaluatedFunctionCall);
+    }
+
+    private void addFunctionCallParametersToContextManager(IFunctionDef functionDef, FunctionCall evaluatedFunctionCall) {
+        if (evaluatedFunctionCall.exp() != null) {
+            if (!functionDef.areArgumentsTypesValid(evaluatedFunctionCall.exp())) {
+                ArrayList<IVisitable> expectedArgs = new ArrayList<>(functionDef.parameters().values());
+                ArrayList<IVisitable> receivedArgs = new ArrayList<>(evaluatedFunctionCall.exp());
+                errorHandler.handle(new IncompatibleArgumentsListException(evaluatedFunctionCall, expectedArgs, receivedArgs));
+            }
+            int argumentIdx = 0;
+            for (Map.Entry<String, IParameter> p : functionDef.parameters().entrySet()) {
+                evaluatedFunctionCall.exp().get(argumentIdx).accept(this);
+                contextManager.addParameter(p.getKey(), lastResult);
+                argumentIdx += 1;
+            }
         }
     }
 
@@ -820,40 +823,45 @@ public class Interpreter implements IVisitor {
         return evaluatedArgs;
     }
 
-    @Override
-    public void visit(Identifier identifier) {
-        if (!contextManager.containsKey(identifier.name())) {
-            errorHandler.handle(new IdentifierNotFoundException(identifier));
+    private void handleFunctionCall(IFunctionDef functionDef, FunctionCall evaluatedFunctionCall) {
+        if (functionCallStack.size() + 1 > maxFunctionCallStackSize) {
+            errorHandler.handle(new ExceededFunctionCallStackSizeException(evaluatedFunctionCall, maxFunctionCallStackSize));
         }
-
-        lastResult = contextManager.get(identifier.name());
-    }
-
-    @Override
-    public void visit(ObjectAccess objectAccess) {
-        objectAccess.leftExp().accept(this);
-        if (!objectAccess.rightExp().getClass().equals(FunctionCall.class)) {
-            errorHandler.handle(new UndefinedMethodCallException(objectAccess));
-        } else {
-            FunctionCall funcCall = (FunctionCall) objectAccess.rightExp();
-
-            if (funcCall.identifier().name().equals("add")) {
-                handleAddToObject(funcCall);
-            } else if (funcCall.identifier().name().equals("get")) {
-                handleGetFromObject(funcCall);
-            } else {
-                errorHandler.handle(new UndefinedMethodCallException(objectAccess));
+        functionCallStack.push(evaluatedFunctionCall.identifier().name());
+        if (currentFunctionName.equals(functionDef.name())) {
+            if (recursionDepth + 1 > maxRecursionDepth) {
+                errorHandler.handle(new ExceededMaxRecursionDepthException(evaluatedFunctionCall, maxRecursionDepth));
             }
+            recursionDepth += 1;
+            functionDef.accept(this);
+            recursionDepth -= 1;
+        } else {
+            functionDef.accept(this);
+        }
+        functionCallStack.pop();
+    }
+
+    private void handleBuiltInFunctionCall(FunctionCall functionCall) {
+        if (contextManager.isVoidMethod(functionCall.identifier().name())) {
+            handleBuiltInVoidMethod(functionCall);
+        } else if (contextManager.isValueReturningMethod(functionCall.identifier().name())) {
+            handleBuiltIntValueReturningMethod(functionCall);
+        } else {
+            handleUndefinedFunctionCall(functionCall);
+        }
+
+        if (contextManager.getCurrentObject() != null) {
+            contextManager.unSetCurrentObject();
         }
     }
 
-    private void handleAddToObject(FunctionCall funcCall) {
+    private void handleBuiltInVoidMethod(FunctionCall functionCall) {
         try {
-            IVisitable obj = lastResult;
+            IVisitable obj = contextManager.getCurrentObject();
             Class<?> clazz = obj.getClass();
-            Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
-            registerErrorIfNumberOfArgsDifferentThanOne(funcCall);
-            funcCall.exp().get(0).accept(this);
+            Method method = clazz.getMethod(functionCall.identifier().name(), IDataValue.class);
+            registerErrorIfNumberOfArgsDifferentThanOne(functionCall);
+            functionCall.exp().get(0).accept(this);
             method.invoke(obj, lastResult);
         } catch (Exception e) {
             Throwable cause = e.getCause();
@@ -867,16 +875,29 @@ public class Interpreter implements IVisitor {
         }
     }
 
-    private void handleGetFromObject(FunctionCall funcCall) {
+    private void handleBuiltIntValueReturningMethod(FunctionCall functionCall) {
         try {
             Class<?> clazz = lastResult.getClass();
-            Method method = clazz.getMethod(funcCall.identifier().name(), int.class);
-            registerErrorIfNumberOfArgsDifferentThanOne(funcCall);
-            IntValue castedArg = castToIntValue(funcCall.exp().get(0));
+            Method method = clazz.getMethod(functionCall.identifier().name(), int.class);
+            registerErrorIfNumberOfArgsDifferentThanOne(functionCall);
+            IntValue castedArg = castToIntValue(functionCall.exp().get(0));
             lastResult = (IVisitable) method.invoke(lastResult, castedArg.value());
         } catch (Exception e) {
             errorHandler.handle(e);
         }
+    }
+
+    private void handleUndefinedFunctionCall(FunctionCall functionCall) {
+        errorHandler.handle(new UndefinedFunctionCallException(functionCall));
+    }
+
+    @Override
+    public void visit(Identifier identifier) {
+        if (!contextManager.containsKey(identifier.name())) {
+            errorHandler.handle(new IdentifierNotFoundException(identifier));
+        }
+
+        lastResult = contextManager.get(identifier.name());
     }
 
     // utils
