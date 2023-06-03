@@ -42,6 +42,11 @@ public class PointListValue extends GenericListValue {
     }
 
     @Override
+    public PointValue get(int idx) {
+        return (PointValue) values.get(idx);
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(PointValue.class)) {
             super.add(val);

@@ -41,6 +41,11 @@ public class FigureListValue extends GenericListValue {
     }
 
     @Override
+    public FigureValue get(int idx) {
+        return (FigureValue) values.get(idx);
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(FigureValue.class)) {
             super.add(val);

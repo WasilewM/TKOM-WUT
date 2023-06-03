@@ -41,6 +41,11 @@ public class SceneListValue extends GenericListValue {
     }
 
     @Override
+    public SceneValue get(int idx) {
+        return (SceneValue) values.get(idx);
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(SceneValue.class)) {
             super.add(val);

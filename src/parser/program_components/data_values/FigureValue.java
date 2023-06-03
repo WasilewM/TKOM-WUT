@@ -34,7 +34,7 @@ public class FigureValue implements IExtendableDataValue {
     }
 
     @Override
-    public Object value() {
+    public ArrayList<SectionValue> value() {
         return values;
     }
 

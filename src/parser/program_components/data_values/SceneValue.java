@@ -2,7 +2,6 @@ package parser.program_components.data_values;
 
 import lexer.Position;
 import parser.IDataValue;
-import parser.IExpression;
 import parser.IExtendableDataValue;
 import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
@@ -12,9 +11,9 @@ import java.util.Objects;
 
 public class SceneValue implements IExtendableDataValue {
     private final Position position;
-    private final ArrayList<IExpression> values;
+    private final ArrayList<IDataValue> values;
 
-    public SceneValue(Position position, ArrayList<IExpression> values) {
+    public SceneValue(Position position, ArrayList<IDataValue> values) {
         this.position = position;
         this.values = values;
     }
@@ -35,7 +34,7 @@ public class SceneValue implements IExtendableDataValue {
     }
 
     @Override
-    public Object value() {
+    public ArrayList<IDataValue> value() {
         return values;
     }
 
@@ -44,7 +43,7 @@ public class SceneValue implements IExtendableDataValue {
         return position;
     }
 
-    public ArrayList<IExpression> values() {
+    public ArrayList<IDataValue> values() {
         return values;
     }
 
@@ -79,7 +78,7 @@ public class SceneValue implements IExtendableDataValue {
     }
 
     @Override
-    public Object get(int idx) {
+    public IDataValue get(int idx) {
         return values.get(idx);
     }
 

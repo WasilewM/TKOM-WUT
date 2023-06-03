@@ -6,7 +6,7 @@ import visitors.exceptions.IncompatibleMethodArgumentException;
 public interface IExtendableDataValue extends IDataValue {
     void add(IDataValue value) throws IncompatibleMethodArgumentException, IncompatibleDataTypeException;
 
-    Object get(int idx);
+    IDataValue get(int idx);
 
     int size();
 }

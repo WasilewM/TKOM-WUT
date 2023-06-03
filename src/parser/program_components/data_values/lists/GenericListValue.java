@@ -9,10 +9,10 @@ import visitors.exceptions.IncompatibleDataTypeException;
 import java.util.ArrayList;
 
 public class GenericListValue implements IExtendableDataValue {
-    protected final ArrayList<Object> values;
+    protected final ArrayList<IDataValue> values;
     protected final Position position;
 
-    public GenericListValue(Position position, ArrayList<Object> values) {
+    public GenericListValue(Position position, ArrayList<IDataValue> values) {
         this.values = values;
         this.position = position;
     }
@@ -25,7 +25,7 @@ public class GenericListValue implements IExtendableDataValue {
     }
 
     @Override
-    public Object value() {
+    public ArrayList<IDataValue> value() {
         return values;
     }
 
@@ -40,7 +40,7 @@ public class GenericListValue implements IExtendableDataValue {
     }
 
     @Override
-    public Object get(int idx) {
+    public IDataValue get(int idx) {
         return values.get(idx);
     }
 

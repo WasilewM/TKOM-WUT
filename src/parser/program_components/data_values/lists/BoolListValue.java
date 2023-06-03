@@ -41,6 +41,11 @@ public class BoolListValue extends GenericListValue {
     }
 
     @Override
+    public BoolValue get(int idx) {
+        return (BoolValue) values.get(idx);
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(BoolValue.class)) {
             super.add(val);

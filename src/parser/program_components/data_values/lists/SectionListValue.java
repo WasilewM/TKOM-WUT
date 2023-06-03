@@ -41,6 +41,11 @@ public class SectionListValue extends GenericListValue {
     }
 
     @Override
+    public SectionValue get(int idx) {
+        return (SectionValue) values.get(idx);
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(SectionValue.class)) {
             super.add(val);
