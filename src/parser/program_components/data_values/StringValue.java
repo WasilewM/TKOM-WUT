@@ -17,6 +17,6 @@ public record StringValue(Position position, String value) implements IDataValue
 
     @Override
     public void print() {
-        System.out.print(getPrinting());
+        System.out.println(getPrinting());
     }
 }

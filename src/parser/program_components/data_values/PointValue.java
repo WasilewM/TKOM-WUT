@@ -32,6 +32,6 @@ public record PointValue(Position position, IExpression x, IExpression y) implem
 
     @Override
     public void print() {
-        System.out.print(getPrinting());
+        System.out.println(getPrinting());
     }
 }

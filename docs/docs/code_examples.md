@@ -1,3 +1,6 @@
+# Przykłady kodu w zaprojektowanym języku
+
+```
 Int main() {
 	doSomeMath(1).print()
 
@@ -24,3 +27,13 @@ Int doSomeMath(Int n) {
 
    return result;
 }
+```
+
+Oraz efekty wykonania:
+
+```
+11
+IntListValueScene[1, 12, 123]
+
+Process finished with exit code 0
+```

@@ -106,6 +106,6 @@ public class SceneValue implements IExtendableDataValue {
 
     @Override
     public void print() {
-        System.out.print(getPrinting());
+        System.out.println(getPrinting());
     }
 }

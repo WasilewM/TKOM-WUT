@@ -26,6 +26,6 @@ public record DoubleValue(Position position, Double value) implements IDataValue
 
     @Override
     public void print() {
-        System.out.print(getPrinting());
+        System.out.println(getPrinting());
     }
 }

@@ -26,6 +26,6 @@ public record IntValue(Position position, Integer value) implements IDataValue {
 
     @Override
     public void print() {
-        System.out.print(getPrinting());
+        System.out.println(getPrinting());
     }
 }

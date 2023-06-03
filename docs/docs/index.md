@@ -347,79 +347,6 @@ ifStmnt: "if", "(", alternativeExp, "), "{", codeBlock, "}":
                 positiveAssignableValue: boolValue
 ```
 
-### Przykład kodu
-
-```
-Int main() {
-	doSomeMath(1)
-
-	return 0;
-}
-
-Int doSomeMath(Int n) {
-   if ((n < 0) || (n == 0) || (n == 1)) {
-      return 11;
-   }
-
-   Int i = 2;
-   Int result = 0;
-   while (i < n) {
-      result = result - i * (i + n - i);
-      i = i + 3;
-   }
-
-   return result;
-}
-
-List[Int] mergeSort(List[Int] n) {
-    if (n.length() == 1) {
-        return n;
-    }
-
-    List[Int] leftHalf = [Int];
-    Int l = 0;
-    while (l < (n.length() // 2)) {
-        leftHalf.add(n.get(l));
-        l = l + 1;
-    }
-
-    List[Int] rightHalf = [Int];
-    Int r = n.length() // 2;
-    while (r < n.length()) {
-        rightHalf.add(n.get(r));
-        r = r + 1;
-    }
-
-    List[Int] sortedLeftHalf = mergeSort(leftHalf);
-    List[Int] sortedRightHalf = mergeSort(rightHalf);
-
-    Int i = 0;
-    Int j = 0;
-    List[Int] sortedList = [Int];
-
-    while (i < sortedLeftHalf.length() && j < sortedRightHalf.length()) {
-        if (i == sortedLeftHalf.length() && j < sortedRightHalf.length()) {
-            sortedList.add(sortedRightHalf.get(j));
-            j = j + 1;
-        }
-        elseif (i < sortedLeftHalf.length() && j == sortedRightHalf.length()) {
-            sortedList.add(sortedLeftHalf.get(i));
-            i = i + 1;
-        }
-        elseif (sortedLeftHalf.get(i) < sortedRightHalf.get(j)) {
-            sortedList.add(sortedLeftHalf.get(i));
-            i = i + 1;
-        }
-        else {
-            sortedList.add(sortedRightHalf.get(j));
-            j = j + 1;
-        }
-    }
-
-    return sortedList;
-}
-```
-
 ## Testowanie
 
 Projekt został napisany w metodologii TDD. Biblioteką wykorzystaną do testów jest `JUnit5`.  
@@ -428,4 +355,5 @@ zarówno testy pozytywne, jak i negatywne (tj. z niepoprawnymi tokenami).
 Testy parsera opierają się na analizie kolejnych Tokenów. Dla każdego pozytywnego testu zdefiniowana została prawidłowa
 struktura programu, wynikająca z dostarczonych tokenów, która powinna być wynikiem działania parsera.
 Ponadto, przygotowane zostaną również testy akceptacyjne, które będą polegały na analizie przykładowego kodu w
-projektowanym języku. Przykład pozytywnego testu akceptacyjnego znajduje się w sekcji [Przykład kodu](#Przykład kodu).
+projektowanym języku. Przykład pozytywnego testu akceptacyjnego znajduje się w
+sekcji [Przykłady kodu](./code_examples.md).

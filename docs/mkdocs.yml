@@ -6,3 +6,4 @@ nav:
   - Parser: parser.md
   - Struktura programu: program_components.md
   - Interpreter: interpreter.md
+  - Przykłady kodu: code_examples.md

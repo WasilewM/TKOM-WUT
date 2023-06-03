@@ -49,7 +49,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("true", outStream.toString());
+        assertEquals("true", outStream.toString().trim());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("2.73", outStream.toString());
+        assertEquals("2.73", outStream.toString().trim());
     }
 
     @Test
@@ -83,7 +83,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("Figure[]", outStream.toString());
+        assertEquals("Figure[]", outStream.toString().trim());
     }
 
     @Test
@@ -102,7 +102,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("Figure[Section[Point(100.4, 1.4), Point(22.3, 15.0)]]", outStream.toString());
+        assertEquals("Figure[Section[Point(100.4, 1.4), Point(22.3, 15.0)]]", outStream.toString().trim());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("2", outStream.toString());
+        assertEquals("2", outStream.toString().trim());
     }
 
     @Test
@@ -137,7 +137,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("Point(100.4, 15.43)", outStream.toString());
+        assertEquals("Point(100.4, 15.43)", outStream.toString().trim());
     }
 
     @Test
@@ -154,7 +154,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("Scene[]", outStream.toString());
+        assertEquals("Scene[]", outStream.toString().trim());
     }
 
     @Test
@@ -173,7 +173,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("Scene[Section[Point(100.4, 1.4), Point(22.3, 15.0)]]", outStream.toString());
+        assertEquals("Scene[Section[Point(100.4, 1.4), Point(22.3, 15.0)]]", outStream.toString().trim());
     }
 
     @Test
@@ -193,7 +193,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("Scene[Section[Point(100.4, 1.4), Point(22.3, 15.0)], Section[Point(100.4, 1.4), Point(22.3, 15.0)]]", outStream.toString());
+        assertEquals("Scene[Section[Point(100.4, 1.4), Point(22.3, 15.0)], Section[Point(100.4, 1.4), Point(22.3, 15.0)]]", outStream.toString().trim());
     }
 
     @Test
@@ -211,7 +211,7 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("Section[Point(100.4, 1.4), Point(22.3, 15.0)]", outStream.toString());
+        assertEquals("Section[Point(100.4, 1.4), Point(22.3, 15.0)]", outStream.toString().trim());
     }
 
     @Test
@@ -228,6 +228,6 @@ public class VisitPrintFunctionTest {
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
-        assertEquals("true", outStream.toString());
+        assertEquals("true", outStream.toString().trim());
     }
 }

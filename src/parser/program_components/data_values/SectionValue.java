@@ -23,6 +23,6 @@ public record SectionValue(Position position, IExpression first, IExpression sec
 
     @Override
     public void print() {
-        System.out.print(getPrinting());
+        System.out.println(getPrinting());
     }
 }
