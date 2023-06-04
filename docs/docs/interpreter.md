@@ -69,3 +69,11 @@ przerwaniem przetwarzania.
 - `UndefinedFunctionCallExpression`
 - `UndefinedMethodCallExpression`
 - `ZeroDivisionException`
+
+## Testowanie
+
+Podobnie jak wcześniejsze moduły tak i Interpreter napisany został w metodologii TDD. Testy jednostkowe polegały na
+przetworzeniu ciągu tokenów w odpowiednią strukturę programu lub zwrócenie błędy / błędów w przypadku ciągu tokenów
+uznanego za niepoprawny.  
+Ponadto, przygotowane zostały również testy akceptacyjne, które polegają na wykonaniu przykładowego kodu w
+zaprojektowanym języku. Wspomniane testy znajdują się w zakładce [Przykłady kodu](./code_examples.md).

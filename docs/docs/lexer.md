@@ -83,4 +83,8 @@ Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlateg
 | Zmienna typu `Int` przekroczyła ustalony zakres          | INT_EXCEEDED_RANGE_ERROR                 |
 | Zmienna typu `Double` przekroczyła ustalony zakres       | DOUBLE_EXCEEDED_RANGE_ERROR              |
 
-## Obsługa błędów
+## Testowanie
+
+Testy jednostkowe napisane zostały z wykorzystaniem biblioteki `JUnit5`. W ramach testów dostarczany jest ciąg znaków,
+który następnie powinien zostać przeanalizowany na poprawny token (w przypadku testów negatywnych) lub zwrócona powinna
+być informacja o braku możliwości stworzenia prawidłowego tokenu.

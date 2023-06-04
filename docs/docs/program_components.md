@@ -6,12 +6,12 @@ Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji 
 
 ### Wyświetlanie
 
-Obiekty (punkty, odcinki, figury) będą wyświetlane przy wykorzystaniu biblioteki `awt` oraz `swing`:
+Obiekty (punkty, odcinki, figury) wyświetlane są przy wykorzystaniu biblioteki `awt` oraz `swing`:
 
 - W bibliotece `awt` znajdują się takie metody jak `drawPolygon(int[] x, int[] y, nPoints)`
-  oraz `drawLine(int x1, int y1, int x2, int y2)` przy pomocy których możliwe będzie rysowanie krzywych z odcinków oraz
+  oraz `drawLine(int x1, int y1, int x2, int y2)` przy pomocy których możliwe jest rysowanie krzywych z odcinków oraz
   na podstawie punktów.
-- Wyświetlany obrazek umieszczany będzie w obiekcie klasy `JFrame` z biblioteki `swing`.
+- Wyświetlany obrazek umieszczany jest w obiekcie klasy `JFrame` z biblioteki `swing`.
 
 ### Point
 

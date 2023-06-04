@@ -11,8 +11,8 @@ języka. Z odcinków można budować figury geometryczne. Kolekcja figur tworzy 
 
 1. Projekt zostanie zrealizowany w języku Java.
 1. Projektowany język będzie typowany silnie i statycznie.
-1. Za plik napisany w projektowanym języku uznawane będą pliki z rozszerzeniem `.surface` lub strumień danych. Analiza
-   programu kończona jest w wyniku otrzymania znaku końca tekstu `ETX`.
+1. Za plik napisany w projektowanym języku uznawane będą pliki tekstowe (np. z rozszerzeniem `.txt`) lub strumień
+   danych. Analiza programu kończona jest w wyniku otrzymania znaku końca tekstu `ETX`.
 1. W języku dostępne będą następujące typy danych:
     1. Numeryczne: `Int`, `Double`
     1. Tekstowy: `String`
@@ -196,6 +196,9 @@ letter                  = "a".."z"
 
 ### Analiza przykładowego bloku instrukcji if
 
+Poniżej znajduje się analiza przykładowego bloku instrukcji `if`. Analiza ta została przeprowadzona przed napisaniem
+pierwszej linii kodu projektu, aby upewnić się, że hierarchia operatorów będzie prawidłowa.
+
 ```
 ifStmnt: if (i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool()) { return True; }
 ifStmnt: "if", "(", alternativeExp, "), "{", codeBlock, "}":
@@ -350,10 +353,9 @@ ifStmnt: "if", "(", alternativeExp, "), "{", codeBlock, "}":
 ## Testowanie
 
 Projekt został napisany w metodologii TDD. Biblioteką wykorzystaną do testów jest `JUnit5`.  
-W przypadku leksera testy jednostkowe polegają na poprawnym preparsowaniu każdego tokena. Przygotowane zostały
-zarówno testy pozytywne, jak i negatywne (tj. z niepoprawnymi tokenami).  
-Testy parsera opierają się na analizie kolejnych Tokenów. Dla każdego pozytywnego testu zdefiniowana została prawidłowa
-struktura programu, wynikająca z dostarczonych tokenów, która powinna być wynikiem działania parsera.
-Ponadto, przygotowane zostaną również testy akceptacyjne, które będą polegały na analizie przykładowego kodu w
-projektowanym języku. Przykład pozytywnego testu akceptacyjnego znajduje się w
-sekcji [Przykłady kodu](./code_examples.md).
+Opis testowania poszczególnych modułów znajduje się w odpowiednich zakładkach.
+
+## Repozytorium
+
+Całość projektu umieszczona jest w wydziałowym
+repozytorium [GitLab](https://gitlab-stud.elka.pw.edu.pl/TKOM_23L_AM/Mateusz_Wasilewski/23l-tkom.git)

@@ -32,3 +32,8 @@ modułu dzieli zgłoszone błędy na dwie kategorie:
 - `MissingRichtSquareBracketException`
 - `UnclearExpressionException`
 - `UnclosedParenthesesException`
+
+## Testowanie
+
+Testy parsera opierają się na analizie kolejnych Tokenów. Dla każdego pozytywnego testu zdefiniowana została prawidłowa
+struktura programu, wynikająca z dostarczonych tokenów, która powinna być wynikiem działania parsera.
