@@ -36,3 +36,9 @@ public class InterpreterDemo {
     }
 }
 ```
+
+Podczas korzystania z dostarczonego interpretera należy pamiętać o następujących rzeczach:
+
+- program zaczyna się od wykonania funkcji `main` i funkcja ta jest wymagana, aby program był interpretowany
+- kolejne funkcje są interpretowane w kolejności wywołań
+- plik *nie może* kończyć się pustą linią i wszelkie miały znaki z końca pliku powinny zostać usunięte

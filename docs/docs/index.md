@@ -355,6 +355,9 @@ ifStmnt: "if", "(", alternativeExp, "), "{", codeBlock, "}":
 Projekt został napisany w metodologii TDD. Biblioteką wykorzystaną do testów jest `JUnit5`.  
 Opis testowania poszczególnych modułów znajduje się w odpowiednich zakładkach.
 
+Poniżej znajduje się zrzut ekranu ilustrujący pokrycie kodu w projekcie:
+![project_code_coverage](images/project_code_coverage.png)
+
 ## Repozytorium
 
 Całość projektu umieszczona jest w wydziałowym
