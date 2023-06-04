@@ -6,6 +6,7 @@ import parser.IExtendableDataValue;
 import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -107,5 +108,19 @@ public class SceneValue implements IExtendableDataValue {
     @Override
     public void print() {
         System.out.println(getPrinting());
+    }
+
+    public void draw(JFrame frame) {
+        for (IDataValue v : values) {
+            if (v instanceof PointValue) {
+                ((PointValue) v).draw(frame);
+            } else if (v instanceof SectionValue) {
+                ((SectionValue) v).draw(frame);
+            } else if (v instanceof FigureValue) {
+                ((FigureValue) v).draw(frame);
+            } else {
+                throw new RuntimeException();
+            }
+        }
     }
 }

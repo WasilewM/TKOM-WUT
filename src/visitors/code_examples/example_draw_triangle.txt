@@ -1,0 +1,22 @@
+Int main() {
+	drawTriangle();
+
+	return 0;
+}
+
+void drawTriangle() {
+   Figure fig = Figure();
+
+   Point p1 = Point(20.0, 40.0);
+   Point p2 = Point(750.0, 380.0);
+   Point p3 = Point(400.0, 550.0);
+
+   Section s1 = Section(p1, p2);
+   Section s2 = Section(p2, p3);
+   Section s3 = Section(p3, p1);
+
+   fig.add(s1);
+   fig.add(s2);
+   fig.add(s3);
+   fig.draw();
+}

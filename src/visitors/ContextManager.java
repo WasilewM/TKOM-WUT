@@ -11,6 +11,7 @@ public class ContextManager {
     private final HashMap<String, IFunctionDef> functions;
     private final HashMap<String, IVisitable> parameters;
 
+    private final ArrayList<String> drawingMethods;
     private final ArrayList<String> valueReturningMethods;
     private final ArrayList<String> voidMethods;
     private IVisitable currentObject;
@@ -20,10 +21,16 @@ public class ContextManager {
         functions = new HashMap<>();
         parameters = new HashMap<>();
         currentObject = null;
+        drawingMethods = new ArrayList<>();
         valueReturningMethods = new ArrayList<>();
         voidMethods = new ArrayList<>();
+        initDrawingMethodsLists();
         initValueReturningMethodsLists();
         initVoidMethodsLists();
+    }
+
+    private void initDrawingMethodsLists() {
+        drawingMethods.add("draw");
     }
 
     private void initValueReturningMethodsLists() {
@@ -99,11 +106,16 @@ public class ContextManager {
     }
 
     public boolean isMethodImplemented(String methodName) {
-        return voidMethods.contains(methodName) || valueReturningMethods.contains(methodName);
+        return voidMethods.contains(methodName) || valueReturningMethods.contains(methodName)
+                || drawingMethods.contains(methodName);
     }
 
     public boolean isVoidMethod(String methodName) {
         return voidMethods.contains(methodName);
+    }
+
+    public boolean isDrawingMethod(String methodName) {
+        return drawingMethods.contains(methodName);
     }
 
     public boolean isValueReturningMethod(String methodName) {

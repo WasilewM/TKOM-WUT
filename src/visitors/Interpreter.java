@@ -11,6 +11,7 @@ import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 import visitors.exceptions.*;
 
+import javax.swing.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class Interpreter implements IVisitor {
     private boolean returnFound;
     private String currentFunctionName;
     private IVisitable lastResult;
+    private JFrame frame;
 
     public Interpreter(IErrorHandler errorHandler, ContextManager contextManager) {
         this.errorHandler = errorHandler;
@@ -41,6 +43,13 @@ public class Interpreter implements IVisitor {
         currentFunctionName = null;
         functionCallStack = new Stack<>();
         lastResult = null;
+        initFrame();
+    }
+
+    private void initFrame() {
+        frame = new JFrame();
+        frame.setBounds(10, 10, 800, 600);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public IVisitable getLastResult() {
@@ -806,6 +815,8 @@ public class Interpreter implements IVisitor {
             handleBuiltInVoidMethod(functionCall, args, argumentsTypes);
         } else if (contextManager.isValueReturningMethod(functionCall.identifier().name())) {
             handleBuiltInValueReturningMethod(functionCall, args, argumentsTypes);
+        } else if (contextManager.isDrawingMethod(functionCall.identifier().name())) {
+            handleBuiltInDrawingMethod(functionCall, args, argumentsTypes);
         } else {
             handleUndefinedFunctionCall(functionCall);
         }
@@ -904,6 +915,19 @@ public class Interpreter implements IVisitor {
             Class<?> clazz = contextManager.getCurrentObject().getClass();
             Method method = clazz.getMethod(functionCall.identifier().name(), argumentsTypes);
             lastResult = (IVisitable) method.invoke(contextManager.getCurrentObject(), args);
+        } catch (Exception e) {
+            handleExceptionCausedByBuiltInMethod(functionCall, e);
+        }
+    }
+
+    private void handleBuiltInDrawingMethod(FunctionCall functionCall, Object[] args, Class[] argumentsTypes) {
+        try {
+            if ((args.length > 0) || (argumentsTypes.length > 0)) {
+                throw new UndefinedFunctionCallException(functionCall);
+            }
+            Class<?> clazz = contextManager.getCurrentObject().getClass();
+            Method method = clazz.getMethod(functionCall.identifier().name(), frame.getClass());
+            lastResult = (IVisitable) method.invoke(contextManager.getCurrentObject(), frame);
         } catch (Exception e) {
             handleExceptionCausedByBuiltInMethod(functionCall, e);
         }

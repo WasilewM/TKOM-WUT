@@ -5,6 +5,9 @@ import parser.IDataValue;
 import parser.IExpression;
 import visitors.IVisitor;
 
+import javax.swing.*;
+import java.awt.*;
+
 public record PointValue(Position position, IExpression x, IExpression y) implements IDataValue {
     @Override
     public void accept(IVisitor visitor) {
@@ -33,5 +36,21 @@ public record PointValue(Position position, IExpression x, IExpression y) implem
     @Override
     public void print() {
         System.out.println(getPrinting());
+    }
+
+    public void draw(JFrame frame) {
+        JPanel panel = new JPanel() {
+            @Override
+            public void paint(Graphics g0) {
+                int pointSize = 5;
+                DoubleValue xVal = (DoubleValue) x;
+                DoubleValue yVal = (DoubleValue) y;
+                Graphics2D g = (Graphics2D) g0.create();
+                g.setColor(Color.BLACK);
+                g.fillOval((int) (xVal.value() - pointSize / 2), (int) (yVal.value() - pointSize / 2), pointSize, pointSize);
+            }
+        };
+        frame.add(panel);
+        frame.setVisible(true);
     }
 }

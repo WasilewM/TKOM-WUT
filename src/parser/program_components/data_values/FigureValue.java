@@ -7,6 +7,7 @@ import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.exceptions.IncompatibleMethodArgumentException;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -118,5 +119,11 @@ public class FigureValue implements IExtendableDataValue {
     @Override
     public void print() {
         System.out.println(getPrinting());
+    }
+
+    public void draw(JFrame frame) {
+        for (SectionValue s : values) {
+            s.draw(frame);
+        }
     }
 }

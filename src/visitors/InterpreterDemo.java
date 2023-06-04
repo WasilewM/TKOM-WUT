@@ -12,10 +12,10 @@ import java.io.FileReader;
 public class InterpreterDemo {
 
     public static void main(String[] args) throws FileNotFoundException {
-        String filename = "src/visitors/code_examples/example_self_recursion.txt";
+        String filename = "src/visitors/code_examples/example_draw_scene.txt";
         ParserErrorHandler errorHandler = new ParserErrorHandler();
         if (args.length == 1) {
-            filename = "src/visitors/code_examples/example_self_recursion.txt" + args[0];
+            filename = "src/visitors/code_examples/example_draw_scene.txt" + args[0];
         }
         FileReader fr = new FileReader(filename);
         BufferedReader br = new BufferedReader(fr);
@@ -26,6 +26,5 @@ public class InterpreterDemo {
         InterpreterErrorHandler interpreterErrorHandler = new InterpreterErrorHandler();
         IVisitor visitor = new Interpreter(interpreterErrorHandler, contextManager);
         program.accept(visitor);
-        System.out.println(interpreterErrorHandler.getErrorLog());
     }
 }
