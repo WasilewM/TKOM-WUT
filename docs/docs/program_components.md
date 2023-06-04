@@ -1,5 +1,17 @@
 # Dokumentacja struktury programu
 
+## Diagram struktur
+
+Poniżej znajdują się diagramy struktur danych wygenerowane w IDE `ItelliJ IDEA`
+![program_components](images/program_components.png)
+![program_components_data_values](images/program_components_data_values.png)
+![program_components_data_values_lists](images/program_components_data_values_lists.png)
+![program_components_expressions](images/program_components_expressions.png)
+![program_components_function_definitions_1](images/program_components_function_definitions_1.png)
+![program_components_function_definitions_2](images/program_components_function_definitions_2.png)
+![program_components_parameters](images/program_components_parameters.png)
+![program_components_statements](images/program_components_statements.png)
+
 ## Definicje wbudowanych typów obiektowych
 
 Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.
