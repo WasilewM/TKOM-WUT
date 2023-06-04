@@ -4,7 +4,7 @@ nav:
   - Projekt: index.md
   - Lekser: lexer.md
   - Parser: parser.md
-  - Struktura programu: program_components.md
   - Interpreter: interpreter.md
+  - Struktura programu: program_components.md
   - Przykłady kodu: code_examples.md
   - Instrukcja korzystania: user_guide.md

@@ -2,7 +2,7 @@
 
 ## Diagram struktur
 
-Poniżej znajdują się diagramy struktur danych wygenerowane w IDE `ItelliJ IDEA`
+Poniżej znajdują się diagramy struktur danych wygenerowane w IDE od firmy `JetBrains` - `IntelliJ IDEA`
 ![program_components](images/program_components.png)
 ![program_components_data_values](images/program_components_data_values.png)
 ![program_components_data_values_lists](images/program_components_data_values_lists.png)
