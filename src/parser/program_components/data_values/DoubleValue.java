@@ -18,4 +18,14 @@ public record DoubleValue(Position position, Double value) implements IDataValue
 
         return (this.value).equals(castedOther.value);
     }
+
+    @Override
+    public String getPrinting() {
+        return value().toString();
+    }
+
+    @Override
+    public void print() {
+        System.out.println(getPrinting());
+    }
 }

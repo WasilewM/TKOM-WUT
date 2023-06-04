@@ -2,7 +2,6 @@ package visitors;
 
 import parser.IFunctionDef;
 import parser.IVisitable;
-import parser.program_components.data_values.lists.GenericListValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,18 +11,41 @@ public class ContextManager {
     private final HashMap<String, IFunctionDef> functions;
     private final HashMap<String, IVisitable> parameters;
 
-    private final ArrayList<String> methods;
+    private final ArrayList<String> drawingMethods;
+    private final ArrayList<String> valueReturningMethods;
+    private final ArrayList<String> voidMethods;
+    private IVisitable currentObject;
 
     public ContextManager() {
         this.contexts = new ArrayList<>();
         functions = new HashMap<>();
         parameters = new HashMap<>();
-        methods = new ArrayList<>();
-        initMethodsList();
+        currentObject = null;
+        drawingMethods = new ArrayList<>();
+        valueReturningMethods = new ArrayList<>();
+        voidMethods = new ArrayList<>();
+        initDrawingMethodsLists();
+        initValueReturningMethodsLists();
+        initVoidMethodsLists();
     }
 
-    private void initMethodsList() {
-        methods.addAll(GenericListValue.getImplementedMethods());
+    private void initDrawingMethodsLists() {
+        drawingMethods.add("draw");
+    }
+
+    private void initValueReturningMethodsLists() {
+        valueReturningMethods.add("get");
+        valueReturningMethods.add("getRColor");
+        valueReturningMethods.add("getGColor");
+        valueReturningMethods.add("getBColor");
+    }
+
+    private void initVoidMethodsLists() {
+        voidMethods.add("add");
+        voidMethods.add("print");
+        voidMethods.add("setRColor");
+        voidMethods.add("setGColor");
+        voidMethods.add("setBColor");
     }
 
     public Context getLastContext() {
@@ -90,7 +112,20 @@ public class ContextManager {
     }
 
     public boolean isMethodImplemented(String methodName) {
-        return methods.contains(methodName);
+        return voidMethods.contains(methodName) || valueReturningMethods.contains(methodName)
+                || drawingMethods.contains(methodName);
+    }
+
+    public boolean isVoidMethod(String methodName) {
+        return voidMethods.contains(methodName);
+    }
+
+    public boolean isDrawingMethod(String methodName) {
+        return drawingMethods.contains(methodName);
+    }
+
+    public boolean isValueReturningMethod(String methodName) {
+        return valueReturningMethods.contains(methodName);
     }
 
     public void addParameter(String paramName, IVisitable val) {
@@ -101,6 +136,18 @@ public class ContextManager {
         HashMap<String, IVisitable> params = new HashMap<>(parameters);
         parameters.clear();
         return params;
+    }
+
+    public IVisitable getCurrentObject() {
+        return currentObject;
+    }
+
+    public void setCurrentObject(IVisitable currentObject) {
+        this.currentObject = currentObject;
+    }
+
+    public void unSetCurrentObject() {
+        currentObject = null;
     }
 
     protected void createNewContext() {

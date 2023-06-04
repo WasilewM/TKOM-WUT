@@ -11,6 +11,7 @@ import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 import visitors.exceptions.*;
 
+import javax.swing.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Map;
@@ -29,6 +30,7 @@ public class Interpreter implements IVisitor {
     private boolean returnFound;
     private String currentFunctionName;
     private IVisitable lastResult;
+    private JFrame frame;
 
     public Interpreter(IErrorHandler errorHandler, ContextManager contextManager) {
         this.errorHandler = errorHandler;
@@ -41,6 +43,13 @@ public class Interpreter implements IVisitor {
         currentFunctionName = null;
         functionCallStack = new Stack<>();
         lastResult = null;
+        initFrame();
+    }
+
+    private void initFrame() {
+        frame = new JFrame();
+        frame.setBounds(10, 10, 800, 600);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     public IVisitable getLastResult() {
@@ -623,7 +632,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToAddExpressions(exp.position(), leftExp, lastResult);
+        tryToEvaluateAdditionExpression(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -632,7 +641,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToSubtractExpressions(exp.position(), leftExp, lastResult);
+        tryToEvaluateSubtractionExpressions(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -641,7 +650,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToDivideDiscretely(exp.position(), leftExp, lastResult);
+        tryToEvaluateDiscreteDivisionExpression(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -650,7 +659,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToDivide(exp.position(), leftExp, lastResult);
+        tryToEvaluateDivisionExpression(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -659,7 +668,7 @@ public class Interpreter implements IVisitor {
         IVisitable leftExp = lastResult;
         exp.rightExp().accept(this);
 
-        tryToMultiply(exp.position(), leftExp, lastResult);
+        tryToEvaluateMultiplicationExpression(exp.position(), leftExp, lastResult);
     }
 
     @Override
@@ -667,19 +676,47 @@ public class Interpreter implements IVisitor {
         exp.exp().accept(this);
     }
 
-    private void tryToAddExpressions(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateAdditionExpression(Position position, IVisitable leftExp, IVisitable rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            tryToAddIntValues(position, leftExp, rightExp);
+        } else {
+            tryToAddDoubleValues(position, leftExp, rightExp);
+        }
+    }
+
+    private void tryToAddIntValues(Position position, IVisitable leftExp, IVisitable rightExp) {
+        IntValue leftCastedValue = castToIntValue(leftExp);
+        IntValue rightCastedValue = castToIntValue(rightExp);
+        lastResult = new IntValue(position, leftCastedValue.value() + rightCastedValue.value());
+    }
+
+    private void tryToAddDoubleValues(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() + rightCastedValue.value());
     }
 
-    private void tryToSubtractExpressions(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateSubtractionExpressions(Position position, IVisitable leftExp, IVisitable rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            tryToSubtractIntValues(position, leftExp, rightExp);
+        } else {
+            tryToSubtractDoubleValues(position, leftExp, rightExp);
+        }
+    }
+
+    private void tryToSubtractIntValues(Position position, IVisitable leftExp, IVisitable rightExp) {
+        IntValue leftCastedValue = castToIntValue(leftExp);
+        IntValue rightCastedValue = castToIntValue(rightExp);
+        lastResult = new IntValue(position, leftCastedValue.value() - rightCastedValue.value());
+    }
+
+    private void tryToSubtractDoubleValues(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() - rightCastedValue.value());
     }
 
-    private void tryToDivideDiscretely(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateDiscreteDivisionExpression(Position position, IVisitable leftExp, IVisitable rightExp) {
         IntValue leftCastedValue = castToIntValue(leftExp);
         IntValue rightCastedValue = castToIntValue(rightExp);
         if (rightCastedValue.value().equals(0)) {
@@ -688,7 +725,24 @@ public class Interpreter implements IVisitor {
         lastResult = new IntValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
-    private void tryToDivide(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateDivisionExpression(Position position, IVisitable leftExp, IVisitable rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            tryToDivideIntValues(position, leftExp, rightExp);
+        } else {
+            tryToDivideDoubleValues(position, leftExp, rightExp);
+        }
+    }
+
+    private void tryToDivideIntValues(Position position, IVisitable leftExp, IVisitable rightExp) {
+        IntValue leftCastedValue = castToIntValue(leftExp);
+        IntValue rightCastedValue = castToIntValue(rightExp);
+        if (rightCastedValue.value().equals(0)) {
+            errorHandler.handle(new ZeroDivisionException(position));
+        }
+        lastResult = new IntValue(position, leftCastedValue.value() / rightCastedValue.value());
+    }
+
+    private void tryToDivideDoubleValues(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         if (rightCastedValue.value().equals(0.0)) {
@@ -697,7 +751,21 @@ public class Interpreter implements IVisitor {
         lastResult = new DoubleValue(position, leftCastedValue.value() / rightCastedValue.value());
     }
 
-    private void tryToMultiply(Position position, IVisitable leftExp, IVisitable rightExp) {
+    private void tryToEvaluateMultiplicationExpression(Position position, IVisitable leftExp, IVisitable rightExp) {
+        if (leftExp.getClass().equals(IntValue.class) && rightExp.getClass().equals(IntValue.class)) {
+            tryToMultiplyIntValues(position, leftExp, rightExp);
+        } else {
+            tryToMultiplyDoubleValues(position, leftExp, rightExp);
+        }
+    }
+
+    private void tryToMultiplyIntValues(Position position, IVisitable leftExp, IVisitable rightExp) {
+        IntValue leftCastedValue = castToIntValue(leftExp);
+        IntValue rightCastedValue = castToIntValue(rightExp);
+        lastResult = new IntValue(position, leftCastedValue.value() * rightCastedValue.value());
+    }
+
+    private void tryToMultiplyDoubleValues(Position position, IVisitable leftExp, IVisitable rightExp) {
         DoubleValue leftCastedValue = castToDoubleValue(leftExp);
         DoubleValue rightCastedValue = castToDoubleValue(rightExp);
         lastResult = new DoubleValue(position, leftCastedValue.value() * rightCastedValue.value());
@@ -709,44 +777,177 @@ public class Interpreter implements IVisitor {
 
     // other components
     @Override
+    public void visit(ObjectAccess objectAccess) {
+        objectAccess.leftExp().accept(this);
+        if (!objectAccess.rightExp().getClass().equals(FunctionCall.class)) {
+            errorHandler.handle(new UndefinedMethodCallException(objectAccess));
+        } else {
+            FunctionCall functionCall = (FunctionCall) objectAccess.rightExp();
+            contextManager.setCurrentObject(lastResult);
+            functionCall.accept(this);
+        }
+    }
+
+    @Override
     public void visit(FunctionCall functionCall) {
         if (contextManager.containsFunction(functionCall.identifier().name())) {
-            IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
-            if (functionCall.exp() != null) {
-                if (!func.areArgumentsTypesValid(functionCall.exp())) {
-                    ArrayList<IVisitable> expectedArgs = new ArrayList<>(func.parameters().values());
-                    ArrayList<IVisitable> receivedArgs = new ArrayList<>(functionCall.exp());
-                    errorHandler.handle(new IncompatibleArgumentsListException(functionCall, expectedArgs, receivedArgs));
-                }
-                int argumentIdx = 0;
-                for (Map.Entry<String, IParameter> p : func.parameters().entrySet()) {
-                    functionCall.exp().get(argumentIdx).accept(this);
-                    contextManager.addParameter(p.getKey(), lastResult);
-                    argumentIdx += 1;
-                }
-            }
-
-            if (functionCallStack.size() + 1 > maxFunctionCallStackSize) {
-                errorHandler.handle(new ExceededFunctionCallStackSizeException(functionCall, maxFunctionCallStackSize));
-            }
-            functionCallStack.push(functionCall.identifier().name());
-            if (currentFunctionName.equals(func.name())) {
-                if (recursionDepth + 1 > maxRecursionDepth) {
-                    errorHandler.handle(new ExceededMaxRecursionDepthException(functionCall, maxRecursionDepth));
-                }
-                recursionDepth += 1;
-                func.accept(this);
-                recursionDepth -= 1;
-            } else {
-                func.accept(this);
-            }
-            functionCallStack.pop();
+            handleUserDefinedFunctionCall(functionCall);
         } else if (contextManager.isMethodImplemented(functionCall.identifier().name())) {
-            IFunctionDef func = contextManager.getFunction(functionCall.identifier().name());
-            func.accept(this);
+            handleBuiltInFunctionCall(functionCall);
         } else {
-            errorHandler.handle(new UndefinedFunctionCallException(functionCall));
+            handleUndefinedFunctionCall(functionCall);
         }
+    }
+
+    private void handleUserDefinedFunctionCall(FunctionCall functionCall) {
+        IFunctionDef functionDef = contextManager.getFunction(functionCall.identifier().name());
+        ArrayList<IExpression> evaluatedArgs = evaluateFunctionCallParameters(functionCall);
+        FunctionCall evaluatedFunctionCall = new FunctionCall(functionCall.position(), functionCall.identifier(), evaluatedArgs);
+        addFunctionCallArgumentsToContextManager(functionDef, evaluatedFunctionCall);
+        handleFunctionCall(functionDef, evaluatedFunctionCall);
+    }
+
+    private void handleBuiltInFunctionCall(FunctionCall functionCall) {
+        ArrayList<IExpression> evaluatedArgs = evaluateFunctionCallParameters(functionCall);
+        Object[] args = getArgumentsObjectList(evaluatedArgs);
+        Class[] argumentsTypes = getArgumentsTypes(evaluatedArgs);
+        if (contextManager.isVoidMethod(functionCall.identifier().name())) {
+            handleBuiltInVoidMethod(functionCall, args, argumentsTypes);
+        } else if (contextManager.isValueReturningMethod(functionCall.identifier().name())) {
+            handleBuiltInValueReturningMethod(functionCall, args, argumentsTypes);
+        } else if (contextManager.isDrawingMethod(functionCall.identifier().name())) {
+            handleBuiltInDrawingMethod(functionCall, args, argumentsTypes);
+        } else {
+            handleUndefinedFunctionCall(functionCall);
+        }
+
+        if (contextManager.getCurrentObject() != null) {
+            contextManager.unSetCurrentObject();
+        }
+    }
+
+    private Object[] getArgumentsObjectList(ArrayList<IExpression> evaluatedArgs) {
+        Object[] args = new Object[evaluatedArgs.size()];
+        for (int i = 0; i < evaluatedArgs.size(); i++) {
+            args[i] = evaluatedArgs.get(i);
+        }
+        return args;
+    }
+
+    private Class[] getArgumentsTypes(ArrayList<IExpression> evaluatedArgs) {
+        Class[] argumentsTypes = new Class[evaluatedArgs.size()];
+        for (int i = 0; i < evaluatedArgs.size(); i++) {
+            if (implementsIDataValue(evaluatedArgs.get(i))) {
+                argumentsTypes[i] = IDataValue.class;
+            } else {
+                argumentsTypes[i] = evaluatedArgs.get(i).getClass();
+            }
+        }
+        return argumentsTypes;
+    }
+
+    private boolean implementsIDataValue(IExpression exp) {
+        Class<?>[] interfaces = exp.getClass().getInterfaces();
+        for (var i : interfaces) {
+            if (IDataValue.class.isAssignableFrom(i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addFunctionCallArgumentsToContextManager(IFunctionDef functionDef, FunctionCall evaluatedFunctionCall) {
+        if (evaluatedFunctionCall.exp() != null) {
+            if (!functionDef.areArgumentsTypesValid(evaluatedFunctionCall.exp())) {
+                ArrayList<IVisitable> expectedArgs = new ArrayList<>(functionDef.parameters().values());
+                ArrayList<IVisitable> receivedArgs = new ArrayList<>(evaluatedFunctionCall.exp());
+                errorHandler.handle(new IncompatibleArgumentsListException(evaluatedFunctionCall, expectedArgs, receivedArgs));
+            }
+            int argumentIdx = 0;
+            for (Map.Entry<String, IParameter> p : functionDef.parameters().entrySet()) {
+                evaluatedFunctionCall.exp().get(argumentIdx).accept(this);
+                contextManager.addParameter(p.getKey(), lastResult);
+                argumentIdx += 1;
+            }
+        }
+    }
+
+    private ArrayList<IExpression> evaluateFunctionCallParameters(FunctionCall functionCall) {
+        ArrayList<IExpression> evaluatedArgs = new ArrayList<>();
+        for (IExpression arg : functionCall.exp()) {
+            arg.accept(this);
+            evaluatedArgs.add((IExpression) lastResult);
+        }
+        return evaluatedArgs;
+    }
+
+    private void handleFunctionCall(IFunctionDef functionDef, FunctionCall evaluatedFunctionCall) {
+        if (functionCallStack.size() + 1 > maxFunctionCallStackSize) {
+            errorHandler.handle(new ExceededFunctionCallStackSizeException(evaluatedFunctionCall, maxFunctionCallStackSize));
+        }
+        functionCallStack.push(evaluatedFunctionCall.identifier().name());
+        if (currentFunctionName.equals(functionDef.name())) {
+            if (recursionDepth + 1 > maxRecursionDepth) {
+                errorHandler.handle(new ExceededMaxRecursionDepthException(evaluatedFunctionCall, maxRecursionDepth));
+            }
+            recursionDepth += 1;
+            functionDef.accept(this);
+            recursionDepth -= 1;
+        } else {
+            functionDef.accept(this);
+        }
+        functionCallStack.pop();
+    }
+
+    private void handleBuiltInVoidMethod(FunctionCall functionCall, Object[] args, Class[] argumentsTypes) {
+        try {
+            IVisitable obj = contextManager.getCurrentObject();
+            Class<?> clazz = obj.getClass();
+            Method method = clazz.getMethod(functionCall.identifier().name(), argumentsTypes);
+            method.invoke(obj, args);
+        } catch (Exception e) {
+            handleExceptionCausedByBuiltInMethod(functionCall, e);
+        }
+    }
+
+    private void handleBuiltInValueReturningMethod(FunctionCall functionCall, Object[] args, Class[] argumentsTypes) {
+        try {
+            Class<?> clazz = contextManager.getCurrentObject().getClass();
+            Method method = clazz.getMethod(functionCall.identifier().name(), argumentsTypes);
+            lastResult = (IVisitable) method.invoke(contextManager.getCurrentObject(), args);
+        } catch (Exception e) {
+            handleExceptionCausedByBuiltInMethod(functionCall, e);
+        }
+    }
+
+    private void handleBuiltInDrawingMethod(FunctionCall functionCall, Object[] args, Class[] argumentsTypes) {
+        try {
+            if ((args.length > 0) || (argumentsTypes.length > 0)) {
+                throw new UndefinedFunctionCallException(functionCall);
+            }
+            Class<?> clazz = contextManager.getCurrentObject().getClass();
+            Method method = clazz.getMethod(functionCall.identifier().name(), frame.getClass());
+            lastResult = (IVisitable) method.invoke(contextManager.getCurrentObject(), frame);
+        } catch (Exception e) {
+            handleExceptionCausedByBuiltInMethod(functionCall, e);
+        }
+    }
+
+    private void handleExceptionCausedByBuiltInMethod(FunctionCall functionCall, Exception e) {
+        Throwable cause = e.getCause();
+        if (cause instanceof IncompatibleDataTypeException) {
+            errorHandler.handle((IncompatibleDataTypeException) cause);
+        } else if (cause instanceof IncompatibleMethodArgumentException) {
+            errorHandler.handle((IncompatibleMethodArgumentException) cause);
+        } else if (e instanceof NoSuchMethodException) {
+            errorHandler.handle(new UndefinedFunctionCallException(functionCall));
+        } else {
+            errorHandler.handle(new RuntimeException());
+        }
+    }
+
+    private void handleUndefinedFunctionCall(FunctionCall functionCall) {
+        errorHandler.handle(new UndefinedFunctionCallException(functionCall));
     }
 
     @Override
@@ -756,56 +957,6 @@ public class Interpreter implements IVisitor {
         }
 
         lastResult = contextManager.get(identifier.name());
-    }
-
-    @Override
-    public void visit(ObjectAccess objectAccess) {
-        objectAccess.leftExp().accept(this);
-        if (!objectAccess.rightExp().getClass().equals(FunctionCall.class)) {
-            errorHandler.handle(new UndefinedMethodCallException(objectAccess));
-        } else {
-            FunctionCall funcCall = (FunctionCall) objectAccess.rightExp();
-
-            if (funcCall.identifier().name().equals("add")) {
-                handleAddToObject(funcCall);
-            } else if (funcCall.identifier().name().equals("get")) {
-                handleGetFromObject(funcCall);
-            } else {
-                errorHandler.handle(new UndefinedMethodCallException(objectAccess));
-            }
-        }
-    }
-
-    private void handleAddToObject(FunctionCall funcCall) {
-        try {
-            IVisitable obj = lastResult;
-            Class<?> clazz = obj.getClass();
-            Method method = clazz.getMethod(funcCall.identifier().name(), IDataValue.class);
-            registerErrorIfNumberOfArgsDifferentThanOne(funcCall);
-            funcCall.exp().get(0).accept(this);
-            method.invoke(obj, lastResult);
-        } catch (Exception e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof IncompatibleDataTypeException) {
-                errorHandler.handle((IncompatibleDataTypeException) cause);
-            } else if (cause instanceof IncompatibleMethodArgumentException) {
-                errorHandler.handle((IncompatibleMethodArgumentException) cause);
-            } else {
-                errorHandler.handle(new RuntimeException());
-            }
-        }
-    }
-
-    private void handleGetFromObject(FunctionCall funcCall) {
-        try {
-            Class<?> clazz = lastResult.getClass();
-            Method method = clazz.getMethod(funcCall.identifier().name(), int.class);
-            registerErrorIfNumberOfArgsDifferentThanOne(funcCall);
-            IntValue castedArg = castToIntValue(funcCall.exp().get(0));
-            lastResult = (IVisitable) method.invoke(lastResult, castedArg.value());
-        } catch (Exception e) {
-            errorHandler.handle(e);
-        }
     }
 
     // utils
@@ -879,12 +1030,6 @@ public class Interpreter implements IVisitor {
     private void clearLastResult() {
         if (!returnFound) {
             lastResult = null;
-        }
-    }
-
-    private void registerErrorIfNumberOfArgsDifferentThanOne(FunctionCall funcCall) {
-        if (funcCall.exp().size() != 1) {
-            errorHandler.handle(new InvalidNumberOfArgumentsException(funcCall));
         }
     }
 

@@ -35,7 +35,6 @@ public class InterpreterErrorHandler implements IErrorHandler {
         if (isErrorCritical(e)) {
             errorLogs.add(e);
         }
-
         exit();
     }
 
@@ -45,6 +44,11 @@ public class InterpreterErrorHandler implements IErrorHandler {
     }
 
     protected void exit() {
+        printLogs();
         System.exit(1);
+    }
+
+    private void printLogs() {
+        System.out.println(errorLogs);
     }
 }

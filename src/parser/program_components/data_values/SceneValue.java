@@ -2,19 +2,19 @@ package parser.program_components.data_values;
 
 import lexer.Position;
 import parser.IDataValue;
-import parser.IExpression;
 import parser.IExtendableDataValue;
 import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class SceneValue implements IExtendableDataValue {
     private final Position position;
-    private final ArrayList<IExpression> values;
+    private final ArrayList<IDataValue> values;
 
-    public SceneValue(Position position, ArrayList<IExpression> values) {
+    public SceneValue(Position position, ArrayList<IDataValue> values) {
         this.position = position;
         this.values = values;
     }
@@ -35,7 +35,7 @@ public class SceneValue implements IExtendableDataValue {
     }
 
     @Override
-    public Object value() {
+    public ArrayList<IDataValue> value() {
         return values;
     }
 
@@ -44,7 +44,7 @@ public class SceneValue implements IExtendableDataValue {
         return position;
     }
 
-    public ArrayList<IExpression> values() {
+    public ArrayList<IDataValue> values() {
         return values;
     }
 
@@ -79,12 +79,48 @@ public class SceneValue implements IExtendableDataValue {
     }
 
     @Override
-    public Object get(int idx) {
-        return values.get(idx);
+    public IDataValue get(IntValue idx) {
+        return values.get(idx.value());
     }
 
     @Override
     public int size() {
         return values.size();
+    }
+
+    @Override
+    public String getPrinting() {
+        StringBuilder printing = new StringBuilder();
+        printing.append("Scene[");
+
+        int idx = 0;
+        for (IDataValue v : values) {
+            if (idx > 0) {
+                printing.append(", ");
+            }
+            printing.append(v.getPrinting());
+            idx += 1;
+        }
+        printing.append("]");
+        return printing.toString();
+    }
+
+    @Override
+    public void print() {
+        System.out.println(getPrinting());
+    }
+
+    public void draw(JFrame frame) {
+        for (IDataValue v : values) {
+            if (v instanceof PointValue) {
+                ((PointValue) v).draw(frame);
+            } else if (v instanceof SectionValue) {
+                ((SectionValue) v).draw(frame);
+            } else if (v instanceof FigureValue) {
+                ((FigureValue) v).draw(frame);
+            } else {
+                throw new RuntimeException();
+            }
+        }
     }
 }

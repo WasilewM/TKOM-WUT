@@ -53,6 +53,11 @@ public class ParserErrorHandler implements IErrorHandler {
     }
 
     protected void exit() {
+        printLogs();
         System.exit(1);
+    }
+
+    private void printLogs() {
+        System.out.println(errorLogs);
     }
 }

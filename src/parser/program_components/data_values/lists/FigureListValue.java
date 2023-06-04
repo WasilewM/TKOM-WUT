@@ -3,6 +3,7 @@ package parser.program_components.data_values.lists;
 import lexer.Position;
 import parser.IDataValue;
 import parser.program_components.data_values.FigureValue;
+import parser.program_components.data_values.IntValue;
 import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
 
@@ -41,11 +42,21 @@ public class FigureListValue extends GenericListValue {
     }
 
     @Override
+    public FigureValue get(IntValue idx) {
+        return (FigureValue) values.get(idx.value());
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(FigureValue.class)) {
             super.add(val);
         } else {
             throw new IncompatibleDataTypeException(this, val);
         }
+    }
+
+    @Override
+    public String getPrinting() {
+        return "FigureListValue" + super.getPrinting();
     }
 }

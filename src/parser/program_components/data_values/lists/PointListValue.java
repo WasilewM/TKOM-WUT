@@ -2,6 +2,7 @@ package parser.program_components.data_values.lists;
 
 import lexer.Position;
 import parser.IDataValue;
+import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.PointValue;
 import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
@@ -42,11 +43,21 @@ public class PointListValue extends GenericListValue {
     }
 
     @Override
+    public PointValue get(IntValue idx) {
+        return (PointValue) values.get(idx.value());
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(PointValue.class)) {
             super.add(val);
         } else {
             throw new IncompatibleDataTypeException(this, val);
         }
+    }
+
+    @Override
+    public String getPrinting() {
+        return "PointListValue" + super.getPrinting();
     }
 }

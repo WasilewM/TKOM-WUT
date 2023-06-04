@@ -3,6 +3,7 @@ package parser.program_components.data_values.lists;
 import lexer.Position;
 import parser.IDataValue;
 import parser.program_components.data_values.DoubleValue;
+import parser.program_components.data_values.IntValue;
 import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
 
@@ -41,11 +42,21 @@ public class DoubleListValue extends GenericListValue {
     }
 
     @Override
+    public DoubleValue get(IntValue idx) {
+        return (DoubleValue) values.get(idx.value());
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(DoubleValue.class)) {
             super.add(val);
         } else {
             throw new IncompatibleDataTypeException(this, val);
         }
+    }
+
+    @Override
+    public String getPrinting() {
+        return "DoubleListValue" + super.getPrinting();
     }
 }

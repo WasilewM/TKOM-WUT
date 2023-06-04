@@ -3,6 +3,7 @@ package parser.program_components.data_values.lists;
 import lexer.Position;
 import parser.IDataValue;
 import parser.program_components.data_values.BoolValue;
+import parser.program_components.data_values.IntValue;
 import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
 
@@ -41,6 +42,11 @@ public class BoolListValue extends GenericListValue {
     }
 
     @Override
+    public BoolValue get(IntValue idx) {
+        return (BoolValue) values.get(idx.value());
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(BoolValue.class)) {
             super.add(val);
@@ -49,4 +55,8 @@ public class BoolListValue extends GenericListValue {
         }
     }
 
+    @Override
+    public String getPrinting() {
+        return "BoolListValue" + super.getPrinting();
+    }
 }

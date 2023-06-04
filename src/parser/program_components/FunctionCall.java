@@ -8,7 +8,7 @@ import visitors.IVisitor;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public final class FunctionCall implements IExpOrStmnt {
+public class FunctionCall implements IExpOrStmnt {
     private final Position position;
     private final Identifier identifier;
     private final ArrayList<IExpression> exp;

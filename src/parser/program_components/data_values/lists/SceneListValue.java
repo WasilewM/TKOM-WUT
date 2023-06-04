@@ -2,6 +2,7 @@ package parser.program_components.data_values.lists;
 
 import lexer.Position;
 import parser.IDataValue;
+import parser.program_components.data_values.IntValue;
 import parser.program_components.data_values.SceneValue;
 import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
@@ -41,11 +42,21 @@ public class SceneListValue extends GenericListValue {
     }
 
     @Override
+    public SceneValue get(IntValue idx) {
+        return (SceneValue) values.get(idx.value());
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(SceneValue.class)) {
             super.add(val);
         } else {
             throw new IncompatibleDataTypeException(this, val);
         }
+    }
+
+    @Override
+    public String getPrinting() {
+        return "SceneListValue" + super.getPrinting();
     }
 }

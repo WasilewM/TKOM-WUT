@@ -1,4 +1,4 @@
-# 23L-TKOM
+# O projekcie
 
 ## Autor: Mateusz Wasilewski
 
@@ -11,8 +11,8 @@ języka. Z odcinków można budować figury geometryczne. Kolekcja figur tworzy 
 
 1. Projekt zostanie zrealizowany w języku Java.
 1. Projektowany język będzie typowany silnie i statycznie.
-1. Za plik napisany w projektowanym języku uznawane będą pliki z rozszerzeniem `.surface` lub strumień danych. Analiza
-   programu kończona jest w wyniku otrzymania znaku końca tekstu `ETX`.
+1. Za plik napisany w projektowanym języku uznawane będą pliki tekstowe (np. z rozszerzeniem `.txt`) lub strumień
+   danych. Analiza programu kończona jest w wyniku otrzymania znaku końca tekstu `ETX`.
 1. W języku dostępne będą następujące typy danych:
     1. Numeryczne: `Int`, `Double`
     1. Tekstowy: `String`
@@ -67,14 +67,14 @@ języka. Z odcinków można budować figury geometryczne. Kolekcja figur tworzy 
     1. `,`
     1. nazwy wszystkich metod zapisanych poniżej w definicji typów wbudowanych `Point`, `Section`, `Figure` oraz `Scene`
 1. Domyślne ograniczenia parametrów wypisanych poniżej zapisane będą w pliku konfiguracyjnym (patrz
-   sekcja [Plik konfiguracyjny](#Plik konfiguracyjny)) i będzie możliwość ich modyfikacji.
+   sekcja [Plik konfiguracyjny](#plik-konfiguracyjny)) i będzie możliwość ich modyfikacji.
     1. `IntMax` - maksymalny zakres zmiennych typu `Int`
     1. `IntMin` - minimalny zakres zmiennych typu `Int`
     1. `DoubleMax` - maksymalny zakres zmiennych typu `Double`
     1. `DoubleMin` - minimalny zakres zmiennych typu `Double`
     1. `RecursionMaxDepth` - maksymalna liczba poziomów rekursji
 
-### Plik konfiguracyjny
+## Plik konfiguracyjny
 
 Konfiguracja parametrów zapisana będzie w pliku `config.yaml`. Zawartość pliku będzie następująca:
 
@@ -83,271 +83,6 @@ IntMax: 2147483646
 DoubleMax: 21474836460000000000
 StringMaxLength: 1000
 RecursionMaxDepth: 1000
-```
-
-### Tokeny
-
-W projekcie tokeny są reprezentowane przez `lexer.TokenTypeEnum`.
-
-#### Słowa kluczowe oraz odpowiadające im tokeny
-
-| Słowo kluczowe | Nazwa tokenu             |
-|----------------|--------------------------|
-| Int            | INT_KEYWORD              |
-| Double         | DOUBLE_KEYWORD           |
-| String         | STRING                   |
-| Point          | POINT_KEYWORD            |
-| Section        | SECTION_KEYWORD          |
-| Figure         | FIGURE_KEYWORD           |
-| Scene          | SCENE_KEYWORD            |
-| List           | LIST_KEYWORD             |
-| Bool           | BOOL_KEYWORD             |
-| True           | BOOL_TRUE_VALUE_KEYWORD  |
-| False          | BOOL_FALSE_VALUE_KEYWORD |
-| while          | WHILE_KEYWORD            |
-| if             | IF_KEYWORD               |
-| elseif         | ELSE_IF_KEYWORD          |
-| else           | ELSE_KEYWORD             |
-| return         | RETURN_KEYWORD           |
-| void           | VOID_KEYWORD             |
-
-#### Operatory oraz odpowiadające im tokeny
-
-Operator logiczny `lub`, tj. `||`, psuł formatowanie poniższej tabeli i dlatego nie został w niej umieszczony.
-
-| Operator | Nazwa tokenu               |
-|----------|----------------------------|
-| `+`      | ADDITION_OPERATOR          |
-| `-`      | SUBTRACTION_OPERATOR       |
-| `*`      | MULTIPLICATION_OPERATOR    |
-| `/`      | DIVISION_OPERATOR          |
-| `//`     | DISCRETE_DIVISION_OPERATOR |
-| `&&`     | AND_OPERATOR               |
-|          | OR_OPERATOR                |
-| `!`      | NEGATION_OPERATOR          |
-| `==`     | EQUAL_OPERATOR             |
-| `!=`     | NOT_EQUAL_OPERATOR         |
-| `<`      | LESS_THAN_OPERATOR         |
-| `>`      | GREATER_THAN_OPERATOR      |
-| `<=`     | LESS_OR_EQUAL_OPERATOR     |
-| `>=`     | GREATER_OR_EQUAL_OPERATOR  |
-| `=`      | ASSIGNMENT_OPERATOR        |
-
-#### Znaki specjalne oraz odpowiadające im tokeny
-
-| Znak specjalny | Nazwa tokenu         |
-|----------------|----------------------|
-| `#`            | COMMENT              |
-| `(`            | LEFT_BRACKET         |
-| `)`            | RIGHT_BRACKET        |
-| `[`            | LEFT_SQUARE_BRACKET  |
-| `]`            | RIGHT_SQUARE_BRACKET |
-| `{`            | LEFT_CURLY_BRACKET   |
-| `}`            | RIGHT_CURLY_BRACKET  |
-| `;`            | SEMICOLON            |
-| `.`            | DOT                  |
-| `,`            | COMMA                |
-
-#### Inne tokeny będące częścią projektowanego języka
-
-| Element języka                 | Nazwa tokenu |
-|--------------------------------|--------------|
-| Wartość zmiennej typu `String` | STRING_VALUE |
-| Wartość zmiennej typu `Int`    | INT_VALE     |
-| Wartość zmiennej typu `Double` | DOUBLE_VALE  |
-| Nazwa zmiennej lub funkcji     | IDENTIFIER   |
-
-#### Tokeny błędów rozpoznanych przez lekser
-
-| Błąd                                                     | Nazwa tokenu                             |
-|----------------------------------------------------------|------------------------------------------|
-| Nieznany znak                                            | UNKNOWN_CHAR_ERROR                       |
-| Niedomknięty cudzysłów w wartości zmiennej typu `String` | UNCLOSED_QUOTES_ERROR                    |
-| Długość zmiennej `String` przekracza ustaloną granicę    | STRING_EXCEEDED_MAXIMUM_LENGTH_ERROR     |
-| Długość identyfikatora przekracza ustaloną granicę       | IDENTIFIER_EXCEEDED_MAXIMUM_LENGTH_ERROR |
-| Zmienna typu `Int` przekroczyła ustalony zakres          | INT_EXCEEDED_RANGE_ERROR                 |
-| Zmienna typu `Double` przekroczyła ustalony zakres       | DOUBLE_EXCEEDED_RANGE_ERROR              |
-
-## Definicje wbudowanych typów obiektowych
-
-Typ DISPLAY_TYPE użyty poniżej zostanie skonkretyzowany podczas implementacji wyświetlania obiektów.
-
-### Wyświetlanie
-
-Obiekty (punkty, odcinki, figury) będą wyświetlane przy wykorzystaniu biblioteki `awt` oraz `swing`:
-
-- W bibliotece `awt` znajdują się takie metody jak `drawPolygon(int[] x, int[] y, nPoints)`
-  oraz `drawLine(int x1, int y1, int x2, int y2)` przy pomocy których możliwe będzie rysowanie krzywych z odcinków oraz
-  na podstawie punktów.
-- Wyświetlany obrazek umieszczany będzie w obiekcie klasy `JFrame` z biblioteki `swing`.
-
-### Point
-
-```
-public class Point {
-	private Double x;
-	private Double y;
-	private String color = #ffffff;
-	
-	public Point(Double x, Double y) {
-		this.x = x;
-		this.y = y;
-	}
-	
-	public Double getX() {
-		return x;
-	}
-	
-	public Double getY() {
-		return y;
-	}
-	
-	public void setX(Double newX) {
-		x = newX;
-	}
-	
-	public void setY(Double newY) {
-		y = newY;
-	}
-	
-	public DISPLAY_TYPE display() {
-	}
-	
-	public void setColor(String newColor) {
-		color = newColor;
-	}
-	
-	public String getColor() {
-		return color;
-	}
-}
-```
-
-### Section
-
-```
-public class Section {
-	private Point left;
-	private Point right;
-	private String color = #ffffff;
-	
-	public Section(Point left, Point right) {
-		this.left = left;
-		this.right = right;
-	}
-	
-	public Double getLeft() {
-		return left;
-	}
-	
-	public Double getRight() {
-		return right;
-	}
-	
-	public void setLeft(Double newLeft) {
-		left = newLeft;
-	}
-	
-	public void setRight(Double newRigtht) {
-		right = newRight;
-	}
-	
-	public DISPLAY_TYPE display() {
-	}
-	
-	public void setColor(String newColor) {
-		color = newColor;
-	}
-	
-	public String getColor() {
-		return color;
-	}
-}
-```
-
-### List
-
-Obiekt typu klasy `List` może przyjmować wszystkie typy obiektowe zdefiniowane w języku z wyłączeniem `List`, tj.: `Int`
-, `Double`, `String`, `Point`, `Section`, `Figure`, `Scene`, `Bool`. Zagnieżdżanie list nie będzie dozwolone.
-
-```
-public class List {
-	public ArrayList<Object> list = new ArrayList<>();
-	
-	public List() {
-	}
-	
-	public void add(Object o) {
-        list.add(o);
-	}
-	
-	public Object get(int i) {
-	    return list[i];
-	}
-	
-	public void pop() {
-	    list.remove(list.size() - 1);
-	}
-}
-```
-
-### Figure
-
-Figura będzie krzywą łamaną, tj. nie będzie konieczności przekazania do niej takich odcinków, aby stworzyła figurę
-zamkniętą. Takie podejście wydaje się logiczne z racji na możliwość dodawania kolejnych odcinków do figury. Należy
-jednak pamiętać o tym, że kolejny dodawany odcinek powinien się łączyć z ostatnio dodanym odcinkiem.
-
-```
-public class Figure {
-    public List sections = List();
-	
-	public List getSections() {
-		return sections;
-	}
-	
-	public void add(Section newSection) {
-	    if ((newSection.left == sections[section.length() - 1].left)
-            || (newSection.right == sections[section.length() - 1]).left)
-            || (newSection.left == sections[section.length() - 1]).right)
-            || (newSection.right == sections[section.length() - 1]).right)) {
-		    
-		    sections.add(newSection);
-	    }
-	    else {
-            throw new IllegalArgumentException("Sections must join together to form figure. Dangling section cannot be added.");
-	    }
-	}
-		
-	public void pop() {
-		sections.pop();
-	}
-
-	public DISPLAY_TYPE display() {
-	}
-}
-```
-
-### Scene
-
-```
-public class Scene {
-    public List<Figure> figures = List();
-	
-	public List getFigures() {
-		return figures;
-	}
-	
-	public void add(Figure newFigure) {
-		figures.add(newFigure);
-	}
-		
-	public void pop() {
-		figures.pop();
-	}
-
-	public DISPLAY_TYPE display() {
-	}
-}
 ```
 
 ## Gramatyka
@@ -460,6 +195,9 @@ letter                  = "a".."z"
 ```
 
 ### Analiza przykładowego bloku instrukcji if
+
+Poniżej znajduje się analiza przykładowego bloku instrukcji `if`. Analiza ta została przeprowadzona przed napisaniem
+pierwszej linii kodu projektu, aby upewnić się, że hierarchia operatorów będzie prawidłowa.
 
 ```
 ifStmnt: if (i == s1.length() && (((a+b) * d // g + e - f) >= c || !checkSomeBool()) { return True; }
@@ -612,99 +350,12 @@ ifStmnt: "if", "(", alternativeExp, "), "{", codeBlock, "}":
                 positiveAssignableValue: boolValue
 ```
 
-### Przykład kodu
-
-```
-Int main() {
-	doSomeMath(1)
-
-	return 0;
-}
-
-Int doSomeMath(Int n) {
-   if ((n < 0) || (n == 0) || (n == 1)) {
-      return 11;
-   }
-
-   Int i = 2;
-   Int result = 0;
-   while (i < n) {
-      result = result - i * (i + n - i);
-      i = i + 3;
-   }
-
-   return result;
-}
-
-List[Int] mergeSort(List[Int] n) {
-    if (n.length() == 1) {
-        return n;
-    }
-
-    List[Int] leftHalf = [Int];
-    Int l = 0;
-    while (l < (n.length() // 2)) {
-        leftHalf.add(n.get(l));
-        l = l + 1;
-    }
-
-    List[Int] rightHalf = [Int];
-    Int r = n.length() // 2;
-    while (r < n.length()) {
-        rightHalf.add(n.get(r));
-        r = r + 1;
-    }
-
-    List[Int] sortedLeftHalf = mergeSort(leftHalf);
-    List[Int] sortedRightHalf = mergeSort(rightHalf);
-
-    Int i = 0;
-    Int j = 0;
-    List[Int] sortedList = [Int];
-
-    while (i < sortedLeftHalf.length() && j < sortedRightHalf.length()) {
-        if (i == sortedLeftHalf.length() && j < sortedRightHalf.length()) {
-            sortedList.add(sortedRightHalf.get(j));
-            j = j + 1;
-        }
-        elseif (i < sortedLeftHalf.length() && j == sortedRightHalf.length()) {
-            sortedList.add(sortedLeftHalf.get(i));
-            i = i + 1;
-        }
-        elseif (sortedLeftHalf.get(i) < sortedRightHalf.get(j)) {
-            sortedList.add(sortedLeftHalf.get(i));
-            i = i + 1;
-        }
-        else {
-            sortedList.add(sortedRightHalf.get(j));
-            j = j + 1;
-        }
-    }
-
-    return sortedList;
-}
-```
-
-## Obsługa błędów
-
-Poniżej przedstawiony jest błędy kod:
-
-```
-Int main() {
-	Point a = Point("x", "y");  # konstruktor klasy Point wymaga dwóch wartości Double 
-}
-```
-
-W rezultacie powyższy błędny kod powinien wygenerować następujący błąd:
-
-```
-Error in <line: 2, col: 21>: Double value expected
-```
-
 ## Testowanie
 
-Lekser oraz parser zostaną napisane w metodologii TDD. Biblioteką do testów będzie `JUnit5`.  
-W przypadku leksera testy jednostkowe polegać będą na poprawnym preparsowaniu każdego tokena. Przygotowane zostaną
-zarówno testy pozytywne, jak i negatywne (tj. z niepoprawnymi tokenami).  
-Ponadto, przygotowane zostaną również testy akceptacyjne, które będą polegały na analizie przykładowego kodu w
-projektowanym języku. Przykład pozytywnego testu akceptacyjnego znajduje się w sekcji [Przykład kodu](#Przykład kodu).
+Projekt został napisany w metodologii TDD. Biblioteką wykorzystaną do testów jest `JUnit5`.  
+Opis testowania poszczególnych modułów znajduje się w odpowiednich zakładkach.
+
+## Repozytorium
+
+Całość projektu umieszczona jest w wydziałowym
+repozytorium [GitLab](https://gitlab-stud.elka.pw.edu.pl/TKOM_23L_AM/Mateusz_Wasilewski/23l-tkom.git)

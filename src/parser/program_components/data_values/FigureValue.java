@@ -7,6 +7,7 @@ import visitors.IVisitor;
 import visitors.exceptions.IncompatibleDataTypeException;
 import visitors.exceptions.IncompatibleMethodArgumentException;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class FigureValue implements IExtendableDataValue {
     }
 
     @Override
-    public Object value() {
+    public ArrayList<SectionValue> value() {
         return values;
     }
 
@@ -94,7 +95,35 @@ public class FigureValue implements IExtendableDataValue {
     }
 
     @Override
-    public SectionValue get(int idx) {
-        return values.get(idx);
+    public SectionValue get(IntValue idx) {
+        return values.get(idx.value());
+    }
+
+    @Override
+    public String getPrinting() {
+        StringBuilder printing = new StringBuilder();
+        printing.append("Figure[");
+
+        int idx = 0;
+        for (IDataValue v : values) {
+            if (idx > 0) {
+                printing.append(", ");
+            }
+            printing.append(v.getPrinting());
+            idx += 1;
+        }
+        printing.append("]");
+        return printing.toString();
+    }
+
+    @Override
+    public void print() {
+        System.out.println(getPrinting());
+    }
+
+    public void draw(JFrame frame) {
+        for (SectionValue s : values) {
+            s.draw(frame);
+        }
     }
 }

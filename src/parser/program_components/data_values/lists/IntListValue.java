@@ -41,11 +41,21 @@ public class IntListValue extends GenericListValue {
     }
 
     @Override
+    public IntValue get(IntValue idx) {
+        return (IntValue) values.get(idx.value());
+    }
+
+    @Override
     public void add(IDataValue val) throws IncompatibleDataTypeException {
         if (val.getClass().equals(IntValue.class)) {
             super.add(val);
         } else {
             throw new IncompatibleDataTypeException(this, val);
         }
+    }
+
+    @Override
+    public String getPrinting() {
+        return "IntListValue" + super.getPrinting();
     }
 }

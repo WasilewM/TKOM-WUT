@@ -9,4 +9,14 @@ public record BoolValue(Position position, Boolean value) implements IDataValue 
     public void accept(IVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public String getPrinting() {
+        return value().toString();
+    }
+
+    @Override
+    public void print() {
+        System.out.println(getPrinting());
+    }
 }
