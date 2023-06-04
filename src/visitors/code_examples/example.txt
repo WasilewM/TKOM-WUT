@@ -1,5 +1,5 @@
 Int main() {
-	doSomeMath(1).print()
+	doSomeMath(1).print();
 
     List[Int] myList = [Int];
     myList.add(1);

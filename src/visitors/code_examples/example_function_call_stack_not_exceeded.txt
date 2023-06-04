@@ -1,0 +1,21 @@
+Int main() {
+	doSomeRecursion(10).print();
+	return 0;
+}
+
+Int doSomeRecursion(Int n) {
+    n.print()
+    if (n) {
+        return doSomeOtherRecursion(n - 1);
+    }
+    return 0;
+}
+
+Int doSomeOtherRecursion(Int n) {
+    n.print()
+
+    if (n) {
+        return doSomeRecursion(n - 1);
+    }
+    return 0;
+}

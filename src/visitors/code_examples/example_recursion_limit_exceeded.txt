@@ -1,0 +1,9 @@
+Int main() {
+	doSomeRecursion(100).print();
+	return 0;
+}
+
+Int doSomeRecursion(Int n) {
+    n.print()
+    return doSomeRecursion(n - 1);
+}

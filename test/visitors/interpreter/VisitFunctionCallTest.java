@@ -156,4 +156,33 @@ public class VisitFunctionCallTest {
 
         assertEquals(expectedLastResult, interpreter.getLastResult());
     }
+
+    @Test
+    void givenUserDeclaredFunction_whenCallsItselfFourTimes_thenLastResultIsEqualToTheResultOfTheLastCall() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        ContextManager contextManager = new ContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue numberOfFuncCalls = new IntValue(new Position(21, 20), 5);
+        IntValue expectedLastResult = new IntValue(new Position(36, 50), 0);
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
+        LinkedHashMap<String, IParameter> params = new LinkedHashMap<>();
+        params.put("numberOfFuncCallsLeft", new IntParameter(new Position(1, 10), "numberOfFuncCallsLeft"));
+        functions.put("main", new IntFunctionDef(new Position(10, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                new ReturnStatement(new Position(20, 1), new FunctionCall(new Position(20, 10), new Identifier(new Position(21, 10), "getTwice"), numberOfFuncCalls))
+        ))));
+        functions.put("getTwice", new IntFunctionDef(new Position(1, 1), "getTwice", params, new CodeBlock(new Position(10, 10), List.of(
+                new AssignmentStatement(new Position(20, 1), new ReassignedParameter(new Identifier(new Position(20, 1), "numberOfFuncCallsLeft")), new SubtractionExpression(new Position(20, 20), new Identifier(new Position(20, 20), "numberOfFuncCallsLeft"), new IntValue(new Position(20, 30), 1))),
+                new IfStatement(new Position(25, 1), new Identifier(new Position(25, 10), "numberOfFuncCallsLeft"), new CodeBlock(new Position(26, 10), List.of(
+                        new ReturnStatement(new Position(30, 30), new FunctionCall(new Position(30, 40), new Identifier(new Position(30, 40), "getTwice"), new Identifier(new Position(30, 50), "numberOfFuncCallsLeft")))
+                )),
+                        new ElseStatement(new Position(35, 1), new CodeBlock(new Position(35, 10), List.of(
+                                new ReturnStatement(new Position(36, 1), new IntValue(new Position(36, 50), 0))
+                        ))))
+
+        ))));
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
 }
