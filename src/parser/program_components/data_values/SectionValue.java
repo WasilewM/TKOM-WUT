@@ -66,7 +66,7 @@ public class SectionValue implements IDataValue {
                 int secondX = ((DoubleValue) ((PointValue) second).x()).value().intValue();
                 int secondY = ((DoubleValue) ((PointValue) second).y()).value().intValue();
 
-                g2d.setColor(Color.RED);
+                g2d.setColor(new Color(rColor, gColor, bColor));
                 g2d.drawLine(firstX, firstY, secondX, secondY);
             }
         };

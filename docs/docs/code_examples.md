@@ -1,6 +1,6 @@
 # Przykłady kodu w zaprojektowanym języku
 
-## Wywołnie funkcji zdefiniowanej przez użytkownika
+## Wywołanie funkcji zdefiniowanej przez użytkownika
 
 ```
 Int main() {
@@ -42,7 +42,7 @@ Process finished with exit code 0
 
 ## Rysowanie figur
 
-Poniżej znajdują się 2 przykłady wykorzystania możliwości rysowania w zaprojektowanym języku:
+Poniżej znajdują się 3 przykłady wykorzystania możliwości rysowania w zaprojektowanym języku:
 
 ```
 Int main() {
@@ -121,6 +121,59 @@ void drawScene() {
 
 Wykonanie powyższego kodu generuje taki obrazek:  
 ![ExampleDrawScene](./images/example_draw_scene.png)
+
+```
+Int main() {
+	drawScene();
+
+	return 0;
+}
+
+void drawScene() {
+   Scene scene = Scene();
+
+   Point p1 = Point(20.0, 40.0);
+   p1.setRColor(0);
+   p1.setGColor(255);
+   p1.setBColor(0);
+   scene.add(p1);
+   
+   Point p2 = Point(400.0, 440.0);
+   p2.setRColor(120);
+   p2.setGColor(240);
+   p2.setBColor(0);
+   scene.add(p2);
+
+   Point p3 = Point(700.0, 150.0);
+   p3.setRColor(120);
+   p3.setGColor(120);
+   p3.setBColor(120);
+   scene.add(p3);
+
+   Section s1 = Section(p1, p2);
+   s1.setRColor(0);
+   s1.setGColor(0);
+   s1.setBColor(255);
+   scene.add(s1);
+
+   Section s2 = Section(p2, p3);
+   s2.setRColor(0);
+   s2.setGColor(120);
+   s2.setBColor(255);
+   scene.add(s2);
+
+   Section s3 = Section(p1, p3);
+   s3.setRColor(120);
+   s3.setGColor(0);
+   s3.setBColor(255);
+   scene.add(s3);
+
+   scene.draw();
+}
+```
+
+Wykonanie powyższego kodu generuje taki obrazek:  
+![ExampleColorSetting](./images/example_color_setting.png)
 
 ## Przypadki szczególne
 
