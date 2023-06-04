@@ -1,0 +1,17 @@
+Int main() {
+	drawScene();
+
+	return 0;
+}
+
+void drawScene() {
+   Scene scene = Scene();
+
+   Point p1 = Point(20.0, 40.0);
+   p1.setRColor(24);
+   p1.setGColor(255);
+   p1.setBColor(255);
+   scene.add(p1);
+
+   scene.draw();
+}

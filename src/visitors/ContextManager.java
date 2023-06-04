@@ -35,11 +35,17 @@ public class ContextManager {
 
     private void initValueReturningMethodsLists() {
         valueReturningMethods.add("get");
+        valueReturningMethods.add("getRColor");
+        valueReturningMethods.add("getGColor");
+        valueReturningMethods.add("getBColor");
     }
 
     private void initVoidMethodsLists() {
         voidMethods.add("add");
         voidMethods.add("print");
+        voidMethods.add("setRColor");
+        voidMethods.add("setGColor");
+        voidMethods.add("setBColor");
     }
 
     public Context getLastContext() {

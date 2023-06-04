@@ -5,17 +5,17 @@ import org.junit.jupiter.api.Test;
 import parser.IExpression;
 import parser.IFunctionDef;
 import parser.IParameter;
-import parser.program_components.CodeBlock;
-import parser.program_components.FunctionCall;
-import parser.program_components.Identifier;
-import parser.program_components.Program;
+import parser.program_components.*;
+import parser.program_components.data_values.DoubleValue;
 import parser.program_components.data_values.IntValue;
+import parser.program_components.data_values.PointValue;
 import parser.program_components.data_values.StringValue;
 import parser.program_components.expressions.AdditionExpression;
 import parser.program_components.expressions.MultiplicationExpression;
 import parser.program_components.expressions.SubtractionExpression;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.parameters.IntParameter;
+import parser.program_components.parameters.PointParameter;
 import parser.program_components.parameters.ReassignedParameter;
 import parser.program_components.parameters.StringParameter;
 import parser.program_components.statements.AssignmentStatement;
@@ -24,9 +24,11 @@ import parser.program_components.statements.IfStatement;
 import parser.program_components.statements.ReturnStatement;
 import visitors.ContextManager;
 import visitors.Interpreter;
+import visitors.utils.MockedContextManager;
 import visitors.utils.MockedExitInterpreterErrorHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -180,6 +182,69 @@ public class VisitFunctionCallTest {
                         ))))
 
         ))));
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenPointValue_whenSettingValidRColorValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(15, 20), 100);
+        ArrayList<IExpression> params = new ArrayList<>();
+        params.add(expectedLastResult);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new PointParameter(new Position(15, 15), "m"), new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0))),
+                    new ObjectAccess(new Position(20, 1), new Identifier(new Position(20, 1), "m"), new FunctionCall(new Position(20, 3), new Identifier(new Position(20, 3), "setRColor"), params)),
+                    new ReturnStatement(new Position(22, 1), new ObjectAccess(new Position(23, 1), new Identifier(new Position(23, 1), "m"), new FunctionCall(new Position(23, 3), new Identifier(new Position(23, 3), "getRColor"))))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenPointValue_whenSettingValidGColorValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(15, 20), 111);
+        ArrayList<IExpression> params = new ArrayList<>();
+        params.add(expectedLastResult);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new PointParameter(new Position(15, 15), "m"), new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0))),
+                    new ObjectAccess(new Position(20, 1), new Identifier(new Position(20, 1), "m"), new FunctionCall(new Position(20, 3), new Identifier(new Position(20, 3), "setGColor"), params)),
+                    new ReturnStatement(new Position(22, 1), new ObjectAccess(new Position(23, 1), new Identifier(new Position(23, 1), "m"), new FunctionCall(new Position(23, 3), new Identifier(new Position(23, 3), "getGColor"))))
+            ))));
+        }};
+        Program program = new Program(new Position(1, 1), functions);
+        program.accept(interpreter);
+
+        assertEquals(expectedLastResult, interpreter.getLastResult());
+    }
+
+    @Test
+    void givenPointValue_whenSettingValidBColorValue_thenAssignValue() {
+        MockedExitInterpreterErrorHandler errorHandler = new MockedExitInterpreterErrorHandler();
+        MockedContextManager contextManager = new MockedContextManager();
+        Interpreter interpreter = new Interpreter(errorHandler, contextManager);
+        IntValue expectedLastResult = new IntValue(new Position(15, 20), 249);
+        ArrayList<IExpression> params = new ArrayList<>();
+        params.add(expectedLastResult);
+        HashMap<String, IFunctionDef> functions = new HashMap<>() {{
+            put("main", new IntFunctionDef(new Position(1, 1), "main", new LinkedHashMap<>(), new CodeBlock(new Position(10, 10), List.of(
+                    new AssignmentStatement(new Position(15, 15), new PointParameter(new Position(15, 15), "m"), new PointValue(new Position(15, 20), new DoubleValue(new Position(15, 20), 10.0), new DoubleValue(new Position(15, 25), 11.0))),
+                    new ObjectAccess(new Position(20, 1), new Identifier(new Position(20, 1), "m"), new FunctionCall(new Position(20, 3), new Identifier(new Position(20, 3), "setBColor"), params)),
+                    new ReturnStatement(new Position(22, 1), new ObjectAccess(new Position(23, 1), new Identifier(new Position(23, 1), "m"), new FunctionCall(new Position(23, 3), new Identifier(new Position(23, 3), "getBColor"))))
+            ))));
+        }};
         Program program = new Program(new Position(1, 1), functions);
         program.accept(interpreter);
 
