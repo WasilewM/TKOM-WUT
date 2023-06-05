@@ -14,14 +14,11 @@ import parser.program_components.Identifier;
 import parser.program_components.Program;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.WhileStatement;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +41,7 @@ public class ParserWhileStatementTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new WhileStatement(new Position(2, 1), new Identifier(new Position(2, 5), "a"), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), List.of(new WhileStatement(new Position(2, 1), new Identifier(new Position(2, 5), "a"), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 )
@@ -70,7 +67,7 @@ public class ParserWhileStatementTest {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalTestParams.tokens());
 
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         Program program = parser.parse();
 

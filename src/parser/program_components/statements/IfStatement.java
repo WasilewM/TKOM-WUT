@@ -3,24 +3,24 @@ package parser.program_components.statements;
 import lexer.Position;
 import parser.IExpression;
 import parser.IStatement;
-import visitor.IVisitor;
 import parser.program_components.CodeBlock;
+import visitors.IVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public record IfStatement(Position position, IExpression exp, CodeBlock codeBlock, List<ElseIfStatement> elseIfStmnts,
-                          IStatement elseExp) implements IStatement {
-    public IfStatement(Position position, IExpression alternativeExp, CodeBlock codeBlock) {
-        this(position, alternativeExp, codeBlock, new ArrayList<>(), new ElseStatement(null, null, null));
+                          ElseStatement elseStmnt) implements IStatement {
+    public IfStatement(Position position, IExpression exp, CodeBlock codeBlock) {
+        this(position, exp, codeBlock, new ArrayList<>(), null);
     }
 
     public IfStatement(Position position, IExpression ifStmnt, CodeBlock codeBlock, List<ElseIfStatement> elseIfStmnts) {
-        this(position, ifStmnt, codeBlock, elseIfStmnts, new ElseStatement(null, null, null));
+        this(position, ifStmnt, codeBlock, elseIfStmnts, null);
     }
 
-    public IfStatement(Position position, IExpression ifStmnt, CodeBlock codeBlock, IStatement elseExp) {
-        this(position, ifStmnt, codeBlock, new ArrayList<>(), elseExp);
+    public IfStatement(Position position, IExpression ifStmnt, CodeBlock codeBlock, ElseStatement elseStmnt) {
+        this(position, ifStmnt, codeBlock, new ArrayList<>(), elseStmnt);
     }
 
     @Override

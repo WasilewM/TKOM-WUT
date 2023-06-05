@@ -1,7 +1,7 @@
 package parser;
 
 import lexer.Position;
-import visitor.IVisitor;
+import visitors.IVisitor;
 
 public interface IVisitable {
     Position position();

@@ -1,0 +1,13 @@
+Int main() {
+	doSomeRecursion(5).print();
+	return 0;
+}
+
+Int doSomeRecursion(Int n) {
+    n.print()
+    if (n > 0) {
+        return doSomeRecursion(n - 1);
+    } else {
+        return 0;
+    }
+}

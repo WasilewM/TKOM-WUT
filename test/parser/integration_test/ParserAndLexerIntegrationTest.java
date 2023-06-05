@@ -3,7 +3,7 @@ package parser.integration_test;
 import lexer.Lexer;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -19,7 +19,7 @@ public class ParserAndLexerIntegrationTest {
         InputStream inputStream = new ByteArrayInputStream("#hello there - init parser".getBytes());
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        Parser parser = new Parser(new Lexer(bufferedReader), new MockedExitErrorHandler());
+        Parser parser = new Parser(new Lexer(bufferedReader), new MockedExitParserErrorHandler());
 
         assertNotNull(parser);
     }

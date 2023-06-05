@@ -2,7 +2,7 @@ package parser.program_components;
 
 import lexer.Position;
 import parser.IExpression;
-import visitor.IVisitor;
+import visitors.IVisitor;
 
 public record Identifier(Position position, String name) implements IExpression {
     @Override

@@ -16,14 +16,11 @@ import parser.program_components.expressions.AlternativeExpression;
 import parser.program_components.expressions.ConjunctiveExpression;
 import parser.program_components.function_definitions.IntFunctionDef;
 import parser.program_components.statements.IfStatement;
-import parser.utils.MockedExitErrorHandler;
+import parser.utils.MockedExitParserErrorHandler;
 import parser.utils.MockedLexer;
 import parser.utils.ParserSingleTestParams;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,7 +41,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new Identifier(new Position(2, 5), "ident"), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new Identifier(new Position(2, 5), "ident"), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -60,7 +57,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AlternativeExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AlternativeExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -78,7 +75,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AlternativeExpression(new Position(2, 21), new AlternativeExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new Identifier(new Position(2, 24), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AlternativeExpression(new Position(2, 21), new AlternativeExpression(new Position(2, 12), new Identifier(new Position(2, 5), "ident"), new Identifier(new Position(2, 15), "ident")), new Identifier(new Position(2, 24), "ident")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 ),
@@ -96,7 +93,7 @@ public class ParserAlternativeExpressionTest {
                                         new Token(new Position(100, 1), TokenTypeEnum.RIGHT_CURLY_BRACKET)
                                 ),
                                 new HashMap<>() {{
-                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new HashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AlternativeExpression(new Position(2, 24), new ConjunctiveExpression(new Position(2, 13), new Identifier(new Position(2, 5), "identA"), new Identifier(new Position(2, 16), "identB")), new Identifier(new Position(2, 26), "identC")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
+                                    put("func", new IntFunctionDef(new Position(1, 1), "func", new LinkedHashMap<>(), new CodeBlock(new Position(1, 11), List.of(new IfStatement(new Position(1, 12), new AlternativeExpression(new Position(2, 24), new ConjunctiveExpression(new Position(2, 13), new Identifier(new Position(2, 5), "identA"), new Identifier(new Position(2, 16), "identB")), new Identifier(new Position(2, 26), "identC")), new CodeBlock(new Position(51, 1), new ArrayList<>()))))));
                                 }}
                         )
                 )
@@ -124,7 +121,7 @@ public class ParserAlternativeExpressionTest {
         ArrayList<Token> testTokens = new ArrayList<>(startTokens);
         testTokens.addAll(additionalTestParams.tokens());
 
-        MockedExitErrorHandler errorHandler = new MockedExitErrorHandler();
+        MockedExitParserErrorHandler errorHandler = new MockedExitParserErrorHandler();
         Parser parser = new Parser(new MockedLexer(testTokens), errorHandler);
         Program program = parser.parse();
 

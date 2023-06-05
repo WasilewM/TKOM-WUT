@@ -7,20 +7,21 @@ import lexer.tokens.Token;
 import parser.exceptions.*;
 import parser.program_components.*;
 import parser.program_components.data_values.*;
+import parser.program_components.data_values.lists.*;
 import parser.program_components.expressions.*;
 import parser.program_components.function_definitions.*;
 import parser.program_components.parameters.*;
 import parser.program_components.statements.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Parser implements IParser {
     private final ILexer lexer;
-    private final ErrorHandler errorHandler;
+    private final IErrorHandler errorHandler;
     private Token currentToken;
 
-    public Parser(ILexer lexer, ErrorHandler errorHandler) {
+    public Parser(ILexer lexer, ParserErrorHandler errorHandler) {
         this.lexer = lexer;
         this.errorHandler = errorHandler;
         currentToken = null;
@@ -31,7 +32,7 @@ public class Parser implements IParser {
     public Program parse() {
         nextToken();
         Position position = currentToken.getPosition();
-        HashMap<String, IFunctionDef> functions = new HashMap<>();
+        LinkedHashMap<String, IFunctionDef> functions = new LinkedHashMap<>();
         IFunctionDef newFunction = parseFunctionDef();
         while (newFunction != null) {
             if (!(functions.containsKey(newFunction.name()))) {
@@ -57,7 +58,7 @@ public class Parser implements IParser {
         }
 
         parseLeftBracketWithoutReturningIt();
-        HashMap<String, IParameter> parameters = parseParameters();
+        LinkedHashMap<String, IParameter> parameters = parseParameters();
         parseRightBracketWithoutReturningIt();
 
         CodeBlock codeBlock = parseCodeBlock();
@@ -97,6 +98,8 @@ public class Parser implements IParser {
             return new FigureListFunctionDef((FigureListParameter) functionType, parameters, codeBlock);
         } else if (functionType.getClass().equals(SceneListParameter.class)) {
             return new SceneListFunctionDef((SceneListParameter) functionType, parameters, codeBlock);
+        } else if (functionType.getClass().equals(VoidParameter.class)) {
+            return new VoidFunctionDef((VoidParameter) functionType, parameters, codeBlock);
         } else {
             errorHandler.handle(new RuntimeException(currentToken.toString()));
             return null;
@@ -214,9 +217,9 @@ public class Parser implements IParser {
         registerErrorIfCodeBlockIsMissing(ifCodeBlock);
 
         ArrayList<ElseIfStatement> elseIfStatements = parseElseIfStatements();
-        IStatement elseExp = parseElseStatement();
+        ElseStatement elseStmnt = parseElseStatement();
 
-        return new IfStatement(position, expression, ifCodeBlock, elseIfStatements, elseExp);
+        return new IfStatement(position, expression, ifCodeBlock, elseIfStatements, elseStmnt);
     }
 
     /* elseifStmnt = "elseif", "(", alternativeExp, ")", "{", codeBlock, "}" */
@@ -239,17 +242,12 @@ public class Parser implements IParser {
     private ElseStatement parseElseStatement() {
         Position position = currentToken.getPosition();
         if (consumeIf(TokenTypeEnum.ELSE_KEYWORD)) {
-            parseLeftBracketWithoutReturningIt();
-            IExpression exp = parseAlternativeExpression();
-            registerErrorIfExpIsMissing(exp);
-            parseRightBracketWithoutReturningIt();
-
             CodeBlock elseCodeBlock = parseCodeBlock();
             registerErrorIfCodeBlockIsMissing(elseCodeBlock);
 
-            return new ElseStatement(position, exp, elseCodeBlock);
+            return new ElseStatement(position, elseCodeBlock);
         }
-        return new ElseStatement();
+        return null;
     }
 
     /* whileStmnt = "while", "(", alternativeExp, ")", "{", codeBlock, "}" */
@@ -259,11 +257,7 @@ public class Parser implements IParser {
             return null;
         }
 
-        parseLeftBracketWithoutReturningIt();
-        IExpression exp = parseAlternativeExpression();
-        registerErrorIfExpIsMissing(exp);
-        parseRightBracketWithoutReturningIt();
-
+        IExpression exp = parseConditionExpression();
         CodeBlock codeBlock = parseCodeBlock();
         registerErrorIfCodeBlockIsMissing(codeBlock);
         return new WhileStatement(position, exp, codeBlock);
@@ -271,12 +265,18 @@ public class Parser implements IParser {
 
     /* functionType = parameter | ( "void", identifier ) */
     private IParameter parseFunctionType() {
+        Position position = currentToken.getPosition();
+        if (consumeIf(TokenTypeEnum.VOID_KEYWORD)) {
+            String paramName = parseIdentifierName();
+            return new VoidParameter(position, paramName);
+        }
+
         return parseParameter();
     }
 
     /* parameters = parameter, ",", { parameter } */
-    private HashMap<String, IParameter> parseParameters() {
-        HashMap<String, IParameter> params = new HashMap<>();
+    private LinkedHashMap<String, IParameter> parseParameters() {
+        LinkedHashMap<String, IParameter> params = new LinkedHashMap<>();
 
         IParameter firstParam = parseParameter();
         if (firstParam == null) {
@@ -907,9 +907,19 @@ public class Parser implements IParser {
         if (!consumeIf(TokenTypeEnum.LEFT_BRACKET)) {
             return identifier;
         }
+        ArrayList<IExpression> arguments = new ArrayList<>();
         IExpression exp = parseAlternativeExpression();
+        if (exp != null) {
+            arguments.add(exp);
+
+            while (consumeIf(TokenTypeEnum.COMMA)) {
+                IExpression anotherExp = parseAlternativeExpression();
+                registerErrorIfExpIsMissing(anotherExp);
+                arguments.add(anotherExp);
+            }
+        }
         parseRightBracketWithoutReturningIt();
-        return new FunctionCall(position, identifier, exp);
+        return new FunctionCall(position, (Identifier) identifier, arguments);
     }
 
     /* identifier = letter { digit | literal } */
